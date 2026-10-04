@@ -540,23 +540,15 @@ body:not(:has(.shell)) .letters{display:none}
 .dupe{position:absolute;right:-6px;top:-8px;z-index:7;padding:4px 10px;border-radius:999px;background:linear-gradient(180deg,var(--gold2),var(--gold));color:#2A1A05;font:800 13px/1 var(--display);box-shadow:0 4px 12px rgba(0,0,0,.5)}
 @media (prefers-reduced-motion:reduce){.card{transform:none !important}}
 
-/* Achterkant van de kaart */
-.cardback{position:relative;aspect-ratio:5/7;border-radius:3.6cqw;overflow:hidden;padding:2.4cqw;
-  background:linear-gradient(170deg,#1F2E52,#14213D);box-shadow:inset 0 0 0 .6cqw rgba(255,255,255,.12),0 2cqw 5cqw -1.5cqw rgba(0,0,0,.75)}
-.cb-in{position:relative;height:100%;border-radius:2.4cqw;overflow:hidden;display:grid;place-items:center;align-content:center;gap:3cqw;text-align:center;
-  border:.5cqw solid var(--gold);
-  background:
-    repeating-linear-gradient(45deg,rgba(201,162,39,.12) 0 .4cqw,transparent .4cqw 6cqw),
-    repeating-linear-gradient(-45deg,rgba(201,162,39,.12) 0 .4cqw,transparent .4cqw 6cqw),
-    radial-gradient(circle at 50% 42%,#2A3F6E,#14213D 60%,#0A1226)}
-.cb-in::before{content:"";position:absolute;inset:1.4cqw;border:.25cqw solid rgba(201,162,39,.6);border-radius:1.6cqw;pointer-events:none}
-.cb-in::after{content:"";position:absolute;top:0;bottom:0;left:-100%;width:100%;pointer-events:none;background:linear-gradient(115deg,transparent 30%,rgba(255,255,255,.18) 50%,transparent 70%);animation:shine 5s ease-in-out infinite}
-.book .cb-in::after,.grid .cb-in::after,.lite .cb-in::after{display:none}
-.cb-crest{width:38cqw;height:45cqw;display:grid;place-items:center;padding-bottom:7cqw;font:800 8.4cqw/1 var(--display);color:var(--gold2);
-  background:linear-gradient(160deg,#B8243C,#5E0F1E);clip-path:polygon(0 0,100% 0,100% 64%,50% 100%,0 64%);
-  box-shadow:inset 0 0 0 1.6cqw var(--gold),inset 0 0 0 2.8cqw #5E0F1E,inset 0 0 0 3.3cqw rgba(230,200,115,.6)}
-.cb-name{font:800 7.6cqw/1 var(--display);letter-spacing:.12em;color:var(--ivory)}
-.cb-est{font:italic 600 5cqw/1 var(--serif);letter-spacing:.06em;color:var(--gold2)}
+/* Achterkant van de kaart: afbeelding (cards/card-back.webp) met RIZZ op het lint.
+   Iets ingezoomd zodat de afgeronde hoeken van de afbeelding wegvallen. */
+.cardback{position:relative;aspect-ratio:5/7;border-radius:3.6cqw;overflow:hidden;
+  background:#14213D url('cards/card-back.webp') 50% 50%/auto 104% no-repeat;
+  box-shadow:inset 0 0 0 .5cqw rgba(201,162,39,.35),0 2cqw 5cqw -1.5cqw rgba(0,0,0,.75)}
+.cardback::after{content:"";position:absolute;top:0;bottom:0;left:-100%;width:100%;pointer-events:none;background:linear-gradient(115deg,transparent 30%,rgba(255,255,255,.16) 50%,transparent 70%);animation:shine 5s ease-in-out infinite}
+.book .cardback::after,.grid .cardback::after,.lite .cardback::after{display:none}
+.cb-ribbon{position:absolute;left:50%;top:66.3%;transform:translate(-50%,-50%);white-space:nowrap;
+  font:900 8cqw/1 var(--display);letter-spacing:.32em;padding-left:.32em;color:#6E1020;text-shadow:0 .25cqw 0 rgba(255,255,255,.6)}
 
 /* ---------- Kaart groot bekijken ---------- */
 dialog{border:0;padding:0;background:transparent;max-width:none;overflow:visible;color:var(--ink)}
@@ -866,7 +858,7 @@ button.slot:hover{transform:translateY(-6px)}
 /* Zuinige stand voor trage toestellen (wordt automatisch aangezet, zie autoLite) */
 .lite .crest::after,.lite .welcome-banner::after{animation:none}
 @media (prefers-reduced-motion:reduce){
-  #view,.bulb.tw,.crest::after,.pack,.pack-top,.seal,.glow,.page-body.turning,.shake,.particle,.rays,.fan .cw,.ghost-pack,.vs,.welcome-banner::after,.cb-in::after,.pack-hint,.stamp,.flash,.quake{animation:none !important}
+  #view,.bulb.tw,.crest::after,.cardback::after,.pack,.pack-top,.seal,.glow,.page-body.turning,.shake,.particle,.rays,.fan .cw,.ghost-pack,.vs,.welcome-banner::after,.cb-in::after,.pack-hint,.stamp,.flash,.quake{animation:none !important}
 }
 </style>
 </head>
@@ -1188,9 +1180,9 @@ function renderResetPassword() {
 // ---------- Kaart tekenen ----------
 // ---------- Kaart groot bekijken, tik om om te draaien ----------
 function renderCardBack() {
-  return `<div class="cw"><div class="cardback" role="img" aria-label="Achterkant van de kaart"><div class="cb-in">
-    <span class="cb-crest" aria-hidden="true">RIZZ</span><span class="cb-name" aria-hidden="true">RIZZ ACADEMY</span><span class="cb-est" aria-hidden="true">est. MMXXVI</span>
-  </div></div></div>`;
+  return `<div class="cw"><div class="cardback" role="img" aria-label="Achterkant van de kaart">
+    <span class="cb-ribbon" aria-hidden="true">RIZZ</span>
+  </div></div>`;
 }
 
 function openZoom(card) {
