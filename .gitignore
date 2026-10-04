@@ -1,0 +1,5 @@
+tools/__pycache__/
+# Kaartfoto's staan in Supabase Storage (privé), nooit in deze openbare repo
+cards/*
+!cards/card-back.jpg
+!cards/card-back.png

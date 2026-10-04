@@ -1110,7 +1110,7 @@ const PARTICLE_COLORS = {
   cat: ['#7CC4A0', '#F3E6CA']
 };
 
-const state = { session: null, recovery: IS_RECOVERY_LINK, cards: [], owned: new Map(), playDates: new Set(), play: null, name: '', avatarUrl: null, friendCode: '', wallet: 0, incomingRequests: 0, incomingBattles: 0, welcomeAvailable: false, isAdmin: false, tab: 'today', page: 0 };
+const state = { photos: new Map(), session: null, recovery: IS_RECOVERY_LINK, cards: [], owned: new Map(), playDates: new Set(), play: null, name: '', avatarUrl: null, friendCode: '', wallet: 0, incomingRequests: 0, incomingBattles: 0, welcomeAvailable: false, isAdmin: false, tab: 'today', page: 0 };
 
 // Werkt alle plekken bij die het saldo, de collectie en de streak tonen (scorebord, shop)
 function syncCoinUI() {
@@ -1248,6 +1248,25 @@ async function loadData() {
   state.avatarUrl = prof.data?.avatar_url || null;
   state.friendCode = prof.data?.friend_code || '';
   state.wallet = wallet.data?.polycoins || 0;
+  // Tijdelijke links naar de afgeschermde foto's van je eigen kaarten (admin: alle kaarten)
+  await loadPhotos(state.isAdmin ? state.cards.map(c => c.id) : [...state.owned.keys()]);
+}
+
+// ---------- Kaartfoto's ----------
+// De foto's staan in een privé opslagmap in Supabase (supabase/update-02-fotos.sql), niet op GitHub.
+// Supabase geeft enkel een tijdelijke link voor kaarten die je bezit (of als admin). Zonder link
+// (map nog leeg, of kaart niet in je bezit) toont de kaart de varsity-letter.
+const PHOTO_BUCKET = 'card-photos';
+async function loadPhotos(ids) {
+  const want = [...new Set(ids)].map(id => state.cards.find(c => c.id === id))
+    .filter(c => c && c.image_url && !state.photos.has(c.id));
+  if (!want.length) return;
+  try {
+    const paths = want.map(c => c.image_url.replace(/^cards\//, ''));
+    const { data, error } = await sb.storage.from(PHOTO_BUCKET).createSignedUrls(paths, 24 * 3600);
+    if (error || !data) return;
+    data.forEach((r, i) => { if (r.signedUrl && !r.error) state.photos.set(want[i].id, r.signedUrl); });
+  } catch (_) { /* opslag niet bereikbaar: dan gewoon zonder foto's */ }
 }
 
 // Telt per card_id hoeveel exemplaren een gebruiker bezit, op basis van ruwe user_cards-rijen
@@ -1439,8 +1458,9 @@ function renderCard(c, { locked = false, count = 1 } = {}) {
   const initial = esc((c.person || '?').trim().charAt(0).toUpperCase());
   // Varsity-letter als tijdelijke illustratie; de foto (als die al geüpload is) ligt erbovenop
   const placeholder = c.rarity === 'cat' ? '<span class="ptile cat">📝</span>' : `<span class="ptile">${initial}</span>`;
-  const art = placeholder + (c.image_url
-    ? `<img src="${esc(c.image_url)}" alt="${esc(c.name)}" loading="lazy" onerror="this.remove()">`
+  const photo = state.photos.get(c.id);
+  const art = placeholder + (photo
+    ? `<img src="${esc(photo)}" alt="${esc(c.name)}" loading="lazy" onerror="this.remove()">`
     : '');
   const special = c.special_name
     ? `<div class="special">★ ${esc(c.special_name)}${c.special_power ? ` (${esc(c.special_power)})` : ''}<small>${esc(c.special_desc)}</small></div>`
@@ -2212,6 +2232,7 @@ const PULL_STAMP = {
 // eruit (met een flits bij epic/legendary) en draaien de kaarten om. Voor de dagelijkse trekking en het welkomstpakket.
 async function openPack(stage, cards) {
   const reduce = prefersReduced();
+  await loadPhotos(cards.map(c => c.id));
   const best = cards.map(c => c.rarity).sort((x, y) => RARITY_ORDER[x] - RARITY_ORDER[y])[0];
   const results = backs => `<div class="pack-results${cards.length > 1 ? ' multi' : ''}">${cards.map((c, i) =>
     `<div class="pack-slot" data-slot="${i}"><div class="flipper${backs ? ' rise' : ''}" style="animation-delay:${i * .12}s">${backs ? renderCardBack(c) : renderCard(c)}</div></div>`).join('')}</div>`;
