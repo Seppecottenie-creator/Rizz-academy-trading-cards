@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="theme-color" content="#0E0F11">
+<meta name="theme-color" content="#0C1120">
 <title>Rizz Academy</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -663,6 +663,145 @@ button.slot:hover{transform:translateY(-4px)}
   #view,#intro,#intro *,.pack,.pack-top,.seal,.glow,.page-body.turning,.shake,.particle,.stamp,.flash,.quake,.cardflip{animation:none !important}
   #intro{display:none}
 }
+
+/* =====================================================================
+   VARSITY RIZZ — levendiger college-laag bovenop de rustige basis.
+   Navy-zwart met varsity-rood, crème en goud; sportkaarten met een
+   foto die het gezicht altijd toont. Alles statisch of transform/opacity.
+   ===================================================================== */
+:root{
+  --bg:#0C1120; --bg2:#10172A; --panel:#151D33; --panel2:#1C2540; --raise:#243052;
+  --line:rgba(244,235,221,.09); --line2:rgba(244,235,221,.17);
+  --ink:#F4EBDD; --ink-soft:#BFB6A8; --muted:#8790A8;
+  --red:#C8102E; --red2:#E0284A; --red-dark:#8C0B21; --cream:#F4EBDD; --gold:#D4A84B; --gold2:#EBCB7E;
+  --oxblood:#C8102E; --oxblood2:#E0284A; --brass:#D4A84B; --brass2:#EBCB7E; --crimson:#C8102E; --crimson2:#E0284A;
+  --green:#3E8A5C; --green-soft:#7FD3A0; --err:#FF8FA0;
+}
+html,.scene{background:var(--bg)}
+.scene{background:
+  radial-gradient(55% 45% at 85% -5%,rgba(200,16,46,.22),transparent 70%),
+  radial-gradient(45% 40% at 0% 100%,rgba(212,168,75,.10),transparent 70%),
+  radial-gradient(40% 35% at 50% 50%,rgba(40,60,120,.18),transparent 70%),var(--bg)}
+/* Varsity-strepen: rood-crème-rood, zoals op de mouw van een college jacket */
+.vstripe{height:7px;background:linear-gradient(180deg,var(--red) 0 2px,var(--cream) 2px 5px,var(--red) 5px 7px);border-radius:2px}
+.side{background:linear-gradient(180deg,#111830,#0D1324);border-right:0;box-shadow:inset -7px 0 0 -2px var(--red),inset -9px 0 0 -2px var(--cream),inset -11px 0 0 -2px var(--red)}
+.side::after{content:"";position:absolute;right:0;top:0;bottom:0;width:7px;background:linear-gradient(90deg,var(--red) 0 2px,var(--cream) 2px 5px,var(--red) 5px 7px)}
+.side{box-shadow:none}
+.logo-txt b{font-family:var(--varsity);font-weight:400;font-size:17px;letter-spacing:.02em}
+.logo-txt small{color:var(--gold)}
+.crest{background:linear-gradient(160deg,#E0284A,#8C0B21);color:var(--cream);box-shadow:inset 0 0 0 1.5px var(--gold),inset 0 0 0 3px #8C0B21}
+.nav-btn .ni{filter:none;opacity:.85}
+.nav-btn:hover{background:rgba(244,235,221,.05)}
+.nav-btn[aria-current="page"]{background:linear-gradient(90deg,rgba(200,16,46,.9),rgba(200,16,46,.35));color:#fff;box-shadow:inset 3px 0 0 var(--gold)}
+.me-name small{color:var(--gold)}
+.avbtn{background-color:var(--red-dark);border-color:var(--gold)}
+@media (max-width:899px){
+  .dock{background:#0E1426;border-top:0;box-shadow:0 -7px 0 -4px var(--cream),0 -7px 0 -2px var(--red)}
+  .dock .nav-btn[aria-current="page"]{color:var(--red2)}
+}
+/* Statusbalk: varsity-patches */
+.plaque{position:relative;background:linear-gradient(180deg,#1A2340,#141B31);border:1px solid var(--line);padding-left:52px}
+.plaque::before{position:absolute;left:12px;top:50%;transform:translateY(-50%);width:30px;height:30px;border-radius:50%;display:grid;place-items:center;font-size:15px;background:rgba(200,16,46,.18);box-shadow:inset 0 0 0 1px rgba(200,16,46,.45)}
+.plaque:nth-child(1)::before{content:"🪙"}
+.plaque:nth-child(2)::before{content:"💌"}
+.plaque:nth-child(3)::before{content:"🔥"}
+.pl-val{font-family:var(--varsity);font-weight:400;letter-spacing:.02em}
+.motto{display:flex;flex:1;min-width:0;align-items:center;gap:12px;padding:10px 18px;border-radius:12px;background:linear-gradient(90deg,rgba(200,16,46,.16),rgba(200,16,46,.04));border:1px solid rgba(200,16,46,.3);
+  font:italic 500 15px/1.35 var(--display);color:var(--ink);text-align:left;white-space:normal}
+.motto b{font:600 10px var(--body);letter-spacing:.2em;text-transform:uppercase;color:var(--red2);font-style:normal;white-space:nowrap}
+@media (max-width:899px){.plaque{padding-left:10px}.plaque::before{display:none}.motto{display:none}}
+/* Titels */
+.kicker{color:var(--red2)}
+.page-head h2,.pname,.index-title{font-family:var(--varsity);font-weight:400;letter-spacing:.01em}
+.pname .ribbon{color:var(--gold)}
+h3{color:var(--gold)}
+/* Knoppen: varsity-rood */
+.btn{background:linear-gradient(180deg,#E0284A,#B00E28);color:#fff;box-shadow:0 4px 0 #6E0819,0 10px 24px -10px rgba(200,16,46,.7)}
+.btn:hover:not(:disabled){background:linear-gradient(180deg,#EA3A5A,#C0122D)}
+.btn:active:not(:disabled){transform:translateY(3px);box-shadow:0 1px 0 #6E0819}
+.btn.small{box-shadow:0 3px 0 #6E0819}
+.pill-turn{background:rgba(212,168,75,.15);color:var(--gold2);border-color:rgba(212,168,75,.4)}
+.form input:focus,.form textarea:focus,.tselect:focus{border-color:var(--red2)}
+.welcome-banner{background:linear-gradient(100deg,rgba(200,16,46,.28),rgba(21,29,51,.95) 60%);border-color:rgba(200,16,46,.5)}
+.wb-icon{background:radial-gradient(circle at 40% 35%,#E0284A,#8C0B21);box-shadow:0 0 0 2px var(--cream),0 0 0 4px var(--red)}
+/* Inlogscherm */
+.auth h1{font-family:var(--varsity);font-weight:400;font-size:clamp(42px,6.6vw,80px);line-height:1;color:var(--cream);text-shadow:0 3px 0 var(--red-dark),0 16px 30px rgba(0,0,0,.5)}
+.auth h1 em{color:var(--gold)}
+.auth-box{box-shadow:inset 0 4px 0 var(--red),0 40px 80px -40px rgba(0,0,0,.95)}
+.auth-tag{font:italic 500 19px/1.4 var(--display);color:var(--ink)}
+/* Intro */
+#intro{background:radial-gradient(60% 50% at 50% 45%,#16203A,#0A0E1A)}
+#intro .in-crest{background:linear-gradient(160deg,#E0284A,#8C0B21);color:var(--cream)}
+#intro .in-title{font-family:var(--varsity);font-weight:400}
+#intro .in-line{background:linear-gradient(90deg,transparent,var(--red),var(--cream),var(--red),transparent);height:3px}
+#intro .in-sub{color:var(--gold)}
+/* Wordle */
+.board-frame{background:linear-gradient(180deg,#18213B,#131A2F);box-shadow:inset 0 4px 0 var(--red),0 20px 40px -28px rgba(0,0,0,.9)}
+.bf-title{font-family:var(--varsity);font-weight:400}
+.wtile.g{background:var(--green);border-color:var(--green)}
+.wtile.y{background:var(--gold);border-color:var(--gold);color:#1A1406}
+.wkey.y{background:var(--gold);color:#1A1406}
+/* Stempel */
+.stamp{background:var(--cream);color:var(--red)}
+.stamp.k-legendary{color:#9A7420}
+
+/* ---------- Kaarten: sportkaart met grote foto (4:5) ---------- */
+.card{border:0;padding:0;background:var(--frame);box-shadow:0 2cqw 5cqw -2cqw rgba(0,0,0,.85),inset 0 0 0 .4cqw rgba(255,255,255,.12)}
+.photo{left:3.6cqw;right:3.6cqw;top:3.6cqw;height:115.4cqw;border-radius:2.6cqw;background:var(--art);box-shadow:0 0 0 .5cqw var(--trim)}
+.photo::after{background:linear-gradient(180deg,rgba(0,0,0,.42),transparent 18%,transparent 52%,rgba(8,10,20,.92) 100%)}
+.art img{object-position:50% 38%}
+/* Embleem, zeldzaamheid en hart-HP */
+.cbadge{position:absolute;left:3cqw;top:3cqw;z-index:3;width:11cqw;height:13cqw;display:grid;place-items:center;padding-bottom:2.4cqw;
+  font:400 2.6cqw/1 var(--varsity);color:var(--cream);background:var(--badge);clip-path:polygon(0 0,100% 0,100% 64%,50% 100%,0 64%);box-shadow:inset 0 0 0 .5cqw var(--trim)}
+.rtag{left:auto;right:3cqw;top:3cqw;background:var(--badge);color:var(--tagc);box-shadow:inset 0 0 0 .3cqw var(--trim)}
+.hp{right:3cqw;top:10.6cqw;background:rgba(8,10,20,.7);color:#fff}
+.hp::before{content:"♥ ";color:var(--red2)}
+/* Naamband onderaan de foto */
+.cband{position:absolute;left:3.6cqw;right:3.6cqw;top:84cqw;z-index:3;padding:0 4cqw;display:grid;gap:1.2cqw}
+.cband .cname{justify-self:start;max-width:100%;padding:1.4cqw 5cqw 1.2cqw 3cqw;background:var(--band);color:var(--bandc);font:400 5.6cqw/1.1 var(--varsity);letter-spacing:.01em;
+  clip-path:polygon(0 0,100% 0,94% 100%,0 100%);-webkit-line-clamp:1;box-shadow:0 1cqw 2cqw rgba(0,0,0,.4)}
+.cband .flavor{font:italic 500 4cqw/1.25 var(--display);color:#F4EBDD;text-shadow:0 1px 3px rgba(0,0,0,.9);-webkit-line-clamp:2}
+.cband .special{display:none}
+/* Statsbalk onderaan */
+.cinfo{top:121cqw;bottom:2.6cqw;left:4.6cqw;right:4.6cqw;justify-content:center}
+.cstats{margin:0;padding:0;border:0;gap:3cqw;color:var(--statl);font:600 2.9cqw/1 var(--body);letter-spacing:.12em}
+.cstats b{font:400 5cqw var(--varsity);color:var(--statv);margin-left:1cqw}
+.cstats .no{font:600 2.9cqw var(--body);letter-spacing:.08em;color:var(--statl)}
+@container (min-width:300px){
+  .cband{top:76cqw}
+  .cband .special{display:block;font:600 3.6cqw/1.3 var(--body);color:var(--gold2);text-shadow:0 1px 3px rgba(0,0,0,.9)}
+  .cband .special small{font-weight:400;color:#E9E1D3}
+  .cband .flavor{-webkit-line-clamp:2}
+}
+@container (max-width:189px){.cband .flavor{display:none}.cband{top:96cqw}}
+/* Zeldzaamheden */
+.r-common{--frame:linear-gradient(160deg,#F4EBDD,#DCCFB8);--trim:#1C2540;--art:#1C2540;--badge:#1C2540;--tagc:#F4EBDD;--band:#1C2540;--bandc:#F4EBDD;--statl:#5B5348;--statv:#1C2540}
+.r-epic{--frame:linear-gradient(160deg,#E0284A,#8C0B21 70%);--trim:#F4EBDD;--art:#2A0A12;--badge:#F4EBDD;--tagc:#8C0B21;--band:#F4EBDD;--bandc:#8C0B21;--statl:#F8C9D2;--statv:#fff}
+.r-epic .cbadge{color:#8C0B21}
+.r-legendary{--frame:linear-gradient(150deg,#FFF1C6,#D4A84B 30%,#8F6A1E 55%,#EBCB7E 78%,#B88A2E);--trim:#4A3410;--art:#2A1F0C;--badge:#C8102E;--tagc:#FFF1C6;--band:#C8102E;--bandc:#FFF1C6;--statl:#4A3410;--statv:#2A1F0C;
+  box-shadow:0 2cqw 5cqw -2cqw rgba(0,0,0,.85),0 0 4cqw -1cqw rgba(235,203,126,.55)}
+.r-legendary .cname{color:#FFF1C6}
+.r-legendary::before{content:"";position:absolute;inset:0;z-index:5;pointer-events:none;opacity:.35;transition:opacity .3s;
+  background:linear-gradient(115deg,transparent 30%,rgba(255,244,210,.35) 45%,transparent 60%) var(--mx) var(--my)/250% 250%}
+.r-legendary.tilting::before{opacity:1}
+.r-cat{--frame:linear-gradient(160deg,#3F6B57,#1F3A2E);--trim:#E9E1D3;--art:#1B2621;--badge:#E9E1D3;--tagc:#1F3A2E;--band:#E9E1D3;--bandc:#1F3A2E;--statl:#BFE0CF;--statv:#fff}
+.r-cat .cbadge{color:#1F3A2E}
+.card.locked{filter:none}
+.card.locked .photo{background:repeating-linear-gradient(135deg,rgba(255,255,255,.03) 0 3cqw,transparent 3cqw 6cqw),#121828}
+.card.locked .cband .cname{background:#2A3350;color:#8790A8}
+.card.locked::after{content:"";position:absolute;inset:0;background:rgba(12,17,32,.45);z-index:4;opacity:1}
+.q{color:rgba(255,255,255,.1)}
+.dupe{background:var(--red);color:#fff}
+/* Jaarboek en lijsten */
+.index-list button[aria-current="true"]{background:linear-gradient(90deg,rgba(200,16,46,.85),rgba(200,16,46,.25));color:#fff}
+.index-list button[aria-current="true"] .frac{color:#fff}
+.ix-bar i,.pbar i,.bar-fill{background:linear-gradient(90deg,var(--red),var(--gold))}
+.ix-av{background:var(--raise);color:var(--cream)}
+.mycode{background:linear-gradient(120deg,#C8102E,#8C0B21 50%,#1C2540);border:0}
+.mycode::before{color:var(--cream)}
+.stat-num{font-family:var(--varsity);font-weight:400;color:var(--cream)}
+.stat-card{box-shadow:inset 0 3px 0 var(--red)}
+.vote.on{border-color:var(--red2);color:var(--red2)}
 </style>
 </head>
 <body>
@@ -1052,13 +1191,13 @@ function openZoom(card) {
 
 function renderCard(c, { locked = false, count = 1 } = {}) {
   const label = RARITY_LABEL[c.rarity];
-  const stats = locked
-    ? `<div class="cstats"><span class="no">Nº ${esc(c.slot)}</span></div>`
-    : `<div class="cstats"><span>ATK<b>${esc(c.attack)}</b></span><span>DEF<b>${esc(c.defense)}</b></span><span class="no">Nº ${esc(c.slot)}</span></div>`;
+  const no = `<span class="no">RA'26 · ${String(c.slot).padStart(2, '0')}/09</span>`;
   if (locked) {
     return `<div class="cw"><div class="card r-${c.rarity} locked" aria-label="Nog niet verzameld">
-      <div class="photo"><div class="art"><span class="q">?</span></div><span class="rtag">${label}</span></div>
-      <div class="cinfo"><span class="cname">Nog niet verzameld</span>${stats}</div>
+      <div class="photo"><div class="art"><span class="q">?</span></div></div>
+      <span class="cbadge" aria-hidden="true">RIZZ</span><span class="rtag">${label}</span>
+      <div class="cband"><span class="cname">Nog niet verzameld</span></div>
+      <div class="cinfo"><div class="cstats">${no}</div></div>
     </div></div>`;
   }
   const initial = esc((c.person || '?').trim().charAt(0).toUpperCase());
@@ -1069,14 +1208,16 @@ function renderCard(c, { locked = false, count = 1 } = {}) {
     ? `<img src="${esc(photo)}" alt="${esc(c.name)}" loading="lazy" onerror="this.remove()">`
     : '');
   const special = c.special_name
-    ? `<div class="special">★ ${esc(c.special_name)}${c.special_power ? ` · ${esc(c.special_power)}` : ''}<small>${esc(c.special_desc)}</small></div>`
+    ? `<div class="special">★ ${esc(c.special_name)}${c.special_power ? ` · ${esc(c.special_power)}` : ''}<small> ${esc(c.special_desc)}</small></div>`
     : '';
   const flavor = c.flavor_text ? `<div class="flavor">“${esc(c.flavor_text)}”</div>` : '';
   return `<div class="cw">
     ${count > 1 ? `<span class="dupe">×${count}</span>` : ''}
     <div class="card r-${c.rarity}" data-card="${c.id}">
-      <div class="photo"><div class="art">${art}</div><span class="rtag">${label}</span><span class="hp">HP ${esc(c.hp)}</span></div>
-      <div class="cinfo"><span class="cname">${esc(c.name)}</span>${flavor}${special}${stats}</div>
+      <div class="photo"><div class="art">${art}</div></div>
+      <span class="cbadge" aria-hidden="true">RIZZ</span><span class="rtag">${label}</span><span class="hp">${esc(c.hp)}</span>
+      <div class="cband"><span class="cname">${esc(c.name)}</span>${flavor}${special}</div>
+      <div class="cinfo"><div class="cstats"><span>RIZZ<b>${esc(c.attack)}</b></span><span>AURA<b>${esc(c.defense)}</b></span>${no}</div></div>
     </div></div>`;
 }
 
@@ -1096,12 +1237,27 @@ const navHtml = () => TABS.map(t => `<button type="button" class="nav-btn" data-
   <span class="ni" aria-hidden="true">${t.icon}</span><span class="nl">${t.label}</span>${t.badge ? `<span class="tab-badge" data-${t.badge}-badge hidden></span>` : ''}</button>`).join('');
 const logoHtml = () => `<div class="logo"><span class="crest" aria-hidden="true">RIZZ</span><span class="logo-txt"><b>RIZZ ACADEMY</b><small>EST. MMXXVI</small></span></div>`;
 
-// Statusbalk bovenaan: credits, collectie en streak
+const PICKUP_LINES = [
+  'Ben jij een Wordle? Want ik los je in één poging op.',
+  'Ben jij een legendary? Want ik heb je al lang gezocht.',
+  'Is jouw naam Google? Want je hebt alles wat ik zoek.',
+  'Ben jij een examen? Want ik ben totaal niet voorbereid.',
+  'Ik zou je een kaart geven, maar je bent al een tien.',
+  'Ben jij de wifi van de bib? Want ik voel een connectie.',
+  'Ik ben geen fotograaf, maar ik zie ons wel samen.',
+  'Ben jij een dubbel? Want ik wil je nooit ruilen.',
+  'Mijn rizz is gemiddeld. Mijn intenties zijn legendary.',
+  'Ben jij een envelop? Want ik wil je openen. Met respect.',
+  'Excuseer, heb jij een kaart? Ik verdwaal in je ogen.',
+  'Ik studeer rizzologie. Jij bent mijn eindwerk.',
+];
+// Statusbalk bovenaan: credits, collectie, streak en de pickup line van de dag
 function scoreboardHtml() {
   return `<div class="plaques" role="group" aria-label="Jouw stand">
     <div class="plaque"><span class="pl-label">Credits</span><span class="pl-val" data-coin>${state.wallet}</span></div>
     <div class="plaque"><span class="pl-label">Collectie</span><span class="pl-val" data-coll>${collectionText()}</span></div>
     <div class="plaque"><span class="pl-label">Streak</span><span class="pl-val" data-streak>${computeStreak(state.playDates)}</span></div>
+    <div class="motto"><b>Pickup line</b><span>${esc(PICKUP_LINES[wordleNumber() % PICKUP_LINES.length])}</span></div>
   </div>`;
 }
 
@@ -1199,7 +1355,7 @@ const INFO = {
     <li>🛡️ <strong>Verdedigen</strong>: je krijgt deze ronde maar de helft van de schade, +2 ⚡.</li>
     <li>★ <strong>Special</strong> (legendaries): vaste zware schade die door verdediging gaat, kost 4 ⚡.</li>
     <li>🔄 <strong>Wisselen</strong>: ruil je kaart met een kaart van je bank. Gebeurt vóór de aanvallen, +1 ⚡.</li></ul>
-    <p>Elke ronde gebeuren eerst de wissels, daarna valt de kaart met de hoogste ATK eerst aan — die mag dus elke ronde als eerste slaan. Valt een kaart uit, dan komt de volgende uit je team erin. Wie eerst 3 kaarten verliest, verliest.</p>
+    <p>Elke ronde gebeuren eerst de wissels, daarna valt de kaart met de hoogste RIZZ eerst aan — die mag dus elke ronde als eerste slaan. Valt een kaart uit, dan komt de volgende uit je team erin. Wie eerst 3 kaarten verliest, verliest.</p>
     <p><strong>Credits</strong>: computer makkelijk/normaal/moeilijk = 5/10/20 (max 5 per dag). Tegen een vriend: winnaar 25, verliezer 5 (max 3 per dag). Opgeven levert niets op.</p>`],
   friends: ['Vrienden', `
     <p>Deel je code met je vrienden, of voer hun code in om een vriendschapsverzoek te sturen.</p>
@@ -1221,7 +1377,7 @@ const INFO = {
     <li>Pas als beide kanten akkoord zijn, worden de kaarten gewisseld.</li></ul>`],
 };
 const infoBtn = key => `<button class="info-btn" type="button" data-info="${key}" aria-label="Uitleg">i</button>`;
-const KICKERS = { today: () => `Daily exam · ${dateLabel()}`, book: () => 'Class of MMXXVI', stats: () => 'Transcript', battle: () => 'Rush week',
+const KICKERS = { today: () => `Daily rizz check · ${dateLabel()}`, book: () => 'Class of MMXXVI', stats: () => 'Transcript', battle: () => 'Rush week',
   friends: () => 'Brotherhood', trade: () => 'The exchange', shop: () => 'Campus bookstore', ideas: () => 'Student council' };
 const pageHead = (title, key) => `<div class="page-head"><span class="kicker">${esc(KICKERS[key]?.() || 'Rizz Academy')}</span><div class="ph-row"><h2>${title}</h2>${infoBtn(key)}</div></div>`;
 
