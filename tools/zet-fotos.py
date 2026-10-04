@@ -3,7 +3,7 @@
 #   bv. python3 tools/zet-fotos.py ~/fotos ~/kaartfotos
 # De foto's worden per submap op bestandsnaam gesorteerd en genummerd (1-9), zoals in
 # tools/maak-kaarten.py. Elke foto wordt bijgesneden tot 4:5 (het fotovenster op de kaart)
-# rond het gezicht, zodat gezichten altijd goed zichtbaar zijn.
+# met zo veel mogelijk van de foto, verschoven zodat het gezicht er altijd in valt.
 # Vereist: pip install opencv-python-headless + het YuNet-model naast dit script (zie MODEL)
 # De uitvoer hoort NIET in de repo (die is openbaar): upload ze naar Supabase Storage.
 import importlib.util, pathlib, sys
@@ -16,10 +16,10 @@ kaarten = importlib.util.module_from_spec(spec); spec.loader.exec_module(kaarten
 RATIO = 4 / 5          # breedte / hoogte van het fotovenster
 OUT_W = 800            # uitvoerbreedte in pixels
 
-# Handmatige correcties: (map, fotonummer) -> middelpunt van het gezicht als fractie (x, y)
-# en eventueel de gezichtsbreedte als fractie van de fotobreedte.
+# Handmatige correcties: (map, fotonummer) -> (x, y, zoom): middelpunt als fractie van de foto,
+# zoom < 1 snijdt kleiner uit (enkel waar nodig).
 FOCUS = {
-    ('luca', 8): (0.5, 0.55, 0.42),   # schermfoto: inzoomen zodat de naam bovenaan wegvalt
+    ('luca', 8): (0.5, 0.40, 0.8),   # schermfoto: inzoomen zodat de naam van een medeleerling wegvalt
 }
 
 # YuNet-gezichtsdetector (vindt ook gezichten met bril of onder een hoek). Download het model:
@@ -36,19 +36,13 @@ def find_face(img):
     x, y, fw, fh = max(faces, key=lambda f: f[2] * f[3] * f[14])[:4] / scale
     return (x + fw / 2) / w, (y + fh / 2) / h, fw / w
 
-def crop(img, focus):
+def crop(img, focus, zoom=None):
+    """Grootst mogelijke 4:5-uitsnede (zo veel mogelijk van de foto), enkel verschoven zodat
+    het gezicht erin valt. Inzoomen gebeurt alleen met een expliciete zoom (zie FOCUS)."""
     h, w = img.shape[:2]
-    # grootst mogelijke 4:5-uitsnede
     cw, ch = (w, w / RATIO) if w / h < RATIO else (h * RATIO, h)
-    if focus:
-        fx, fy, fwr = focus
-        # inzoomen als het gezicht te klein zou zijn (gezicht minstens ~22% van de breedte)
-        if fwr:
-            want = fwr * w / 0.22
-            if want < cw: cw, ch = max(want, cw * .38), max(want, cw * .38) / RATIO
-        cx, cy = fx * w, fy * h - ch * .08   # gezicht iets boven het midden
-    else:
-        cx, cy = w / 2, h * .42
+    if zoom: cw, ch = cw * zoom, ch * zoom
+    cx, cy = (focus[0] * w, focus[1] * h) if focus else (w / 2, h / 2)
     x0 = min(max(cx - cw / 2, 0), w - cw); y0 = min(max(cy - ch / 2, 0), h - ch)
     out = img[int(y0):int(y0 + ch), int(x0):int(x0 + cw)]
     return cv2.resize(out, (OUT_W, int(OUT_W / RATIO)), interpolation=cv2.INTER_AREA)
@@ -62,6 +56,7 @@ if __name__ == '__main__':
             print(f"{person}: {len(fotos)} foto's gevonden, overgeslagen"); continue
         for slot, k in enumerate(lijst, 1):
             img = cv2.imread(str(fotos[k[0] - 1]))  # OpenCV past de EXIF-oriëntatie zelf toe
-            focus = FOCUS.get((mapnaam, k[0])) or find_face(img)
-            cv2.imwrite(str(doelmap / f'{slug}-{slot}.jpg'), crop(img, focus), [cv2.IMWRITE_JPEG_QUALITY, 84])
+            manual = FOCUS.get((mapnaam, k[0]))
+            focus = manual or find_face(img)
+            cv2.imwrite(str(doelmap / f'{slug}-{slot}.jpg'), crop(img, focus, manual and manual[2]), [cv2.IMWRITE_JPEG_QUALITY, 84])
             print(f"{slug}-{slot}: {'gezicht' if focus else 'GEEN GEZICHT'} (foto {k[0]})")
