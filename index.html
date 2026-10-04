@@ -547,8 +547,9 @@ body:not(:has(.shell)) .letters{display:none}
   box-shadow:inset 0 0 0 .5cqw rgba(201,162,39,.35),0 2cqw 5cqw -1.5cqw rgba(0,0,0,.75)}
 .cardback::after{content:"";position:absolute;top:0;bottom:0;left:-100%;width:100%;pointer-events:none;background:linear-gradient(115deg,transparent 30%,rgba(255,255,255,.16) 50%,transparent 70%);animation:shine 5s ease-in-out infinite}
 .book .cardback::after,.grid .cardback::after,.lite .cardback::after{display:none}
-.cb-ribbon{position:absolute;left:50%;top:67.6%;transform:translate(-50%,-50%);white-space:nowrap;
-  font:900 9.4cqw/1 var(--display);letter-spacing:.34em;padding-left:.34em;color:#B3121D;text-shadow:0 .25cqw 0 rgba(255,255,255,.7)}
+.cb-ribbon{position:absolute;left:50%;top:50%;height:104%;aspect-ratio:896/1200;transform:translate(-50%,-50%);pointer-events:none;overflow:visible}
+/* Tekst volgt de boog van het lint (coördinaten in pixels van cards/card-back.jpg) */
+.cb-ribbon text{font:900 46px var(--display);letter-spacing:14px;fill:#B3121D;text-anchor:middle;dominant-baseline:central}
 
 /* ---------- Kaart groot bekijken ---------- */
 dialog{border:0;padding:0;background:transparent;max-width:none;overflow:visible;color:var(--ink)}
@@ -1394,7 +1395,7 @@ function renderResetPassword() {
 // ---------- Kaart groot bekijken, tik om om te draaien ----------
 function renderCardBack() {
   return `<div class="cw"><div class="cardback" role="img" aria-label="Achterkant van de kaart">
-    <span class="cb-ribbon" aria-hidden="true">RIZZ</span>
+    <svg class="cb-ribbon" viewBox="0 0 896 1200" aria-hidden="true"><path id="cbArc" d="M255 824 Q448 864 641 824" fill="none"/><text><textPath href="#cbArc" startOffset="50%">RIZZ</textPath></text></svg>
   </div></div>`;
 }
 
