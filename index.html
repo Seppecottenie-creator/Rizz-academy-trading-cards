@@ -1,0 +1,2871 @@
+<!doctype html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>POLYGON Trading Cards</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Figtree:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#14171C; --bg2:#1D2229; --panel:#232932; --sleeve:#F4EFE4; --page:#FBF7EE;
+  --ink:#F1EFE9; --ink-soft:#B9C2CC; --muted:#8892A0; --line:#3A4453;
+  /* Wordle-palet: groen (correct), geel (bijna), zwart (basis) + grijs/wit als subtiele basiskleuren */
+  --green:#5DA352; --green-soft:#7FC26F; --yellow:#C9B458; --yellow-soft:#DFCB7C;
+  --wblack:#15181D; --grey:#8B93A0; --grey-soft:#AEB6C0; --white:#F3F1E9;
+  --amber:var(--green); --amber-soft:var(--green-soft);
+  --gold:#C99A1E; --cat:#2FA79E;
+  --r:20px; --r-sm:12px;
+  --display:'Bricolage Grotesque','Trebuchet MS',system-ui,sans-serif;
+  --body:'Figtree',system-ui,-apple-system,'Segoe UI',sans-serif;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0;color:var(--ink);font:400 16px/1.55 var(--body);min-height:100vh;
+  background:
+    radial-gradient(ellipse 80% 60% at 15% 0%,rgba(93,163,82,.28),transparent 60%),
+    radial-gradient(ellipse 70% 60% at 100% 100%,rgba(201,180,88,.22),transparent 60%),
+    radial-gradient(ellipse 60% 50% at 80% 20%,rgba(139,92,246,.14),transparent 60%),
+    linear-gradient(160deg,#131a17,#12151b 55%,#17141c);
+  background-attachment:fixed;
+  position:relative;
+}
+/* Speelse achtergrond: zwevende Wordle-tegels en veelhoeken (zie initBackground) */
+#bgfx{position:fixed;inset:0;width:100%;height:100%;z-index:-1;pointer-events:none}
+h1,h2,h3{font-family:var(--display);font-weight:800;line-height:1.08;margin:0 0 10px;color:#fff}
+h1{font-size:clamp(30px,5vw,48px)}
+h2{font-size:clamp(22px,2.6vw,30px)}
+h3{font-size:19px}
+button,input,textarea{font:inherit}
+a{color:var(--amber-soft)}
+.wrap{max-width:560px;margin:0 auto;padding:28px 20px 56px}
+.wrap.wide{max-width:min(1400px,96vw);padding:14px 22px 28px}
+.col{max-width:720px}
+.hint{color:var(--ink-soft);margin:0 0 16px;max-width:72ch}
+[hidden]{display:none !important}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+:focus-visible{outline:3px solid var(--yellow);outline-offset:2px}
+
+/* Knoppen en formulieren */
+.btn{background:var(--amber);color:#12160f;border:0;border-radius:14px;padding:14px 22px;font:800 16.5px var(--body);min-height:50px;cursor:pointer;width:100%;box-shadow:0 5px 0 #3b7334,0 8px 18px -6px rgba(0,0,0,.5);transition:transform .1s ease,box-shadow .1s ease,background .15s ease}
+.btn:hover:not(:disabled){background:var(--amber-soft);transform:translateY(-1px)}
+.btn:active:not(:disabled){transform:translateY(4px);box-shadow:0 1px 0 #3b7334,0 3px 8px -4px rgba(0,0,0,.5)}
+.btn:disabled{opacity:.4;cursor:not-allowed}
+.link{background:none;border:0;color:var(--ink-soft);text-decoration:underline;cursor:pointer;padding:10px 6px;font-size:16px}
+.link:hover{color:var(--amber-soft)}
+.form{display:grid;gap:18px;margin:24px 0 8px}
+.form label{display:grid;gap:7px;font-weight:600;font-size:16px;color:var(--ink-soft)}
+.form input,.form textarea{border:1px solid var(--line);background:var(--panel);color:var(--ink);border-radius:var(--r-sm);padding:14px;min-height:54px;font-weight:400;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:16px;line-height:1.5;resize:vertical}
+.form input{font-family:var(--body)}
+.form input:focus,.form textarea:focus{background:#2C3541}
+.msg{margin:0;min-height:1.5em;font-size:16px}
+.msg.err,.err{color:#F0897E}
+.msg.ok{color:var(--green-soft)}
+
+/* Wordle-tegels */
+.tile{width:clamp(50px,15vw,70px);aspect-ratio:1;display:grid;place-items:center;border-radius:var(--r-sm);color:#fff;font:800 clamp(26px,8vw,38px)/1 var(--display)}
+.t-g{background:var(--green)} .t-y{background:var(--yellow)} .t-x{background:var(--grey)}
+.tilerow,.hero{display:flex;gap:6px;justify-content:center}
+.hero{margin:20px 0 24px;justify-content:flex-start}
+
+/* Kopregel en tabs */
+.top{display:flex;justify-content:space-between;align-items:center;padding:4px 0 16px;gap:12px}
+.brand{font:800 24px var(--display);color:#fff;display:flex;align-items:baseline;gap:8px;white-space:nowrap}
+.brand em{font-style:normal;color:var(--amber-soft)}
+@media (max-width:640px){.brand{font-size:19px;flex-direction:column;gap:0;line-height:1.05}}
+.topright{display:flex;gap:10px;align-items:center}
+.coinpill{display:flex;align-items:center;gap:6px;background:rgba(21,24,29,.8);border:1px solid var(--line);color:var(--yellow-soft);font:800 15px var(--body);padding:9px 14px;border-radius:999px;white-space:nowrap}
+.avbtn{width:44px;height:44px;border-radius:50%;border:2px solid var(--line);background-color:var(--panel);background-size:cover;background-position:center;color:#fff;font:700 17px var(--body);cursor:pointer;display:grid;place-items:center;padding:0;flex-shrink:0;transition:border-color .15s ease,transform .15s ease}
+.avbtn:hover{border-color:var(--green-soft);transform:translateY(-1px)}
+.menu{position:relative}
+.menu-btn{display:flex;align-items:center;gap:8px;background:var(--yellow);color:#15181D;border:0;border-radius:14px;padding:10px 14px;font:800 15px var(--body);cursor:pointer;
+  box-shadow:0 4px 0 #8f7f35,0 8px 18px -6px rgba(0,0,0,.5);transition:transform .1s ease,box-shadow .1s ease}
+.menu-btn:active{transform:translateY(3px);box-shadow:0 1px 0 #8f7f35}
+.menu-btn .chev{font-size:12px;transition:transform .2s ease}
+.menu-btn[aria-expanded="true"] .chev{transform:rotate(180deg)}
+.menu-ico{font-size:17px;line-height:1}
+.menu-list{position:absolute;right:0;top:calc(100% + 10px);z-index:50;min-width:210px;padding:8px;display:grid;gap:2px;
+  background:rgba(29,34,41,.97);border:1px solid var(--line);border-radius:16px;box-shadow:0 18px 40px -10px rgba(0,0,0,.7);
+  backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);animation:menu-in .16s ease both;transform-origin:top right}
+@keyframes menu-in{from{opacity:0;transform:scale(.94) translateY(-6px)}to{opacity:1;transform:none}}
+.menu-list button{display:flex;align-items:center;gap:12px;width:100%;background:none;border:0;border-radius:10px;padding:11px 12px;color:var(--ink);font:700 15.5px var(--body);cursor:pointer;text-align:left}
+.menu-list button:hover{background:rgba(255,255,255,.07)}
+.menu-list button[aria-current="page"]{background:rgba(201,180,88,.2);color:var(--yellow-soft)}
+.menu-list .tab-badge{margin-left:auto}
+@media (max-width:640px){
+  .wrap.wide{padding:12px 14px 24px}
+  .brand{font-size:16px}
+  .topright{gap:7px}
+  .menu-btn .menu-label{display:none}
+  .menu-btn{padding:9px 11px;gap:6px}
+  .coinpill{padding:7px 10px;font-size:14px}
+  .avbtn{width:38px;height:38px;font-size:15px}
+  /* Leeg kaartvak pas tonen als er echt een pakje geopend wordt */
+  .stage:has(.stage-placeholder){display:none}
+}
+
+/* Paginatitel met info-icoontje */
+.page-head{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.page-head h2{margin:0}
+.info-btn{width:30px;height:30px;flex-shrink:0;border-radius:50%;border:2px solid var(--yellow-soft);background:rgba(201,180,88,.12);color:var(--yellow-soft);
+  font:800 15px/1 Georgia,serif;font-style:italic;cursor:pointer;display:grid;place-items:center;padding:0;transition:transform .15s ease,background .15s ease}
+.info-btn:hover{transform:scale(1.1) rotate(-6deg);background:rgba(201,180,88,.25)}
+.infobox{width:min(520px,92vw);max-height:88vh;overflow-y:auto;padding:24px;background:var(--panel);border:1px solid var(--line);border-radius:var(--r);animation:zoom-in .18s ease both;color:var(--ink)}
+.infobox h2{display:flex;align-items:center;gap:10px}
+.infobox p,.infobox li{color:var(--ink-soft)}
+.infobox ul{padding-left:20px;margin:8px 0 12px}
+.infobox .link{padding-left:0}
+
+/* Eigen Wordle: rondes, speelbord en toetsenbord */
+.round-tabs{display:flex;gap:8px;margin-bottom:14px;max-width:520px}
+.round-tab{flex:1;display:grid;gap:1px;text-align:left;background:rgba(35,41,50,.88);border:2px solid var(--line);border-radius:14px;padding:8px 14px;color:var(--ink);font:800 15px var(--body);cursor:pointer;transition:border-color .15s,background .15s}
+.round-tab small{font:600 12.5px var(--body);color:var(--ink-soft)}
+.round-tab.active{border-color:var(--yellow);background:rgba(201,180,88,.16)}
+.round-tab.done small{color:var(--green-soft)}
+.wboard{--rows:6;display:grid;gap:6px;width:min(300px,100%,calc((100vh - 430px) * 5 / var(--rows)));min-width:200px;margin:0 auto 8px}
+.wrow{display:grid;grid-template-columns:repeat(5,1fr);gap:6px}
+.wrow.shake{animation:shake .4s ease}
+.wtile{aspect-ratio:1;display:grid;place-items:center;border:2px solid var(--line);border-radius:10px;background:rgba(21,24,29,.65);
+  color:#fff;font:800 clamp(20px,5.5vw,28px)/1 var(--display);text-transform:uppercase;user-select:none}
+.wtile.filled{border-color:var(--grey-soft);animation:tile-pop .12s ease}
+.wtile.g{background:var(--green);border-color:var(--green)}
+.wtile.y{background:var(--yellow);border-color:var(--yellow)}
+.wtile.x{background:#3a414c;border-color:#3a414c}
+.wtile.flip{animation:wflip .5s ease-in-out both;animation-delay:calc(var(--i) * .22s)}
+@keyframes wflip{0%{transform:rotateX(0)}50%{transform:rotateX(90deg)}100%{transform:rotateX(0)}}
+@keyframes tile-pop{50%{transform:scale(1.1)}}
+.wmsg{text-align:center;min-height:1.4em;margin:0 auto 8px;max-width:420px}
+.wkeys{display:grid;gap:6px;width:min(500px,100%);margin:0 auto}
+.wkrow{display:flex;gap:5px;justify-content:center}
+.wkey{flex:1;max-width:44px;height:clamp(40px,6.2vh,52px);border:0;border-radius:8px;background:#5a616d;color:#fff;font:800 15px var(--body);cursor:pointer;
+  box-shadow:0 3px 0 rgba(0,0,0,.35);padding:0;touch-action:manipulation;transition:transform .08s}
+.wkey:active{transform:translateY(2px);box-shadow:0 1px 0 rgba(0,0,0,.35)}
+.wkey.wide{flex:1.6;max-width:70px;font-size:13px}
+.wkey.g{background:var(--green)} .wkey.y{background:var(--yellow);color:#15181D} .wkey.x{background:#2b3038;color:#7d8591}
+.round-closed{text-align:center;padding:36px 10px;background:rgba(35,41,50,.7);border:1px solid var(--line);border-radius:var(--r);max-width:520px}
+.big-lock{font-size:52px;line-height:1;margin-bottom:10px}
+.countdown{font:800 30px var(--display);color:var(--yellow-soft);margin:6px 0 0}
+@media (prefers-reduced-motion:reduce){.wtile.flip,.wtile.filled{animation:none}}
+
+/* Shop */
+.shop-balance{font-size:17px;padding:10px 18px}
+.shop-packs{display:grid;gap:12px}
+.shop-pack{display:flex;gap:16px;align-items:center;background:rgba(35,41,50,.88);border:1px solid var(--line);border-radius:var(--r-sm);padding:12px 16px}
+.pack.mini{width:78px;flex-shrink:0;animation:none;cursor:default;filter:drop-shadow(0 6px 10px rgba(0,0,0,.45))}
+.shop-pack-info{display:grid;gap:6px;justify-items:start}
+.shop-pack-info small{color:var(--ink-soft)}
+.shop-list{max-height:calc(100vh - 260px);overflow-y:auto;padding-right:6px}
+.shop-list .battle-row{padding:6px 0}
+.shop-cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(118px,1fr));gap:12px;max-height:calc(100vh - 250px);overflow-y:auto;padding:4px 6px 4px 2px}
+.shop-card{display:grid;gap:6px}
+.shop-card .btn{width:100%}
+@media (max-width:560px){.shop-cards{grid-template-columns:repeat(2,1fr);max-height:none}}
+.whelp{display:flex;flex-wrap:wrap;gap:4px 14px;justify-content:center;align-items:center;margin-top:8px}
+.whelp .link{font-size:14px;padding:4px 2px}
+.whelp .link:disabled{opacity:.4;cursor:default}
+.hint-chip{background:rgba(201,180,88,.18);border:1px solid var(--yellow);color:var(--yellow-soft);border-radius:999px;padding:3px 10px;font:700 13px var(--body)}
+
+/* Melding nieuwe versie */
+.update-bar{position:fixed;left:0;right:0;margin:0 auto;bottom:18px;z-index:1000;display:flex;align-items:center;gap:12px;flex-wrap:wrap;justify-content:center;
+  width:max-content;max-width:calc(100vw - 24px);padding:12px 16px;background:rgba(29,34,41,.97);border:1px solid var(--yellow);border-radius:16px;
+  box-shadow:0 14px 34px -8px rgba(0,0,0,.7);color:var(--ink);font-weight:600;animation:menu-in .25s ease both}
+.update-bar .btn{width:auto}
+
+/* Ideeënbus */
+.ideas-grid{grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr)}
+@media (max-width:899px){.ideas-grid{grid-template-columns:1fr}}
+.seg{display:flex;background:rgba(21,24,29,.8);border:1px solid var(--line);border-radius:999px;padding:3px}
+.seg button{border:0;background:none;color:var(--ink-soft);font:700 13px var(--body);padding:5px 12px;border-radius:999px;cursor:pointer}
+.seg button.on{background:var(--yellow);color:#15181D}
+.idea-list{display:grid;gap:8px;max-height:calc(100vh - 230px);overflow-y:auto;padding-right:6px}
+@media (max-width:899px){.idea-list{max-height:none}}
+.idea{display:flex;gap:12px;align-items:flex-start;background:rgba(35,41,50,.88);border:1px solid var(--line);border-radius:var(--r-sm);padding:10px 14px}
+.idea.status-done,.idea.status-rejected{opacity:.65}
+.vote{display:grid;justify-items:center;min-width:46px;padding:6px 4px;border:2px solid var(--line);border-radius:12px;background:rgba(21,24,29,.7);color:var(--ink-soft);cursor:pointer;font:800 15px var(--body);transition:transform .1s,border-color .15s}
+.vote:active{transform:scale(.94)}
+.vote .vote-arrow{font-size:12px;line-height:1}
+.vote.on{border-color:var(--green);background:rgba(93,163,82,.2);color:var(--green-soft)}
+.idea-main{flex:1;min-width:0}
+.idea-body{margin:0 0 4px;white-space:pre-wrap;overflow-wrap:anywhere}
+.idea-meta{display:flex;flex-wrap:wrap;gap:4px 12px;align-items:center;color:var(--muted);font-size:13px}
+.idea-status{font-weight:700;color:var(--ink-soft)}
+.idea-set{background:var(--panel);color:var(--ink);border:1px solid var(--line);border-radius:8px;padding:2px 6px;font:600 12.5px var(--body)}
+.idea-meta .link{font-size:13px;padding:0}
+
+/* Vandaag-tab: kaartopening naast het formulier op brede schermen */
+.today-grid{display:grid;gap:32px;align-items:start}
+.today-grid .col{max-width:none}
+@media (min-width:860px){
+  .today-grid{grid-template-columns:1fr 1.15fr}
+}
+
+/* Upload / stage */
+.stage{position:relative;display:grid;justify-items:center;gap:14px;margin-top:0;min-height:320px;align-content:start}
+.stage .cw{width:min(360px,86vw,calc((100vh - 230px) * .714))}
+.stage-placeholder{color:var(--muted);text-align:center;padding:64px 24px;border:1.5px dashed var(--line);border-radius:18px;width:100%;font-size:16px}
+.result{margin:0;text-align:center;font-weight:600;color:var(--ink-soft);max-width:56ch;font-size:1.15em}
+.odds{margin:4px 0 22px;background:var(--panel);border:1px solid var(--line);border-radius:var(--r-sm);padding:14px 18px}
+.odds summary{cursor:pointer;font-weight:700;color:var(--ink-soft);list-style:none}
+.odds summary::-webkit-details-marker{display:none}
+.odds summary::before{content:'▸ ';color:var(--yellow-soft)}
+.odds[open] summary::before{content:'▾ '}
+.odds-table{width:100%;border-collapse:collapse;margin-top:14px;font-size:14.5px}
+.odds-table th,.odds-table td{text-align:left;padding:7px 10px;border-bottom:1px solid var(--line)}
+.odds-table th{color:var(--yellow-soft);font-weight:700}
+.odds-table td{color:var(--ink-soft)}
+.odds-table tr:last-child td{border-bottom:0;font-style:italic}
+
+/* Pakje openen: foliezakje, scheuren, kaart schuift eruit en draait om */
+.pack-stage{display:grid;justify-items:center;gap:14px;width:100%;padding-top:115px}
+.pack{position:relative;width:min(250px,62vw);aspect-ratio:5/7.4;background:none;border:0;padding:0;cursor:pointer;container-type:inline-size;
+  animation:pack-idle 2.6s ease-in-out infinite;filter:drop-shadow(0 18px 28px rgba(0,0,0,.55))}
+.pack-body{position:absolute;inset:8% 0 0 0;z-index:2;border-radius:4px 4px 12px 12px;overflow:hidden;
+  background:radial-gradient(circle at 28% 18%,rgba(255,255,255,.28),transparent 42%),
+             linear-gradient(115deg,transparent 30%,rgba(255,255,255,.42) 45%,transparent 58%),
+             repeating-linear-gradient(60deg,rgba(255,255,255,.07) 0 2px,transparent 2px 22px),
+             conic-gradient(from 210deg at 50% 46%,#2f6b3a,#c9a93a,#1d4a2a,#e0cc72,#244f2e,#2f6b3a);
+  background-size:auto,260% 260%,auto,auto;
+  display:grid;place-items:center;
+  animation:foil 3.2s linear infinite;transition:transform .5s ease-in,opacity .5s ease-in}
+.pack-label{display:grid;justify-items:center;gap:2cqw;padding:6cqw 8cqw;background:rgba(10,14,11,.72);border:1.2cqw solid #d9c46a;
+  border-radius:5cqw;color:#F4EFE4;text-align:center}
+.pack-logo{font:800 15cqw/1 var(--display);letter-spacing:.02em;color:#E8C34C}
+.pack-sub{font:700 5.2cqw/1 var(--body);letter-spacing:.18em}
+.pack-count{margin-top:2cqw;font:700 5cqw/1 var(--body);color:#b9e0ae;text-transform:uppercase;letter-spacing:.12em}
+.pack-body::after{content:"";position:absolute;left:0;right:0;bottom:0;height:6%;
+  background:repeating-linear-gradient(90deg,#d9c46a 0 4px,#9c8631 4px 8px)}
+.pack-top{position:absolute;left:0;right:0;top:0;height:9%;z-index:3;border-radius:12px 12px 2px 2px;
+  background:repeating-linear-gradient(90deg,#d9c46a 0 4px,#9c8631 4px 8px);
+  box-shadow:inset 0 -2px 0 rgba(0,0,0,.25);transform-origin:10% 100%}
+.pack-top::after{content:"";position:absolute;left:4%;right:4%;bottom:-3px;border-bottom:2px dashed rgba(255,255,255,.55)}
+.pack-card{position:absolute;left:8%;right:8%;top:14%;z-index:1;transition:transform .8s cubic-bezier(.2,.8,.2,1)}
+.stage .pack-card .cw,.stage .pack-slot .cw{width:100%}
+.pack-hint{margin:0;color:var(--ink-soft);font-weight:600;text-align:center}
+.pack.opening{animation:pack-shake .55s ease}
+.pack.opening.r-epic{filter:drop-shadow(0 0 26px #8B5CF6)}
+.pack.opening.r-legendary{filter:drop-shadow(0 0 34px #E8C34C)}
+.pack.torn .pack-top{animation:tear .6s ease-out forwards}
+.pack.torn .pack-card{transform:translateY(-50%)}
+.pack.done .pack-body{transform:translateY(45%);opacity:0}
+.pack.done .pack-card{transition:opacity .35s;opacity:0}
+@keyframes pack-idle{0%,100%{transform:rotate(-2deg) translateY(0)}50%{transform:rotate(2deg) translateY(-6px)}}
+@keyframes foil{0%{background-position:0 0,0 0,0 0,0 0}100%{background-position:0 0,100% 100%,0 0,0 0}}
+@keyframes pack-shake{0%,100%{transform:rotate(0)}20%{transform:rotate(-6deg) scale(1.03)}40%{transform:rotate(5deg) scale(1.05)}60%{transform:rotate(-4deg) scale(1.05)}80%{transform:rotate(3deg) scale(1.03)}}
+@keyframes tear{0%{transform:none}35%{transform:rotate(-4deg)}100%{transform:translate(60%,-180%) rotate(35deg);opacity:0}}
+.pack-results{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;width:100%}
+.pack-slot{position:relative;width:min(300px,78vw)}
+.pack-results.multi .pack-slot{width:min(210px,29vw)}
+.pack-slot .flipper{position:relative;z-index:1;transition:transform .22s ease-in}
+.pack-slot .flipper.turning{transform:rotateY(90deg) scale(.96)}
+.pack-slot .flipper.turning-back{transition:transform .22s ease-out}
+.glow{position:absolute;inset:-30%;pointer-events:none;border-radius:50%;filter:blur(30px);opacity:0;animation:glow-in .7s ease-out .9s both}
+@keyframes glow-in{from{opacity:0;transform:scale(.6)}to{opacity:.55;transform:scale(1)}}
+.glow.common{background:radial-gradient(circle,var(--grey),transparent 70%)}
+.glow.epic{background:radial-gradient(circle,#8B5CF6,transparent 70%)}
+.glow.legendary{background:radial-gradient(circle,var(--gold),transparent 70%)}
+.glow.cat{background:radial-gradient(circle,var(--cat),transparent 70%)}
+.particles{position:absolute;inset:0;pointer-events:none}
+.particle{position:absolute;left:50%;top:50%;width:8px;height:8px;border-radius:50%;background:var(--pc,#fff);opacity:0;animation:spark-fly 1.1s ease-out forwards;animation-delay:var(--pd,0s)}
+@keyframes spark-fly{
+  0%{opacity:1;transform:translate(-50%,-50%) rotate(var(--a)) translateX(0) scale(1)}
+  100%{opacity:0;transform:translate(-50%,-50%) rotate(var(--a)) translateX(var(--d)) scale(.2)}
+}
+.confetti{position:absolute;inset:0;overflow:hidden;pointer-events:none}
+.confetti span{position:absolute;top:-8%;left:var(--l);width:8px;height:14px;background:var(--cc);animation:confetti-fall 1.9s var(--cd,0s) ease-in forwards}
+@keyframes confetti-fall{
+  0%{transform:translateY(0) rotate(0deg);opacity:1}
+  100%{transform:translateY(340px) rotate(560deg);opacity:0}
+}
+.shake{animation:shake .4s ease}
+@keyframes shake{
+  10%,90%{transform:translateX(-1px)}
+  20%,80%{transform:translateX(2px)}
+  30%,50%,70%{transform:translateX(-5px)}
+  40%,60%{transform:translateX(5px)}
+}
+.cardflip{animation:card-flip .85s cubic-bezier(.2,1.35,.35,1) both}
+@keyframes card-flip{
+  0%{transform:perspective(900px) rotateY(180deg) scale(.35);opacity:0}
+  60%{transform:perspective(900px) rotateY(-14deg) scale(1.07);opacity:1}
+  100%{transform:perspective(900px) rotateY(0) scale(1);opacity:1}
+}
+
+/* Kaarten: rechte kaarten met ronde hoeken, volledige illustratie, duidelijke rand per type */
+.cw{container-type:inline-size;width:100%;position:relative}
+.card{position:relative;aspect-ratio:5/7;border-radius:6.5cqw;border:2.2cqw solid var(--rc);
+  box-shadow:inset 0 0 0 2px rgba(255,255,255,.14), 0 10px 26px -10px rgba(0,0,0,.65), 0 0 20px -3px var(--rc);
+  background:var(--rbg);color:#241C0F;overflow:hidden}
+.art{position:absolute;inset:0;background:var(--art);display:grid;place-items:center;overflow:hidden}
+.art img{width:100%;height:100%;object-fit:cover;display:block}
+.chead{position:absolute;top:0;left:0;right:0;padding:3.4cqw 5cqw 8cqw;display:flex;justify-content:space-between;align-items:flex-start;gap:2cqw;
+  background:linear-gradient(180deg,rgba(255,255,255,.82),rgba(255,255,255,.55) 55%,rgba(255,255,255,0));
+  backdrop-filter:blur(5px) saturate(1.1);-webkit-backdrop-filter:blur(5px) saturate(1.1);
+  /* blur loopt zacht uit i.p.v. een harde rand */
+  -webkit-mask-image:linear-gradient(180deg,#000 55%,transparent);mask-image:linear-gradient(180deg,#000 55%,transparent)}
+.cname{color:#141414;font:800 6.4cqw/1.12 var(--display);text-shadow:none;
+  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;word-break:break-word;max-width:75%}
+.cname.xl{font-size:5.6cqw}
+.cname.xxl{font-size:4.8cqw}
+.hp{color:#141414;font:700 5cqw var(--body);white-space:nowrap;text-shadow:none}
+.ptile{width:38cqw;aspect-ratio:1;border-radius:50%;display:grid;place-items:center;background:rgba(0,0,0,.22);color:#fff;font:800 22cqw/1 var(--display)}
+.ptile.cat{background:transparent;font-size:28cqw}
+.cfoot{position:absolute;left:0;right:0;bottom:0;padding:9cqw 5cqw 3.6cqw;display:flex;flex-direction:column;gap:1.2cqw;color:#141414;
+  background:linear-gradient(0deg,rgba(255,255,255,.86),rgba(255,255,255,.7) 55%,rgba(255,255,255,0));
+  backdrop-filter:blur(5px) saturate(1.1);-webkit-backdrop-filter:blur(5px) saturate(1.1);
+  -webkit-mask-image:linear-gradient(0deg,#000 70%,transparent);mask-image:linear-gradient(0deg,#000 70%,transparent)}
+.cfoot .row1{display:flex;justify-content:space-between;gap:3cqw;font:700 4.8cqw var(--body);white-space:nowrap}
+.special{font:700 4.6cqw/1.2 var(--body);color:#141414;border-top:1px solid rgba(0,0,0,.2);padding-top:1.2cqw}
+.special small{display:none;font-weight:500;color:rgba(20,20,20,.78)}
+/* Beschrijving van de special enkel op grote kaarten (bv. bij het trekken) */
+@container (min-width:320px){.special small{display:block;margin-top:1cqw;font-size:4cqw;line-height:1.25}}
+.flavor{font:italic 500 4.6cqw/1.22 var(--body);color:rgba(20,20,20,.8);
+  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.r-common{--rc:#8A98A1;--rbg:linear-gradient(165deg,#fff,#E7ECEF);--art:#DDE4E8}
+.r-epic{--rc:#7C4FE0;--rbg:linear-gradient(140deg,#F3EEFF,#D5C7F7 45%,#F3EEFF 60%,#C4B0F2);--art:linear-gradient(135deg,#B9A2F0,#7F5FD0)}
+.r-legendary{--rc:#D9A61C;--rbg:linear-gradient(140deg,#FFF6D6,#F1CF6A 45%,#FFF1BE 60%,#E2B83E);--art:linear-gradient(135deg,#F5D97A,#C99A1E)}
+.r-legendary .art::after{
+  content:"";position:absolute;inset:0;pointer-events:none;background-size:260% 260%;mix-blend-mode:overlay;
+  background-image:linear-gradient(115deg,transparent 20%,rgba(255,255,255,.7) 35%,rgba(255,213,120,.55) 45%,transparent 58%,rgba(255,255,255,.45) 74%,transparent 90%);
+  animation:holo-sweep 4.2s linear infinite;
+}
+@keyframes holo-sweep{
+  0%{background-position:0% 0%}
+  100%{background-position:100% 100%}
+}
+.r-cat{--rc:#1F8F8A;--rbg:linear-gradient(165deg,#EAFBF9,#C9EEEA);--art:#A9DDD8}
+.locked{filter:saturate(.15) brightness(.85)}
+.q{font:800 30cqw/1 var(--display);color:rgba(0,0,0,.28)}
+.dupe{position:absolute;right:-6px;top:-8px;background:var(--yellow);color:#15181D;border-radius:var(--r-sm);padding:2px 9px;font:700 12px var(--body);z-index:2}
+
+/* Schikkingen die op één scherm passen */
+.two-col,.three-col,.stats-wrap{display:grid;gap:22px 36px;align-items:start}
+@media (min-width:900px){
+  .two-col{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}
+  .three-col{grid-template-columns:repeat(auto-fit,minmax(260px,1fr));margin-top:2px}
+  #view .stats-wrap{grid-template-columns:minmax(0,1.15fr) minmax(0,1fr)}
+  #view .stats-wrap .stat-cards{margin-top:0}
+  #view .bars-title{margin-top:0}
+}
+.bars-title{margin-top:24px}
+.index-title{display:flex;align-items:center;gap:8px}
+.index-page .info-btn{color:#8a6d12;border-color:#b8962a;background:rgba(201,180,88,.15);width:26px;height:26px;font-size:13px}
+
+/* Statistieken */
+.stat-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:14px;margin-top:16px}
+.stat-card{background:rgba(35,41,50,.88);border:1px solid var(--line);border-radius:var(--r-sm);padding:16px 18px;display:flex;flex-direction:column;gap:6px;align-items:flex-start}
+.stat-num{font:800 34px var(--display);color:var(--green-soft)}
+.stat-label{color:var(--ink-soft);font-size:14.5px;font-weight:600}
+.bars{display:grid;gap:10px;margin-top:16px;max-width:560px}
+.bar-row{display:grid;grid-template-columns:70px 1fr 30px;align-items:center;gap:12px}
+.bar-label{font-size:14.5px;color:var(--ink-soft);font-weight:600}
+.bar-track{background:var(--panel);border:1px solid var(--line);border-radius:var(--r-sm);height:22px;overflow:hidden}
+.bar-fill{height:100%;background:linear-gradient(90deg,var(--green),var(--yellow));min-width:3px;transition:width .4s ease}
+.bar-val{font-weight:700;text-align:right;color:var(--ink-soft)}
+
+/* Vrienden */
+.mycode{display:flex;align-items:center;gap:12px;flex-wrap:wrap;background:var(--panel);border:1px solid var(--line);border-radius:var(--r-sm);padding:14px 18px;max-width:420px}
+.mycode-label{color:var(--ink-soft);font-size:14px;font-weight:600}
+.mycode-value{font:800 22px ui-monospace,Menlo,Consolas,monospace;letter-spacing:.06em;color:var(--yellow-soft)}
+.friend-list{list-style:none;margin:14px 0 0;padding:0;display:grid;gap:8px;max-width:460px}
+.friend-row{display:flex;align-items:center;gap:12px;background:var(--panel);border:1px solid var(--line);border-radius:var(--r-sm);padding:10px 14px}
+.friend-av{width:34px;height:34px;border-radius:50%;background-color:var(--bg2);background-size:cover;background-position:center;display:grid;place-items:center;font:700 14px var(--body);color:#fff;flex-shrink:0}
+.friend-name{flex:1;font-weight:600}
+.friend-open{flex:1;display:flex;align-items:center;gap:12px;background:none;border:0;padding:0;color:inherit;font:inherit;text-align:left;cursor:pointer}
+.friend-open:hover .friend-name{color:var(--green-soft)}
+.friend-more{color:var(--muted);font-size:13.5px;font-weight:600}
+.link.danger{color:#F0897E}
+.tab-badge{display:inline-grid;place-items:center;min-width:20px;height:20px;padding:0 6px;margin-left:4px;border-radius:999px;background:#E0584B;color:#fff;font:700 12px/1 var(--body);vertical-align:1px}
+.tab-badge[hidden]{display:none}
+.accbox.statbox{width:min(620px,94vw);max-height:90vh;overflow-y:auto}
+.statbox-head{display:flex;align-items:center;gap:14px}
+.statbox-head h2{margin:0}
+.statbox-head .friend-av{width:48px;height:48px;font-size:19px}
+.statbox .stat-cards{grid-template-columns:repeat(auto-fit,minmax(130px,1fr))}
+.statbox .stat-num{font-size:32px}
+
+/* Traden */
+.tselect{width:100%;border:1px solid var(--line);background:var(--panel);color:var(--ink);border-radius:var(--r-sm);padding:13px;min-height:50px;font:16px var(--body)}
+.trade-builder{display:grid;gap:24px;margin-top:16px}
+@media (min-width:700px){.trade-builder{grid-template-columns:1fr 1fr}}
+.trade-builder h4{margin:0 0 12px;font-size:16px}
+.dup-row{display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:9px 0;border-bottom:1px solid var(--line)}
+.dup-owned{color:var(--muted);font-size:13px}
+.stepper{display:flex;align-items:center;gap:8px;margin-left:auto}
+.step-btn{width:30px;height:30px;border-radius:50%;border:1px solid var(--line);background:var(--bg2);color:var(--ink);font:700 16px var(--body);cursor:pointer;line-height:1}
+.step-val{min-width:18px;text-align:center;font-weight:700}
+.trade-chip{display:inline-block;padding:4px 10px;border-radius:999px;font:600 13px var(--body);color:#fff;background:var(--rc,var(--grey))}
+.trade-list{display:grid;gap:16px;margin-top:14px}
+.trade-card{background:var(--panel);border:1px solid var(--line);border-radius:var(--r-sm);padding:18px 20px;display:grid;gap:8px}
+.trade-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.trade-side-label{font-weight:700;color:var(--ink-soft);font-size:13.5px;min-width:82px}
+.trade-arrow{text-align:center;color:var(--yellow-soft);font-weight:700;margin:2px 0}
+.trade-actions{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:8px}
+.btn.small{width:auto;min-height:auto;padding:10px 18px;font-size:15px}
+.pill{background:var(--bg2);border:1px solid var(--line);color:var(--ink-soft);font:700 12.5px var(--body);padding:5px 12px;border-radius:999px}
+.pill-turn{background:var(--yellow);color:#15181D;border-color:transparent}
+.tmsg:empty{display:none}
+
+/* Battle */
+.battle-bar{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.battle-top{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.battle-top .page-head{margin-bottom:6px}
+.diff-btn small,#challengeBattle small{font-weight:700;opacity:.8;margin-left:4px}
+.bt-head{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-bottom:8px}
+.bt-head h2{margin:0}
+.bt-head .link{padding-left:0}
+.bt-layout{display:grid;gap:18px;align-items:start}
+@media (min-width:1000px){.bt-layout{grid-template-columns:auto minmax(0,1fr)}.bt-layout .battle-log{max-height:470px}.bt-layout .battle-result{margin-top:0}}
+.bt-arena{width:min(600px,100%);grid-template-columns:minmax(0,1fr) auto minmax(0,1fr)}
+.bt-side{min-width:0}
+.bt-name{font:800 15px var(--body);color:var(--ink-soft)}
+.bt-side .fighter-card{max-width:min(190px,calc((100vh - 470px) * .714))}
+.energy{display:flex;gap:2px}
+.energy .pip{font-size:15px;filter:grayscale(1);opacity:.3}
+.energy .pip.on{filter:none;opacity:1}
+.bt-side .bench{display:grid;gap:5px;width:100%;max-width:210px}
+.bench-card{display:flex;justify-content:space-between;gap:8px;min-width:0;padding:5px 9px;border-radius:10px;border:1px solid var(--line);background:rgba(35,41,50,.9);color:var(--ink);font:600 13px var(--body);text-align:left}
+.bench-card span:first-child{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.bench-card .bench-hp{color:var(--green-soft);white-space:nowrap}
+.bench-card.out{opacity:.4}
+.bench-card.out .bench-hp{color:#F0897E}
+.bench-card:disabled{cursor:default}
+.bt-side.choosing .bench-card:not(:disabled){cursor:pointer;border-color:var(--yellow);box-shadow:0 0 0 2px rgba(201,180,88,.35);animation:pulse 1s ease-in-out infinite}
+@keyframes pulse{50%{box-shadow:0 0 0 5px rgba(201,180,88,.15)}}
+.bt-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px;align-items:stretch;width:min(600px,100%)}
+.move-btn{display:grid;justify-items:center;align-content:center;gap:1px;min-width:96px;flex:1;padding:7px 8px;border:0;border-radius:14px;background:var(--yellow);color:#15181D;font:800 14.5px var(--body);cursor:pointer;
+  box-shadow:0 4px 0 #8f7f35;transition:transform .1s ease,box-shadow .1s ease}
+.move-btn:active:not(:disabled){transform:translateY(3px);box-shadow:0 1px 0 #8f7f35}
+.move-btn:disabled{opacity:.35;cursor:not-allowed}
+.move-btn .move-icon{font-size:18px;line-height:1}
+@media (max-width:560px){.move-btn{min-width:calc(50% - 4px)}.bt-head h2{font-size:20px}.bt-arena .vs{font-size:16px}}
+.bt-head .forfeit{margin-left:auto}
+.move-btn small{font:600 11.5px var(--body);opacity:.75}
+.move-btn[data-move="special"]{background:linear-gradient(135deg,#F5D97A,#C99A1E)}
+.move-btn[data-move="guard"]{background:#8fb3d9;box-shadow:0 4px 0 #56779a}
+.move-btn[data-move="switch"]{background:#b8a2f0;box-shadow:0 4px 0 #7c62c0}
+.battle-actions{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-top:12px}
+.battle-or{color:var(--muted);font-weight:600}
+.battle-box{background:rgba(35,41,50,.9);border:1px solid var(--line);border-radius:var(--r-sm);padding:12px 18px;max-width:640px}
+.battle-box.highlight{border-color:var(--yellow)}
+.battle-box h3{margin-bottom:4px}
+.battle-row{display:flex;align-items:center;gap:12px;flex-wrap:wrap;padding:10px 0;border-bottom:1px solid var(--line);max-width:640px}
+.battle-row-text{flex:1;min-width:160px}
+.result-tag{font:700 12.5px var(--body);padding:4px 10px;border-radius:999px}
+.result-tag.won{background:var(--green);color:#12160f}
+.result-tag.lost{background:#5a2c28;color:#F0B3AB}
+.leaderboard{border-collapse:collapse;margin-top:8px;min-width:min(420px,100%);font-size:15px}
+.leaderboard th,.leaderboard td{text-align:left;padding:8px 14px;border-bottom:1px solid var(--line)}
+.leaderboard th{color:var(--yellow-soft);font-weight:700}
+.leaderboard tr.me td{color:var(--green-soft);font-weight:700}
+/* Team kiezen: één rij die horizontaal scrolt, zodat de pagina niet lang wordt */
+.battle-pick{display:flex;gap:14px;overflow-x:auto;padding:14px 6px 12px 14px;margin-top:4px;scroll-snap-type:x proximity}
+.battle-pick .pick{flex:0 0 126px;scroll-snap-align:start}
+.battle-layout{display:grid;gap:18px;align-items:start}
+@media (min-width:1000px){.battle-layout{grid-template-columns:auto minmax(0,1fr)}.battle-layout .battle-log{max-height:430px}.battle-layout .battle-result{margin-top:0}}
+@media (max-width:560px){.battle-pick .pick{flex-basis:118px}}
+.pick{position:relative;background:none;border:0;padding:0;cursor:pointer;text-align:left;color:inherit;font:inherit;transition:transform .15s ease,opacity .15s ease;opacity:.72}
+.pick:hover{transform:translateY(-3px);opacity:1}
+.pick.selected{opacity:1}
+.pick.selected .card{outline:3px solid var(--yellow);outline-offset:3px}
+.pick-num{position:absolute;top:38%;left:-10px;z-index:3;width:30px;height:30px;border-radius:50%;display:grid;place-items:center;background:var(--yellow);color:#15181D;font:800 15px var(--body);box-shadow:0 3px 8px rgba(0,0,0,.4)}
+.pick-num[hidden]{display:none}
+.arena{display:grid;grid-template-columns:1fr auto 1fr;gap:20px;align-items:start;width:min(600px,100%);margin-top:6px}
+.fighter{display:grid;gap:8px;justify-items:center}
+.fighter-name{font:700 15px var(--body);color:var(--ink-soft)}
+.fighter-card{position:relative;width:100%;max-width:min(240px,calc((100vh - 300px) * .714))}
+.fighter.hit .fighter-card{animation:shake .4s ease}
+.fighter.ko .fighter-card .card{filter:grayscale(1) brightness(.55);transition:filter .3s}
+.hpbar{width:100%;max-width:260px;height:14px;background:var(--wblack);border:1px solid var(--line);border-radius:999px;overflow:hidden}
+.hpfill{height:100%;background:var(--green);transition:width .35s ease,background .35s}
+.hpfill.mid{background:var(--yellow)}
+.hpfill.low{background:#E0584B}
+.hptext{font:700 14px var(--body);color:var(--ink-soft);font-variant-numeric:tabular-nums}
+.bench{display:flex;gap:6px}
+.bench-dot{width:12px;height:12px;border-radius:50%;background:var(--green-soft)}
+.bench-dot.now{outline:2px solid #fff;outline-offset:2px}
+.bench-dot.out{background:var(--line)}
+.vs{align-self:center;font:800 30px var(--display);color:var(--yellow-soft)}
+@media (max-width:560px){.arena{gap:10px}.vs{font-size:20px}}
+.dmg-pop{position:absolute;top:32%;left:50%;z-index:5;pointer-events:none;font:800 36px var(--display);color:#F0897E;text-shadow:0 2px 10px rgba(0,0,0,.7);animation:dmgpop .8s ease-out forwards}
+.dmg-pop.big{color:var(--yellow-soft);font-size:46px}
+@keyframes dmgpop{0%{opacity:0;transform:translate(-50%,10px) scale(.6)}20%{opacity:1;transform:translate(-50%,0) scale(1.1)}100%{opacity:0;transform:translate(-50%,-44px) scale(1)}}
+.battle-log{list-style:none;margin:16px 0 0;padding:12px 16px;max-width:640px;max-height:240px;overflow-y:auto;background:var(--panel);border:1px solid var(--line);border-radius:var(--r-sm);font-size:14.5px;display:grid;gap:4px}
+.battle-log li{color:var(--ink-soft)}
+.battle-log .who{display:inline-block;min-width:74px;font-weight:700}
+.battle-log .round-block{list-style:none;padding:4px 0 6px;border-bottom:1px solid var(--line)}
+.battle-log .round-block:last-child{border-bottom:0}
+.battle-log .round-title{font:800 12px var(--body);text-transform:uppercase;letter-spacing:.08em;color:var(--yellow-soft);margin-bottom:2px}
+.battle-log .round-lines{list-style:none;margin:0;padding:0;display:grid;gap:2px}
+.battle-log li.mine{color:var(--green-soft)}
+.battle-log li.theirs{color:#F0B3AB}
+.battle-log li.ko-line{color:#fff}
+.battle-result{max-width:640px;margin-top:18px;padding:18px 20px;background:var(--panel);border:1px solid var(--line);border-radius:var(--r-sm)}
+.battle-result h3{margin-bottom:4px}
+.battle-result.won h3{color:var(--green-soft)}
+.battle-result.lost h3{color:#F0897E}
+.battle-result p{color:var(--ink-soft);margin:0 0 12px}
+
+/* Coming soon */
+.soon{text-align:center;padding:60px 20px;display:flex;flex-direction:column;align-items:center;gap:10px}
+.soon-badge{background:var(--yellow);color:#15181D;font:800 13px var(--body);letter-spacing:.06em;text-transform:uppercase;padding:6px 16px;border-radius:var(--r-sm);margin-bottom:6px}
+
+/* Boek */
+.book{background:linear-gradient(160deg,#3B2E20,#241A10);border-radius:var(--r);padding:16px;box-shadow:0 30px 60px -20px rgba(0,0,0,.6)}
+.spread{background:var(--page);border-radius:var(--r-sm);padding:0;display:grid;grid-template-columns:300px 1fr;min-height:620px;position:relative;color:#241C0F}
+.spread::before{content:"";position:absolute;left:300px;top:0;bottom:0;width:20px;margin-left:-10px;background:linear-gradient(90deg,transparent,rgba(0,0,0,.15),transparent);pointer-events:none}
+.index-page{padding:30px 22px;border-right:1px solid rgba(0,0,0,.1);overflow-y:auto}
+.index-page h3{color:#241C0F;font-size:21px;margin-bottom:4px}
+.index-page .sub{color:#6B5E4C;font-size:14px;margin-bottom:20px}
+.index-list{list-style:none;margin:0;padding:0;display:grid;gap:4px}
+.index-list button{width:100%;text-align:left;background:none;border:0;padding:12px 12px;cursor:pointer;color:#241C0F;border-radius:0;display:flex;justify-content:space-between;align-items:center;gap:8px;font:600 16px var(--body)}
+.index-list button:hover{background:rgba(0,0,0,.05)}
+.index-list .index-dupes{border-top:1px solid rgba(0,0,0,.12);margin-top:6px;padding-top:6px}
+.index-list button[aria-current="page"]{background:var(--yellow);color:#15181D}
+.index-list .frac{font:600 13.5px var(--body);color:#8A7A63;font-variant-numeric:tabular-nums}
+.index-list button[aria-current="page"] .frac{color:#15181D;opacity:.75}
+.page-body{padding:30px 30px 22px;display:flex;flex-direction:column}
+.page-body .pname{font-size:26px;margin-bottom:2px;color:#241C0F}
+.page-body .pcount{color:#6B5E4C;font-size:15px;margin-bottom:20px}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;flex:1;align-content:start;max-width:720px}
+.slot{display:block;background:none;border:0;padding:0;width:100%;text-align:left;color:inherit;font:inherit}
+button.slot{cursor:pointer;transition:transform .15s ease}
+button.slot:hover{transform:translateY(-3px)}
+.pageturn{display:flex;justify-content:space-between;align-items:center;margin-top:20px;padding-top:16px;border-top:1px solid rgba(0,0,0,.1)}
+.pageturn button{background:none;border:1px solid rgba(36,28,15,.25);border-radius:var(--r-sm);padding:10px 18px;font:700 15px var(--body);cursor:pointer;color:#241C0F}
+.pageturn button:disabled{opacity:.3;cursor:default}
+.pageturn .pnum{font:600 14.5px var(--body);color:#8A7A63;font-variant-numeric:tabular-nums}
+.page-body.turning{animation:pageturn .38s ease}
+@keyframes pageturn{0%{opacity:0;transform:perspective(800px) rotateY(-8deg)}100%{opacity:1;transform:none}}
+
+dialog{border:0;padding:0;background:transparent;max-width:none;overflow:visible}
+dialog::backdrop{background:rgba(10,12,16,.78)}
+@keyframes zoom-in{from{opacity:0;transform:scale(.88)}to{opacity:1;transform:scale(1)}}
+
+/* Kaart groot bekijken + omdraaien. Geen echte 3D met backface-visibility (werkt niet
+   samen met de backdrop-filter op de kaart): de kaart draait tot op haar kant, wisselt
+   van voor- naar achterkant en draait terug. */
+.zoombox{width:min(420px,88vw,calc((92vh - 70px) * .714));display:grid;gap:12px;justify-items:center;animation:zoom-in .22s ease both}
+.zoom-card{width:100%;background:none;border:0;padding:0;cursor:pointer;perspective:1200px;display:block;text-align:left;color:inherit;font:inherit}
+.zoom-inner{transition:transform .2s ease-in}
+.zoom-card.turning .zoom-inner{transform:rotateY(90deg) scale(.96)}
+.zoom-card.turning-back .zoom-inner{transition:transform .2s ease-out}
+.zoomhint{color:var(--ink-soft);font-size:14px;margin:0;text-align:center}
+.zoombox .link{color:#fff}
+.cardback{aspect-ratio:5/7;border-radius:6.5cqw;border:2.2cqw solid var(--rc);
+  /* Ingezoomd op de groene kader van card-back.png (x 25-546, y 28-945 van 572x1024),
+     zodat de crèmekleurige rand van de afbeelding wegvalt; onderaan valt een stuk vloer weg */
+  background:#1d2a20 url('cards/card-back.png') 50% 9.5% / 110.5% auto no-repeat;
+  box-shadow:inset 0 0 0 2px rgba(255,255,255,.12),0 10px 26px -10px rgba(0,0,0,.65),0 0 20px -3px var(--rc);
+  display:grid;place-items:center;overflow:hidden}
+@media (prefers-reduced-motion:reduce){.zoom-inner,.zoom-card.turning-back .zoom-inner{transition:none}}
+.loading{padding:60px 16px;text-align:center;color:var(--muted)}
+
+/* Account-instellingen modal (naam/e-mail/wachtwoord/profielfoto) */
+.accbox{width:min(420px,92vw);max-height:92vh;overflow-y:auto;padding:26px;display:grid;gap:6px;background:var(--panel);border:1px solid var(--line);border-radius:var(--r);animation:zoom-in .2s ease both}
+.accbox h2{margin-bottom:4px}
+.welcome-banner{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:26px;padding:16px 20px;
+  background:linear-gradient(120deg,rgba(93,163,82,.25),rgba(201,180,88,.2));border:1px solid var(--yellow);border-radius:var(--r-sm);color:var(--ink)}
+.packbox{width:min(760px,94vw);max-height:92vh;overflow-y:auto;padding:24px;display:grid;gap:10px;justify-items:center;text-align:center;
+  background:var(--panel);border:1px solid var(--line);border-radius:var(--r);animation:zoom-in .2s ease both}
+.packbox .stage{margin-top:4px;min-height:0}
+.photorow{display:flex;align-items:center;gap:16px;margin-bottom:6px}
+.photopreview{width:64px;height:64px;border-radius:50%;background-color:var(--bg2);background-size:cover;background-position:center;border:2px solid var(--line);color:#fff;display:grid;place-items:center;font:700 20px var(--body);flex-shrink:0}
+.accbox .rowbtns{display:flex;gap:12px;margin-top:6px}
+.accbox .rowbtns .btn{width:auto;flex:1}
+.accbox .link.danger{color:#F0897E}
+.acc-switch{border-top:1px solid var(--line);margin-top:10px;padding-top:14px;display:grid;gap:8px}
+.acc-switch h4{margin:0;font:700 15px var(--body);color:var(--ink-soft)}
+.acc-switch-row{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.acc-switch-row small{color:var(--muted)}
+.acc-switch .link{justify-self:start;padding-left:0}
+
+/* Account-tab: 3D-personage + shop */
+.acc-grid{display:grid;gap:28px;align-items:start}
+@media (min-width:820px){.acc-grid{grid-template-columns:380px 1fr}}
+.avatar3d{width:100%;aspect-ratio:3/4;background:linear-gradient(160deg,var(--panel),var(--bg2));border:1px solid var(--line);border-radius:18px;overflow:hidden}
+.avatar3d canvas{display:block;width:100%;height:100%}
+.wallet{margin:12px 0 0;text-align:center;font:700 15px var(--body);color:var(--yellow-soft)}
+.acc-controls{display:flex;flex-direction:column;gap:24px}
+.opt-group h4{margin:0 0 10px;font:700 15px var(--body);color:var(--ink-soft)}
+.swatches{display:flex;flex-wrap:wrap;gap:12px 10px}
+.swatch{width:42px;height:42px;border-radius:50%;border:3px solid transparent;cursor:pointer;padding:0;background:var(--sw,#888);position:relative;display:grid;place-items:center;font-size:16px}
+.swatch.active{border-color:var(--yellow)}
+.swatch.locked{opacity:.55}
+.styleopts{display:flex;flex-wrap:wrap;gap:8px}
+.styleopts button{background:var(--panel);border:1px solid var(--line);color:var(--ink-soft);border-radius:var(--r-sm);padding:10px 16px;font:600 14.5px var(--body);cursor:pointer}
+.styleopts button.active{background:var(--amber);color:#12160f;border-color:var(--amber)}
+.styleopts button.locked{opacity:.6}
+
+@media (max-width:760px){
+  .spread{grid-template-columns:1fr}
+  .spread::before{display:none}
+  .index-page{border-right:0;border-bottom:1px solid rgba(0,0,0,.1);max-height:220px}
+}
+/* Gsm: 2 kaarten per rij zodat tekst en illustraties leesbaar blijven */
+@media (max-width:560px){
+  .book{padding:8px}
+  .page-body{padding:20px 14px 16px}
+  .grid{grid-template-columns:repeat(2,1fr);gap:12px}
+}
+@media (prefers-reduced-motion:reduce){
+  .r-legendary .art::after,.cardflip,.pack,.pack-top,.glow,.page-body.turning,.shake,.particle,.confetti span{animation:none}
+}
+</style>
+</head>
+<body>
+<div id="app"><p class="loading">Laden…</p></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
+<script>
+// ---------------------------------------------------------------
+// Vul hier de gegevens van je Supabase-project in
+// (Project Settings > API). De anon key mag publiek staan.
+// ---------------------------------------------------------------
+const CONFIG = {
+  SUPABASE_URL: 'https://rmgnkwlmgtfamhioncny.supabase.co',
+  SUPABASE_ANON_KEY: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJtZ25rd2xtZ3RmYW1oaW9uY255Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTAwNTM3MTMsImV4cCI6MjEwNTYyOTcxM30.rGXsDOX0Bd42qmnXh3VQm2WyQHPymmdSywnFDNOVnUg'
+};
+
+// Info uit de link van een wachtwoord-reset-mail. Uitlezen vóór supabase-js
+// de URL opkuist; zo weten we zeker dat we het resetformulier moeten tonen.
+const URL_HASH = new URLSearchParams(location.hash.slice(1));
+const IS_RECOVERY_LINK = URL_HASH.get('type') === 'recovery';
+let authLinkError = URL_HASH.get('error_description') || new URLSearchParams(location.search).get('error_description');
+
+const sb = supabase.createClient(CONFIG.SUPABASE_URL, CONFIG.SUPABASE_ANON_KEY);
+const app = document.getElementById('app');
+const $ = (sel, el = document) => el.querySelector(sel);
+const sleep = ms => new Promise(r => setTimeout(r, ms));
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+
+const RARITY_LABEL = { common: 'Common', epic: 'Epic', legendary: 'Legendary', cat: 'Troostkat' };
+const PARTICLE_COLORS = {
+  common: ['#9aa7b3', '#c8d0d8'],
+  epic: ['#8B5CF6', '#C4B0F2', '#F3EEFF'],
+  legendary: ['#E8C34C', '#FFF1BE', '#C99A1E'],
+  cat: ['#2FA79E', '#8fe0da']
+};
+
+const state = { session: null, recovery: IS_RECOVERY_LINK, cards: [], owned: new Map(), play: null, name: '', avatarUrl: null, friendCode: '', wallet: 0, incomingRequests: 0, incomingBattles: 0, welcomeAvailable: false, isAdmin: false, tab: 'today', page: 0 };
+
+// Werkt alle plekken bij die het polycoins-saldo tonen (topbalk + account-tab)
+function syncCoinUI() {
+  document.querySelectorAll('[data-coin]').forEach(el => { el.textContent = state.wallet; });
+}
+
+const todayBrussels = () => new Date().toLocaleDateString('sv-SE', { timeZone: 'Europe/Brussels' });
+const tiles = (word, cls) => [...word].map((ch, i) => `<span class="tile t-${cls[i]}">${ch}</span>`).join('');
+const plural = n => n === 1 ? 'poging' : 'pogingen';
+
+// ---------- Opstart en routing ----------
+async function init() {
+  const { data: { session } } = await sb.auth.getSession();
+  state.session = session;
+  sb.auth.onAuthStateChange((event, s) => {
+    if (event === 'PASSWORD_RECOVERY') {
+      state.session = s; state.recovery = true;
+      renderResetPassword();
+      return;
+    }
+    const changed = s?.user?.id !== state.session?.user?.id;
+    state.session = s;
+    if (changed) route();
+  });
+  route();
+}
+
+// ---------- Snel wisselen tussen accounts op dit toestel ----------
+// Sessies van eerder gebruikte accounts worden lokaal bewaard, zodat je zonder
+// opnieuw in te loggen kan wisselen (bv. tussen admin en een gewoon testaccount).
+const SAVED_KEY = 'ptc-saved-accounts';
+function savedAccounts() {
+  try { return JSON.parse(localStorage.getItem(SAVED_KEY)) || {}; } catch (_) { return {}; }
+}
+function writeSavedAccounts(list) {
+  try { localStorage.setItem(SAVED_KEY, JSON.stringify(list)); } catch (_) {}
+}
+async function saveCurrentAccount() {
+  const { data: { session } } = await sb.auth.getSession(); // altijd de meest recente tokens
+  if (!session) return;
+  const list = savedAccounts();
+  list[session.user.id] = {
+    email: session.user.email, name: state.name || session.user.email,
+    access_token: session.access_token, refresh_token: session.refresh_token
+  };
+  writeSavedAccounts(list);
+}
+function forgetAccount(userId) {
+  const list = savedAccounts();
+  delete list[userId];
+  writeSavedAccounts(list);
+}
+async function switchAccount(userId) {
+  await saveCurrentAccount();
+  const target = savedAccounts()[userId];
+  const { error } = await sb.auth.setSession({ access_token: target.access_token, refresh_token: target.refresh_token });
+  if (error) {
+    forgetAccount(userId);
+    throw new Error(`Sessie van ${target.email} is verlopen. Log opnieuw in met dat account.`);
+  }
+}
+async function addAnotherAccount() {
+  await saveCurrentAccount();
+  // Enkel de lokale sessie wissen (geen signOut), zodat de bewaarde sessie geldig blijft
+  try { localStorage.removeItem(sb.auth.storageKey); } catch (_) {}
+  location.reload();
+}
+
+async function route() {
+  if (!state.session) {
+    if (state.recovery && !authLinkError) authLinkError = 'De resetlink is ongeldig of verlopen.';
+    state.recovery = false;
+    renderAuth('login');
+    return;
+  }
+  if (state.recovery) { renderResetPassword(); return; }
+  app.innerHTML = '<p class="loading">Laden…</p>';
+  try {
+    await loadData();
+    saveCurrentAccount();
+    renderMain();
+  } catch (e) {
+    app.innerHTML = `<main class="wrap"><p role="alert" class="err">${esc(e.message)}</p><button class="btn" id="out">Uitloggen</button></main>`;
+    $('#out').onclick = () => sb.auth.signOut();
+  }
+}
+
+async function loadData() {
+  const uid = state.session.user.id;
+  const [cards, mine, prof, wallet, requests, admin, battlesIn, welcome] = await Promise.all([
+    sb.from('cards').select('*').order('id'),
+    sb.from('user_cards').select('card_id').eq('user_id', uid),
+    sb.from('profiles').select('display_name, avatar_url, friend_code').eq('id', uid).maybeSingle(),
+    sb.from('user_wallet').select('polycoins').eq('user_id', uid).maybeSingle(),
+    sb.from('friend_requests').select('id', { count: 'exact', head: true }).eq('recipient_id', uid),
+    sb.from('admins').select('user_id').eq('user_id', uid).maybeSingle(),
+    sb.from('tbattles').select('player_a, player_b, status, moved:state->moved').eq('mode', 'pvp').in('status', ['pending', 'active']).or(`player_a.eq.${uid},player_b.eq.${uid}`),
+    sb.from('welcome_packs').select('user_id').eq('user_id', uid).maybeSingle()
+  ]);
+  for (const r of [cards, mine, prof, wallet]) if (r.error) throw new Error(r.error.message);
+  // Niet fataal: enkel voor het bolletje op de Vrienden-tab
+  state.incomingRequests = requests.error ? 0 : (requests.count || 0);
+  // Admin ziet alle kaarten ontgrendeld (enkel weergave; echte bezittingen blijven ongewijzigd)
+  state.isAdmin = !admin.error && !!admin.data;
+  // Bolletje Battle: uitdagingen aan jou + gevechten tegen vrienden waarin jij aan zet bent
+  state.incomingBattles = battlesIn.error ? 0 : (battlesIn.data || []).filter(b =>
+    b.status === 'pending' ? b.player_b === uid : !(b.moved || {})[b.player_a === uid ? 'A' : 'B']).length;
+  // Welkomstpakket nog niet opgehaald? (zonder schema-v7 bestaat de tabel niet: dan geen knop)
+  state.welcomeAvailable = !welcome.error && !welcome.data;
+  state.cards = cards.data;
+  state.owned = new Map();
+  for (const row of mine.data) state.owned.set(row.card_id, (state.owned.get(row.card_id) || 0) + 1);
+  state.name = prof.data?.display_name || state.session.user.email.split('@')[0];
+  state.avatarUrl = prof.data?.avatar_url || null;
+  state.friendCode = prof.data?.friend_code || '';
+  state.wallet = wallet.data?.polycoins || 0;
+}
+
+// Telt per card_id hoeveel exemplaren een gebruiker bezit, op basis van ruwe user_cards-rijen
+function countByCard(rows) {
+  const m = new Map();
+  for (const r of rows) m.set(r.card_id, (m.get(r.card_id) || 0) + 1);
+  return m;
+}
+
+
+// ---------- Inloggen ----------
+function renderAuth(mode) {
+  const reg = mode === 'register';
+  app.innerHTML = `
+  <main class="wrap">
+    <div class="hero" aria-hidden="true">${tiles('POLY', ['g','y','x','g'])}</div>
+    <h1>POLYGON <em>Trading Cards</em></h1>
+    <p class="hint">Speel elke dag twee Wordles, open pakjes en verzamel de kaarten van je collega's.</p>
+    <form id="authform" class="form">
+      ${reg ? '<label>Naam<input name="name" required autocomplete="nickname" maxlength="30"></label>' : ''}
+      <label>E-mail<input name="email" type="email" required autocomplete="email"></label>
+      <label>Wachtwoord<input name="password" type="password" required minlength="6" autocomplete="${reg ? 'new-password' : 'current-password'}"></label>
+      <button class="btn" type="submit">${reg ? 'Account maken' : 'Inloggen'}</button>
+      <p id="authmsg" role="alert" class="msg"></p>
+    </form>
+    <button class="link" id="switch">${reg ? 'Ik heb al een account' : 'Nog geen account? Maak er een'}</button>
+    ${reg ? '' : '<button class="link" id="forgot">Wachtwoord vergeten?</button>'}
+  </main>`;
+  $('#switch').onclick = () => renderAuth(reg ? 'login' : 'register');
+  if (!reg) $('#forgot').onclick = () => renderForgot($('#authform').email.value);
+  if (authLinkError) {
+    $('#authmsg').className = 'msg err';
+    $('#authmsg').textContent = `${authLinkError} Vraag een nieuwe aan via 'Wachtwoord vergeten?'.`;
+    authLinkError = null;
+    history.replaceState(null, '', location.pathname);
+  }
+  $('#authform').onsubmit = async e => {
+    e.preventDefault();
+    const f = new FormData(e.target);
+    const msg = $('#authmsg');
+    const btn = e.target.querySelector('button[type=submit]');
+    msg.textContent = ''; msg.className = 'msg'; btn.disabled = true;
+    try {
+      if (reg) {
+        const { data, error } = await sb.auth.signUp({
+          email: f.get('email'), password: f.get('password'),
+          options: { data: { display_name: f.get('name') } }
+        });
+        if (error) throw error;
+        if (!data.session) {
+          msg.textContent = 'Account gemaakt. Bevestig je e-mailadres via de mail die we stuurden en log daarna in.';
+          msg.className = 'msg ok';
+        }
+      } else {
+        const { error } = await sb.auth.signInWithPassword({ email: f.get('email'), password: f.get('password') });
+        if (error) throw error;
+      }
+    } catch (err) {
+      msg.textContent = err.message; msg.className = 'msg err';
+    } finally {
+      btn.disabled = false;
+    }
+  };
+}
+
+// ---------- Wachtwoord vergeten ----------
+function renderForgot(email = '') {
+  app.innerHTML = `
+  <main class="wrap">
+    <div class="hero" aria-hidden="true">${tiles('POLY', ['g','y','x','g'])}</div>
+    <h1>Wachtwoord vergeten</h1>
+    <p class="hint">Vul je e-mailadres in. We sturen je een link waarmee je een nieuw wachtwoord kan kiezen.</p>
+    <form id="forgotform" class="form">
+      <label>E-mail<input name="email" type="email" required autocomplete="email" value="${esc(email)}"></label>
+      <button class="btn" type="submit">Resetlink versturen</button>
+      <p id="forgotmsg" role="alert" class="msg"></p>
+    </form>
+    <button class="link" id="back">Terug naar inloggen</button>
+  </main>`;
+  $('#back').onclick = () => renderAuth('login');
+  $('#forgotform').onsubmit = async e => {
+    e.preventDefault();
+    const msg = $('#forgotmsg');
+    const btn = e.target.querySelector('button[type=submit]');
+    msg.className = 'msg'; msg.textContent = 'Versturen…'; btn.disabled = true;
+    try {
+      const { error } = await sb.auth.resetPasswordForEmail(e.target.email.value.trim(), {
+        redirectTo: location.origin + location.pathname
+      });
+      if (error) throw error;
+      msg.className = 'msg ok';
+      msg.textContent = 'Als er een account bestaat met dit e-mailadres, kreeg je zonet een mail met een resetlink. Kijk ook even in je spamfolder.';
+    } catch (err) {
+      msg.className = 'msg err'; msg.textContent = err.message; btn.disabled = false;
+    }
+  };
+}
+
+// Getoond wanneer iemand via de link in de reset-mail binnenkomt
+function renderResetPassword() {
+  app.innerHTML = `
+  <main class="wrap">
+    <div class="hero" aria-hidden="true">${tiles('POLY', ['g','y','x','g'])}</div>
+    <h1>Nieuw wachtwoord</h1>
+    <p class="hint">Kies een nieuw wachtwoord voor ${esc(state.session?.user?.email)}.</p>
+    <form id="resetform" class="form">
+      <label>Nieuw wachtwoord<input name="password" type="password" required minlength="6" autocomplete="new-password"></label>
+      <label>Herhaal wachtwoord<input name="password2" type="password" required minlength="6" autocomplete="new-password"></label>
+      <button class="btn" type="submit">Wachtwoord opslaan</button>
+      <p id="resetmsg" role="alert" class="msg"></p>
+    </form>
+  </main>`;
+  $('#resetform').onsubmit = async e => {
+    e.preventDefault();
+    const f = new FormData(e.target);
+    const msg = $('#resetmsg');
+    const btn = e.target.querySelector('button[type=submit]');
+    if (f.get('password') !== f.get('password2')) {
+      msg.className = 'msg err'; msg.textContent = 'De wachtwoorden komen niet overeen.'; return;
+    }
+    msg.className = 'msg'; msg.textContent = 'Opslaan…'; btn.disabled = true;
+    try {
+      const { error } = await sb.auth.updateUser({ password: f.get('password') });
+      if (error) throw error;
+      msg.className = 'msg ok'; msg.textContent = 'Wachtwoord gewijzigd! Je wordt doorgestuurd…';
+      state.recovery = false;
+      history.replaceState(null, '', location.pathname);
+      setTimeout(route, 1000);
+    } catch (err) {
+      msg.className = 'msg err'; msg.textContent = err.message; btn.disabled = false;
+    }
+  };
+}
+
+// ---------- Kaart tekenen ----------
+// ---------- Kaart groot bekijken, tik om om te draaien ----------
+function renderCardBack(c) {
+  return `<div class="cw"><div class="cardback r-${c.rarity}" role="img" aria-label="Achterkant van de kaart"></div></div>`;
+}
+
+function openZoom(card) {
+  const dlg = $('#zoom');
+  let showingBack = false, busy = false;
+  dlg.innerHTML = `<div class="zoombox">
+    <button type="button" class="zoom-card" id="zoomCard" aria-label="Kaart omdraaien">
+      <div class="zoom-inner" id="zoomInner">${renderCard(card)}</div>
+    </button>
+    <p class="zoomhint">Tik op de kaart om ze om te draaien</p>
+    <button type="button" class="link" id="zoomClose">Sluiten</button>
+  </div>`;
+  const btn = $('#zoomCard'), inner = $('#zoomInner');
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  btn.onclick = async () => {
+    if (busy) return;
+    busy = true;
+    if (!reduce) { btn.classList.add('turning'); await sleep(200); }
+    showingBack = !showingBack;
+    inner.innerHTML = showingBack ? renderCardBack(card) : renderCard(card);
+    btn.classList.add('turning-back');
+    btn.classList.remove('turning');
+    if (!reduce) await sleep(200);
+    btn.classList.remove('turning-back');
+    busy = false;
+  };
+  $('#zoomClose').onclick = () => dlg.close();
+  dlg.showModal();
+}
+
+function renderCard(c, { locked = false, count = 1 } = {}) {
+  const label = RARITY_LABEL[c.rarity];
+  if (locked) {
+    return `<div class="cw"><div class="card r-${c.rarity} locked" aria-label="Nog niet verzameld">
+      <div class="art"><span class="q">?</span></div>
+      <div class="cfoot"><div class="row1"><span>???</span><span>${label}</span></div></div>
+    </div></div>`;
+  }
+  const initial = esc((c.person || '?').trim().charAt(0).toUpperCase());
+  const art = c.image_url
+    ? `<img src="${esc(c.image_url)}" alt="${esc(c.name)}" loading="lazy">`
+    : (c.rarity === 'cat' ? '<span class="ptile cat">🐱</span>' : `<span class="ptile">${initial}</span>`);
+  const special = c.special_name
+    ? `<div class="special">★ ${esc(c.special_name)}${c.special_power ? ` (${esc(c.special_power)})` : ''}<small>${esc(c.special_desc)}</small></div>`
+    : '';
+  const flavor = c.flavor_text ? `<div class="flavor">"${esc(c.flavor_text)}"</div>` : '';
+  const nameLen = c.name.length;
+  const nameCls = nameLen > 22 ? 'cname xxl' : nameLen > 14 ? 'cname xl' : 'cname';
+  return `<div class="cw">
+    ${count > 1 ? `<span class="dupe">×${count}</span>` : ''}
+    <div class="card r-${c.rarity}">
+      <div class="art">${art}</div>
+      <div class="chead"><span class="${nameCls}">${esc(c.name)}</span><span class="hp">HP ${esc(c.hp)}</span></div>
+      <div class="cfoot">
+        ${flavor}
+        <div class="row1"><span>${label}</span><span>ATK ${esc(c.attack)} / DEF ${esc(c.defense)}</span></div>
+        ${special}
+      </div>
+    </div></div>`;
+}
+
+// ---------- Hoofdscherm ----------
+const TABS = [
+  { id: 'today', label: 'Today', icon: '🎴' },
+  { id: 'book', label: 'My Book', icon: '📖' },
+  { id: 'stats', label: 'Stats', icon: '📊' },
+  { id: 'battle', label: 'Battle', icon: '⚔️', badge: 'battle' },
+  { id: 'friends', label: 'Friends', icon: '👥', badge: 'friend' },
+  { id: 'trade', label: 'Trade', icon: '🔁' },
+  { id: 'shop', label: 'Shop', icon: '🛒' },
+  { id: 'ideas', label: 'Ideas', icon: '💡' },
+];
+
+function renderMain() {
+  const initial = esc((state.name || '?').trim().charAt(0).toUpperCase());
+  const avStyle = state.avatarUrl ? ` style="background-image:url('${esc(state.avatarUrl)}')"` : '';
+  if (!TABS.some(t => t.id === state.tab)) state.tab = 'today';
+  const cur = TABS.find(t => t.id === state.tab) || TABS[0];
+  app.innerHTML = `
+  <div class="wrap wide" id="wrap">
+    <header class="top">
+      <span class="brand">POLYGON <em>Trading Cards</em></span>
+      <div class="topright">
+        ${state.isAdmin ? '<span class="pill pill-turn">Admin</span>' : ''}
+        <span class="coinpill">🪙 <span data-coin>${state.wallet}</span></span>
+        <nav class="menu" aria-label="Menu">
+          <button class="menu-btn" id="menuBtn" type="button" aria-haspopup="true" aria-expanded="false">
+            <span class="menu-ico">${cur.icon}</span><span class="menu-label">${cur.label}</span>
+            <span class="tab-badge" data-menu-badge></span><span class="chev">▾</span>
+          </button>
+          <div class="menu-list" id="menuList" role="menu" hidden>
+            ${TABS.map(t => `<button type="button" role="menuitem" data-tab="${t.id}"${t.id === cur.id ? ' aria-current="page"' : ''}>
+              <span class="menu-ico">${t.icon}</span>${t.label}${t.badge ? `<span class="tab-badge" data-${t.badge}-badge></span>` : ''}</button>`).join('')}
+          </div>
+        </nav>
+        <button class="avbtn" id="openAccount" aria-label="Account instellingen"${avStyle}>${state.avatarUrl ? '' : initial}</button>
+      </div>
+    </header>
+    <div id="view"></div>
+  </div>
+  <dialog id="accModal" aria-label="Accountinstellingen"></dialog>
+  <dialog id="friendModal" aria-label="Statistieken van vriend"></dialog>
+  <dialog id="zoom" aria-label="Kaart bekijken"></dialog>
+  <dialog id="packModal" aria-label="Welkomstpakket"></dialog>
+  <dialog id="infoModal" aria-label="Uitleg"></dialog>`;
+  $('#openAccount').onclick = () => openAccountModal();
+  const menuBtn = $('#menuBtn'), list = $('#menuList');
+  const setMenu = open => { list.hidden = !open; menuBtn.setAttribute('aria-expanded', open); };
+  menuBtn.onclick = e => { e.stopPropagation(); setMenu(list.hidden); };
+  list.querySelectorAll('[data-tab]').forEach(b => {
+    b.onclick = () => { state.tab = b.dataset.tab; renderMain(); };
+  });
+  document.onclick = e => { if (!e.target.closest('.menu')) setMenu(false); };
+  document.onkeydown = e => { if (e.key === 'Escape') setMenu(false); };
+  for (const id of ['zoom', 'friendModal', 'infoModal']) {
+    const d = $('#' + id);
+    d.addEventListener('click', e => { if (e.target === d) d.close(); });
+  }
+  syncFriendBadge();
+  syncBattleBadge();
+  renderView();
+}
+
+// Bolletjes met meldingen: per menu-item en opgeteld op de menuknop
+function setBadge(sel, n) {
+  document.querySelectorAll(sel).forEach(b => { b.textContent = n; b.hidden = !n; });
+}
+function syncMenuBadge() { setBadge('[data-menu-badge]', (state.incomingBattles || 0) + (state.incomingRequests || 0)); }
+function syncBattleBadge() { setBadge('[data-battle-badge]', state.incomingBattles); syncMenuBadge(); }
+function syncFriendBadge() { setBadge('[data-friend-badge]', state.incomingRequests); syncMenuBadge(); }
+
+// ---------- Uitleg achter een info-icoontje ----------
+const INFO = {
+  today: ['Hoe werkt het?', `
+    <p>Elke dag zijn er <strong>2 Wordles</strong>: de ochtendronde vanaf <strong>08:00</strong> en de middagronde vanaf <strong>13:00</strong> (Belgische tijd). Iedereen krijgt per ronde hetzelfde geheime woord — het is niet de officiële Wordle, dus opzoeken helpt niet.</p>
+    <ul><li>Raad het Engelse woord van 5 letters in maximaal 6 pogingen. Typ of gebruik het toetsenbord op het scherm.</li>
+    <li>🟩 juiste letter op de juiste plek · 🟨 letter zit in het woord, maar elders · ⬛ letter zit er niet in.</li>
+    <li>Na elke ronde open je een pakje. Hoe minder pogingen, hoe zeldzamer je kaart.</li>
+    <li>Heb je de kaart al? Dan krijg je ze als dubbel om te ruilen, plus wat polycoins. Niet opgelost? Dan krijg je een troostkat.</li></ul>
+    <table class="odds-table">
+      <thead><tr><th>Pogingen</th><th>Common</th><th>Epic</th><th>Legendary</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td>0%</td><td>20%</td><td>80%</td></tr>
+        <tr><td>2</td><td>20%</td><td>50%</td><td>30%</td></tr>
+        <tr><td>3</td><td>55%</td><td>35%</td><td>10%</td></tr>
+        <tr><td>4</td><td>75%</td><td>22%</td><td>3%</td></tr>
+        <tr><td>5</td><td>88%</td><td>11%</td><td>1%</td></tr>
+        <tr><td>6</td><td>95%</td><td>4,5%</td><td>0,5%</td></tr>
+        <tr><td>Niet opgelost</td><td colspan="3">Altijd een troostkat</td></tr>
+      </tbody>
+    </table>`],
+  book: ['Je verzamelboek', `
+    <p>Elke collega heeft een eigen pagina met 9 kaarten: 6 commons, 2 epics en 1 legendary. Troostkatten krijgen hun eigen pagina.</p>
+    <ul><li>Klik op een kaart om ze groot te bekijken, tik nog eens om ze om te draaien.</li>
+    <li>Achteraan vind je de pagina <strong>Dubbels</strong> met alle kaarten die je meer dan één keer hebt.</li></ul>`],
+  stats: ['Statistieken', `<p>Een overzicht van al je Wordles (2 per dag): hoe vaak je speelde, je huidige streak (opeenvolgende dagen), hoe vaak je de Wordle oploste en in hoeveel pogingen.</p>`],
+  battle: ['Zo werkt Battle', `
+    <p>Kies 3 kaarten, in de volgorde waarin ze vechten. Elke ronde kies jij een zet — tegen een vriend kiezen jullie allebei tegelijk en geheim.</p>
+    <ul><li>⚔️ <strong>Aanval</strong>: normale schade, +1 ⚡ energie.</li>
+    <li>💥 <strong>Krachtaanval</strong>: 1,7× schade, kost 2 ⚡.</li>
+    <li>🛡️ <strong>Verdedigen</strong>: je krijgt deze ronde maar de helft van de schade, +2 ⚡.</li>
+    <li>★ <strong>Special</strong> (legendaries): vaste zware schade die door verdediging gaat, kost 4 ⚡.</li>
+    <li>🔄 <strong>Wisselen</strong>: ruil je kaart met een kaart van je bank. Gebeurt vóór de aanvallen, +1 ⚡.</li></ul>
+    <p>Elke ronde gebeuren eerst de wissels, daarna valt de kaart met de hoogste ATK eerst aan — die mag dus elke ronde als eerste slaan. Valt een kaart uit, dan komt de volgende uit je team erin. Wie eerst 3 kaarten verliest, verliest.</p>
+    <p><strong>Polycoins</strong>: computer makkelijk/normaal/moeilijk = 5/10/20 (max 5 per dag). Tegen een vriend: winnaar 25, verliezer 5 (max 3 per dag). Opgeven levert niets op.</p>`],
+  friends: ['Vrienden', `
+    <p>Deel je code met collega's, of voer hun code in om een vriendschapsverzoek te sturen.</p>
+    <ul><li>Zodra ze accepteren, kan je elkaars statistieken bekijken, kaarten ruilen en elkaar uitdagen in Battle.</li>
+    <li>Klik op een vriend om zijn of haar statistieken te zien.</li></ul>`],
+  ideas: ['Ideeënbus', `
+    <p>Heb je een idee om de site beter of leuker te maken? Dien het hier in — iedereen kan alle ideeën zien.</p>
+    <ul><li>Stem met ▲ op de ideeën die jij ook wil. Nog eens klikken trekt je stem in.</li>
+    <li>De populairste ideeën staan bovenaan. Seppe duidt aan wat 📅 gepland, ✅ klaar of ❌ niet gepland is.</li>
+    <li>Je kan je eigen ideeën verwijderen.</li></ul>`],
+  shop: ['Shop', `
+    <p>Besteed je polycoins — die verdien je met battles en met dubbele trekkingen.</p>
+    <ul><li><strong>Pakjes</strong>: Basic Pack (1 kaart, 60 🪙) of Epic Pack (3 kaarten, de 3e gegarandeerd epic of legendary, 200 🪙).</li>
+    <li><strong>Dubbels verkopen</strong>: common 15 · epic 40 · legendary 100 · troostkat 5 🪙 per extra exemplaar. Je houdt altijd 1 exemplaar.</li>
+    <li><strong>Wordle-hulp</strong> (op Today, tijdens een ronde): een letter onthullen voor 40 🪙 (max 2 per ronde) of een 7e poging voor 60 🪙.</li></ul>`],
+  trade: ['Traden', `
+    <p>Stel een ruil voor aan een vriend. Je kan enkel <strong>dubbels</strong> aanbieden — je houdt altijd minstens 1 exemplaar van elke kaart over.</p>
+    <ul><li>Je vriend kan accepteren, een tegenbod doen of annuleren.</li>
+    <li>Pas als beide kanten akkoord zijn, worden de kaarten gewisseld.</li></ul>`],
+};
+const infoBtn = key => `<button class="info-btn" type="button" data-info="${key}" aria-label="Uitleg">i</button>`;
+const pageHead = (title, key) => `<div class="page-head"><h2>${title}</h2>${infoBtn(key)}</div>`;
+
+function openInfo(key) {
+  const dlg = $('#infoModal');
+  const [title, html] = INFO[key];
+  dlg.innerHTML = `<div class="infobox"><h2>${title}</h2>${html}<button type="button" class="link" id="infoClose">Sluiten</button></div>`;
+  $('#infoClose').onclick = () => dlg.close();
+  dlg.showModal();
+}
+// Eén keer registreren: werkt voor elke info-knop, ook die later getekend worden
+document.addEventListener('click', e => {
+  const b = e.target.closest('[data-info]');
+  if (b) openInfo(b.dataset.info);
+});
+
+// ---------- Speelse achtergrond: zwevende tegels die reageren op je muis ----------
+function initBackground() {
+  const cv = document.createElement('canvas');
+  cv.id = 'bgfx'; cv.setAttribute('aria-hidden', 'true');
+  document.body.prepend(cv);
+  const ctx = cv.getContext('2d');
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const COLORS = ['#5DA352', '#C9B458', '#8B93A0', '#7C4FE0', '#2FA79E', '#E0584B'];
+  const LETTERS = 'POLYGONCARDSWORDLE';
+  let W = 0, H = 0, shapes = [], bits = [];
+  const ptr = { x: -999, y: -999, px: 0, py: 0, tx: 0, ty: 0 };
+  const rnd = (a, b) => a + Math.random() * (b - a);
+  const pick = arr => arr[Math.floor(Math.random() * arr.length)];
+  const make = y => ({
+    x: rnd(0, W), y: y ?? rnd(0, H), vx: 0, size: rnd(16, 46), z: rnd(.35, 1.2),
+    vy: -rnd(8, 22), rot: rnd(0, 6.28), vr: rnd(-.35, .35),
+    kind: Math.random() < .62 ? 'tile' : 'poly', sides: 3 + Math.floor(rnd(0, 4)),
+    color: pick(COLORS), letter: pick(LETTERS), alpha: rnd(.08, .2)
+  });
+  const resize = () => {
+    const dpr = Math.min(2, devicePixelRatio || 1);
+    W = innerWidth; H = innerHeight;
+    cv.width = W * dpr; cv.height = H * dpr;
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    const want = Math.round(Math.min(48, Math.max(16, W * H / 30000)));
+    while (shapes.length < want) shapes.push(make());
+    shapes.length = want;
+    if (reduce) draw();
+  };
+  const shape = (sh, size) => {
+    if (sh.kind === 'tile') {
+      ctx.beginPath();
+      if (ctx.roundRect) ctx.roundRect(-size / 2, -size / 2, size, size, size * .2); else ctx.rect(-size / 2, -size / 2, size, size);
+      ctx.fillStyle = sh.color; ctx.fill();
+      ctx.fillStyle = 'rgba(255,255,255,.9)';
+      ctx.font = `800 ${size * .58}px 'Bricolage Grotesque', sans-serif`;
+      ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+      ctx.fillText(sh.letter, 0, size * .04);
+    } else {
+      ctx.beginPath();
+      for (let i = 0; i < sh.sides; i++) {
+        const a = i / sh.sides * Math.PI * 2;
+        ctx[i ? 'lineTo' : 'moveTo'](Math.cos(a) * size / 2, Math.sin(a) * size / 2);
+      }
+      ctx.closePath();
+      ctx.lineWidth = 3; ctx.strokeStyle = sh.color; ctx.stroke();
+    }
+  };
+  function draw() {
+    ctx.clearRect(0, 0, W, H);
+    for (const sh of shapes) {
+      ctx.save();
+      ctx.translate(sh.x + ptr.px * 26 * sh.z, sh.y + ptr.py * 26 * sh.z);
+      ctx.rotate(sh.rot); ctx.globalAlpha = sh.alpha;
+      shape(sh, sh.size * sh.z);
+      ctx.restore();
+    }
+    for (const b of bits) {
+      ctx.save(); ctx.translate(b.x, b.y); ctx.rotate(b.rot);
+      ctx.globalAlpha = Math.max(0, b.life) * .9;
+      shape(b, b.size); ctx.restore();
+    }
+  }
+  let last = performance.now();
+  function tick(now) {
+    const dt = Math.min(.05, (now - last) / 1000); last = now;
+    ptr.px += (ptr.tx - ptr.px) * .05; ptr.py += (ptr.ty - ptr.py) * .05;
+    for (const sh of shapes) {
+      // Tegels wijken uit voor de muis
+      const dx = sh.x - ptr.x, dy = sh.y - ptr.y, d2 = dx * dx + dy * dy;
+      if (d2 < 140 * 140) { const f = (1 - Math.sqrt(d2) / 140) * 220; sh.vx += (dx / (Math.sqrt(d2) || 1)) * f * dt; sh.vr += .6 * dt; }
+      sh.vx *= .96; sh.vr = sh.vr * .99 + (sh.vr > 0 ? .002 : -.002);
+      sh.x += sh.vx * dt; sh.y += sh.vy * sh.z * dt; sh.rot += sh.vr * dt;
+      if (sh.y < -70) Object.assign(sh, make(H + 70));
+      if (sh.x < -80) sh.x = W + 70; else if (sh.x > W + 80) sh.x = -70;
+    }
+    for (const b of bits) { b.vy += 520 * dt; b.x += b.vx * dt; b.y += b.vy * dt; b.rot += b.vr * dt; b.life -= dt * .7; }
+    bits = bits.filter(b => b.life > 0 && b.y < H + 60);
+    draw();
+    requestAnimationFrame(tick);
+  }
+  addEventListener('resize', resize);
+  addEventListener('pointermove', e => {
+    ptr.x = e.clientX; ptr.y = e.clientY;
+    ptr.tx = e.clientX / W - .5; ptr.ty = e.clientY / H - .5;
+  }, { passive: true });
+  // Klik of tik op een lege plek: een regen van tegels
+  addEventListener('pointerdown', e => {
+    if (reduce || e.target.closest('button,a,input,textarea,select,label,dialog,.card,.cw,.book,.menu,.stage,table,.friend-row,.trade-card,.battle-box,.battle-row,.stat-card,.pick,.mycode')) return;
+    for (let i = 0; i < 16 && bits.length < 120; i++) {
+      const a = rnd(0, Math.PI * 2), v = rnd(160, 420);
+      bits.push({ x: e.clientX, y: e.clientY, vx: Math.cos(a) * v, vy: Math.sin(a) * v - 220, rot: rnd(0, 6.28), vr: rnd(-8, 8),
+        size: rnd(14, 26), kind: Math.random() < .7 ? 'tile' : 'poly', sides: 3 + Math.floor(rnd(0, 4)),
+        color: pick(COLORS), letter: pick(LETTERS), life: 1 });
+    }
+  });
+  resize();
+  if (!reduce) requestAnimationFrame(tick);
+}
+
+// ---------- Account-bolletje: naam, e-mail, wachtwoord, profielfoto ----------
+function resizeImageToDataUrl(file, maxSize = 200) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onerror = () => reject(new Error('Foto kon niet gelezen worden.'));
+    reader.onload = () => {
+      const img = new Image();
+      img.onerror = () => reject(new Error('Ongeldige afbeelding.'));
+      img.onload = () => {
+        const scale = Math.min(1, maxSize / Math.max(img.width, img.height));
+        const w = Math.round(img.width * scale), h = Math.round(img.height * scale);
+        const canvas = document.createElement('canvas');
+        canvas.width = w; canvas.height = h;
+        canvas.getContext('2d').drawImage(img, 0, 0, w, h);
+        resolve(canvas.toDataURL('image/jpeg', .85));
+      };
+      img.src = reader.result;
+    };
+    reader.readAsDataURL(file);
+  });
+}
+
+function openAccountModal() {
+  const dlg = $('#accModal');
+  let pendingPhoto = state.avatarUrl;
+  const renderBox = () => {
+    const initial = esc((state.name || '?').trim().charAt(0).toUpperCase());
+    dlg.innerHTML = `<div class="accbox">
+      <h2>Account</h2>
+      <p class="hint">Pas je naam, e-mail, wachtwoord of profielfoto aan.</p>
+      <div class="photorow">
+        <div class="photopreview" id="photoPreview" style="${pendingPhoto ? `background-image:url('${esc(pendingPhoto)}')` : ''}">${pendingPhoto ? '' : initial}</div>
+        <div>
+          <input type="file" id="photoInput" accept="image/*" class="sr" />
+          <button type="button" class="link" id="photoBtn">Foto kiezen…</button>
+        </div>
+      </div>
+      <form id="accForm" class="form">
+        <label>Naam<input name="name" value="${esc(state.name)}" required maxlength="30"></label>
+        <label>E-mail<input name="email" type="email" value="${esc(state.session.user.email)}" required></label>
+        <label>Nieuw wachtwoord<input name="password" type="password" minlength="6" autocomplete="new-password" placeholder="Laat leeg om te behouden"></label>
+        <p id="accSaveMsg" role="alert" class="msg"></p>
+        <div class="rowbtns">
+          <button type="button" class="link" id="accCancel">Annuleren</button>
+          <button class="btn" type="submit">Opslaan</button>
+        </div>
+      </form>
+      <div class="acc-switch">
+        <h4>Accounts op dit toestel</h4>
+        ${Object.entries(savedAccounts()).filter(([id]) => id !== state.session.user.id).map(([id, a]) => `
+          <div class="acc-switch-row">
+            <span><strong>${esc(a.name)}</strong><br><small>${esc(a.email)}</small></span>
+            <button type="button" class="btn small" data-switch="${id}">Wisselen</button>
+          </div>`).join('')}
+        <button type="button" class="link" id="accAdd">+ Ander account toevoegen</button>
+        <p id="accSwitchMsg" role="alert" class="msg"></p>
+      </div>
+      <button type="button" class="link danger" id="accLogout">Uitloggen</button>
+    </div>`;
+    $('#accCancel').onclick = () => dlg.close();
+    $('#photoBtn').onclick = () => $('#photoInput').click();
+    $('#photoInput').onchange = async e => {
+      const file = e.target.files[0];
+      if (!file) return;
+      try {
+        pendingPhoto = await resizeImageToDataUrl(file);
+        renderBox();
+      } catch (err) {
+        $('#accSaveMsg').className = 'msg err'; $('#accSaveMsg').textContent = err.message;
+      }
+    };
+    $('#accLogout').onclick = () => { forgetAccount(state.session.user.id); sb.auth.signOut(); };
+    $('#accAdd').onclick = () => addAnotherAccount();
+    dlg.querySelectorAll('[data-switch]').forEach(btn => {
+      btn.onclick = async () => {
+        btn.disabled = true;
+        try { await switchAccount(btn.dataset.switch); dlg.close(); }
+        catch (err) { $('#accSwitchMsg').className = 'msg err'; $('#accSwitchMsg').textContent = err.message; btn.disabled = false; }
+      };
+    });
+    $('#accForm').onsubmit = async e => {
+      e.preventDefault();
+      const f = new FormData(e.target);
+      const msg = $('#accSaveMsg');
+      const btn = e.target.querySelector('button[type=submit]');
+      msg.className = 'msg'; msg.textContent = 'Opslaan…'; btn.disabled = true;
+      try {
+        const name = f.get('name').trim();
+        const email = f.get('email').trim();
+        const password = f.get('password');
+        if (name !== state.name || pendingPhoto !== state.avatarUrl) {
+          const { error } = await sb.from('profiles').update({ display_name: name, avatar_url: pendingPhoto }).eq('id', state.session.user.id);
+          if (error) throw error;
+        }
+        const authUpdates = {};
+        if (email !== state.session.user.email) authUpdates.email = email;
+        if (password) authUpdates.password = password;
+        if (Object.keys(authUpdates).length) {
+          const { error } = await sb.auth.updateUser(authUpdates);
+          if (error) throw error;
+        }
+        state.name = name;
+        state.avatarUrl = pendingPhoto;
+        msg.className = 'msg ok';
+        msg.textContent = authUpdates.email ? 'Opgeslagen! Bevestig je nieuwe e-mailadres via de mail die we stuurden.' : 'Opgeslagen!';
+        setTimeout(() => { dlg.close(); renderMain(); }, authUpdates.email ? 1600 : 500);
+      } catch (err) {
+        msg.className = 'msg err'; msg.textContent = err.message; btn.disabled = false;
+      }
+    };
+  };
+  renderBox();
+  dlg.addEventListener('click', e => { if (e.target === dlg) dlg.close(); }, { once: true });
+  dlg.showModal();
+}
+
+function renderView() {
+  const view = $('#view');
+  if (state.tab === 'today') renderToday(view);
+  else if (state.tab === 'book') renderBook(view);
+  else if (state.tab === 'stats') renderStats(view);
+  else if (state.tab === 'battle') renderBattle(view);
+  else if (state.tab === 'friends') renderFriends(view);
+  else if (state.tab === 'trade') renderTrade(view);
+  else if (state.tab === 'shop') renderShop(view);
+  else if (state.tab === 'ideas') renderIdeas(view);
+}
+
+// ---------- Tab: Today — eigen Wordle, 2 rondes per dag ----------
+// Het woord blijft in Supabase: elke gok gaat naar wordle_guess(), die enkel de kleurtjes teruggeeft.
+const ROUNDS = { 1: { icon: '☀️', name: 'Ochtend' }, 2: { icon: '🌤️', name: 'Middag' } };
+const KB_ROWS = ['QWERTYUIOP', 'ASDFGHJKL', '⏎ZXCVBNM⌫'];
+const wordle = { data: null, slot: null, input: '', busy: false, timer: null, loadedAt: 0 };
+let WORDS = null; // geldige gokwoorden (words.txt), één keer geladen
+
+async function loadWords() {
+  if (!WORDS) {
+    const res = await fetch('words.txt');
+    if (!res.ok) throw new Error('Woordenlijst kon niet geladen worden.');
+    WORDS = new Set((await res.text()).split('\n').map(w => w.trim().toUpperCase()).filter(Boolean));
+  }
+  return WORDS;
+}
+
+const isDone = s => s.status === 'won' || s.status === 'lost';
+const fmtDuration = sec => {
+  const h = Math.floor(sec / 3600), m = Math.floor(sec % 3600 / 60), s = sec % 60;
+  return h ? `${h}u ${String(m).padStart(2, '0')}m` : `${m}m ${String(s).padStart(2, '0')}s`;
+};
+function roundStatus(s) {
+  if (!s.open) return `🔒 opent om ${s.opens}`;
+  if (s.status === 'won') return `✓ opgelost in ${s.attempts}/${s.max_guesses || 6}`;
+  if (s.status === 'lost') return '✗ niet opgelost';
+  if (s.rows.length) return `bezig · ${s.rows.length}/${s.max_guesses || 6}`;
+  return 'klaar om te spelen';
+}
+function roundSummary(s) {
+  if (s.status === 'won') return `Opgelost in ${s.attempts} ${plural(s.attempts)}! Je pakje is geopend.`;
+  if (s.status === 'lost') return `Niet opgelost. Het woord was <strong>${esc(s.answer || '?')}</strong>. Je kreeg een troostkat.`;
+  return '';
+}
+
+function boardHtml(s) {
+  return Array.from({ length: s.max_guesses || 6 }, (_, i) => {
+    const row = s.rows[i];
+    const letters = row ? row.w : (i === s.rows.length && !isDone(s) ? wordle.input : '');
+    return `<div class="wrow" id="wr-${i}">${Array.from({ length: 5 }, (_, j) => {
+      const ch = letters[j] || '';
+      const cls = row ? ` ${row.r[j]}` : ch ? ' filled' : '';
+      return `<div class="wtile${cls}">${esc(ch)}</div>`;
+    }).join('')}</div>`;
+  }).join('');
+}
+
+function keyboardHtml(s) {
+  const rank = { g: 3, y: 2, x: 1 }, best = {};
+  for (const row of s.rows) [...row.w].forEach((ch, i) => {
+    const r = row.r[i];
+    if (!best[ch] || rank[r] > rank[best[ch]]) best[ch] = r;
+  });
+  return KB_ROWS.map(row => `<div class="wkrow">${[...row].map(k => {
+    const wide = k === '⏎' || k === '⌫';
+    const label = k === '⏎' ? 'Enter' : k;
+    return `<button type="button" class="wkey${wide ? ' wide' : ''}${best[k] ? ' ' + best[k] : ''}" data-key="${k}" aria-label="${k === '⌫' ? 'Wissen' : label}">${label}</button>`;
+  }).join('')}</div>`).join('');
+}
+
+async function renderToday(view) {
+  clearInterval(wordle.timer);
+  view.innerHTML = `${welcomeBanner()}<section class="col"><p class="hint">Wordle laden…</p></section>`;
+  attachWelcome();
+  const [{ data, error }] = await Promise.all([sb.rpc('wordle_state'), loadWords().catch(() => null)]);
+  if (state.tab !== 'today') return;
+  if (error) {
+    view.innerHTML = `${welcomeBanner()}<section class="col">${pageHead('Wordle', 'today')}<p class="msg err">De Wordle kon niet geladen worden: ${esc(error.message)}</p></section>`;
+    attachWelcome();
+    return;
+  }
+  wordle.data = data;
+  wordle.loadedAt = Date.now();
+  if (!data.slots.some(s => s.slot === wordle.slot)) wordle.slot = null;
+  if (!wordle.slot) {
+    const playable = data.slots.find(s => s.open && !isDone(s));
+    wordle.slot = playable ? playable.slot : ([...data.slots].reverse().find(s => s.open)?.slot || 1);
+  }
+  wordle.input = '';
+  drawToday(view);
+}
+
+function drawToday(view) {
+  const slots = wordle.data.slots;
+  const s = slots.find(x => x.slot === wordle.slot);
+  const card = s.card_id ? state.cards.find(c => c.id === s.card_id) : null;
+  view.innerHTML = `${welcomeBanner()}<section class="today-grid">
+    <div class="col">
+      ${pageHead('Wordle', 'today')}
+      <div class="round-tabs" id="roundTabs">${roundTabsHtml()}</div>
+      ${s.open ? `
+        <div class="wboard" id="wboard" style="--rows:${s.max_guesses || 6}">${boardHtml(s)}</div>
+        <p class="msg wmsg${isDone(s) ? ' ok' : ''}" id="wmsg" role="alert">${roundSummary(s)}</p>
+        ${isDone(s) ? '' : `<div class="wkeys" id="wkeys">${keyboardHtml(s)}</div>
+        <div class="whelp" id="whelp">${helpHtml(s)}</div>`}`
+      : `<div class="round-closed">
+          <div class="big-lock" aria-hidden="true">🔒</div>
+          <p>De ${ROUNDS[s.slot].name.toLowerCase()}-Wordle opent om <strong>${s.opens}</strong> (Belgische tijd).</p>
+          <p class="countdown" id="wcount"></p>
+        </div>`}
+    </div>
+    <div class="stage" id="stage" aria-live="polite">${card
+      ? `<div class="cardflip">${renderCard(card)}</div>`
+      : '<p class="stage-placeholder">Los de Wordle op en open je pakje.</p>'}</div>
+  </section>`;
+  attachWelcome();
+  bindRoundTabs(view);
+  // Eén handler op het hele toetsenbord: blijft werken als de toetsen opnieuw getekend worden
+  const keys = $('#wkeys');
+  if (keys) keys.onclick = e => { const b = e.target.closest('[data-key]'); if (b) wordleKey(b.dataset.key); };
+  bindHelp(s);
+
+  // Aftellen tot een ronde opent; op 0 herladen we de rondes
+  clearInterval(wordle.timer);
+  const waits = slots.filter(x => !x.open).map(x => wordle.loadedAt + x.seconds_until_open * 1000);
+  if (waits.length) {
+    const openAt = Math.min(...waits);
+    const tick = () => {
+      const left = Math.max(0, Math.round((openAt - Date.now()) / 1000));
+      const el = $('#wcount');
+      if (el) el.textContent = `Nog ${fmtDuration(left)}`;
+      if (left === 0) {
+        clearInterval(wordle.timer);
+        if (state.tab === 'today' && $('#roundTabs')) renderToday(view);
+      }
+    };
+    tick();
+    wordle.timer = setInterval(tick, 1000);
+  }
+}
+
+// Wordle-hulp uit de Shop: onthulde letters + knoppen
+function helpHtml(s) {
+  const hints = s.hints || [];
+  return `${hints.map(h => `<span class="hint-chip">💡 ${esc(h.letter)} op plaats ${h.pos}</span>`).join('')}
+    <button type="button" class="link" data-help="hint" ${hints.length >= 2 ? 'disabled' : ''}>💡 Letter onthullen · ${SHOP.hint} 🪙 (${hints.length}/2)</button>
+    ${(s.max_guesses || 6) < 7 ? `<button type="button" class="link" data-help="extra">➕ 7e poging · ${SHOP.extra} 🪙</button>` : '<span class="hint-chip">➕ 7e poging gekocht</span>'}`;
+}
+function bindHelp(s) {
+  const box = $('#whelp');
+  if (!box) return;
+  box.onclick = async e => {
+    const b = e.target.closest('[data-help]');
+    if (!b || b.disabled || wordle.busy) return;
+    const kind = b.dataset.help;
+    if (!confirm(kind === 'hint' ? `Een letter onthullen voor ${SHOP.hint} polycoins?` : `Een 7e poging kopen voor ${SHOP.extra} polycoins?`)) return;
+    wordle.busy = true;
+    const { data, error } = await sb.rpc(kind === 'hint' ? 'wordle_hint' : 'wordle_extra_guess', { p_slot: s.slot });
+    wordle.busy = false;
+    const msg = $('#wmsg');
+    if (error) { msg.className = 'msg wmsg err'; msg.textContent = error.message; return; }
+    setWallet(data.wallet);
+    if (kind === 'hint') {
+      s.hints = [...(s.hints || []), { pos: data.pos, letter: data.letter }];
+      msg.className = 'msg wmsg ok'; msg.textContent = `De letter ${data.letter} staat op plaats ${data.pos}.`;
+    } else {
+      s.max_guesses = data.max_guesses;
+      $('#wboard').style.setProperty('--rows', s.max_guesses);
+      $('#wboard').innerHTML = boardHtml(s);
+      msg.className = 'msg wmsg ok'; msg.textContent = 'Je hebt nu 7 pogingen voor deze ronde.';
+    }
+    box.innerHTML = helpHtml(s);
+  };
+}
+
+function roundTabsHtml() {
+  return wordle.data.slots.map(x => `<button type="button" class="round-tab${x.slot === wordle.slot ? ' active' : ''}${isDone(x) ? ' done' : ''}" data-round="${x.slot}">
+    <span>${ROUNDS[x.slot].icon} ${ROUNDS[x.slot].name}</span><small>${roundStatus(x)}</small></button>`).join('');
+}
+function bindRoundTabs(view) {
+  view.querySelectorAll('[data-round]').forEach(b => {
+    b.onclick = () => {
+      if (wordle.busy) return;
+      wordle.slot = Number(b.dataset.round); wordle.input = '';
+      drawToday(view);
+    };
+  });
+}
+
+function currentRound() {
+  if (state.tab !== 'today' || !wordle.data || !$('#wboard')) return null;
+  return wordle.data.slots.find(x => x.slot === wordle.slot) || null;
+}
+
+function wordleKey(k) {
+  const s = currentRound();
+  if (!s || !s.open || isDone(s) || wordle.busy) return;
+  if (k === '⌫') { wordle.input = wordle.input.slice(0, -1); return drawInputRow(s); }
+  if (k === '⏎') return submitGuess(s);
+  if (/^[A-Z]$/.test(k) && wordle.input.length < 5) { wordle.input += k; drawInputRow(s); }
+}
+
+function drawInputRow(s) {
+  const row = $(`#wr-${s.rows.length}`);
+  if (!row) return;
+  [...row.children].forEach((t, i) => {
+    t.textContent = wordle.input[i] || '';
+    t.className = 'wtile' + (wordle.input[i] ? ' filled' : '');
+  });
+}
+
+async function submitGuess(s) {
+  const msg = $('#wmsg'), row = $(`#wr-${s.rows.length}`);
+  const fail = text => {
+    msg.className = 'msg wmsg err'; msg.textContent = text;
+    row.classList.remove('shake'); void row.offsetWidth; row.classList.add('shake');
+  };
+  if (wordle.input.length < 5) return fail('Te weinig letters.');
+  if (WORDS && !WORDS.has(wordle.input)) return fail('Dat woord staat niet in de woordenlijst.');
+  wordle.busy = true;
+  msg.className = 'msg wmsg'; msg.textContent = '';
+  const { data, error } = await sb.rpc('wordle_guess', { p_slot: s.slot, p_guess: wordle.input });
+  if (error) { wordle.busy = false; return fail(error.message); }
+
+  s.rows.push({ w: data.guess, r: data.result });
+  wordle.input = '';
+  // Tegels één voor één omdraaien en halverwege hun kleur tonen
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  [...row.children].forEach((t, i) => {
+    t.textContent = data.guess[i];
+    if (reduce) { t.className = `wtile ${data.result[i]}`; return; }
+    t.className = 'wtile filled flip';
+    t.style.setProperty('--i', i);
+    setTimeout(() => { t.className = `wtile flip ${data.result[i]}`; }, i * 220 + 250);
+  });
+  if (!reduce) await sleep(4 * 220 + 520);
+  if ($('#wkeys')) $('#wkeys').innerHTML = keyboardHtml(s);
+
+  if (data.status !== 'playing') {
+    Object.assign(s, { status: data.status, attempts: data.attempts, card_id: data.card.id, answer: data.answer });
+    state.owned.set(data.card.id, (state.owned.get(data.card.id) || 0) + 1);
+    if (data.coinsEarned) { state.wallet += data.coinsEarned; syncCoinUI(); }
+    $('#wkeys')?.remove();
+    $('#whelp')?.remove();
+    msg.className = 'msg wmsg ok'; msg.innerHTML = roundSummary(s);
+    $('#roundTabs').innerHTML = roundTabsHtml();
+    bindRoundTabs($('#view'));
+    const stage = $('#stage');
+    stage.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    await revealCard(data);
+  } else {
+    $('#roundTabs').innerHTML = roundTabsHtml();
+    bindRoundTabs($('#view'));
+  }
+  wordle.busy = false;
+}
+
+// Fysiek toetsenbord (één keer geregistreerd, enkel actief op Today tijdens een ronde)
+document.addEventListener('keydown', e => {
+  if (e.ctrlKey || e.metaKey || e.altKey || document.querySelector('dialog[open]')) return;
+  if (e.target.closest && e.target.closest('input, textarea, select')) return;
+  if (!currentRound()) return;
+  if (e.key === 'Enter') { e.preventDefault(); wordleKey('⏎'); }
+  else if (e.key === 'Backspace') { e.preventDefault(); wordleKey('⌫'); }
+  else if (/^[a-z]$/i.test(e.key)) wordleKey(e.key.toUpperCase());
+});
+
+// Deeltjes rond een net onthulde kaart
+function particlesHtml(rarity) {
+  const colors = PARTICLE_COLORS[rarity] || PARTICLE_COLORS.common;
+  const n = rarity === 'legendary' ? 28 : rarity === 'epic' ? 20 : 12;
+  return `<div class="particles">${Array.from({ length: n }, () => {
+    const a = Math.random() * 360, d = 70 + Math.random() * 90, delay = Math.random() * .25;
+    const c = colors[Math.floor(Math.random() * colors.length)];
+    return `<span class="particle" style="--a:${a}deg;--d:${d}px;--pd:${delay}s;--pc:${c}"></span>`;
+  }).join('')}</div>`;
+}
+
+// Toont een pakje; na een tik scheurt het open, schuiven de kaarten eruit en draaien ze om.
+// Gebruikt voor de dagelijkse trekking (1 kaart) en het welkomstpakket (3 kaarten).
+async function openPack(stage, cards) {
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const best = cards.map(c => c.rarity).sort((x, y) => RARITY_ORDER[x] - RARITY_ORDER[y])[0];
+  const results = () => `<div class="pack-results${cards.length > 1 ? ' multi' : ''}">${cards.map((c, i) =>
+    `<div class="pack-slot" data-slot="${i}"><div class="flipper">${reduce ? renderCard(c) : renderCardBack(c)}</div></div>`).join('')}</div>`;
+  if (reduce) { stage.innerHTML = results(); return; }
+
+  stage.innerHTML = `<div class="pack-stage">
+    <button class="pack r-${best}" type="button" id="packBtn" aria-label="Pakje openen">
+      <div class="pack-card">${renderCardBack(cards[0])}</div>
+      <div class="pack-body"><div class="pack-label" aria-hidden="true"><span class="pack-logo">POLYGON</span><span class="pack-sub">TRADING CARDS</span><span class="pack-count">${cards.length === 1 ? '1 kaart' : `${cards.length} kaarten`}</span></div></div>
+      <div class="pack-top"></div>
+    </button>
+    <p class="pack-hint">Tik op het pakje om het open te scheuren</p>
+  </div>`;
+  const pack = $('#packBtn', stage);
+  pack.focus({ preventScroll: true });
+  await new Promise(resolve => { pack.onclick = resolve; });
+  pack.onclick = null;
+  stage.querySelector('.pack-hint').textContent = '';
+  pack.classList.add('opening'); await sleep(560);
+  pack.classList.add('torn'); await sleep(1000);
+  pack.classList.add('done'); await sleep(450);
+
+  stage.innerHTML = results();
+  for (const [i, c] of cards.entries()) {
+    const slot = stage.querySelector(`[data-slot="${i}"]`), flip = slot.querySelector('.flipper');
+    await sleep(i ? 350 : 150);
+    flip.classList.add('turning'); await sleep(220);
+    flip.innerHTML = renderCard(c);
+    slot.insertAdjacentHTML('afterbegin', `<div class="glow ${c.rarity}" style="animation-delay:0s"></div>${particlesHtml(c.rarity)}`);
+    flip.classList.add('turning-back'); flip.classList.remove('turning'); await sleep(220);
+    flip.classList.remove('turning-back');
+    if (c.rarity === 'epic' || c.rarity === 'legendary') {
+      slot.classList.add('shake'); setTimeout(() => slot.classList.remove('shake'), 420);
+    }
+  }
+}
+
+function confettiHtml() {
+  return `<div class="confetti">${Array.from({ length: 24 }, () => {
+    const left = Math.random() * 100, delay = Math.random() * .6;
+    const c = ['#E8C34C', '#F0897E', '#8B5CF6', '#4C8A47'][Math.floor(Math.random() * 4)];
+    return `<span style="--l:${left}%;--cd:${delay}s;--cc:${c}"></span>`;
+  }).join('')}</div>`;
+}
+
+async function revealCard(res) {
+  const stage = $('#stage');
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  await openPack(stage, [res.card]);
+  const text = res.solved
+    ? (res.isDuplicate
+        ? (res.cardAdded
+            ? `Opgelost in ${res.attempts} ${plural(res.attempts)}. Je had "${esc(res.card.name)}" al — nu heb je een dubbel om te ruilen, plus ${res.coinsEarned} polycoins.`
+            : `Opgelost in ${res.attempts} ${plural(res.attempts)}. Je had "${esc(res.card.name)}" al — omgezet in ${res.coinsEarned} polycoins.`)
+        : `Opgelost in ${res.attempts} ${plural(res.attempts)}. Je trok een ${RARITY_LABEL[res.rarity]}-kaart.`)
+    : `Niet opgelost${res.answer ? ` — het woord was ${esc(res.answer)}` : ''}. Je krijgt een troostkat.`;
+  stage.insertAdjacentHTML('beforeend', `${!reduce && res.rarity === 'legendary' ? confettiHtml() : ''}<p class="result">${text}</p>`);
+}
+
+// ---------- Welkomstpakket (eenmalig, 3 random commons) ----------
+function welcomeBanner() {
+  if (!state.welcomeAvailable) return '';
+  return `<div class="welcome-banner">
+    <div><strong>Welkom bij Polygon Trading Cards!</strong><br>Je welkomstpakket met 3 kaarten staat klaar.</div>
+    <button class="btn small" id="claimWelcome" type="button">Open je welkomstpakket</button>
+  </div>`;
+}
+
+function attachWelcome() {
+  const btn = $('#claimWelcome');
+  if (!btn) return;
+  btn.onclick = async () => {
+    btn.disabled = true;
+    const { data, error } = await sb.rpc('claim_welcome_pack');
+    if (error) { alert(error.message); btn.disabled = false; return; }
+    state.welcomeAvailable = false;
+    for (const c of data) state.owned.set(c.id, (state.owned.get(c.id) || 0) + 1);
+    const dlg = $('#packModal');
+    dlg.innerHTML = `<div class="packbox"><h2>Je welkomstpakket</h2><div class="stage" id="packStage"></div><div id="packDone"></div></div>`;
+    dlg.showModal();
+    await openPack($('#packStage'), data);
+    $('#packDone').innerHTML = `<p class="result">Deze 3 kaarten staan nu in je boek. Veel plezier met verzamelen!</p>
+      <button class="btn small" id="packClose" type="button">Verder</button>`;
+    $('#packClose').onclick = () => { dlg.close(); renderMain(); };
+  };
+}
+
+// ---------- Tab: Mijn boek ----------
+function bookGroups() {
+  const groups = [];
+  for (const c of state.cards) {
+    let g = groups.find(x => x.name === c.person);
+    if (!g) { g = { name: c.person, cards: [] }; groups.push(g); }
+    g.cards.push(c);
+  }
+  for (const g of groups) g.cards.sort((a, b) => a.slot - b.slot);
+  // Troostkatten altijd na de collega's, ook als er later nieuwe collega's bijkomen
+  const cats = groups.findIndex(g => g.name === 'Katten');
+  if (cats >= 0) groups.push(...groups.splice(cats, 1));
+  // Extra pagina achteraan met alle kaarten die je meer dan één keer hebt
+  const dupeCards = state.cards
+    .filter(c => (state.owned.get(c.id) || 0) > 1)
+    .sort((a, b) => (state.owned.get(b.id) - state.owned.get(a.id)) || (RARITY_ORDER[a.rarity] - RARITY_ORDER[b.rarity]));
+  groups.push({ name: 'Dubbels', dupes: true, cards: dupeCards });
+  return groups;
+}
+const ownedCount = id => state.owned.get(id) || (state.isAdmin ? 1 : 0);
+const ownedIn = g => g.cards.filter(c => ownedCount(c.id)).length;
+
+function renderBook(view) {
+  const groups = bookGroups();
+  if (!groups.length) { view.innerHTML = '<p class="hint">Er zijn nog geen kaarten in de database.</p>'; return; }
+  if (state.page >= groups.length) state.page = 0;
+  drawBook(view, groups, false);
+}
+
+function drawBook(view, groups, animate) {
+  const g = groups[state.page];
+  const people = groups.filter(x => x.name !== 'Katten' && !x.dupes);
+  const total = people.reduce((n, x) => n + x.cards.length, 0);
+  const have = people.reduce((n, x) => n + ownedIn(x), 0);
+  const dupes = [...state.owned.values()].reduce((n, v) => n + (v - 1), 0);
+
+  view.innerHTML = `<div class="book"><div class="spread">
+    <nav class="index-page" aria-label="Collega's">
+      <h3 class="index-title">Verzamelboek ${infoBtn('book')}</h3>
+      <p class="sub">${have}/${total} kaarten${dupes ? ` · ${dupes} dubbel` : ''}</p>
+      <ul class="index-list">${groups.map((x, i) =>
+        `<li${x.dupes ? ' class="index-dupes"' : ''}><button data-i="${i}" aria-current="${i === state.page}">${esc(x.name)}<span class="frac">${x.dupes ? `${dupes} extra` : `${ownedIn(x)}/${x.cards.length}`}</span></button></li>`).join('')}</ul>
+    </nav>
+    <div class="page-body${animate ? ' turning' : ''}">
+      <h3 class="pname">${esc(g.name)}</h3>
+      <p class="pcount">${g.dupes
+        ? (g.cards.length ? `${g.cards.length} ${g.cards.length === 1 ? 'kaart' : 'kaarten'} met dubbels · ${dupes} extra ${dupes === 1 ? 'exemplaar' : 'exemplaren'}. Ruil ze met vrienden via Traden.` : '')
+        : `${ownedIn(g)} van ${g.cards.length} verzameld`}</p>
+      ${g.dupes && !g.cards.length ? '<p class="pcount">Je hebt nog geen dubbele kaarten. Trek je een kaart die je al hebt, dan komt ze hier terecht.</p>' : ''}
+      <div class="grid">${g.cards.map(c => {
+        const n = ownedCount(c.id);
+        return n
+          ? `<button class="slot" type="button" data-zoom="${c.id}" aria-label="${esc(c.name)} groot bekijken">${renderCard(c, { count: n })}</button>`
+          : `<div class="slot">${renderCard(c, { locked: true })}</div>`;
+      }).join('')}</div>
+      <div class="pageturn">
+        <button id="prevp" ${state.page === 0 ? 'disabled' : ''}>← Vorige</button>
+        <span class="pnum">${state.page + 1} / ${groups.length}</span>
+        <button id="nextp" ${state.page === groups.length - 1 ? 'disabled' : ''}>Volgende →</button>
+      </div>
+    </div>
+  </div></div>`;
+
+  view.querySelectorAll('.index-list button').forEach(b => {
+    b.onclick = () => { state.page = Number(b.dataset.i); drawBook(view, groups, true); };
+  });
+  $('#prevp', view).onclick = () => { state.page = Math.max(0, state.page - 1); drawBook(view, groups, true); };
+  $('#nextp', view).onclick = () => { state.page = Math.min(groups.length - 1, state.page + 1); drawBook(view, groups, true); };
+  view.querySelectorAll('[data-zoom]').forEach(b => {
+    b.onclick = () => openZoom(state.cards.find(c => c.id === Number(b.dataset.zoom)));
+  });
+}
+
+// ---------- Tab: Statistieken ----------
+// Alle gespeelde Wordles: de oude dagtrekkingen (daily_plays) + de nieuwe rondes (wordle_games)
+async function loadPlays(userId, isFriend = false) {
+  const [old, games] = await Promise.all([
+    sb.from('daily_plays').select('play_date, solved, attempts').eq('user_id', userId),
+    isFriend
+      ? sb.rpc('friend_wordle_stats', { p_friend: userId })
+      : sb.from('wordle_games').select('round_date, status, attempts').eq('user_id', userId).neq('status', 'playing'),
+  ]);
+  if (old.error) throw old.error;
+  const rows = [...(old.data || [])];
+  if (!games.error) for (const g of games.data || []) {
+    rows.push(isFriend ? g : { play_date: g.round_date, solved: g.status === 'won', attempts: g.attempts });
+  }
+  return rows.sort((a, b) => (a.play_date < b.play_date ? -1 : a.play_date > b.play_date ? 1 : 0));
+}
+
+async function renderStats(view) {
+  view.innerHTML = `<section class="col" style="max-width:none"><p class="hint">Statistieken laden…</p></section>`;
+  const uid = state.session.user.id;
+  let data;
+  try { data = await loadPlays(uid); }
+  catch (error) { view.innerHTML = `<section class="col"><p class="msg err">${esc(error.message)}</p></section>`; return; }
+  view.innerHTML = `<section class="col" style="max-width:none">
+    ${pageHead('Mijn statistieken', 'stats')}
+    ${statsHtml(data || [])}
+  </section>`;
+}
+
+// Statistiek-tegels + verdeling van pogingen; gebruikt voor jezelf en voor vrienden
+function statsHtml(plays, extraCards = '') {
+  const total = plays.length;
+  const solvedCount = plays.filter(p => p.solved).length;
+  const catCount = total - solvedCount;
+
+  // Streak: aantal opeenvolgende dagen (tot en met vandaag of gisteren) dat er gespeeld is.
+  const playedDates = new Set(plays.map(p => p.play_date));
+  let streak = 0;
+  let cursor = new Date(todayBrussels() + 'T00:00:00');
+  if (!playedDates.has(todayBrussels())) cursor.setDate(cursor.getDate() - 1);
+  while (playedDates.has(cursor.toLocaleDateString('sv-SE'))) {
+    streak++;
+    cursor.setDate(cursor.getDate() - 1);
+  }
+
+  // Verdeling van het aantal pogingen
+  const dist = { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0 };
+  for (const p of plays) if (p.solved && dist[p.attempts] !== undefined) dist[p.attempts]++;
+  const maxDist = Math.max(1, ...Object.values(dist));
+
+  return `<div class="stats-wrap"><div>
+    <div class="stat-cards">
+      <div class="stat-card"><span class="stat-num">${total}</span><span class="stat-label">Totaal gespeeld</span></div>
+      <div class="stat-card"><span class="stat-num">${streak}</span><span class="stat-label">Huidige streak (dagen)</span></div>
+      <div class="stat-card"><span class="stat-num">${solvedCount}</span><span class="stat-label">Opgelost</span></div>
+      <div class="stat-card"><span class="stat-num">${catCount}</span><span class="stat-label">Troostkatten</span></div>
+      ${extraCards}
+    </div></div><div>
+    <h3 class="bars-title">Aantal pogingen bij oplossen</h3>
+    <div class="bars">
+      ${[1, 2, 3, 4, 5, 6].map(n => `
+        <div class="bar-row">
+          <span class="bar-label">${n} ${plural(n)}</span>
+          <div class="bar-track"><div class="bar-fill" style="width:${(dist[n] / maxDist) * 100}%"></div></div>
+          <span class="bar-val">${dist[n]}</span>
+        </div>`).join('')}
+    </div></div></div>`;
+}
+
+// ---------- Tab: Vrienden ----------
+const friendAv = p => `<span class="friend-av" style="${p.avatar_url ? `background-image:url('${esc(p.avatar_url)}')` : ''}">${p.avatar_url ? '' : esc((p.display_name || '?').charAt(0).toUpperCase())}</span>`;
+
+async function renderFriends(view) {
+  view.innerHTML = `<section class="col" style="max-width:none"><p class="hint">Laden…</p></section>`;
+  const uid = state.session.user.id;
+  const [friendRows, requestRows] = await Promise.all([
+    sb.from('friendships').select('friend_id').eq('user_id', uid),
+    sb.from('friend_requests').select('id, sender_id, recipient_id').or(`sender_id.eq.${uid},recipient_id.eq.${uid}`).order('created_at', { ascending: false }),
+  ]);
+  const loadErr = friendRows.error || requestRows.error;
+  if (loadErr) { view.innerHTML = `<section class="col"><p class="msg err">${esc(loadErr.message)}</p></section>`; return; }
+  const friendIds = friendRows.data.map(r => r.friend_id);
+  const incoming = requestRows.data.filter(r => r.recipient_id === uid);
+  const outgoing = requestRows.data.filter(r => r.sender_id === uid);
+  const ids = [...new Set([...friendIds, ...incoming.map(r => r.sender_id), ...outgoing.map(r => r.recipient_id)])];
+  const profiles = {};
+  if (ids.length) {
+    const { data: profs, error: pErr } = await sb.from('profiles').select('id, display_name, avatar_url').in('id', ids);
+    if (pErr) { view.innerHTML = `<section class="col"><p class="msg err">${esc(pErr.message)}</p></section>`; return; }
+    for (const p of profs || []) profiles[p.id] = p;
+  }
+  const prof = id => profiles[id] || { id, display_name: '…' };
+  const friends = friendIds.map(prof).sort((a, b) => (a.display_name || '').localeCompare(b.display_name || ''));
+  state.incomingRequests = incoming.length;
+  syncFriendBadge();
+
+  view.innerHTML = `<section class="col" style="max-width:none">
+    ${pageHead('Vrienden', 'friends')}
+    <div class="two-col">
+    <div>
+    <div class="mycode">
+      <span class="mycode-label">Jouw code</span>
+      <span class="mycode-value" id="myCode">${esc(state.friendCode)}</span>
+      <button class="link" id="copyCode" type="button">Kopiëren</button>
+    </div>
+    <form id="addFriendForm" class="form" style="margin-top:16px;max-width:420px">
+      <label>Vriendencode<input id="friendCodeInput" maxlength="6" autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="bv. 4F9K2A"></label>
+      <p id="addFriendMsg" class="msg" role="alert"></p>
+      <button class="btn" type="submit">Verzoek versturen</button>
+    </form>
+    ${incoming.length ? `
+      <h3 style="margin-top:22px">Vriendschapsverzoeken (${incoming.length})</h3>
+      <ul class="friend-list">${incoming.map(r => `
+        <li class="friend-row">
+          ${friendAv(prof(r.sender_id))}
+          <span class="friend-name">${esc(prof(r.sender_id).display_name)}</span>
+          <button class="btn small" data-req="${r.id}" data-action="accept" type="button">Accepteren</button>
+          <button class="link danger" data-req="${r.id}" data-action="decline" type="button">Weigeren</button>
+        </li>`).join('')}</ul>` : ''}
+    ${outgoing.length ? `
+      <h3 style="margin-top:22px">Verstuurde verzoeken</h3>
+      <ul class="friend-list">${outgoing.map(r => `
+        <li class="friend-row">
+          ${friendAv(prof(r.recipient_id))}
+          <span class="friend-name">${esc(prof(r.recipient_id).display_name)}</span>
+          <span class="pill">In afwachting</span>
+          <button class="link danger" data-req="${r.id}" data-action="cancel" type="button">Annuleren</button>
+        </li>`).join('')}</ul>` : ''}
+    </div>
+    <div>
+    <h3>Jouw vrienden${friends.length ? ` (${friends.length})` : ''}</h3>
+    ${friends.length
+      ? `<ul class="friend-list">${friends.map(f => `
+          <li class="friend-row">
+            <button class="friend-open" data-open="${f.id}" type="button">
+              ${friendAv(f)}
+              <span class="friend-name">${esc(f.display_name)}</span>
+              <span class="friend-more" aria-hidden="true">Statistieken ›</span>
+            </button>
+            <button class="link danger" data-remove="${f.id}" type="button">Verwijderen</button>
+          </li>`).join('')}</ul>`
+      : `<p class="hint">Je hebt nog geen vrienden.</p>`}
+    </div>
+    </div>
+  </section>`;
+
+  $('#copyCode').onclick = async () => {
+    try { await navigator.clipboard.writeText(state.friendCode); $('#copyCode').textContent = 'Gekopieerd!'; }
+    catch (_) { /* stil negeren als clipboard niet beschikbaar is */ }
+  };
+
+  $('#addFriendForm').onsubmit = async e => {
+    e.preventDefault();
+    const msg = $('#addFriendMsg');
+    const code = $('#friendCodeInput').value.trim().toUpperCase();
+    msg.className = 'msg'; msg.textContent = 'Bezig…';
+    try {
+      if (!code) throw new Error('Vul een code in.');
+      const { data, error } = await sb.rpc('send_friend_request', { p_code: code });
+      if (error) throw error;
+      msg.className = 'msg ok';
+      msg.textContent = data.status === 'accepted'
+        ? `${data.name} had jou al een verzoek gestuurd — jullie zijn nu vrienden!`
+        : `Vriendschapsverzoek verstuurd naar ${data.name}.`;
+      setTimeout(() => renderFriends(view), 900);
+    } catch (err) {
+      msg.className = 'msg err'; msg.textContent = err.message;
+    }
+  };
+
+  view.querySelectorAll('[data-req]').forEach(btn => {
+    btn.onclick = async () => {
+      if (btn.dataset.action === 'decline' && !confirm('Dit vriendschapsverzoek weigeren?')) return;
+      btn.disabled = true;
+      const { error } = await sb.rpc('respond_friend_request', { p_request_id: Number(btn.dataset.req), p_action: btn.dataset.action });
+      if (error) { alert(error.message); btn.disabled = false; return; }
+      renderFriends(view);
+    };
+  });
+
+  view.querySelectorAll('[data-open]').forEach(btn => {
+    btn.onclick = () => openFriendStats(profiles[btn.dataset.open]);
+  });
+
+  view.querySelectorAll('[data-remove]').forEach(btn => {
+    btn.onclick = async () => {
+      const targetId = btn.dataset.remove;
+      if (!confirm('Deze vriend verwijderen?')) return;
+      btn.disabled = true;
+      const { error } = await sb.from('friendships').delete()
+        .or(`and(user_id.eq.${uid},friend_id.eq.${targetId}),and(user_id.eq.${targetId},friend_id.eq.${uid})`);
+      if (error) { alert(error.message); btn.disabled = false; return; }
+      renderFriends(view);
+    };
+  });
+}
+
+// Pop-up met de statistieken en verzameling van een vriend
+async function openFriendStats(f) {
+  const dlg = $('#friendModal');
+  const head = `<div class="statbox-head">${friendAv(f)}<h2>${esc(f.display_name)}</h2></div>`;
+  dlg.innerHTML = `<div class="accbox statbox">${head}<p class="hint">Statistieken laden…</p></div>`;
+  dlg.showModal();
+  const [plays, cards] = await Promise.all([
+    loadPlays(f.id, true).then(data => ({ data }), error => ({ error })),
+    sb.from('user_cards').select('card_id').eq('user_id', f.id),
+  ]);
+  const err = plays.error || cards.error;
+  const collectible = state.cards.filter(c => c.rarity !== 'cat');
+  const owned = new Set((cards.data || []).map(r => r.card_id));
+  const have = collectible.filter(c => owned.has(c.id)).length;
+  const legendaries = collectible.filter(c => c.rarity === 'legendary' && owned.has(c.id)).length;
+  const extra = `
+    <div class="stat-card"><span class="stat-num">${have}/${collectible.length}</span><span class="stat-label">Kaarten verzameld</span></div>
+    <div class="stat-card"><span class="stat-num">${legendaries}</span><span class="stat-label">Legendaries</span></div>`;
+  dlg.innerHTML = `<div class="accbox statbox">
+    ${head}
+    ${err ? `<p class="msg err">${esc(err.message)}</p>` : statsHtml(plays.data || [], extra)}
+    <button type="button" class="link" id="friendClose">Sluiten</button>
+  </div>`;
+  $('#friendClose').onclick = () => dlg.close();
+}
+
+// ---------- Tab: Traden ----------
+function tradeCardLine(ids) {
+  if (!ids || !ids.length) return '<span class="hint" style="margin:0">— niets —</span>';
+  const counts = countByCard(ids.map(card_id => ({ card_id })));
+  return [...counts.entries()].map(([cardId, n]) => {
+    const c = state.cards.find(x => x.id === cardId);
+    if (!c) return '';
+    return `<span class="trade-chip r-${c.rarity}">${n > 1 ? `${n}× ` : ''}${esc(c.name)}</span>`;
+  }).join('');
+}
+
+async function renderTrade(view) {
+  view.innerHTML = `<section class="col" style="max-width:none"><p class="hint">Laden…</p></section>`;
+  const uid = state.session.user.id;
+  const [friendRows, tradeRows] = await Promise.all([
+    sb.from('friendships').select('friend_id').eq('user_id', uid),
+    sb.from('trade_requests').select('*').or(`proposer_id.eq.${uid},recipient_id.eq.${uid}`).eq('status', 'pending').order('updated_at', { ascending: false }),
+  ]);
+  if (friendRows.error) { view.innerHTML = `<section class="col"><p class="msg err">${esc(friendRows.error.message)}</p></section>`; return; }
+  const friendIds = (friendRows.data || []).map(r => r.friend_id);
+  let friends = [];
+  if (friendIds.length) {
+    const { data: profs } = await sb.from('profiles').select('id, display_name, avatar_url').in('id', friendIds);
+    friends = profs || [];
+  }
+  const trades = tradeRows.data || [];
+  const otherIds = [...new Set(trades.flatMap(t => [t.proposer_id, t.recipient_id]))].filter(id => id !== uid);
+  let others = {};
+  if (otherIds.length) {
+    const { data: profs2 } = await sb.from('profiles').select('id, display_name').in('id', otherIds);
+    for (const p of (profs2 || [])) others[p.id] = p.display_name;
+  }
+
+  if (!friends.length) {
+    view.innerHTML = `<section class="col soon">
+      ${pageHead('Traden', 'trade')}
+      <p class="hint">Voeg eerst een vriend toe via <strong>Friends</strong> in het menu om te kunnen ruilen.</p>
+    </section>`;
+    return;
+  }
+
+  view.innerHTML = `<section class="col" style="max-width:none">
+    ${pageHead('Traden', 'trade')}
+    <h3>Nieuw ruilvoorstel</h3>
+    <label style="display:block;max-width:340px;margin-bottom:16px">
+      <span style="display:block;font-weight:600;color:var(--ink-soft);margin-bottom:7px">Met wie wil je ruilen?</span>
+      <select id="tradeFriend" class="tselect">
+        <option value="">Kies een vriend…</option>
+        ${friends.map(f => `<option value="${f.id}">${esc(f.display_name)}</option>`).join('')}
+      </select>
+    </label>
+    <div id="tradeBuilder"></div>
+
+    <h3 style="margin-top:26px">Jouw ruilvoorstellen${trades.length ? ` (${trades.length})` : ''}</h3>
+    ${trades.length ? `<div class="trade-list">${trades.map(t => {
+      const iAmProposer = t.proposer_id === uid;
+      const otherName = others[iAmProposer ? t.recipient_id : t.proposer_id] || '…';
+      const myCards = iAmProposer ? t.proposer_cards : t.recipient_cards;
+      const theirCards = iAmProposer ? t.recipient_cards : t.proposer_cards;
+      const myTurn = t.turn === uid;
+      return `<div class="trade-card">
+        <div class="trade-row"><span class="trade-side-label">Jij geeft</span>${tradeCardLine(myCards)}</div>
+        <div class="trade-arrow">⇄ ${esc(otherName)}</div>
+        <div class="trade-row"><span class="trade-side-label">Jij krijgt</span>${tradeCardLine(theirCards)}</div>
+        <div class="trade-actions">
+          ${myTurn
+            ? `<span class="pill pill-turn">Jouw beurt</span>
+               <button class="btn small" data-accept="${t.id}">Accepteren</button>
+               <button class="link" data-counter="${t.id}">Tegenbod</button>
+               <button class="link danger" data-cancel="${t.id}">Annuleren</button>`
+            : `<span class="pill">Wachten op ${esc(otherName)}</span>
+               <button class="link danger" data-cancel="${t.id}">Annuleren</button>`}
+        </div>
+        <p class="tmsg msg" id="tmsg-${t.id}"></p>
+      </div>`;
+    }).join('')}</div>` : `<p class="hint">Je hebt momenteel geen openstaande ruilvoorstellen.</p>`}
+  </section>`;
+
+  $('#tradeFriend').onchange = e => {
+    const fid = e.target.value;
+    if (!fid) { $('#tradeBuilder').innerHTML = ''; return; }
+    drawTradeBuilder(fid, friends.find(f => f.id === fid)?.display_name || '');
+  };
+
+  view.querySelectorAll('[data-accept]').forEach(btn => btn.onclick = () => respondTrade(btn.dataset.accept, 'accept'));
+  view.querySelectorAll('[data-cancel]').forEach(btn => btn.onclick = () => respondTrade(btn.dataset.cancel, 'cancel'));
+  view.querySelectorAll('[data-counter]').forEach(btn => btn.onclick = () => {
+    const t = trades.find(x => x.id === Number(btn.dataset.counter));
+    openCounterBuilder(t, others);
+  });
+}
+
+async function respondTrade(tradeId, action, extra = {}) {
+  const msg = $(`#tmsg-${tradeId}`);
+  if (msg) { msg.className = 'msg'; msg.textContent = 'Bezig…'; }
+  try {
+    const { error } = await sb.rpc('respond_trade', { p_trade_id: Number(tradeId), p_action: action, ...extra });
+    if (error) throw error;
+    await loadData();
+    renderTrade($('#view'));
+  } catch (err) {
+    if (msg) { msg.className = 'msg err'; msg.textContent = err.message; }
+    else alert(err.message);
+  }
+}
+
+async function drawTradeBuilder(friendId, friendName, prefill = null) {
+  const host = $('#tradeBuilder');
+  host.innerHTML = '<p class="hint">Dubbels laden…</p>';
+  const uid = state.session.user.id;
+  const [mineRes, theirsRes] = await Promise.all([
+    sb.from('user_cards').select('card_id').eq('user_id', uid),
+    sb.from('user_cards').select('card_id').eq('user_id', friendId),
+  ]);
+  if (mineRes.error || theirsRes.error) { host.innerHTML = `<p class="msg err">${esc((mineRes.error || theirsRes.error).message)}</p>`; return; }
+  const mine = countByCard(mineRes.data || []);
+  const theirs = countByCard(theirsRes.data || []);
+  const myDupes = [...mine.entries()].filter(([, n]) => n > 1);
+  const theirDupes = [...theirs.entries()].filter(([, n]) => n > 1);
+
+  const pick = { mine: new Map(), theirs: new Map() }; // card_id -> aantal geselecteerd
+  if (prefill) {
+    for (const id of prefill.mine) pick.mine.set(id, (pick.mine.get(id) || 0) + 1);
+    for (const id of prefill.theirs) pick.theirs.set(id, (pick.theirs.get(id) || 0) + 1);
+  }
+
+  const rowHtml = (side, cardId, max, selected) => {
+    const c = state.cards.find(x => x.id === cardId);
+    if (!c) return '';
+    return `<div class="dup-row">
+      <span class="trade-chip r-${c.rarity}">${esc(c.name)}</span>
+      <span class="dup-owned">(${max + 1}× in bezit)</span>
+      <div class="stepper">
+        <button type="button" class="step-btn" data-side="${side}" data-card="${cardId}" data-d="-1">−</button>
+        <span class="step-val" data-val="${side}-${cardId}">${selected}</span>
+        <button type="button" class="step-btn" data-side="${side}" data-card="${cardId}" data-d="1">+</button>
+      </div>
+    </div>`;
+  };
+
+  const draw = () => {
+    host.innerHTML = `<div class="trade-builder">
+      <div>
+        <h4>Jouw dubbels</h4>
+        ${myDupes.length ? myDupes.map(([id, n]) => rowHtml('mine', id, n - 1, pick.mine.get(id) || 0)).join('') : '<p class="hint">Je hebt geen dubbels.</p>'}
+      </div>
+      <div>
+        <h4>Dubbels van ${esc(friendName)}</h4>
+        ${theirDupes.length ? theirDupes.map(([id, n]) => rowHtml('theirs', id, n - 1, pick.theirs.get(id) || 0)).join('') : '<p class="hint">Geen dubbels bekend.</p>'}
+      </div>
+    </div>
+    <p id="builderMsg" class="msg" role="alert"></p>
+    <button class="btn" id="sendTrade" type="button" style="max-width:280px">${prefill ? 'Tegenbod versturen' : 'Ruilvoorstel versturen'}</button>`;
+
+    host.querySelectorAll('.step-btn').forEach(btn => {
+      btn.onclick = () => {
+        const side = btn.dataset.side, cardId = Number(btn.dataset.card), d = Number(btn.dataset.d);
+        const map = pick[side];
+        const max = side === 'mine' ? mine.get(cardId) - 1 : theirs.get(cardId) - 1;
+        const cur = map.get(cardId) || 0;
+        const next = Math.max(0, Math.min(max, cur + d));
+        map.set(cardId, next);
+        host.querySelector(`[data-val="${side}-${cardId}"]`).textContent = next;
+      };
+    });
+
+    $('#sendTrade').onclick = async () => {
+      const bMsg = $('#builderMsg');
+      const myCards = [...pick.mine.entries()].flatMap(([id, n]) => Array(n).fill(id));
+      const theirCards = [...pick.theirs.entries()].flatMap(([id, n]) => Array(n).fill(id));
+      if (!myCards.length && !theirCards.length) { bMsg.className = 'msg err'; bMsg.textContent = 'Selecteer minstens één kaart.'; return; }
+      bMsg.className = 'msg'; bMsg.textContent = 'Versturen…';
+      try {
+        if (prefill) {
+          await respondTrade(prefill.tradeId, 'counter', { p_proposer_cards: prefill.proposerIsMe ? myCards : theirCards, p_recipient_cards: prefill.proposerIsMe ? theirCards : myCards });
+        } else {
+          const { error } = await sb.rpc('create_trade', { p_friend_id: friendId, p_my_cards: myCards, p_their_cards: theirCards });
+          if (error) throw error;
+          bMsg.className = 'msg ok'; bMsg.textContent = 'Voorstel verstuurd!';
+          setTimeout(() => renderTrade($('#view')), 600);
+        }
+      } catch (err) {
+        bMsg.className = 'msg err'; bMsg.textContent = err.message;
+      }
+    };
+  };
+  draw();
+}
+
+function openCounterBuilder(t, others) {
+  const uid = state.session.user.id;
+  const proposerIsMe = t.proposer_id === uid;
+  const otherId = proposerIsMe ? t.recipient_id : t.proposer_id;
+  const otherName = others[otherId] || '…';
+  $('#tradeFriend').value = '';
+  drawTradeBuilder(otherId, otherName, {
+    tradeId: t.id,
+    proposerIsMe,
+    mine: proposerIsMe ? t.proposer_cards : t.recipient_cards,
+    theirs: proposerIsMe ? t.recipient_cards : t.proposer_cards,
+  });
+  $('#tradeBuilder').scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+
+// ---------- Tab: Shop — alles wordt server-side afgerekend (schema-v10-shop.sql) ----------
+const SHOP = {
+  packs: {
+    basic: { name: 'Basic Pack', price: 60, count: 1, desc: '1 kaart · 75% common, 22% epic, 3% legendary' },
+    epic: { name: 'Epic Pack', price: 200, count: 3, desc: '3 kaarten · de 3e is gegarandeerd epic of legendary' },
+  },
+  buy: { common: 150, epic: 400, legendary: 1000 },
+  sell: { common: 15, epic: 40, legendary: 100, cat: 5 },
+  hint: 40, extra: 60,
+};
+const shopState = { person: '' };
+const setWallet = w => { if (typeof w === 'number') { state.wallet = w; syncCoinUI(); } };
+
+function renderShop(view) {
+  const dupes = state.cards
+    .filter(c => (state.owned.get(c.id) || 0) > 1)
+    .sort((a, b) => (RARITY_ORDER[a.rarity] - RARITY_ORDER[b.rarity]) || a.id - b.id);
+  const dupeTotal = dupes.reduce((n, c) => n + (state.owned.get(c.id) - 1) * SHOP.sell[c.rarity], 0);
+
+  view.innerHTML = `<section class="col" style="max-width:none">
+    <div class="battle-top">
+      ${pageHead('Shop', 'shop')}
+      <span class="coinpill shop-balance">🪙 <span data-coin>${state.wallet}</span> polycoins</span>
+    </div>
+    <p class="msg tmsg" id="shopMsg" role="alert"></p>
+    <div class="two-col shop-grid">
+      <div>
+        <h3>Pakjes</h3>
+        <div class="shop-packs">${Object.entries(SHOP.packs).map(([k, p]) => `
+          <div class="shop-pack">
+            <div class="pack mini" aria-hidden="true"><div class="pack-body"><div class="pack-label"><span class="pack-logo">POLYGON</span><span class="pack-sub">TRADING CARDS</span><span class="pack-count">${p.count === 1 ? '1 kaart' : `${p.count} kaarten`}</span></div></div><div class="pack-top"></div></div>
+            <div class="shop-pack-info"><strong>${p.name}</strong><small>${p.desc}</small>
+              <button class="btn small" data-buy-pack="${k}" type="button" ${state.wallet < p.price ? 'disabled' : ''}>Kopen · ${p.price} 🪙</button></div>
+          </div>`).join('')}</div>
+
+      </div>
+      <div>
+        <h3>Dubbels verkopen</h3>
+        ${dupes.length ? `<p class="hint" style="margin-bottom:6px">Je houdt altijd 1 exemplaar. Alles verkopen levert ${dupeTotal} 🪙 op.</p>
+          <div class="shop-list">${dupes.map(c => {
+            const extra = state.owned.get(c.id) - 1, price = SHOP.sell[c.rarity];
+            return `<div class="battle-row">
+              <span class="trade-chip r-${c.rarity}">${esc(c.name)}</span>
+              <span class="battle-row-text"><small>${extra} extra · ${price} 🪙 per stuk</small></span>
+              <button class="link" data-sell="${c.id}" data-count="1" type="button">Verkoop 1</button>
+              ${extra > 1 ? `<button class="link" data-sell="${c.id}" data-count="${extra}" type="button">Alle ${extra} (+${extra * price})</button>` : ''}
+            </div>`;
+          }).join('')}</div>`
+          : '<p class="hint">Je hebt geen dubbels om te verkopen.</p>'}
+
+        <h3 style="margin-top:20px">Wordle-hulp</h3>
+        <p class="hint">Tijdens een Wordle-ronde op <strong>Today</strong>: 💡 een letter onthullen voor ${SHOP.hint} 🪙 (max 2 per ronde) of ➕ een 7e poging voor ${SHOP.extra} 🪙 (koop die vóór je 6e gok).</p>
+
+    </div>
+  </section>`;
+
+  const msg = (text, ok) => { const m = $('#shopMsg'); m.className = 'msg tmsg ' + (ok ? 'ok' : 'err'); m.textContent = text; };
+
+  view.querySelectorAll('[data-buy-pack]').forEach(b => b.onclick = async () => {
+    const p = SHOP.packs[b.dataset.buyPack];
+    if (!confirm(`${p.name} kopen voor ${p.price} polycoins?`)) return;
+    b.disabled = true;
+    const { data, error } = await sb.rpc('shop_buy_pack', { p_kind: b.dataset.buyPack });
+    if (error) { msg(error.message); b.disabled = false; return; }
+    setWallet(data.wallet);
+    for (const c of data.cards) state.owned.set(c.id, (state.owned.get(c.id) || 0) + 1);
+    const dlg = $('#packModal');
+    dlg.innerHTML = `<div class="packbox"><h2>${p.name}</h2><div class="stage" id="packStage"></div><div id="packDone"></div></div>`;
+    dlg.showModal();
+    await openPack($('#packStage'), data.cards);
+    const dup = data.cards.filter(c => c.is_duplicate).length;
+    $('#packDone').innerHTML = `<p class="result">${dup ? `${dup === data.cards.length ? 'Allemaal dubbels' : `${dup} dubbel${dup > 1 ? 's' : ''}`} — die kan je verkopen of ruilen.` : 'Allemaal nieuwe kaarten voor je boek!'}</p>
+      <button class="btn small" id="packClose" type="button">Verder</button>`;
+    $('#packClose').onclick = () => { dlg.close(); renderShop(view); };
+  });
+
+  view.querySelectorAll('[data-sell]').forEach(b => b.onclick = async () => {
+    const c = cardById(b.dataset.sell), n = Number(b.dataset.count);
+    if (n > 1 && !confirm(`${n} exemplaren van "${c.name}" verkopen voor ${n * SHOP.sell[c.rarity]} polycoins?`)) return;
+    b.disabled = true;
+    const { data, error } = await sb.rpc('shop_sell_duplicates', { p_card_id: c.id, p_count: n });
+    if (error) { msg(error.message); b.disabled = false; return; }
+    setWallet(data.wallet);
+    state.owned.set(c.id, state.owned.get(c.id) - data.sold);
+    renderShop(view);
+    msg(`Verkocht: ${data.sold}× "${c.name}" voor ${data.earned} polycoins.`, true);
+  });
+}
+
+// ---------- Tab: Ideas — ideeënbus met upvotes (schema-v11-suggestions.sql) ----------
+const IDEA_STATUS = {
+  open: { icon: '💭', label: 'Open' },
+  planned: { icon: '📅', label: 'Gepland' },
+  done: { icon: '✅', label: 'Klaar' },
+  rejected: { icon: '❌', label: 'Niet gepland' },
+};
+const ideaState = { sort: 'votes' };
+
+async function renderIdeas(view) {
+  view.innerHTML = `<section class="col" style="max-width:none"><p class="hint">Laden…</p></section>`;
+  const uid = state.session.user.id;
+  const [sug, votes] = await Promise.all([
+    sb.from('suggestions').select('id, user_id, body, status, created_at').order('created_at', { ascending: false }),
+    sb.from('suggestion_votes').select('suggestion_id, user_id'),
+  ]);
+  if (state.tab !== 'ideas') return;
+  if (sug.error) {
+    view.innerHTML = `<section class="col">${pageHead('Ideeënbus', 'ideas')}<p class="msg err">De ideeënbus kon niet geladen worden: ${esc(sug.error.message)}</p></section>`;
+    return;
+  }
+  const count = {}, mine = new Set();
+  for (const v of votes.data || []) {
+    count[v.suggestion_id] = (count[v.suggestion_id] || 0) + 1;
+    if (v.user_id === uid) mine.add(v.suggestion_id);
+  }
+  const ids = [...new Set(sug.data.map(s => s.user_id))];
+  const names = {};
+  if (ids.length) {
+    const { data: profs } = await sb.from('profiles').select('id, display_name').in('id', ids);
+    for (const p of profs || []) names[p.id] = p.display_name;
+  }
+  const rank = { open: 0, planned: 1, done: 2, rejected: 3 };
+  const list = [...sug.data].sort((a, b) => ideaState.sort === 'new'
+    ? b.created_at.localeCompare(a.created_at)
+    : (rank[a.status] > 1) - (rank[b.status] > 1) || (count[b.id] || 0) - (count[a.id] || 0) || b.created_at.localeCompare(a.created_at));
+  const when = d => new Date(d).toLocaleDateString('nl-BE', { day: 'numeric', month: 'short' });
+
+  view.innerHTML = `<section class="col" style="max-width:none">
+    ${pageHead('Ideeënbus', 'ideas')}
+    <div class="two-col ideas-grid">
+      <div>
+        <form id="ideaForm" class="form" style="margin-top:0">
+          <label>Jouw idee<textarea id="ideaBody" rows="4" maxlength="500" placeholder="Wat zou de site nog leuker maken?"></textarea></label>
+          <div class="battle-bar"><button class="btn small" type="submit">Idee indienen</button><small class="hint" id="ideaLen" style="margin:0">0/500</small></div>
+          <p class="msg tmsg" id="ideaMsg" role="alert"></p>
+        </form>
+      </div>
+      <div>
+        <div class="battle-bar" style="margin-bottom:8px">
+          <h3 style="margin:0">Ideeën (${list.length})</h3>
+          <div class="seg">
+            <button type="button" data-sort="votes" class="${ideaState.sort === 'votes' ? 'on' : ''}">Populair</button>
+            <button type="button" data-sort="new" class="${ideaState.sort === 'new' ? 'on' : ''}">Nieuwste</button>
+          </div>
+        </div>
+        <div class="idea-list">${list.length ? list.map(s => {
+          const st = IDEA_STATUS[s.status] || IDEA_STATUS.open;
+          return `<div class="idea status-${s.status}">
+            <button type="button" class="vote${mine.has(s.id) ? ' on' : ''}" data-vote="${s.id}" aria-pressed="${mine.has(s.id)}" aria-label="Upvote">
+              <span class="vote-arrow">▲</span><span class="vote-n">${count[s.id] || 0}</span></button>
+            <div class="idea-main">
+              <p class="idea-body">${esc(s.body)}</p>
+              <div class="idea-meta">
+                ${state.isAdmin ? '' : `<span class="idea-status">${st.icon} ${st.label}</span>`}
+                <span>${esc(names[s.user_id] || '…')} · ${when(s.created_at)}</span>
+                ${state.isAdmin ? `<select class="idea-set" data-status="${s.id}" aria-label="Status">
+                    ${Object.entries(IDEA_STATUS).map(([k, v]) => `<option value="${k}"${k === s.status ? ' selected' : ''}>${v.icon} ${v.label}</option>`).join('')}
+                  </select>` : ''}
+                ${s.user_id === uid || state.isAdmin ? `<button type="button" class="link danger" data-del-idea="${s.id}">Verwijderen</button>` : ''}
+              </div>
+            </div>
+          </div>`;
+        }).join('') : '<p class="hint">Nog geen ideeën. Wees de eerste!</p>'}</div>
+      </div>
+    </div>
+  </section>`;
+
+  const body = $('#ideaBody'), msg = $('#ideaMsg');
+  body.oninput = () => { $('#ideaLen').textContent = `${body.value.length}/500`; };
+  $('#ideaForm').onsubmit = async e => {
+    e.preventDefault();
+    const text = body.value.trim();
+    if (text.length < 3) { msg.className = 'msg tmsg err'; msg.textContent = 'Schrijf minstens een paar woorden.'; return; }
+    const btn = e.target.querySelector('button[type=submit]'); btn.disabled = true;
+    const { data, error } = await sb.from('suggestions').insert({ body: text }).select('id').single();
+    if (error) { msg.className = 'msg tmsg err'; msg.textContent = error.message; btn.disabled = false; return; }
+    await sb.from('suggestion_votes').insert({ suggestion_id: data.id }); // je stemt meteen op je eigen idee
+    ideaState.sort = 'new';
+    renderIdeas(view);
+  };
+  view.querySelectorAll('[data-sort]').forEach(b => { b.onclick = () => { ideaState.sort = b.dataset.sort; renderIdeas(view); }; });
+  view.querySelectorAll('[data-vote]').forEach(b => b.onclick = async () => {
+    const id = Number(b.dataset.vote), on = b.classList.contains('on');
+    b.disabled = true;
+    // Meteen tonen, daarna opslaan
+    const n = b.querySelector('.vote-n');
+    b.classList.toggle('on', !on); n.textContent = Number(n.textContent) + (on ? -1 : 1);
+    const { error } = on
+      ? await sb.from('suggestion_votes').delete().eq('suggestion_id', id).eq('user_id', uid)
+      : await sb.from('suggestion_votes').insert({ suggestion_id: id });
+    b.disabled = false;
+    if (error) { alert(error.message); renderIdeas(view); }
+  });
+  view.querySelectorAll('[data-status]').forEach(sel => sel.onchange = async () => {
+    const { error } = await sb.from('suggestions').update({ status: sel.value }).eq('id', Number(sel.dataset.status));
+    if (error) alert(error.message);
+    renderIdeas(view);
+  });
+  view.querySelectorAll('[data-del-idea]').forEach(b => b.onclick = async () => {
+    if (!confirm('Dit idee verwijderen?')) return;
+    const { error } = await sb.from('suggestions').delete().eq('id', Number(b.dataset.delIdea));
+    if (error) alert(error.message);
+    renderIdeas(view);
+  });
+}
+
+// ---------- Tab: Battle (tactisch, ronde per ronde) ----------
+// Alle regels en de computer-tegenstander zitten in Supabase (schema-v9-tactical-battles.sql):
+// de website stuurt enkel de gekozen zet door en speelt het resultaat af.
+const TEAM_SIZE = 3;
+const RARITY_ORDER = { legendary: 0, epic: 1, common: 2, cat: 3 };
+const battleState = { team: [], poll: null }; // gekozen card_ids (in volgorde) + polling-timer
+const DIFFS = {
+  easy: { label: 'Makkelijk', coins: 5, hint: 'zwakkere kaarten' },
+  normal: { label: 'Normaal', coins: 10, hint: 'zelfde zeldzaamheid' },
+  hard: { label: 'Moeilijk', coins: 20, hint: 'sterkere kaarten, slimme tegenstander' },
+};
+const MOVES = {
+  attack: { icon: '⚔️', label: 'Aanval', cost: 0, info: '+1 ⚡' },
+  power: { icon: '💥', label: 'Krachtaanval', cost: 2, info: '1,7× schade · 2 ⚡' },
+  guard: { icon: '🛡️', label: 'Verdedigen', cost: 0, info: 'halve schade · +2 ⚡' },
+  special: { icon: '★', label: 'Special', cost: 4, info: 'door verdediging · 4 ⚡' },
+  switch: { icon: '🔄', label: 'Wisselen', cost: 0, info: 'gaat eerst · +1 ⚡' },
+};
+const cardById = id => state.cards.find(c => c.id === Number(id));
+const mySide = b => (b.player_a === state.session.user.id ? 'A' : 'B');
+const otherSide = s => (s === 'A' ? 'B' : 'A');
+const stopBattlePoll = () => { clearInterval(battleState.poll); battleState.poll = null; };
+
+async function renderBattle(view) {
+  stopBattlePoll();
+  view.innerHTML = `<section class="col" style="max-width:none"><p class="hint">Laden…</p></section>`;
+  const uid = state.session.user.id;
+  const owned = state.cards
+    .filter(c => state.owned.has(c.id))
+    .sort((a, b) => (RARITY_ORDER[a.rarity] - RARITY_ORDER[b.rarity]) || (b.attack - a.attack));
+  battleState.team = battleState.team.filter(id => state.owned.has(id));
+
+  const [friendRows, rows, board, rewards] = await Promise.all([
+    sb.from('friendships').select('friend_id').eq('user_id', uid),
+    sb.from('tbattles').select('id, mode, difficulty, player_a, player_b, status, winner, round, coins_a, coins_b, forfeit, updated_at, moved:state->moved')
+      .or(`player_a.eq.${uid},player_b.eq.${uid}`).order('updated_at', { ascending: false }).limit(40),
+    sb.rpc('tb_leaderboard'),
+    sb.rpc('tb_rewards_today'),
+  ]);
+  if (state.tab !== 'battle') return;
+  if (rows.error) {
+    view.innerHTML = `<section class="col">${pageHead('Battle', 'battle')}<p class="msg err">Battle kon niet geladen worden: ${esc(rows.error.message)}</p></section>`;
+    return;
+  }
+  const battles = rows.data || [];
+  const friendIds = (friendRows.data || []).map(r => r.friend_id);
+  const ids = [...new Set([...friendIds, ...battles.flatMap(b => [b.player_a, b.player_b])])].filter(id => id && id !== uid);
+  const names = {};
+  if (ids.length) {
+    const { data: profs } = await sb.from('profiles').select('id, display_name').in('id', ids);
+    for (const p of profs || []) names[p.id] = p.display_name;
+  }
+  const nameOf = id => names[id] || '…';
+  const opponentOf = b => (b.mode === 'pve' ? `Computer (${DIFFS[b.difficulty]?.label || ''})` : nameOf(mySide(b) === 'A' ? b.player_b : b.player_a));
+
+  const incoming = battles.filter(b => b.status === 'pending' && b.player_b === uid);
+  const sent = battles.filter(b => b.status === 'pending' && b.player_a === uid);
+  const active = battles.filter(b => b.status === 'active');
+  const myTurn = active.filter(b => !(b.moved || {})[mySide(b)]);
+  const waiting = active.filter(b => (b.moved || {})[mySide(b)]);
+  const done = battles.filter(b => b.status === 'done').slice(0, 8);
+  state.incomingBattles = incoming.length + myTurn.filter(b => b.mode === 'pvp').length;
+  syncBattleBadge();
+  const rw = rewards.data || { pve: 0, pve_max: 5, pvp: 0, pvp_max: 3 };
+
+  view.innerHTML = `<section class="col" style="max-width:none">
+    <div class="battle-top">
+      ${pageHead('Battle', 'battle')}
+      <span class="pill">🪙 Vandaag beloond: computer ${rw.pve}/${rw.pve_max} · vrienden ${rw.pvp}/${rw.pvp_max}</span>
+    </div>
+
+    ${myTurn.length || incoming.length ? `<div class="battle-box highlight">
+      ${myTurn.map(b => `<div class="battle-row">
+        <span class="battle-row-text">⚡ <strong>Jouw zet</strong> tegen ${esc(opponentOf(b))} · ronde ${b.round + 1}</span>
+        <button class="btn small" data-open-battle="${b.id}" type="button">Speel verder</button>
+      </div>`).join('')}
+      ${incoming.map(b => `<div class="battle-row">
+        <span class="battle-row-text"><strong>${esc(nameOf(b.player_a))}</strong> daagt je uit — kies je team en accepteer</span>
+        <button class="btn small" data-accept-battle="${b.id}" type="button">Accepteren met mijn team</button>
+        <button class="link danger" data-decline-battle="${b.id}" type="button">Weigeren</button>
+      </div>`).join('')}
+      <p class="msg tmsg" id="incomingMsg" role="alert"></p>
+    </div>` : ''}
+
+    ${owned.length < TEAM_SIZE
+      ? `<p class="hint" style="margin-top:14px">Je hebt minstens ${TEAM_SIZE} verschillende kaarten nodig om te vechten. Je hebt er nu ${owned.length}.</p>`
+      : `<div class="battle-bar" style="margin-top:14px">
+          <h3 style="margin:0">Jouw team</h3>
+          <span id="teamCount" class="pill"></span>
+          <button class="link" id="clearTeam" type="button">Team wissen</button>
+        </div>
+        <div class="battle-pick">${owned.map(c => `
+          <button class="pick" type="button" data-pick="${c.id}" aria-pressed="false">
+            <span class="pick-num" hidden></span>${renderCard(c)}
+          </button>`).join('')}</div>
+        <div class="battle-actions">
+          <span class="battle-or">Tegen de computer:</span>
+          ${Object.entries(DIFFS).map(([k, d]) => `<button class="btn small diff-btn" data-pve="${k}" type="button" title="${d.hint}">${d.label} <small>+${d.coins}🪙</small></button>`).join('')}
+          ${friendIds.length ? `<span class="battle-or">of</span>
+            <select id="battleFriend" class="tselect" style="width:auto;min-width:170px">
+              <option value="">Kies een vriend…</option>
+              ${friendIds.map(id => `<option value="${id}">${esc(nameOf(id))}</option>`).join('')}
+            </select>
+            <button class="btn small" id="challengeBattle" type="button">Uitdagen <small>+25🪙</small></button>` : ''}
+        </div>
+        <p class="msg tmsg" id="battleMsg" role="alert"></p>`}
+
+    <div class="three-col" style="margin-top:14px">
+      <div><h3>Wachten op zet</h3>
+        ${waiting.length || sent.length ? [...waiting.map(b => `<div class="battle-row">
+            <span class="battle-row-text">⏳ ${esc(opponentOf(b))} · ronde ${b.round + 1}</span>
+            <button class="link" data-open-battle="${b.id}" type="button">Bekijk</button></div>`),
+          ...sent.map(b => `<div class="battle-row">
+            <span class="battle-row-text">✉️ Uitdaging aan <strong>${esc(nameOf(b.player_b))}</strong></span>
+            <button class="link danger" data-cancel-battle="${b.id}" type="button">Annuleren</button></div>`)].join('')
+          : '<p class="hint">Niets om op te wachten.</p>'}
+      </div>
+      <div><h3>Recente gevechten</h3>
+        ${done.length ? done.map(b => {
+          const won = b.winner === mySide(b);
+          const coins = mySide(b) === 'A' ? b.coins_a : b.coins_b;
+          return `<div class="battle-row">
+            <span class="result-tag ${won ? 'won' : 'lost'}">${won ? 'Gewonnen' : 'Verloren'}</span>
+            <span class="battle-row-text">${esc(opponentOf(b))}${coins ? ` · +${coins} 🪙` : ''}</span>
+            <button class="link" data-open-battle="${b.id}" type="button">Bekijk</button></div>`;
+        }).join('') : '<p class="hint">Nog geen gevechten.</p>'}
+      </div>
+      <div><h3>Ranglijst (vrienden)</h3>
+        ${board.error ? `<p class="msg err">${esc(board.error.message)}</p>` : `<table class="leaderboard">
+          <thead><tr><th>#</th><th>Naam</th><th>W</th><th>V</th></tr></thead>
+          <tbody>${(board.data || []).map((r, i) => `<tr${r.user_id === uid ? ' class="me"' : ''}>
+            <td>${i + 1}</td><td>${esc(r.display_name)}</td><td>${r.wins}</td><td>${r.losses}</td></tr>`).join('')}</tbody>
+        </table>`}
+      </div>
+    </div>
+  </section>`;
+
+  const teamReady = () => battleState.team.length === TEAM_SIZE;
+  const sync = () => {
+    view.querySelectorAll('[data-pick]').forEach(b => {
+      const idx = battleState.team.indexOf(Number(b.dataset.pick));
+      b.classList.toggle('selected', idx >= 0);
+      b.setAttribute('aria-pressed', idx >= 0);
+      const num = b.querySelector('.pick-num');
+      num.hidden = idx < 0; num.textContent = idx + 1;
+    });
+    if ($('#teamCount')) $('#teamCount').textContent = `Team: ${battleState.team.length}/${TEAM_SIZE}`;
+    view.querySelectorAll('[data-pve], #challengeBattle, [data-accept-battle]').forEach(b => { b.disabled = !teamReady(); });
+  };
+  view.querySelectorAll('[data-pick]').forEach(b => {
+    b.onclick = () => {
+      const id = Number(b.dataset.pick);
+      const idx = battleState.team.indexOf(id);
+      if (idx >= 0) battleState.team.splice(idx, 1);
+      else if (battleState.team.length < TEAM_SIZE) battleState.team.push(id);
+      sync();
+    };
+  });
+  if ($('#clearTeam')) $('#clearTeam').onclick = () => { battleState.team = []; sync(); };
+
+  const msg = (sel, text, ok) => { const m = $(sel); if (m) { m.className = 'msg tmsg ' + (ok ? 'ok' : 'err'); m.textContent = text; } };
+  view.querySelectorAll('[data-pve]').forEach(b => b.onclick = async () => {
+    b.disabled = true;
+    const { data, error } = await sb.rpc('tb_start_pve', { p_cards: battleState.team, p_difficulty: b.dataset.pve });
+    if (error) { msg('#battleMsg', error.message); b.disabled = false; return; }
+    openBattle(view, data);
+  });
+  if ($('#challengeBattle')) $('#challengeBattle').onclick = async () => {
+    const fid = $('#battleFriend').value;
+    if (!fid) return msg('#battleMsg', 'Kies eerst een vriend.');
+    const { error } = await sb.rpc('tb_challenge', { p_friend: fid, p_cards: battleState.team });
+    if (error) return msg('#battleMsg', error.message);
+    msg('#battleMsg', `Uitdaging verstuurd naar ${nameOf(fid)}!`, true);
+    setTimeout(() => { if ($('#battleMsg')) renderBattle(view); }, 1200);
+  };
+  view.querySelectorAll('[data-open-battle]').forEach(b => { b.onclick = () => openBattle(view, Number(b.dataset.openBattle)); });
+  view.querySelectorAll('[data-cancel-battle]').forEach(b => b.onclick = async () => {
+    b.disabled = true;
+    const { error } = await sb.rpc('tb_respond', { p_id: Number(b.dataset.cancelBattle), p_action: 'cancel' });
+    if (error) { alert(error.message); b.disabled = false; return; }
+    renderBattle(view);
+  });
+  view.querySelectorAll('[data-decline-battle]').forEach(b => b.onclick = async () => {
+    if (!confirm('Deze uitdaging weigeren?')) return;
+    b.disabled = true;
+    const { error } = await sb.rpc('tb_respond', { p_id: Number(b.dataset.declineBattle), p_action: 'decline' });
+    if (error) { alert(error.message); b.disabled = false; return; }
+    renderBattle(view);
+  });
+  view.querySelectorAll('[data-accept-battle]').forEach(b => b.onclick = async () => {
+    b.disabled = true;
+    const id = Number(b.dataset.acceptBattle);
+    const { error } = await sb.rpc('tb_respond', { p_id: id, p_action: 'accept', p_cards: battleState.team });
+    if (error) { msg('#incomingMsg', error.message); b.disabled = false; return; }
+    openBattle(view, id);
+  });
+  sync();
+}
+
+// ---------- Speelscherm ----------
+function eventText(e, b, names) {
+  const me = mySide(b);
+  const who = s => `<span class="who">${esc(s === me ? 'Jij' : names.opp)}</span>`;
+  const st = b.state;
+  const card = (s, i) => cardById(st[s].cards[i]);
+  if (e.t === 'atk') {
+    const c = card(e.s, e.ai ?? st[e.s].active);
+    const name = esc(c?.name || '?');
+    const how = e.k === 'special' ? `★ <strong>${esc(c?.special_name || 'Special')}</strong>` : e.k === 'power' ? '💥 krachtaanval' : 'valt aan';
+    return `${who(e.s)} ${name} ${how}: ${e.d} schade${e.crit ? ' — voltreffer!' : ''}${e.guarded ? ' (verdedigd)' : ''}`;
+  }
+  if (e.t === 'guard') return `${who(e.s)} 🛡️ verdedigt`;
+  if (e.t === 'switch') return `${who(e.s)} 🔄 wisselt naar ${esc(card(e.s, e.i)?.name || '?')}`;
+  if (e.t === 'ko') return `${who(e.s)} <strong>${esc(card(e.s, e.i)?.name || '?')}</strong> is uitgeschakeld!`;
+  if (e.t === 'enter') return `${who(e.s)} ${esc(card(e.s, e.i)?.name || '?')} komt de arena in`;
+  if (e.t === 'forfeit') return `${who(e.s)} geeft op`;
+  if (e.t === 'end') return `<strong>${e.w === me ? 'Jij wint!' : `${esc(names.opp)} wint.`}</strong>`;
+  return '';
+}
+
+// Toont een kant (links = jij) op basis van een weergave-toestand {active, hp[], energy}
+function sideHtml(b, s, disp, mine) {
+  const side = b.state[s];
+  const c = cardById(side.cards[disp.active]);
+  const hp = disp.hp[disp.active], max = side.max[disp.active];
+  const pct = Math.max(0, hp / max * 100);
+  return `<div class="bt-name">${mine ? 'Jij' : esc(disp.name)}</div>
+    <div class="fighter-card" data-active="${disp.active}">${c ? renderCard(c) : ''}</div>
+    <div class="hpbar"><div class="hpfill${pct <= 25 ? ' low' : pct <= 50 ? ' mid' : ''}" style="width:${pct}%"></div></div>
+    <div class="hptext">HP ${hp} / ${max}</div>
+    <div class="energy" title="Energie">${Array.from({ length: 5 }, (_, i) => `<span class="pip${i < disp.energy ? ' on' : ''}">⚡</span>`).join('')}</div>
+    <div class="bench">${side.cards.map((id, i) => {
+      if (i === disp.active) return '';
+      const bc = cardById(id), bh = disp.hp[i];
+      return `<button type="button" class="bench-card${bh <= 0 ? ' out' : ''}" data-bench="${i}" ${mine && bh > 0 ? '' : 'disabled'}>
+        <span>${esc(bc?.name || '?')}</span><span class="bench-hp">${bh > 0 ? `${bh} HP` : 'uitgeschakeld'}</span></button>`;
+    }).join('')}</div>`;
+}
+
+async function openBattle(view, id, prev = null) {
+  stopBattlePoll();
+  const { data: b, error } = await sb.from('tbattles').select('*').eq('id', id).single();
+  if (error) { alert(error.message); return renderBattle(view); }
+  if (b.status === 'pending') { alert('Deze uitdaging is nog niet geaccepteerd.'); return renderBattle(view); }
+  const me = mySide(b), op = otherSide(me);
+  let oppName = 'Computer';
+  if (b.mode === 'pvp') {
+    const { data: p } = await sb.from('profiles').select('display_name').eq('id', me === 'A' ? b.player_b : b.player_a).maybeSingle();
+    oppName = p?.display_name || 'Tegenstander';
+  }
+  const names = { opp: oppName };
+  const title = b.mode === 'pve' ? `Tegen de computer · ${DIFFS[b.difficulty]?.label || ''}` : `Tegen ${esc(oppName)}`;
+
+  // Weergave-toestand: bij een nieuwe ronde starten we van de vorige en spelen we de gebeurtenissen af
+  const fromState = (prev && prev.round < b.round) ? prev.state : b.state;
+  const disp = {
+    A: { active: fromState.A.active, hp: [...fromState.A.hp], energy: fromState.A.energy, name: me === 'A' ? 'Jij' : oppName },
+    B: { active: fromState.B.active, hp: [...fromState.B.hp], energy: fromState.B.energy, name: me === 'B' ? 'Jij' : oppName },
+  };
+  const events = b.state.events || [];
+  const newEvents = (prev && prev.round < b.round) ? events.filter(e => e.r > prev.round) : [];
+
+  view.innerHTML = `<section class="col" style="max-width:none">
+    <div class="bt-head">
+      <button class="link" id="btBack" type="button">← Battle</button>
+      <h2>${title}</h2>
+      <span class="pill" id="btRound">Ronde ${b.round + (b.status === 'active' ? 1 : 0)}</span>
+      ${b.status === 'active' ? '<button class="link danger forfeit" id="btForfeit" type="button">Opgeven</button>' : ''}
+    </div>
+    <div class="bt-layout">
+      <div>
+        <div class="arena bt-arena">
+          <div class="fighter bt-side" id="side-me"></div>
+          <div class="vs" aria-hidden="true">VS</div>
+          <div class="fighter bt-side" id="side-op"></div>
+        </div>
+        <p class="msg" id="btMsg" role="status" style="margin:8px 0 0"></p>
+        <div class="bt-actions" id="btActions"></div>
+      </div>
+      <div>
+        <div id="battleResult"></div>
+        <ol class="battle-log" id="battleLog" aria-live="polite"></ol>
+      </div>
+    </div>
+  </section>`;
+  $('#btBack').onclick = () => { stopBattlePoll(); renderBattle(view); };
+
+  const drawSides = () => {
+    $('#side-me').innerHTML = sideHtml(b, me, disp[me], true);
+    $('#side-op').innerHTML = sideHtml(b, op, disp[op], false);
+  };
+  const log = $('#battleLog');
+  // Verslag per ronde: nieuwste ronde bovenaan, binnen een ronde in volgorde van gebeuren
+  const addLog = (e) => {
+    const t = eventText(e, b, names);
+    if (!t) return;
+    let block = log.querySelector(`[data-round="${e.r}"]`);
+    if (!block) {
+      block = document.createElement('li');
+      block.className = 'round-block'; block.dataset.round = e.r;
+      block.innerHTML = `<div class="round-title">Ronde ${e.r}</div><ol class="round-lines"></ol>`;
+      log.prepend(block);
+    }
+    const li = document.createElement('li');
+    li.innerHTML = t; li.className = e.s === me ? 'mine' : e.s ? 'theirs' : 'ko-line';
+    if (e.t === 'ko' || e.t === 'end') li.className = 'ko-line';
+    block.querySelector('.round-lines').appendChild(li);
+  };
+  // Oude gebeurtenissen meteen in het verslag (zonder animatie)
+  const cutoff = newEvents.length ? prev.round : Infinity;
+  for (const e of events) if (e.r <= cutoff) addLog(e);
+  drawSides();
+
+  // Nieuwe ronde afspelen
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  for (const e of newEvents) {
+    if (e.t === 'switch' || e.t === 'enter') disp[e.s].active = e.i;
+    if (e.t === 'atk') {
+      const d = otherSide(e.s);
+      disp[d].hp[e.di ?? disp[d].active] = e.hp;
+    }
+    addLog(e);
+    drawSides();
+    if (e.t === 'atk' && !reduce) {
+      const target = $(e.s === me ? '#side-op' : '#side-me');
+      const pop = document.createElement('span');
+      pop.className = 'dmg-pop' + (e.k !== 'attack' || e.crit ? ' big' : '');
+      pop.textContent = `-${e.d}`;
+      target.querySelector('.fighter-card').appendChild(pop);
+      target.classList.remove('hit'); void target.offsetWidth; target.classList.add('hit');
+    }
+    if (e.t === 'ko' && !reduce) $(e.s === me ? '#side-me' : '#side-op').classList.add('ko');
+    if (!reduce) await sleep(e.t === 'atk' ? 750 : 500);
+    if (!$('#battleLog')) return; // intussen weggeklikt
+  }
+  // Eindtoestand (energie e.d.) tonen
+  for (const s of ['A', 'B']) Object.assign(disp[s], { active: b.state[s].active, hp: [...b.state[s].hp], energy: b.state[s].energy });
+  drawSides();
+
+  const actions = $('#btActions'), msg = $('#btMsg');
+  if (b.status === 'done') {
+    const won = b.winner === me;
+    const coins = me === 'A' ? b.coins_a : b.coins_b;
+    if (coins) {
+      const { data: w } = await sb.from('user_wallet').select('polycoins').eq('user_id', state.session.user.id).maybeSingle();
+      if (w) { state.wallet = w.polycoins; syncCoinUI(); }
+    }
+    $('#battleResult').innerHTML = `<div class="battle-result ${won ? 'won' : 'lost'}">
+      <h3>${won ? 'Gewonnen!' : 'Verloren…'}</h3>
+      <p>${b.forfeit ? (won ? `${esc(oppName)} gaf op.` : 'Je gaf op.') : won ? `Je team heeft ${esc(oppName)} verslagen.` : `${esc(oppName)} was deze keer sterker.`}
+        ${coins ? `<strong>+${coins} polycoins!</strong>` : won ? '(Je daglimiet voor beloningen is bereikt.)' : ''}</p>
+      <div class="battle-bar">
+        ${b.mode === 'pve' ? `<button class="btn small" id="btAgain" type="button">Opnieuw (${DIFFS[b.difficulty].label})</button>` : ''}
+        <button class="link" id="btBack2" type="button">Terug naar Battle</button>
+      </div></div>`;
+    $('#btBack2').onclick = () => renderBattle(view);
+    if ($('#btAgain')) $('#btAgain').onclick = async () => {
+      const cards = b.state[me].cards;
+      const { data, error: e2 } = await sb.rpc('tb_start_pve', { p_cards: cards, p_difficulty: b.difficulty });
+      if (e2) { alert(e2.message); return; }
+      openBattle(view, data);
+    };
+    return;
+  }
+
+  const waiting = (b.state.moved || {})[me];
+  if (waiting) {
+    actions.innerHTML = '';
+    msg.className = 'msg'; msg.textContent = `Je zet is gekozen. Wachten op ${oppName}…`;
+    if ($('#btForfeit')) $('#btForfeit').onclick = async () => {
+      if (!confirm('Wil je echt opgeven?')) return;
+      const { error: ef } = await sb.rpc('tb_act', { p_id: b.id, p_action: 'forfeit' });
+      if (ef) { msg.className = 'msg err'; msg.textContent = ef.message; return; }
+      openBattle(view, b.id, b);
+    };
+    // Af en toe kijken of de tegenstander al gekozen heeft
+    battleState.poll = setInterval(async () => {
+      if (!$('#btActions')) return stopBattlePoll();
+      const { data: n } = await sb.from('tbattles').select('round, status').eq('id', b.id).single();
+      if (n && (n.round !== b.round || n.status !== b.status)) { stopBattlePoll(); openBattle(view, b.id, b); }
+    }, 4000);
+    return;
+  }
+
+  const side = b.state[me], a = side.active;
+  const can = {
+    attack: true, guard: true,
+    power: side.energy >= 2,
+    special: side.sp[a] > 0 && side.energy >= 4,
+    switch: side.hp.some((h, i) => i !== a && h > 0),
+  };
+  actions.innerHTML = Object.entries(MOVES).map(([k, m]) => (k === 'special' && !(side.sp[a] > 0)) ? '' :
+    `<button type="button" class="move-btn" data-move="${k}" ${can[k] ? '' : 'disabled'}>
+      <span class="move-icon">${m.icon}</span><span>${k === 'special' ? esc(cardById(side.cards[a])?.special_name || m.label) : m.label}</span><small>${m.info}</small></button>`).join('')
+;
+  msg.className = 'msg'; msg.textContent = 'Kies je zet.';
+
+  const send = async (move, target = null) => {
+    actions.querySelectorAll('button').forEach(x => { x.disabled = true; });
+    msg.textContent = 'Bezig…';
+    const { data: nb, error: e3 } = await sb.rpc('tb_act', { p_id: b.id, p_action: move, p_target: target });
+    if (e3) { msg.className = 'msg err'; msg.textContent = e3.message; openBattle(view, b.id); return; }
+    openBattle(view, b.id, b);
+  };
+  if ($('#btForfeit')) $('#btForfeit').onclick = () => { if (confirm('Wil je echt opgeven?')) send('forfeit'); };
+  actions.querySelectorAll('[data-move]').forEach(btn => {
+    btn.onclick = () => {
+      const move = btn.dataset.move;
+      if (move === 'switch') {
+        msg.textContent = 'Kies op je bank de kaart waarnaar je wil wisselen.';
+        $('#side-me').classList.add('choosing');
+        $('#side-me').querySelectorAll('[data-bench]:not([disabled])').forEach(bc => {
+          bc.onclick = () => send('switch', Number(bc.dataset.bench));
+        });
+        return;
+      }
+      send(move);
+    };
+  });
+}
+
+// ---------- Melding bij een nieuwe versie van de site ----------
+// Vergelijkt de CSS + code van deze pagina met de versie op de server. Geen versienummer nodig:
+// elke wijziging aan index.html wordt vanzelf opgemerkt.
+function siteFingerprint(doc) {
+  const style = doc.querySelector('style')?.textContent || '';
+  const scripts = [...doc.querySelectorAll('script:not([src])')];
+  const code = scripts.length ? scripts[scripts.length - 1].textContent : '';
+  let h = 5381;
+  const txt = style + '\u0000' + code;
+  for (let i = 0; i < txt.length; i++) h = ((h << 5) + h + txt.charCodeAt(i)) | 0;
+  return h;
+}
+const CURRENT_FINGERPRINT = siteFingerprint(document);
+let updateShown = false, lastUpdateCheck = 0;
+
+async function checkForUpdate() {
+  if (updateShown || Date.now() - lastUpdateCheck < 60000) return;
+  lastUpdateCheck = Date.now();
+  try {
+    const res = await fetch(location.pathname + '?check=' + Date.now(), { cache: 'no-store' });
+    if (!res.ok) return;
+    const doc = new DOMParser().parseFromString(await res.text(), 'text/html');
+    if (siteFingerprint(doc) !== CURRENT_FINGERPRINT) showUpdateBanner();
+  } catch (_) { /* offline of geblokkeerd: later opnieuw proberen */ }
+}
+
+function showUpdateBanner() {
+  updateShown = true;
+  const bar = document.createElement('div');
+  bar.className = 'update-bar';
+  bar.setAttribute('role', 'status');
+  bar.innerHTML = `<span>✨ Er is een nieuwe versie van de site.</span>
+    <button class="btn small" type="button" id="updateNow">Vernieuwen</button>
+    <button class="link" type="button" id="updateLater" aria-label="Later">Later</button>`;
+  document.body.appendChild(bar);
+  $('#updateNow').onclick = async () => {
+    $('#updateNow').disabled = true;
+    // Eerst de browsercache bijwerken, zodat het herladen zeker de nieuwe versie toont
+    try { await fetch(location.pathname, { cache: 'reload' }); } catch (_) {}
+    location.reload();
+  };
+  $('#updateLater').onclick = () => { bar.remove(); setTimeout(() => { updateShown = false; }, 15 * 60000); };
+}
+
+setInterval(checkForUpdate, 5 * 60000);
+document.addEventListener('visibilitychange', () => { if (!document.hidden) checkForUpdate(); });
+addEventListener('focus', checkForUpdate);
+
+initBackground();
+init();
+</script>
+</body>
+</html>
