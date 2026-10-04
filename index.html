@@ -866,6 +866,42 @@ h3{color:var(--gold)}
 .note i{font-family:var(--display)}
 .note:nth-child(2){--r:1.8deg;--nc:#FFD9E2}
 .note:nth-child(3){--r:-.8deg;--nc:#D8F0FF}
+
+/* =====================================================================
+   TOUGH LAYER: strakker, minder speels; gsm-fixes.
+   ===================================================================== */
+.nav-btn .ns{display:none}
+.nav-btn .ni{filter:none;opacity:.75}
+.nav-btn .ni svg{display:block}
+.nav-btn[aria-current="page"] .ni{opacity:1}
+.nav-btn .nl{letter-spacing:.02em}
+.plaque::before{font:400 15px/1 var(--varsity);color:var(--gold)}
+.plaque:nth-child(1)::before{content:"$"}
+.plaque:nth-child(2)::before{content:"#"}
+.plaque:nth-child(3)::before{content:"\2191"}
+/* Prikbord wordt een scoutingrapport: donker, strak, geen stickers */
+.board{grid-template-columns:repeat(auto-fit,minmax(min(100%,170px),1fr));max-width:100%;gap:12px}
+.note{transform:none;border-radius:10px;background:linear-gradient(180deg,#1A2340,#141B31);color:var(--ink);border:1px solid var(--line);
+  box-shadow:inset 3px 0 0 var(--red),0 14px 24px -16px rgba(0,0,0,.9);padding:14px 16px 14px 18px;font:500 14px/1.45 var(--body)}
+.note::before{display:none}
+.note b{color:var(--gold);font-size:10px;letter-spacing:.22em}
+.note i{font-style:normal;font-family:var(--body)}
+.joke{font-style:normal;font-family:var(--body);font-size:14px;color:var(--ink-soft)}
+.today-grid{grid-template-columns:minmax(0,1fr)}
+@media (min-width:1100px){.today-grid{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}}
+@media (max-width:899px){
+  .dock{overflow:visible;padding:6px 4px max(8px,env(safe-area-inset-bottom));gap:0}
+  .dock .nav-btn{flex:1 1 0;min-width:0;padding:7px 0 5px;gap:4px;font:600 9.5px/1 var(--body);letter-spacing:.02em}
+  .dock .nav-btn .nl{display:none}
+  .dock .nav-btn .ns{display:block;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .dock .nav-btn .ni svg{width:21px;height:21px}
+  .dock .nav-btn[aria-current="page"] .ni{color:var(--red2)}
+  .board-frame{padding:16px 12px 14px}
+  .wboard{width:min(300px,100%)}
+  .gz-name{font-size:clamp(28px,9vw,40px)}
+  .gz-head{font-size:15px}
+}
+@media (max-width:370px){.dock .nav-btn{font-size:8.5px}}
 </style>
 </head>
 <body>
@@ -1286,34 +1322,35 @@ function renderCard(c, { locked = false, count = 1 } = {}) {
 }
 
 // ---------- Hoofdscherm ----------
+const ICON = d => `<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">${d}</svg>`;
 const TABS = [
-  { id: 'today', label: 'Rizz Check', icon: '💋' },
-  { id: 'book', label: 'Yearbook', icon: '📖' },
-  { id: 'battle', label: 'Rizz-Off', icon: '⚔️', badge: 'battle' },
-  { id: 'trade', label: 'Swap Meet', icon: '🔁' },
-  { id: 'shop', label: 'Rizz Mart', icon: '🛍️' },
-  { id: 'friends', label: 'The Boys', icon: '🤝', badge: 'friend' },
-  { id: 'stats', label: 'Report Card', icon: '🎓' },
-  { id: 'ideas', label: 'Complaints', icon: '📮' },
+  { id: 'today', label: 'Daily Draw', short: 'Daily', icon: ICON('<rect x="4" y="3" width="13" height="17" rx="2"/><path d="M8 7h5M8 11h5"/><path d="M20 7v13a1 1 0 0 1-1 1H8"/>') },
+  { id: 'book', label: 'Yearbook', short: 'Yearbook', icon: ICON('<path d="M4 4.5A1.5 1.5 0 0 1 5.5 3H20v15H5.5A1.5 1.5 0 0 0 4 19.5z"/><path d="M4 19.5A1.5 1.5 0 0 0 5.5 21H20"/>') },
+  { id: 'battle', label: 'The Arena', short: 'Arena', icon: ICON('<path d="M14.5 17.5 3 6V3h3l11.5 11.5M13 19l6-6M16 16l4 4M19 21l2-2"/><path d="M9.5 17.5 21 6V3h-3L6.5 14.5M11 19l-6-6M8 16l-4 4M5 21l-2-2"/>'), badge: 'battle' },
+  { id: 'trade', label: 'Black Market', short: 'Market', icon: ICON('<path d="M4 8h14l-4-4M20 16H6l4 4"/>') },
+  { id: 'shop', label: 'The Vault', short: 'Vault', icon: ICON('<rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="12" cy="12" r="3.5"/><path d="M12 8.5V7M15.5 12H17M12 15.5V17M8.5 12H7"/>') },
+  { id: 'friends', label: 'The Crew', short: 'Crew', icon: ICON('<circle cx="9" cy="8" r="3.5"/><path d="M2.5 20a6.5 6.5 0 0 1 13 0"/><path d="M16 4.5a3.5 3.5 0 0 1 0 7M18 14a6.5 6.5 0 0 1 3.5 6"/>'), badge: 'friend' },
+  { id: 'stats', label: 'Track Record', short: 'Record', icon: ICON('<path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/>') },
+  { id: 'ideas', label: 'Town Hall', short: 'Town Hall', icon: ICON('<path d="M3 10v4a1 1 0 0 0 1 1h3l6 4V5L7 9H4a1 1 0 0 0-1 1zM17 9a4 4 0 0 1 0 6"/>') },
 ];
 
 const navHtml = () => TABS.map(t => `<button type="button" class="nav-btn" data-tab="${t.id}"${t.id === state.tab ? ' aria-current="page"' : ''}>
-  <span class="ni" aria-hidden="true">${t.icon}</span><span class="nl">${t.label}</span>${t.badge ? `<span class="tab-badge" data-${t.badge}-badge hidden></span>` : ''}</button>`).join('');
+  <span class="ni" aria-hidden="true">${t.icon}</span><span class="nl">${t.label}</span><span class="ns">${t.short}</span>${t.badge ? `<span class="tab-badge" data-${t.badge}-badge hidden></span>` : ''}</button>`).join('');
 const logoHtml = () => `<div class="logo"><span class="crest" aria-hidden="true">RIZZ</span><span class="logo-txt"><b>RIZZ ACADEMY</b><small>EST. MMXXVI</small></span></div>`;
 
-const PICKUP_LINES = [
-  'Are you a Wordle? Because I\'d solve you in one try.',
-  'Are you a legendary card? Because I\'ve been looking for you all semester.',
-  'Is your name Google? Because you have everything I\'m searching for.',
-  'Are you a final exam? Because I am not prepared for you.',
-  'I\'d give you my card, but you\'re already a ten.',
-  'Are you the library wifi? Because I\'m feeling a connection.',
-  'Are you a duplicate? Because I\'d never trade you.',
-  'My rizz is average. My intentions are legendary.',
-  'Are you an envelope? Because I\'d break the seal for you. Respectfully.',
-  'Excuse me, do you have a map? I keep getting lost in your eyes.',
-  'I major in rizzology. You\'re my thesis.',
-  'Are you a campus parking spot? Because you\'re impossible to get.',
+const HOUSE_RULES = [
+  'Never chase. Collect.',
+  'What happens at the academy gets traded at the academy.',
+  'Legends aren\'t born. They\'re pulled.',
+  'Six guesses. No excuses.',
+  'Duplicates are leverage. Use them.',
+  'Real ones play every day.',
+  'Lose the battle. Win the trade.',
+  'Talk is cheap. Rizz is earned.',
+  'Nobody remembers second place. Except the Yearbook.',
+  'Sleep is for people without a streak.',
+  'Don\'t sell your legendary. Ever.',
+  'First the Wordle. Then the world.',
 ];
 // Statusbalk bovenaan: credits, collectie, streak en de pickup line van de dag
 function scoreboardHtml() {
@@ -1321,7 +1358,7 @@ function scoreboardHtml() {
     <div class="plaque"><span class="pl-label">Credits</span><span class="pl-val" data-coin>${state.wallet}</span></div>
     <div class="plaque"><span class="pl-label">Collectie</span><span class="pl-val" data-coll>${collectionText()}</span></div>
     <div class="plaque"><span class="pl-label">Streak</span><span class="pl-val" data-streak>${computeStreak(state.playDates)}</span></div>
-    <div class="motto"><b>Pickup line</b><span>${esc(PICKUP_LINES[wordleNumber() % PICKUP_LINES.length])}</span></div>
+    <div class="motto"><b>House rule</b><span>${esc(HOUSE_RULES[wordleNumber() % HOUSE_RULES.length])}</span></div>
   </div>`;
 }
 
@@ -1434,28 +1471,28 @@ const INFO = {
     <p>Besteed je credits — die verdien je met battles en met dubbele trekkingen.</p>
     <ul><li><strong>Pakjes</strong>: Basic Pack (1 kaart, 60 🪙) of Epic Pack (3 kaarten, de 3e gegarandeerd epic of legendary, 200 🪙).</li>
     <li><strong>Dubbels verkopen</strong>: common 15 · epic 40 · legendary 100 · detention 5 🪙 per extra exemplaar. Je houdt altijd 1 exemplaar.</li>
-    <li><strong>Wordle-hulp</strong> (op Today, tijdens een ronde): een letter onthullen voor 40 🪙 (max 2 per ronde) of een 7e poging voor 60 🪙.</li></ul>`],
+    <li><strong>Wordle-hulp</strong> (op Daily Draw, tijdens een ronde): een letter onthullen voor 40 🪙 (max 2 per ronde) of een 7e poging voor 60 🪙.</li></ul>`],
   trade: ['Traden', `
     <p>Stel een ruil voor aan een vriend. Je kan enkel <strong>dubbels</strong> aanbieden — je houdt altijd minstens 1 exemplaar van elke kaart over.</p>
     <ul><li>Je vriend kan accepteren, een tegenbod doen of annuleren.</li>
     <li>Pas als beide kanten akkoord zijn, worden de kaarten gewisseld.</li></ul>`],
 };
 const infoBtn = key => `<button class="info-btn" type="button" data-info="${key}" aria-label="Uitleg">i</button>`;
-const KICKERS = { today: () => `Daily rizz check · ${dateLabel()}`, book: () => 'Class of MMXXVI', stats: () => 'Your academic disappointment',
-  battle: () => 'Settle it like gentlemen', friends: () => 'Bros before... everything', trade: () => 'No refunds, no regrets',
-  shop: () => 'Campus store · cash only', ideas: () => 'Student council (unpaid)' };
+const KICKERS = { today: () => `Daily draw · ${dateLabel()}`, book: () => 'Class of MMXXVI', stats: () => 'The numbers don\'t lie',
+  battle: () => 'Winner takes the credits', friends: () => 'Ride or die', trade: () => 'No receipts. No refunds.',
+  shop: () => 'Credits only · no credit', ideas: () => 'Speak up or shut up' };
 const JOKES = {
-  today: ['Attendance is mandatory. Rizz is optional.', 'Studies show 9 out of 10 girls ignore you. The 10th is your mom.', 'Today\'s lecture: how to text back within 3 business days.'],
-  book: ['Most likely to text "u up?" at 3 AM: everyone on this page.', 'Voted "most likely to peak in college" by the entire class.', 'Yearbook photos were taken without consent. Like most of their dates.'],
-  battle: ['Rizz-offs are settled with cards. Fist fights are for people without a collection.', 'Loser buys the next round. Winner buys it too, he\'s rich now.', 'Remember: it\'s not about winning. It\'s about her watching you win.'],
-  trade: ['Trading a legendary for two commons is called "a relationship".', 'All trades are final. Like her "no".', 'Duplicates are like exes: better in someone else\'s collection.'],
-  shop: ['Prices include a 21% rizz tax.', 'Shoplifters will be forced to watch your pickup attempts.', 'We don\'t accept student loans. Or your excuses.'],
-  friends: ['A real bro shares his notes, his fries and his rizz.', 'Friend requests are like DMs: most of them get left on read.', 'Your friend code is more exclusive than your dating life.'],
-  stats: ['Your streak is longer than your last relationship.', 'GPA: Girls Per Attempt. Yours is concerning.', 'These numbers will be shown to your parents. And your crush.'],
-  ideas: ['Complaints will be read, laughed at and archived.', 'Suggestion: more rizz. Status: we are working on it.', 'Every idea gets an upvote from its own author. Self-love matters.'],
+  today: ['One word. Six shots. Don\'t waste them.', 'Attendance is mandatory. Excuses are not accepted.', 'The envelope doesn\'t open itself.'],
+  book: ['Nine cards per man. Most of them should be illegal.', 'Every page a legend. Some of them just don\'t know it yet.', 'Photos were taken without consent. Regrets were not accepted.'],
+  battle: ['Cards do the talking. Losers do the paying.', 'There\'s no participation trophy here.', 'Pick your three. Live with it.'],
+  trade: ['Every deal is final. Read it twice.', 'Duplicates are currency. Spend them wisely.', 'Nobody trades a legendary. Prove us wrong.'],
+  shop: ['No credit. No envelope. No exceptions.', 'The house always wins. Buy anyway.', 'Spend it before you think about it.'],
+  friends: ['Add them. Battle them. Take their cards.', 'Your crew is your competition.', 'Loyalty is free. Envelopes are not.'],
+  stats: ['Numbers don\'t care about your excuses.', 'Streaks are built daily. Broken in one morning.', 'This page is public in spirit.'],
+  ideas: ['Got a better idea? Put it in writing.', 'Good ideas get built. Bad ones get roasted.', 'Votes decide. Not volume.'],
 };
 const jokeOf = key => { const j = JOKES[key]; return j ? j[(wordleNumber() + key.length) % j.length] : ''; };
-const pageHead = (title, key) => `<div class="page-head"><span class="kicker">${esc(KICKERS[key]?.() || 'Rizz Academy')}</span><div class="ph-row"><h2>${title}</h2>${infoBtn(key)}</div>${jokeOf(key) ? `<p class="joke"><b>Dean's note</b>${esc(jokeOf(key))}</p>` : ''}</div>`;
+const pageHead = (title, key) => `<div class="page-head"><span class="kicker">${esc(KICKERS[key]?.() || 'Rizz Academy')}</span><div class="ph-row"><h2>${title}</h2>${infoBtn(key)}</div>${jokeOf(key) ? `<p class="joke"><b>Word from the Dean</b>${esc(jokeOf(key))}</p>` : ''}</div>`;
 
 function openInfo(key) {
   const dlg = $('#infoModal');
@@ -1807,7 +1844,7 @@ async function renderToday(view) {
   const [{ data, error }] = await Promise.all([sb.rpc('wordle_state'), loadWords().catch(() => null)]);
   if (state.tab !== 'today') return;
   if (error) {
-    view.innerHTML = `${welcomeBanner()}<section class="col">${pageHead('Rizz Check', 'today')}<p class="msg err">De Wordle kon niet geladen worden: ${esc(error.message)}</p></section>`;
+    view.innerHTML = `${welcomeBanner()}<section class="col">${pageHead('Daily Draw', 'today')}<p class="msg err">De Wordle kon niet geladen worden: ${esc(error.message)}</p></section>`;
     attachWelcome();
     return;
   }
@@ -1825,39 +1862,39 @@ async function renderToday(view) {
 // Campuskrant en prikbord: elke dag andere koppen en weetjes (voor iedereen dezelfde)
 const pickDay = (arr, salt = 0) => arr[(wordleNumber() * 7 + salt) % arr.length];
 const HEADLINES = [
-  'Local student says "hey" to girl, survives. Campus in shock.',
-  'Freshman confuses "left on read" with "playing hard to get". Day 14.',
-  'Dean bans pickup lines in library after "Are you a book? Because I\'d check you out" incident.',
-  'Study confirms: confidence works. Unfortunately, so does having a jawline.',
-  'Student spends entire semester "talking" to girl. They have never met.',
-  'Campus wifi down for 3 hours. Six couples formed. Scientists baffled.',
-  'Senior finally asks crush out. She graduated in 2023.',
-  'Breaking: guy with guitar at party "only knows Wonderwall". Again.',
-  'Frat house reports record attendance after rumor of "free pizza".',
+  'Legendary pulled at dawn. Puller refuses to comment.',
+  'Wordle solved in two. Group chat goes silent.',
+  'Black market prices soar after rare card sighting.',
+  'Arena record broken. Loser demands rematch, is denied.',
+  'Dean confirms: no extra guesses. Not today. Not ever.',
+  'Freshman trades away epic. Class mourns.',
+  'Streak of the year still alive. Pressure mounting.',
+  'Vault restocked. Credits disappear within the hour.',
+  'Detention rate hits season high. Coffee sales follow.',
 ];
 const FORECASTS = [
-  'Rizz levels high. 80% chance of a "who\'s this?" text.',
-  'Cloudy with a chance of getting ghosted.',
-  'Heatwave of confidence until 11 PM, then sudden collapse.',
-  'Strong winds of awkward silence from the west.',
-  'Clear skies. Perfect weather to finally text her back.',
-  'Fog of regret expected tomorrow morning around 10 AM.',
+  'Clear skies. Perfect weather for a two-guess solve.',
+  'Heavy rain of commons. Scattered epics in the afternoon.',
+  'High pressure over the Arena. Bring your best three.',
+  'Storm warning: one wrong letter and it\'s detention.',
+  'Cold front in the Black Market. Prices dropping.',
+  'Heatwave. Someone is pulling a legendary today.',
 ];
 const RUMORS = [
-  'Someone saw a guy in the library actually studying. Unconfirmed.',
-  'The Dean has rizz. Nobody knows how. Nobody wants to know.',
-  'Girls at the next table rated our group a 6. Combined.',
-  'A legendary card was spotted in a freshman\'s envelope. He traded it for a kebab.',
-  'Rumor has it someone solved the Wordle without Googling. Investigation ongoing.',
-  'Someone\'s mom liked her son\'s thirst trap. The group chat will never recover.',
+  'Someone has every epic but won\'t say who.',
+  'A legendary changed hands last night. Price unknown.',
+  'One member of the crew hasn\'t missed a day. Yet.',
+  'Somebody solved yesterday\'s Wordle in one. Allegedly.',
+  'The Dean plays too. Under a fake name.',
+  'Detention cards are worth more than you think.',
 ];
-const DATING_TIPS = [
-  'Never start with "hey". Start with "hey :)". Huge difference.',
-  'Always text back within 3 business days. Mystery is key.',
-  'Compliment her shoes. Unless they are Crocs.',
-  'If she says "I\'m fine", you are not fine.',
-  'Confidence is 90% of rizz. The other 10% is a shower.',
-  'Never show your Pokémon card collection on the first date. Second date, maybe.',
+const SCOUTING = [
+  'Open with your strongest card. Mercy is for amateurs.',
+  'Vowels first. Feelings later.',
+  'Never show your full hand in a trade.',
+  'Doubles are bargaining chips. Not souvenirs.',
+  'A streak is worth more than a lucky pull.',
+  'Play before noon. The pressure only grows.',
 ];
 function gazetteHtml() {
   return `<header class="gazette">
@@ -1868,9 +1905,9 @@ function gazetteHtml() {
 }
 function bulletinHtml() {
   return `<div class="board" aria-label="Campus bulletin">
-    <div class="note"><b>Rizz forecast</b>${esc(pickDay(FORECASTS, 1))}</div>
-    <div class="note"><b>Campus rumor</b>${esc(pickDay(RUMORS, 2))}</div>
-    <div class="note"><b>Dating tip</b><i>${esc(pickDay(DATING_TIPS, 3))}</i></div>
+    <div class="note"><b>Forecast</b>${esc(pickDay(FORECASTS, 1))}</div>
+    <div class="note"><b>Word on campus</b>${esc(pickDay(RUMORS, 2))}</div>
+    <div class="note"><b>Playbook</b><i>${esc(pickDay(SCOUTING, 3))}</i></div>
   </div>`;
 }
 
@@ -1888,7 +1925,7 @@ function drawToday(view) {
         ${isDone(s) ? '' : `<div class="wkeys" id="wkeys">${keyboardHtml(s)}</div>
         <div class="whelp" id="whelp">${helpHtml(s)}</div>`}
       </div>`
-      : `${pageHead('Rizz Check', 'today')}<div class="round-closed">
+      : `${pageHead('Daily Draw', 'today')}<div class="round-closed">
           <div class="big-lock" aria-hidden="true">🔒</div>
           <p>De volgende Wordle opent om <strong>${s.opens}</strong> (Belgische tijd).</p>
           <p class="countdown" id="wcount"></p>
@@ -1896,7 +1933,7 @@ function drawToday(view) {
     </div>
     <div class="stage" id="stage" aria-live="polite">${card
       ? `<div class="cardflip">${renderCard(card)}</div>`
-      : '<div class="stage-placeholder"><div class="ghost-pack" aria-hidden="true">?</div><p>Pass the midterm. Open your envelope.</p></div>'}
+      : '<div class="stage-placeholder"><div class="ghost-pack" aria-hidden="true">?</div><p>Solve it. Earn your envelope.</p></div>'}
       ${bulletinHtml()}</div>
   </section>`;
   attachWelcome();
@@ -2152,7 +2189,7 @@ function welcomeBanner() {
   if (!state.welcomeAvailable) return '';
   return `<div class="welcome-banner">
     <span class="wb-icon" aria-hidden="true">RIZZ</span>
-    <div class="wb-text"><strong>You're invited, freshman!</strong>Je welkomstenvelop met 3 kaarten ligt klaar.</div>
+    <div class="wb-text"><strong>Welcome to the Academy.</strong>Je welkomstenvelop met 3 kaarten ligt klaar.</div>
     <button class="btn small" id="claimWelcome" type="button">Open je envelop</button>
   </div>`;
 }
@@ -2287,7 +2324,7 @@ async function renderStats(view) {
   try { data = await loadPlays(uid); }
   catch (error) { view.innerHTML = `<section class="col"><p class="msg err">${esc(error.message)}</p></section>`; return; }
   view.innerHTML = `<section class="col" style="max-width:none">
-    ${pageHead('Report Card', 'stats')}
+    ${pageHead('Track Record', 'stats')}
     ${statsHtml(data || [])}
   </section>`;
 }
@@ -2353,7 +2390,7 @@ async function renderFriends(view) {
   syncFriendBadge();
 
   view.innerHTML = `<section class="col" style="max-width:none">
-    ${pageHead('The Boys', 'friends')}
+    ${pageHead('The Crew', 'friends')}
     <div class="two-col">
     <div>
     <div class="mycode">
@@ -2514,14 +2551,14 @@ async function renderTrade(view) {
 
   if (!friends.length) {
     view.innerHTML = `<section class="col soon">
-      ${pageHead('Swap Meet', 'trade')}
-      <p class="hint">Voeg eerst een vriend toe via <strong>Friends</strong> in het menu om te kunnen ruilen.</p>
+      ${pageHead('Black Market', 'trade')}
+      <p class="hint">Voeg eerst een vriend toe via <strong>The Crew</strong> in het menu om te kunnen ruilen.</p>
     </section>`;
     return;
   }
 
   view.innerHTML = `<section class="col" style="max-width:none">
-    ${pageHead('Swap Meet', 'trade')}
+    ${pageHead('Black Market', 'trade')}
     <h3>Nieuw ruilvoorstel</h3>
     <label style="display:block;max-width:340px;margin-bottom:16px">
       <span style="display:block;font-weight:600;color:var(--ink-soft);margin-bottom:7px">Met wie wil je ruilen?</span>
@@ -2705,7 +2742,7 @@ function renderShop(view) {
 
   view.innerHTML = `<section class="col" style="max-width:none">
     <div class="battle-top">
-      ${pageHead('Rizz Mart', 'shop')}
+      ${pageHead('The Vault', 'shop')}
       <span class="coinpill shop-balance">🪙 <span data-coin>${state.wallet}</span> credits</span>
     </div>
     <p class="msg tmsg" id="shopMsg" role="alert"></p>
@@ -2735,7 +2772,7 @@ function renderShop(view) {
           : '<p class="hint">Je hebt geen dubbels om te verkopen.</p>'}
 
         <h3 style="margin-top:20px">Wordle-hulp</h3>
-        <p class="hint">Tijdens een Wordle-ronde op <strong>Today</strong>: 💡 een letter onthullen voor ${SHOP.hint} 🪙 (max 2 per ronde) of ➕ een 7e poging voor ${SHOP.extra} 🪙 (koop die vóór je 6e gok).</p>
+        <p class="hint">Tijdens een Wordle-ronde op <strong>Daily Draw</strong>: 💡 een letter onthullen voor ${SHOP.hint} 🪙 (max 2 per ronde) of ➕ een 7e poging voor ${SHOP.extra} 🪙 (koop die vóór je 6e gok).</p>
 
     </div>
   </section>`;
@@ -2791,7 +2828,7 @@ async function renderIdeas(view) {
   ]);
   if (state.tab !== 'ideas') return;
   if (sug.error) {
-    view.innerHTML = `<section class="col">${pageHead('Complaints Dept.', 'ideas')}<p class="msg err">De ideeënbus kon niet geladen worden: ${esc(sug.error.message)}</p></section>`;
+    view.innerHTML = `<section class="col">${pageHead('Town Hall', 'ideas')}<p class="msg err">De ideeënbus kon niet geladen worden: ${esc(sug.error.message)}</p></section>`;
     return;
   }
   const count = {}, mine = new Set();
@@ -2812,7 +2849,7 @@ async function renderIdeas(view) {
   const when = d => new Date(d).toLocaleDateString('nl-BE', { day: 'numeric', month: 'short' });
 
   view.innerHTML = `<section class="col" style="max-width:none">
-    ${pageHead('Complaints Dept.', 'ideas')}
+    ${pageHead('Town Hall', 'ideas')}
     <div class="two-col ideas-grid">
       <div>
         <form id="ideaForm" class="form" style="margin-top:0">
@@ -2931,7 +2968,7 @@ async function renderBattle(view) {
   ]);
   if (state.tab !== 'battle') return;
   if (rows.error) {
-    view.innerHTML = `<section class="col">${pageHead('The Rizz-Off', 'battle')}<p class="msg err">Battle kon niet geladen worden: ${esc(rows.error.message)}</p></section>`;
+    view.innerHTML = `<section class="col">${pageHead('The Arena', 'battle')}<p class="msg err">Battle kon niet geladen worden: ${esc(rows.error.message)}</p></section>`;
     return;
   }
   const battles = rows.data || [];
@@ -2957,7 +2994,7 @@ async function renderBattle(view) {
 
   view.innerHTML = `<section class="col" style="max-width:none">
     <div class="battle-top">
-      ${pageHead('The Rizz-Off', 'battle')}
+      ${pageHead('The Arena', 'battle')}
       <span class="pill">🪙 Vandaag beloond: computer ${rw.pve}/${rw.pve_max} · vrienden ${rw.pvp}/${rw.pvp_max}</span>
     </div>
 
