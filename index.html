@@ -10,7 +10,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700;800;900&family=Cormorant+Garamond:ital,wght@1,500;1,600;1,700&family=Graduate&family=Barlow:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
 /* =====================================================================
-   RIZZ ACADEMY — "The House" (ΡΑ · Rho Alpha · Est. MMXXVI)
+   RIZZ ACADEMY — "The House" (RIZZ · Est. MMXXVI)
    Een Amerikaans studentenhuis: behang, lambrisering, lichtslingers,
    wimpels, koperen plaquettes, enveloppen met waszegel.
    Prestaties: geen backdrop-filter of blend-modi, enkel transform/opacity-animaties.
@@ -65,8 +65,8 @@ a{color:var(--gold2)}
     linear-gradient(180deg,#15263F,#10203A 55%,#0C1729)}
 /* Houten Griekse letters aan de muur */
 .letters{position:absolute;left:50%;top:20vh;transform:translateX(-50%);white-space:nowrap;
-  font:900 36vh/1 var(--display);letter-spacing:.08em;color:#4A2818;opacity:.38;
-  text-shadow:0 2px 0 #7A4A2A,0 4px 0 #2A140A,0 18px 30px rgba(0,0,0,.65)}
+  font:900 22vh/1 var(--display);letter-spacing:.14em;color:#E9DDC0;opacity:.14;
+  -webkit-text-stroke:.05em #9B1B30;paint-order:stroke fill;text-shadow:.035em .035em 0 #C9A227,0 18px 30px rgba(0,0,0,.65)}
 @media (min-width:900px){.letters{left:calc(50% + 134px)}}
 /* Vilten wimpels */
 .pennant{position:absolute;opacity:.42;width:min(330px,30vw);aspect-ratio:3.2/1;display:flex;align-items:center;padding-left:13%;
@@ -79,6 +79,8 @@ a{color:var(--gold2)}
 .pennant.p3{display:none}
 /* In de app zelf staan de wimpels in de weg van de inhoud: enkel op het inlogscherm */
 body:has(.shell) .pennant{display:none}
+/* De grote muurletters enkel in de app (op het inlogscherm vallen ze half achter de titel) */
+body:not(:has(.shell)) .letters{display:none}
 /* Lichtslinger */
 .lights{position:absolute;left:0;right:0;top:0;height:16vh}
 .lights svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
@@ -97,7 +99,7 @@ body:has(.shell) .pennant{display:none}
 .vignette{position:absolute;inset:0;background:radial-gradient(120% 90% at 50% 45%,transparent 55%,rgba(4,8,16,.6))}
 #bgfx{position:absolute;inset:0;width:100%;height:100%;z-index:3}
 @media (max-width:899px){
-  .letters{top:30vh;font-size:22vh;opacity:.4}
+  .letters{top:32vh;font-size:12vh}
   .pennant.p2{display:none}
   .pennant.p1{width:52vw;top:44vh;right:-22vw}
   .lights{height:11vh}
@@ -115,12 +117,12 @@ body:has(.shell) .pennant{display:none}
 .logo-txt b{font:800 19px var(--display);letter-spacing:.08em;color:var(--ivory)}
 .logo-txt small{font:600 10.5px var(--display);letter-spacing:.32em;color:var(--gold);margin-top:6px}
 .crest{position:relative;width:46px;height:54px;flex-shrink:0;display:grid;place-items:center;padding-bottom:8px;overflow:hidden;
-  font:800 17px var(--display);letter-spacing:.02em;color:var(--gold2);background:linear-gradient(160deg,#B8243C,#5E0F1E);
+  font:800 11.5px var(--display);letter-spacing:0;color:var(--gold2);background:linear-gradient(160deg,#B8243C,#5E0F1E);
   clip-path:polygon(0 0,100% 0,100% 64%,50% 100%,0 64%);
   box-shadow:inset 0 0 0 2px var(--gold),inset 0 0 0 4px #5E0F1E,inset 0 0 0 5px rgba(230,200,115,.6)}
 .crest::after{content:"";position:absolute;top:0;bottom:0;left:-100%;width:100%;background:linear-gradient(115deg,transparent 30%,rgba(255,255,255,.4) 50%,transparent 70%);animation:shine 6s ease-in-out infinite}
 @keyframes shine{0%,65%{transform:translateX(0)}100%{transform:translateX(200%)}}
-.crest.big{width:78px;height:92px;font-size:30px;padding-bottom:14px}
+.crest.big{width:78px;height:92px;font-size:19px;padding-bottom:14px}
 .nav{display:grid;gap:4px;margin:0;padding:0}
 .nav-btn{position:relative;display:flex;align-items:center;gap:12px;width:100%;padding:9px 12px;border:0;border-radius:4px;background:none;color:var(--ink-soft);
   font:700 13.5px/1 var(--display);letter-spacing:.16em;text-transform:uppercase;cursor:pointer;text-align:left;transition:color .15s,background .2s,transform .15s var(--ease-out)}
@@ -149,7 +151,7 @@ body:has(.shell) .pennant{display:none}
   .mtop{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:12px}
   .mtop .logo-txt b{font-size:16px}
   .mtop .logo-txt small{font-size:9px;letter-spacing:.24em}
-  .mtop .crest{width:36px;height:42px;font-size:13px;padding-bottom:6px}
+  .mtop .crest{width:36px;height:42px;font-size:9px;padding-bottom:6px}
   .mtop .logo{padding:0;gap:9px}
   .mtop-right{display:flex;align-items:center;gap:8px}
   .dock{display:flex;position:fixed;left:10px;right:10px;bottom:max(10px,env(safe-area-inset-bottom));z-index:60;gap:2px;padding:6px;overflow-x:auto;scrollbar-width:none;
@@ -278,7 +280,7 @@ body:has(.shell) .pennant{display:none}
   background:linear-gradient(180deg,#F7F0DE,#EADFC2);color:#2A2438;border:1px solid #B8922A;
   box-shadow:inset 0 0 0 5px #F7F0DE,inset 0 0 0 6px rgba(155,27,48,.45),0 20px 40px -20px rgba(0,0,0,.8)}
 .welcome-banner::after{content:"";position:absolute;top:0;bottom:0;left:-100%;width:100%;pointer-events:none;background:linear-gradient(115deg,transparent 30%,rgba(255,255,255,.5) 50%,transparent 70%);animation:shine 6s ease-in-out infinite}
-.wb-icon{width:52px;height:52px;flex-shrink:0;border-radius:50%;display:grid;place-items:center;font:800 16px var(--display);color:#F7D9A0;
+.wb-icon{width:52px;height:52px;flex-shrink:0;border-radius:50%;display:grid;place-items:center;font:800 11px var(--display);color:#F7D9A0;
   background:radial-gradient(circle at 40% 35%,#D63A4A,#9B1B30 60%,#6E1020);box-shadow:0 0 0 3px #8A1626,0 4px 8px rgba(0,0,0,.4),inset 0 2px 3px rgba(255,255,255,.3)}
 .wb-text{flex:1;min-width:200px;color:#5A5268}
 .wb-text strong{display:block;font:800 22px/1.1 var(--display);letter-spacing:.04em;color:#14213D;margin-bottom:2px}
@@ -403,7 +405,7 @@ body:has(.shell) .pennant{display:none}
   background:linear-gradient(180deg,#EADFC4,#D9C8A0);box-shadow:inset 0 -2px 0 rgba(0,0,0,.1);transition:transform .6s cubic-bezier(.4,0,.2,1)}
 /* waszegel */
 .seal{position:absolute;left:50%;top:52%;z-index:4;width:24cqw;height:24cqw;margin:-12cqw 0 0 -12cqw;border-radius:50%;display:grid;place-items:center;
-  font:800 7.6cqw/1 var(--display);color:#F7D9A0;text-shadow:0 1px 0 rgba(0,0,0,.4);
+  font:800 5.2cqw/1 var(--display);color:#F7D9A0;text-shadow:0 1px 0 rgba(0,0,0,.4);
   background:radial-gradient(circle at 40% 35%,#E04656,#A81E33 55%,#6E1020);
   box-shadow:0 0 0 1.4cqw #9B1B30,0 0 0 2cqw rgba(110,16,32,.6),0 1.6cqw 2.4cqw rgba(0,0,0,.45),inset 0 .8cqw 1.4cqw rgba(255,255,255,.3),inset 0 -1cqw 1.6cqw rgba(0,0,0,.35);
   transition:transform .35s ease-in,opacity .35s ease-in}
@@ -474,8 +476,8 @@ body:has(.shell) .pennant{display:none}
 /* dubbele koperen lijst */
 .cframe{position:absolute;inset:2.4cqw;border:.5cqw solid var(--gilt);border-radius:2.4cqw;pointer-events:none;z-index:1}
 .cframe::after{content:"";position:absolute;inset:1cqw;border:.25cqw solid var(--gilt);border-radius:1.6cqw;opacity:.7}
-.cbadge{position:absolute;top:5cqw;left:6.4cqw;z-index:3;width:10cqw;height:11.6cqw;display:grid;place-items:center;padding-bottom:2cqw;
-  font:800 3.4cqw/1 var(--display);color:var(--ribbon-ink);background:var(--ribbon);clip-path:polygon(0 0,100% 0,100% 64%,50% 100%,0 64%);box-shadow:inset 0 0 0 .5cqw var(--gilt)}
+.cbadge{position:absolute;top:5cqw;left:6.4cqw;z-index:3;width:12cqw;height:13cqw;display:grid;place-items:center;padding-bottom:2cqw;
+  font:800 2.5cqw/1 var(--display);color:var(--ribbon-ink);background:var(--ribbon);clip-path:polygon(0 0,100% 0,100% 64%,50% 100%,0 64%);box-shadow:inset 0 0 0 .5cqw var(--gilt)}
 .hp{position:absolute;top:5.6cqw;right:6.4cqw;z-index:3;font:800 4.4cqw/1 var(--display);letter-spacing:.08em;color:var(--ink-c);white-space:nowrap}
 /* portretvenster met gotische boog */
 .win{position:absolute;top:10cqw;left:13cqw;right:13cqw;height:86cqw;z-index:2;border-radius:35cqw 35cqw 2cqw 2cqw;overflow:hidden;background:var(--art);
@@ -550,7 +552,7 @@ body:has(.shell) .pennant{display:none}
 .cb-in::before{content:"";position:absolute;inset:1.4cqw;border:.25cqw solid rgba(201,162,39,.6);border-radius:1.6cqw;pointer-events:none}
 .cb-in::after{content:"";position:absolute;top:0;bottom:0;left:-100%;width:100%;pointer-events:none;background:linear-gradient(115deg,transparent 30%,rgba(255,255,255,.18) 50%,transparent 70%);animation:shine 5s ease-in-out infinite}
 .book .cb-in::after,.grid .cb-in::after,.lite .cb-in::after{display:none}
-.cb-crest{width:38cqw;height:45cqw;display:grid;place-items:center;padding-bottom:7cqw;font:800 13cqw/1 var(--display);color:var(--gold2);
+.cb-crest{width:38cqw;height:45cqw;display:grid;place-items:center;padding-bottom:7cqw;font:800 8.4cqw/1 var(--display);color:var(--gold2);
   background:linear-gradient(160deg,#B8243C,#5E0F1E);clip-path:polygon(0 0,100% 0,100% 64%,50% 100%,0 64%);
   box-shadow:inset 0 0 0 1.6cqw var(--gold),inset 0 0 0 2.8cqw #5E0F1E,inset 0 0 0 3.3cqw rgba(230,200,115,.6)}
 .cb-name{font:800 7.6cqw/1 var(--display);letter-spacing:.12em;color:var(--ivory)}
@@ -683,7 +685,7 @@ button.slot:hover{transform:translateY(-6px)}
 /* ---------- Brotherhood (vrienden) ---------- */
 .mycode{position:relative;display:grid;grid-template-columns:auto 1fr;grid-template-rows:auto auto auto;column-gap:16px;row-gap:2px;align-items:center;max-width:440px;padding:18px 20px 16px;border-radius:12px;overflow:hidden;
   background:linear-gradient(120deg,#B8243C,#7E1428 45%,#14213D);border:1px solid var(--gold);box-shadow:inset 0 0 0 5px rgba(0,0,0,.08),inset 0 0 0 6px rgba(230,200,115,.4),0 24px 50px -24px rgba(155,27,48,.7)}
-.mycode::before{content:"STUDENT ID · ΡΑ";grid-column:1/3;font:700 10.5px var(--display);letter-spacing:.38em;color:var(--gold2);margin-bottom:8px}
+.mycode::before{content:"STUDENT ID · RIZZ";grid-column:1/3;font:700 10.5px var(--display);letter-spacing:.38em;color:var(--gold2);margin-bottom:8px}
 .mycode::after{content:"";position:absolute;right:18px;top:16px;width:90px;height:34px;opacity:.5;background:repeating-linear-gradient(90deg,#fff 0 2px,transparent 2px 4px,#fff 4px 5px,transparent 5px 9px,#fff 9px 12px,transparent 12px 14px)}
 .mycode-label{grid-row:2/4;width:58px;height:58px;border-radius:50%;display:grid;place-items:center;text-align:center;font:700 8.5px/1.2 var(--display);letter-spacing:.12em;text-transform:uppercase;color:#F7D9A0;
   background:radial-gradient(circle at 40% 35%,#D63A4A,#9B1B30 60%,#6E1020);box-shadow:0 0 0 3px #8A1626,0 4px 8px rgba(0,0,0,.4)}
@@ -1055,7 +1057,7 @@ function countByCard(rows) {
 function authShell(box) {
   return `<main class="auth">
     <section class="auth-hero">
-      <span class="crest big" aria-hidden="true">ΡΑ</span>
+      <span class="crest big" aria-hidden="true">RIZZ</span>
       <h1>Rizz Academy<em>Trading Cards · Est. MMXXVI</em></h1>
       <p class="auth-tag">Welkom in het huis. Leg elke dag je Wordle-examen af, open je envelop en verzamel de kaarten van je broeders.</p>
       <div class="fan" aria-hidden="true">${renderCardBack({})}${renderCardBack({})}${renderCardBack({})}</div>
@@ -1187,7 +1189,7 @@ function renderResetPassword() {
 // ---------- Kaart groot bekijken, tik om om te draaien ----------
 function renderCardBack() {
   return `<div class="cw"><div class="cardback" role="img" aria-label="Achterkant van de kaart"><div class="cb-in">
-    <span class="cb-crest" aria-hidden="true">ΡΑ</span><span class="cb-name" aria-hidden="true">RIZZ ACADEMY</span><span class="cb-est" aria-hidden="true">est. MMXXVI</span>
+    <span class="cb-crest" aria-hidden="true">RIZZ</span><span class="cb-name" aria-hidden="true">RIZZ ACADEMY</span><span class="cb-est" aria-hidden="true">est. MMXXVI</span>
   </div></div></div>`;
 }
 
@@ -1223,7 +1225,7 @@ function renderCard(c, { locked = false, count = 1 } = {}) {
   const label = RARITY_LABEL[c.rarity];
   if (locked) {
     return `<div class="cw"><div class="card r-${c.rarity} locked" aria-label="Nog niet verzameld">
-      <div class="cframe"></div><span class="cbadge" aria-hidden="true">ΡΑ</span>
+      <div class="cframe"></div><span class="cbadge" aria-hidden="true">RIZZ</span>
       <div class="win"><div class="art"><span class="q">?</span></div></div>
       <div class="plate"><span class="cname">???</span><span class="tagline">${label} · Nº ${esc(c.slot)}</span></div>
     </div></div>`;
@@ -1244,7 +1246,7 @@ function renderCard(c, { locked = false, count = 1 } = {}) {
     ${count > 1 ? `<span class="dupe">×${count}</span>` : ''}
     <div class="card r-${c.rarity}">
       <div class="cframe"></div>
-      <span class="cbadge" aria-hidden="true">ΡΑ</span>
+      <span class="cbadge" aria-hidden="true">RIZZ</span>
       <span class="hp">HP ${esc(c.hp)}</span>
       <div class="win"><div class="art">${art}</div></div>
       <div class="plate">
@@ -1271,7 +1273,7 @@ const TABS = [
 
 const navHtml = () => TABS.map(t => `<button type="button" class="nav-btn" data-tab="${t.id}"${t.id === state.tab ? ' aria-current="page"' : ''}>
   <span class="ni" aria-hidden="true">${t.icon}</span><span class="nl">${t.label}</span>${t.badge ? `<span class="tab-badge" data-${t.badge}-badge hidden></span>` : ''}</button>`).join('');
-const logoHtml = () => `<div class="logo"><span class="crest" aria-hidden="true">ΡΑ</span><span class="logo-txt"><b>RIZZ ACADEMY</b><small>EST. MMXXVI</small></span></div>`;
+const logoHtml = () => `<div class="logo"><span class="crest" aria-hidden="true">RIZZ</span><span class="logo-txt"><b>RIZZ ACADEMY</b><small>EST. MMXXVI</small></span></div>`;
 
 // Koperen plaquettes bovenaan: credits, collectie en streak, met het motto van het huis
 function scoreboardHtml() {
@@ -1279,7 +1281,7 @@ function scoreboardHtml() {
     <div class="plaque"><span class="pl-label">Credits</span><span class="pl-val" data-coin>${state.wallet}</span></div>
     <div class="plaque"><span class="pl-label">Collectie</span><span class="pl-val" data-coll>${collectionText()}</span></div>
     <div class="plaque"><span class="pl-label">Streak</span><span class="pl-val" data-streak>${computeStreak(state.playDates)}</span></div>
-    <div class="motto" aria-hidden="true">Veni · Vidi · Rizzi<i>— Rho Alpha, est. MMXXVI</i></div>
+    <div class="motto" aria-hidden="true">Veni · Vidi · Rizzi<i>— Domus Rizz, est. MMXXVI</i></div>
   </div>`;
 }
 
@@ -1424,8 +1426,8 @@ function initBackground() {
   const scene = document.createElement('div');
   scene.className = 'scene';
   scene.setAttribute('aria-hidden', 'true');
-  scene.innerHTML = `<div class="wall"></div><div class="letters">ΡΑ</div>
-    <div class="pennant p1"><span>RIZZ</span></div><div class="pennant p2"><span>ΡΑ</span></div><div class="pennant p3"><span>MMXXVI</span></div>
+  scene.innerHTML = `<div class="wall"></div><div class="letters">RIZZ</div>
+    <div class="pennant p1"><span>RIZZ</span></div><div class="pennant p2"><span>RIZZ</span></div><div class="pennant p3"><span>MMXXVI</span></div>
     <div class="lights"></div><div class="wainscot"></div><div class="vignette"></div><canvas id="bgfx"></canvas>`;
   document.body.prepend(scene);
   const lights = scene.querySelector('.lights');
@@ -2006,7 +2008,7 @@ async function openPack(stage, cards) {
       <div class="pack-card">${renderCardBack(cards[0])}</div>
       <div class="pack-body"><div class="pack-label" aria-hidden="true">${packLabel(cards.length)}</div></div>
       <div class="pack-top"></div>
-      <span class="seal" aria-hidden="true">ΡΑ</span>
+      <span class="seal" aria-hidden="true">RIZZ</span>
     </button>
     <p class="pack-hint">Tik om het zegel te breken</p>
   </div>`;
@@ -2060,7 +2062,7 @@ async function revealCard(res) {
 function welcomeBanner() {
   if (!state.welcomeAvailable) return '';
   return `<div class="welcome-banner">
-    <span class="wb-icon" aria-hidden="true">ΡΑ</span>
+    <span class="wb-icon" aria-hidden="true">RIZZ</span>
     <div class="wb-text"><strong>You're invited, freshman!</strong>Je welkomstenvelop met 3 kaarten ligt klaar.</div>
     <button class="btn small" id="claimWelcome" type="button">Open je envelop</button>
   </div>`;
@@ -2623,7 +2625,7 @@ function renderShop(view) {
         <h3>Pakjes</h3>
         <div class="shop-packs">${Object.entries(SHOP.packs).map(([k, p]) => `
           <div class="shop-pack">
-            <div class="pack mini" aria-hidden="true"><div class="pack-body"><div class="pack-label">${packLabel(p.count)}</div></div><div class="pack-top"></div><span class="seal">ΡΑ</span></div>
+            <div class="pack mini" aria-hidden="true"><div class="pack-body"><div class="pack-label">${packLabel(p.count)}</div></div><div class="pack-top"></div><span class="seal">RIZZ</span></div>
             <div class="shop-pack-info"><strong>${p.name}</strong><small>${p.desc}</small>
               <button class="btn small" data-buy-pack="${k}" type="button" ${state.wallet < p.price ? 'disabled' : ''}>Kopen · ${p.price} 🪙</button></div>
           </div>`).join('')}</div>
