@@ -1,7 +1,7 @@
 -- =====================================================================
 -- SETUP: volledige database voor een NIEUW, LEEG Supabase-project
 -- Verzamelkaarten-site: accounts, kaarten, vrienden, ruilen, welkomstpakket,
--- dagelijks spel (Wordle), tactische battles, shop en ideeënbus.
+-- dagelijks spel (Wordle, 1 ronde per dag), tactische battles, shop en ideeënbus.
 --
 -- Gebruik: Supabase → SQL Editor → nieuwe query → dit VOLLEDIGE bestand plakken → Run.
 -- Kies bij de waarschuwing "Run without RLS": het script zet RLS zelf aan.
@@ -563,7 +563,7 @@ create or replace function public._wordle_local() returns timestamp
 language sql stable as $$ select now() at time zone 'Europe/Brussels' $$;
 
 create or replace function public._wordle_opens(p_slot int) returns time
-language sql immutable as $$ select case p_slot when 1 then time '08:00' else time '13:00' end $$;
+language sql immutable as $$ select time '00:00' $$;  -- 1 ronde per dag, vanaf middernacht (Belgische tijd)
 
 -- Het woord van een ronde; wordt bij de eerste speler willekeurig gekozen (voor iedereen hetzelfde)
 create or replace function public._wordle_word(p_date date, p_slot int) returns text
@@ -641,7 +641,7 @@ end $$;
 revoke all on function public._wordle_word(date, int) from public, anon, authenticated;
 revoke all on function public._wordle_draw(uuid, int) from public, anon, authenticated;
 
--- 4. wordle_state: de 2 rondes van vandaag voor de ingelogde gebruiker ------------
+-- 4. wordle_state: de ronde van vandaag voor de ingelogde gebruiker ------------
 create or replace function public.wordle_state() returns jsonb
 language plpgsql volatile security definer set search_path = public as $$
 declare
@@ -652,7 +652,7 @@ declare
   s int; g public.wordle_games; w text; rows_ jsonb; opens time;
 begin
   if me is null then raise exception 'Niet ingelogd.'; end if;
-  for s in 1..2 loop
+  for s in 1..1 loop
     opens := public._wordle_opens(s);
     select * into g from public.wordle_games where user_id = me and round_date = d and slot = s;
     rows_ := '[]'::jsonb;
@@ -689,7 +689,7 @@ declare
   v_draw jsonb;
 begin
   if me is null then raise exception 'Niet ingelogd.'; end if;
-  if p_slot not in (1, 2) then raise exception 'Onbekende ronde.'; end if;
+  if p_slot <> 1 then raise exception 'Onbekende ronde.'; end if;
   if loc::time < public._wordle_opens(p_slot) then
     raise exception 'Deze Wordle opent pas om % (Belgische tijd).', to_char(public._wordle_opens(p_slot), 'HH24:MI');
   end if;
@@ -1409,7 +1409,7 @@ begin
     where user_id = p_user and polycoins >= p_amount
     returning polycoins into v;
   if not found then
-    raise exception 'Niet genoeg polycoins: je hebt er %, je hebt er % nodig.',
+    raise exception 'Niet genoeg credits: je hebt er %, je hebt er % nodig.',
       coalesce((select polycoins from public.user_wallet where user_id = p_user), 0), p_amount;
   end if;
   insert into public.shop_log (user_id, kind, amount, detail) values (p_user, p_kind, -p_amount, p_detail);
@@ -1511,7 +1511,7 @@ declare
   g public.wordle_games; w text; pos int; v_wallet int;
 begin
   if me is null then raise exception 'Niet ingelogd.'; end if;
-  if p_slot not in (1, 2) or loc::time < public._wordle_opens(p_slot) then raise exception 'Deze Wordle is nog niet open.'; end if;
+  if p_slot <> 1 or loc::time < public._wordle_opens(p_slot) then raise exception 'Deze Wordle is nog niet open.'; end if;
   insert into public.wordle_games (user_id, round_date, slot) values (me, d, p_slot) on conflict do nothing;
   select * into g from public.wordle_games where user_id = me and round_date = d and slot = p_slot for update;
   if g.status <> 'playing' then raise exception 'Deze Wordle is al afgelopen.'; end if;
@@ -1539,7 +1539,7 @@ declare
   g public.wordle_games; v_wallet int;
 begin
   if me is null then raise exception 'Niet ingelogd.'; end if;
-  if p_slot not in (1, 2) or loc::time < public._wordle_opens(p_slot) then raise exception 'Deze Wordle is nog niet open.'; end if;
+  if p_slot <> 1 or loc::time < public._wordle_opens(p_slot) then raise exception 'Deze Wordle is nog niet open.'; end if;
   insert into public.wordle_games (user_id, round_date, slot) values (me, d, p_slot) on conflict do nothing;
   select * into g from public.wordle_games where user_id = me and round_date = d and slot = p_slot for update;
   if g.status <> 'playing' then raise exception 'Deze Wordle is al afgelopen.'; end if;
@@ -1590,7 +1590,7 @@ declare
   s int; g public.wordle_games; w text; rows_ jsonb; opens time;
 begin
   if me is null then raise exception 'Niet ingelogd.'; end if;
-  for s in 1..2 loop
+  for s in 1..1 loop
     opens := public._wordle_opens(s);
     select * into g from public.wordle_games where user_id = me and round_date = d and slot = s;
     rows_ := '[]'::jsonb;
@@ -1629,7 +1629,7 @@ declare
   v_draw jsonb;
 begin
   if me is null then raise exception 'Niet ingelogd.'; end if;
-  if p_slot not in (1, 2) then raise exception 'Onbekende ronde.'; end if;
+  if p_slot <> 1 then raise exception 'Onbekende ronde.'; end if;
   if loc::time < public._wordle_opens(p_slot) then
     raise exception 'Deze Wordle opent pas om % (Belgische tijd).', to_char(public._wordle_opens(p_slot), 'HH24:MI');
   end if;

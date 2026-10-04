@@ -3,41 +3,48 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>POLYGON Trading Cards</title>
+<title>Rizz Academy</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Figtree:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Graduate&family=Barlow:wght@400;500;600;700;800&family=Barlow+Condensed:wght@600;700;800&display=swap" rel="stylesheet">
 <style>
 :root{
-  --bg:#14171C; --bg2:#1D2229; --panel:#232932; --sleeve:#F4EFE4; --page:#FBF7EE;
-  --ink:#F1EFE9; --ink-soft:#B9C2CC; --muted:#8892A0; --line:#3A4453;
-  /* Wordle-palet: groen (correct), geel (bijna), zwart (basis) + grijs/wit als subtiele basiskleuren */
-  --green:#5DA352; --green-soft:#7FC26F; --yellow:#C9B458; --yellow-soft:#DFCB7C;
-  --wblack:#15181D; --grey:#8B93A0; --grey-soft:#AEB6C0; --white:#F3F1E9;
-  --amber:var(--green); --amber-soft:var(--green-soft);
-  --gold:#C99A1E; --cat:#2FA79E;
-  --r:20px; --r-sm:12px;
-  --display:'Bricolage Grotesque','Trebuchet MS',system-ui,sans-serif;
-  --body:'Figtree',system-ui,-apple-system,'Segoe UI',sans-serif;
+  /* Varsity: oxblood/maroon wol, crème leer, goud borduursel, navy accenten */
+  --bg:#1A0A11; --bg2:#26101A; --panel:#2E1520; --sleeve:#F3E6CA; --page:#FBF3E2;
+  --ink:#F6EBD6; --ink-soft:#DCC8AA; --muted:#A88D7C; --line:#54303D;
+  --maroon:#7A1F2E; --maroon-soft:#9E3145; --cream:#F3E6CA; --navy:#1E2B47; --navy-soft:#3A4E7A;
+  /* Wordle-palet: groen (correct), goud (bijna) */
+  --green:#4E9A5B; --green-soft:#7CC488; --yellow:#D6A936; --yellow-soft:#EBC867;
+  --wblack:#140810; --grey:#8C7A80; --grey-soft:#B9A8AC; --white:#F6EBD6;
+  --amber:var(--yellow); --amber-soft:var(--yellow-soft);
+  --gold:#C9971F; --cat:#3E7A5F;
+  --r:18px; --r-sm:12px;
+  --display:'Graduate','Rockwell','Georgia',serif;
+  --cond:'Barlow Condensed','Arial Narrow',system-ui,sans-serif;
+  --body:'Barlow',system-ui,-apple-system,'Segoe UI',sans-serif;
 }
 *{box-sizing:border-box}
 html{-webkit-text-size-adjust:100%}
 body{
   margin:0;color:var(--ink);font:400 16px/1.55 var(--body);min-height:100vh;
+  /* Vilt van een varsity-jas: maroon met een lichte weefstructuur en een gouden gloed */
   background:
-    radial-gradient(ellipse 80% 60% at 15% 0%,rgba(93,163,82,.28),transparent 60%),
-    radial-gradient(ellipse 70% 60% at 100% 100%,rgba(201,180,88,.22),transparent 60%),
-    radial-gradient(ellipse 60% 50% at 80% 20%,rgba(139,92,246,.14),transparent 60%),
-    linear-gradient(160deg,#131a17,#12151b 55%,#17141c);
+    radial-gradient(ellipse 80% 55% at 12% 0%,rgba(158,49,69,.45),transparent 62%),
+    radial-gradient(ellipse 70% 60% at 100% 100%,rgba(214,169,54,.16),transparent 60%),
+    radial-gradient(ellipse 60% 50% at 85% 15%,rgba(58,78,122,.22),transparent 60%),
+    repeating-linear-gradient(45deg,rgba(255,255,255,.012) 0 2px,transparent 2px 5px),
+    linear-gradient(165deg,#2A0D17,#1A0A11 55%,#140A12);
   background-attachment:fixed;
   position:relative;
 }
-/* Speelse achtergrond: zwevende Wordle-tegels en veelhoeken (zie initBackground) */
+/* Speelse achtergrond: zwevende varsity-letters, sterren en vaantjes (zie initBackground) */
 #bgfx{position:fixed;inset:0;width:100%;height:100%;z-index:-1;pointer-events:none}
-h1,h2,h3{font-family:var(--display);font-weight:800;line-height:1.08;margin:0 0 10px;color:#fff}
-h1{font-size:clamp(30px,5vw,48px)}
-h2{font-size:clamp(22px,2.6vw,30px)}
-h3{font-size:19px}
+h1,h2,h3{font-family:var(--display);font-weight:400;line-height:1.12;margin:0 0 10px;color:var(--cream);letter-spacing:.01em}
+h1{font-size:clamp(30px,5vw,46px);text-shadow:0 3px 0 var(--maroon),0 6px 18px rgba(0,0,0,.45)}
+h1 em{font-style:normal;color:var(--yellow-soft)}
+h2{font-size:clamp(21px,2.5vw,28px)}
+h3{font-size:18px}
+h4{font-family:var(--cond);letter-spacing:.04em}
 button,input,textarea{font:inherit}
 a{color:var(--amber-soft)}
 .wrap{max-width:560px;margin:0 auto;padding:28px 20px 56px}
@@ -49,9 +56,13 @@ a{color:var(--amber-soft)}
 :focus-visible{outline:3px solid var(--yellow);outline-offset:2px}
 
 /* Knoppen en formulieren */
-.btn{background:var(--amber);color:#12160f;border:0;border-radius:14px;padding:14px 22px;font:800 16.5px var(--body);min-height:50px;cursor:pointer;width:100%;box-shadow:0 5px 0 #3b7334,0 8px 18px -6px rgba(0,0,0,.5);transition:transform .1s ease,box-shadow .1s ease,background .15s ease}
+.btn{background:var(--amber);color:#1A0A11;border:0;border-radius:14px;padding:14px 22px;font:800 17px var(--cond);letter-spacing:.06em;text-transform:uppercase;min-height:50px;cursor:pointer;width:100%;
+  outline:2px dashed rgba(26,10,17,.32);outline-offset:-6px;
+  box-shadow:0 5px 0 #8E6A17,0 8px 18px -6px rgba(0,0,0,.5);transition:transform .1s ease,box-shadow .1s ease,background .15s ease}
+.btn:focus-visible{outline:3px solid var(--cream);outline-offset:2px}
+.btn.small{font-size:15px}
 .btn:hover:not(:disabled){background:var(--amber-soft);transform:translateY(-1px)}
-.btn:active:not(:disabled){transform:translateY(4px);box-shadow:0 1px 0 #3b7334,0 3px 8px -4px rgba(0,0,0,.5)}
+.btn:active:not(:disabled){transform:translateY(4px);box-shadow:0 1px 0 #8E6A17,0 3px 8px -4px rgba(0,0,0,.5)}
 .btn:disabled{opacity:.4;cursor:not-allowed}
 .link{background:none;border:0;color:var(--ink-soft);text-decoration:underline;cursor:pointer;padding:10px 6px;font-size:16px}
 .link:hover{color:var(--amber-soft)}
@@ -59,44 +70,54 @@ a{color:var(--amber-soft)}
 .form label{display:grid;gap:7px;font-weight:600;font-size:16px;color:var(--ink-soft)}
 .form input,.form textarea{border:1px solid var(--line);background:var(--panel);color:var(--ink);border-radius:var(--r-sm);padding:14px;min-height:54px;font-weight:400;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:16px;line-height:1.5;resize:vertical}
 .form input{font-family:var(--body)}
-.form input:focus,.form textarea:focus{background:#2C3541}
+.form input:focus,.form textarea:focus{background:#3A1C29}
 .msg{margin:0;min-height:1.5em;font-size:16px}
 .msg.err,.err{color:#F0897E}
 .msg.ok{color:var(--green-soft)}
 
 /* Wordle-tegels */
-.tile{width:clamp(50px,15vw,70px);aspect-ratio:1;display:grid;place-items:center;border-radius:var(--r-sm);color:#fff;font:800 clamp(26px,8vw,38px)/1 var(--display)}
-.t-g{background:var(--green)} .t-y{background:var(--yellow)} .t-x{background:var(--grey)}
+.tile{width:clamp(50px,15vw,68px);aspect-ratio:1;display:grid;place-items:center;border-radius:var(--r-sm);color:var(--cream);font:400 clamp(28px,8.5vw,40px)/1 var(--display);
+  outline:2px dashed rgba(243,230,202,.45);outline-offset:-6px;box-shadow:0 5px 0 rgba(0,0,0,.35)}
+.t-g{background:var(--maroon)} .t-y{background:var(--yellow);color:var(--maroon)} .t-x{background:var(--navy)}
+.tile:nth-child(odd){transform:rotate(-4deg)} .tile:nth-child(even){transform:rotate(3deg)}
 .tilerow,.hero{display:flex;gap:6px;justify-content:center}
 .hero{margin:20px 0 24px;justify-content:flex-start}
 
 /* Kopregel en tabs */
 .top{display:flex;justify-content:space-between;align-items:center;padding:4px 0 16px;gap:12px}
-.brand{font:800 24px var(--display);color:#fff;display:flex;align-items:baseline;gap:8px;white-space:nowrap}
-.brand em{font-style:normal;color:var(--amber-soft)}
-@media (max-width:640px){.brand{font-size:19px;flex-direction:column;gap:0;line-height:1.05}}
+.brand{display:flex;align-items:center;gap:10px;white-space:nowrap;color:var(--cream)}
+.brand-name{display:grid;line-height:1}
+.brand-name b{font:400 23px var(--display);letter-spacing:.02em;text-shadow:0 2px 0 var(--maroon)}
+.brand-name small{font:700 11.5px var(--cond);letter-spacing:.32em;color:var(--yellow-soft);margin-top:3px}
+/* Schildje met de initialen, zoals het embleem op een varsity-jas */
+.crest{width:42px;height:48px;flex-shrink:0;display:grid;place-items:center;padding-bottom:5px;
+  background:var(--maroon);color:var(--cream);font:400 17px var(--display);
+  clip-path:polygon(0 0,100% 0,100% 62%,50% 100%,0 62%);
+  box-shadow:inset 0 0 0 3px var(--yellow),inset 0 0 0 5px var(--maroon),inset 0 0 0 6px rgba(243,230,202,.5)}
+@media (max-width:640px){.brand-name b{font-size:17px}.brand-name small{font-size:9.5px;letter-spacing:.22em}.crest{width:34px;height:39px;font-size:14px}}
+/* Smalle gsm: enkel het schildje, zodat de knoppen rechts passen */
+@media (max-width:480px){.brand-name{display:none}}
 .topright{display:flex;gap:10px;align-items:center}
-.coinpill{display:flex;align-items:center;gap:6px;background:rgba(21,24,29,.8);border:1px solid var(--line);color:var(--yellow-soft);font:800 15px var(--body);padding:9px 14px;border-radius:999px;white-space:nowrap}
+.coinpill{display:flex;align-items:center;gap:6px;background:rgba(20,8,13,.8);border:1px solid var(--line);color:var(--yellow-soft);font:800 15px var(--body);padding:9px 14px;border-radius:999px;white-space:nowrap}
 .avbtn{width:44px;height:44px;border-radius:50%;border:2px solid var(--line);background-color:var(--panel);background-size:cover;background-position:center;color:#fff;font:700 17px var(--body);cursor:pointer;display:grid;place-items:center;padding:0;flex-shrink:0;transition:border-color .15s ease,transform .15s ease}
 .avbtn:hover{border-color:var(--green-soft);transform:translateY(-1px)}
 .menu{position:relative}
-.menu-btn{display:flex;align-items:center;gap:8px;background:var(--yellow);color:#15181D;border:0;border-radius:14px;padding:10px 14px;font:800 15px var(--body);cursor:pointer;
-  box-shadow:0 4px 0 #8f7f35,0 8px 18px -6px rgba(0,0,0,.5);transition:transform .1s ease,box-shadow .1s ease}
-.menu-btn:active{transform:translateY(3px);box-shadow:0 1px 0 #8f7f35}
+.menu-btn{display:flex;align-items:center;gap:8px;background:var(--cream);color:#1A0A11;border:0;border-radius:14px;padding:10px 14px;font:800 16px var(--cond);letter-spacing:.05em;text-transform:uppercase;cursor:pointer;
+  box-shadow:0 4px 0 #8E6A17,0 8px 18px -6px rgba(0,0,0,.5);transition:transform .1s ease,box-shadow .1s ease}
+.menu-btn:active{transform:translateY(3px);box-shadow:0 1px 0 #8E6A17}
 .menu-btn .chev{font-size:12px;transition:transform .2s ease}
 .menu-btn[aria-expanded="true"] .chev{transform:rotate(180deg)}
 .menu-ico{font-size:17px;line-height:1}
 .menu-list{position:absolute;right:0;top:calc(100% + 10px);z-index:50;min-width:210px;padding:8px;display:grid;gap:2px;
-  background:rgba(29,34,41,.97);border:1px solid var(--line);border-radius:16px;box-shadow:0 18px 40px -10px rgba(0,0,0,.7);
+  background:rgba(38,16,26,.97);border:1px solid var(--line);border-radius:16px;box-shadow:0 18px 40px -10px rgba(0,0,0,.7);
   backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);animation:menu-in .16s ease both;transform-origin:top right}
 @keyframes menu-in{from{opacity:0;transform:scale(.94) translateY(-6px)}to{opacity:1;transform:none}}
 .menu-list button{display:flex;align-items:center;gap:12px;width:100%;background:none;border:0;border-radius:10px;padding:11px 12px;color:var(--ink);font:700 15.5px var(--body);cursor:pointer;text-align:left}
 .menu-list button:hover{background:rgba(255,255,255,.07)}
-.menu-list button[aria-current="page"]{background:rgba(201,180,88,.2);color:var(--yellow-soft)}
+.menu-list button[aria-current="page"]{background:rgba(214,169,54,.2);color:var(--yellow-soft)}
 .menu-list .tab-badge{margin-left:auto}
 @media (max-width:640px){
   .wrap.wide{padding:12px 14px 24px}
-  .brand{font-size:16px}
   .topright{gap:7px}
   .menu-btn .menu-label{display:none}
   .menu-btn{padding:9px 11px;gap:6px}
@@ -109,9 +130,9 @@ a{color:var(--amber-soft)}
 /* Paginatitel met info-icoontje */
 .page-head{display:flex;align-items:center;gap:10px;margin-bottom:10px}
 .page-head h2{margin:0}
-.info-btn{width:30px;height:30px;flex-shrink:0;border-radius:50%;border:2px solid var(--yellow-soft);background:rgba(201,180,88,.12);color:var(--yellow-soft);
+.info-btn{width:30px;height:30px;flex-shrink:0;border-radius:50%;border:2px solid var(--yellow-soft);background:rgba(214,169,54,.12);color:var(--yellow-soft);
   font:800 15px/1 Georgia,serif;font-style:italic;cursor:pointer;display:grid;place-items:center;padding:0;transition:transform .15s ease,background .15s ease}
-.info-btn:hover{transform:scale(1.1) rotate(-6deg);background:rgba(201,180,88,.25)}
+.info-btn:hover{transform:scale(1.1) rotate(-6deg);background:rgba(214,169,54,.25)}
 .infobox{width:min(520px,92vw);max-height:88vh;overflow-y:auto;padding:24px;background:var(--panel);border:1px solid var(--line);border-radius:var(--r);animation:zoom-in .18s ease both;color:var(--ink)}
 .infobox h2{display:flex;align-items:center;gap:10px}
 .infobox p,.infobox li{color:var(--ink-soft)}
@@ -120,39 +141,39 @@ a{color:var(--amber-soft)}
 
 /* Eigen Wordle: rondes, speelbord en toetsenbord */
 .round-tabs{display:flex;gap:8px;margin-bottom:14px;max-width:520px}
-.round-tab{flex:1;display:grid;gap:1px;text-align:left;background:rgba(35,41,50,.88);border:2px solid var(--line);border-radius:14px;padding:8px 14px;color:var(--ink);font:800 15px var(--body);cursor:pointer;transition:border-color .15s,background .15s}
+.round-tab{flex:1;display:grid;gap:1px;text-align:left;background:rgba(46,21,32,.9);border:2px solid var(--line);border-radius:14px;padding:8px 14px;color:var(--ink);font:800 15px var(--body);cursor:pointer;transition:border-color .15s,background .15s}
 .round-tab small{font:600 12.5px var(--body);color:var(--ink-soft)}
-.round-tab.active{border-color:var(--yellow);background:rgba(201,180,88,.16)}
+.round-tab.active{border-color:var(--yellow);background:rgba(214,169,54,.16)}
 .round-tab.done small{color:var(--green-soft)}
 .wboard{--rows:6;display:grid;gap:6px;width:min(300px,100%,calc((100vh - 430px) * 5 / var(--rows)));min-width:200px;margin:0 auto 8px}
 .wrow{display:grid;grid-template-columns:repeat(5,1fr);gap:6px}
 .wrow.shake{animation:shake .4s ease}
-.wtile{aspect-ratio:1;display:grid;place-items:center;border:2px solid var(--line);border-radius:10px;background:rgba(21,24,29,.65);
-  color:#fff;font:800 clamp(20px,5.5vw,28px)/1 var(--display);text-transform:uppercase;user-select:none}
+.wtile{aspect-ratio:1;display:grid;place-items:center;border:2px solid var(--line);border-radius:10px;background:rgba(20,8,13,.6);
+  color:#fff;font:400 clamp(20px,5.5vw,28px)/1 var(--display);text-transform:uppercase;user-select:none}
 .wtile.filled{border-color:var(--grey-soft);animation:tile-pop .12s ease}
 .wtile.g{background:var(--green);border-color:var(--green)}
 .wtile.y{background:var(--yellow);border-color:var(--yellow)}
-.wtile.x{background:#3a414c;border-color:#3a414c}
+.wtile.x{background:#4A3840;border-color:#4A3840}
 .wtile.flip{animation:wflip .5s ease-in-out both;animation-delay:calc(var(--i) * .22s)}
 @keyframes wflip{0%{transform:rotateX(0)}50%{transform:rotateX(90deg)}100%{transform:rotateX(0)}}
 @keyframes tile-pop{50%{transform:scale(1.1)}}
 .wmsg{text-align:center;min-height:1.4em;margin:0 auto 8px;max-width:420px}
 .wkeys{display:grid;gap:6px;width:min(500px,100%);margin:0 auto}
 .wkrow{display:flex;gap:5px;justify-content:center}
-.wkey{flex:1;max-width:44px;height:clamp(40px,6.2vh,52px);border:0;border-radius:8px;background:#5a616d;color:#fff;font:800 15px var(--body);cursor:pointer;
+.wkey{flex:1;max-width:44px;height:clamp(40px,6.2vh,52px);border:0;border-radius:8px;background:#6E5560;color:#fff;font:800 15px var(--body);cursor:pointer;
   box-shadow:0 3px 0 rgba(0,0,0,.35);padding:0;touch-action:manipulation;transition:transform .08s}
 .wkey:active{transform:translateY(2px);box-shadow:0 1px 0 rgba(0,0,0,.35)}
 .wkey.wide{flex:1.6;max-width:70px;font-size:13px}
-.wkey.g{background:var(--green)} .wkey.y{background:var(--yellow);color:#15181D} .wkey.x{background:#2b3038;color:#7d8591}
-.round-closed{text-align:center;padding:36px 10px;background:rgba(35,41,50,.7);border:1px solid var(--line);border-radius:var(--r);max-width:520px}
+.wkey.g{background:var(--green)} .wkey.y{background:var(--yellow);color:#1A0A11} .wkey.x{background:#2A1820;color:#8A7279}
+.round-closed{text-align:center;padding:36px 10px;background:rgba(46,21,32,.75);border:1px solid var(--line);border-radius:var(--r);max-width:520px}
 .big-lock{font-size:52px;line-height:1;margin-bottom:10px}
-.countdown{font:800 30px var(--display);color:var(--yellow-soft);margin:6px 0 0}
+.countdown{font:400 30px var(--display);color:var(--yellow-soft);margin:6px 0 0}
 @media (prefers-reduced-motion:reduce){.wtile.flip,.wtile.filled{animation:none}}
 
 /* Shop */
 .shop-balance{font-size:17px;padding:10px 18px}
 .shop-packs{display:grid;gap:12px}
-.shop-pack{display:flex;gap:16px;align-items:center;background:rgba(35,41,50,.88);border:1px solid var(--line);border-radius:var(--r-sm);padding:12px 16px}
+.shop-pack{display:flex;gap:16px;align-items:center;background:rgba(46,21,32,.9);border:1px solid var(--line);border-radius:var(--r-sm);padding:12px 16px}
 .pack.mini{width:78px;flex-shrink:0;animation:none;cursor:default;filter:drop-shadow(0 6px 10px rgba(0,0,0,.45))}
 .shop-pack-info{display:grid;gap:6px;justify-items:start}
 .shop-pack-info small{color:var(--ink-soft)}
@@ -165,28 +186,28 @@ a{color:var(--amber-soft)}
 .whelp{display:flex;flex-wrap:wrap;gap:4px 14px;justify-content:center;align-items:center;margin-top:8px}
 .whelp .link{font-size:14px;padding:4px 2px}
 .whelp .link:disabled{opacity:.4;cursor:default}
-.hint-chip{background:rgba(201,180,88,.18);border:1px solid var(--yellow);color:var(--yellow-soft);border-radius:999px;padding:3px 10px;font:700 13px var(--body)}
+.hint-chip{background:rgba(214,169,54,.18);border:1px solid var(--yellow);color:var(--yellow-soft);border-radius:999px;padding:3px 10px;font:700 13px var(--body)}
 
 /* Melding nieuwe versie */
 .update-bar{position:fixed;left:0;right:0;margin:0 auto;bottom:18px;z-index:1000;display:flex;align-items:center;gap:12px;flex-wrap:wrap;justify-content:center;
-  width:max-content;max-width:calc(100vw - 24px);padding:12px 16px;background:rgba(29,34,41,.97);border:1px solid var(--yellow);border-radius:16px;
+  width:max-content;max-width:calc(100vw - 24px);padding:12px 16px;background:rgba(38,16,26,.97);border:1px solid var(--yellow);border-radius:16px;
   box-shadow:0 14px 34px -8px rgba(0,0,0,.7);color:var(--ink);font-weight:600;animation:menu-in .25s ease both}
 .update-bar .btn{width:auto}
 
 /* Ideeënbus */
 .ideas-grid{grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr)}
 @media (max-width:899px){.ideas-grid{grid-template-columns:1fr}}
-.seg{display:flex;background:rgba(21,24,29,.8);border:1px solid var(--line);border-radius:999px;padding:3px}
+.seg{display:flex;background:rgba(20,8,13,.8);border:1px solid var(--line);border-radius:999px;padding:3px}
 .seg button{border:0;background:none;color:var(--ink-soft);font:700 13px var(--body);padding:5px 12px;border-radius:999px;cursor:pointer}
-.seg button.on{background:var(--yellow);color:#15181D}
+.seg button.on{background:var(--yellow);color:#1A0A11}
 .idea-list{display:grid;gap:8px;max-height:calc(100vh - 230px);overflow-y:auto;padding-right:6px}
 @media (max-width:899px){.idea-list{max-height:none}}
-.idea{display:flex;gap:12px;align-items:flex-start;background:rgba(35,41,50,.88);border:1px solid var(--line);border-radius:var(--r-sm);padding:10px 14px}
+.idea{display:flex;gap:12px;align-items:flex-start;background:rgba(46,21,32,.9);border:1px solid var(--line);border-radius:var(--r-sm);padding:10px 14px}
 .idea.status-done,.idea.status-rejected{opacity:.65}
-.vote{display:grid;justify-items:center;min-width:46px;padding:6px 4px;border:2px solid var(--line);border-radius:12px;background:rgba(21,24,29,.7);color:var(--ink-soft);cursor:pointer;font:800 15px var(--body);transition:transform .1s,border-color .15s}
+.vote{display:grid;justify-items:center;min-width:46px;padding:6px 4px;border:2px solid var(--line);border-radius:12px;background:rgba(20,8,13,.7);color:var(--ink-soft);cursor:pointer;font:800 15px var(--body);transition:transform .1s,border-color .15s}
 .vote:active{transform:scale(.94)}
 .vote .vote-arrow{font-size:12px;line-height:1}
-.vote.on{border-color:var(--green);background:rgba(93,163,82,.2);color:var(--green-soft)}
+.vote.on{border-color:var(--green);background:rgba(78,154,91,.2);color:var(--green-soft)}
 .idea-main{flex:1;min-width:0}
 .idea-body{margin:0 0 4px;white-space:pre-wrap;overflow-wrap:anywhere}
 .idea-meta{display:flex;flex-wrap:wrap;gap:4px 12px;align-items:center;color:var(--muted);font-size:13px}
@@ -225,26 +246,26 @@ a{color:var(--amber-soft)}
   background:radial-gradient(circle at 28% 18%,rgba(255,255,255,.28),transparent 42%),
              linear-gradient(115deg,transparent 30%,rgba(255,255,255,.42) 45%,transparent 58%),
              repeating-linear-gradient(60deg,rgba(255,255,255,.07) 0 2px,transparent 2px 22px),
-             conic-gradient(from 210deg at 50% 46%,#2f6b3a,#c9a93a,#1d4a2a,#e0cc72,#244f2e,#2f6b3a);
+             conic-gradient(from 210deg at 50% 46%,#7A1F2E,#D6A936,#4A0F1B,#EBC867,#5E1522,#7A1F2E);
   background-size:auto,260% 260%,auto,auto;
   display:grid;place-items:center;
   animation:foil 3.2s linear infinite;transition:transform .5s ease-in,opacity .5s ease-in}
-.pack-label{display:grid;justify-items:center;gap:2cqw;padding:6cqw 8cqw;background:rgba(10,14,11,.72);border:1.2cqw solid #d9c46a;
-  border-radius:5cqw;color:#F4EFE4;text-align:center}
-.pack-logo{font:800 15cqw/1 var(--display);letter-spacing:.02em;color:#E8C34C}
-.pack-sub{font:700 5.2cqw/1 var(--body);letter-spacing:.18em}
-.pack-count{margin-top:2cqw;font:700 5cqw/1 var(--body);color:#b9e0ae;text-transform:uppercase;letter-spacing:.12em}
+.pack-label{display:grid;justify-items:center;gap:2cqw;padding:6cqw 8cqw;background:rgba(26,8,14,.78);border:1.2cqw solid #D6A936;outline:.6cqw dashed rgba(243,230,202,.6);outline-offset:-3cqw;
+  border-radius:5cqw;color:#F3E6CA;text-align:center}
+.pack-logo{font:400 17cqw/1 var(--display);letter-spacing:.02em;color:#EBC867;text-shadow:0 1cqw 0 #7A1F2E}
+.pack-sub{font:700 6cqw/1 var(--cond);letter-spacing:.24em}
+.pack-count{margin-top:2cqw;font:700 5.4cqw/1 var(--cond);color:#F3E6CA;opacity:.8;text-transform:uppercase;letter-spacing:.14em}
 .pack-body::after{content:"";position:absolute;left:0;right:0;bottom:0;height:6%;
-  background:repeating-linear-gradient(90deg,#d9c46a 0 4px,#9c8631 4px 8px)}
+  background:repeating-linear-gradient(90deg,#EBC867 0 4px,#A97B17 4px 8px)}
 .pack-top{position:absolute;left:0;right:0;top:0;height:9%;z-index:3;border-radius:12px 12px 2px 2px;
-  background:repeating-linear-gradient(90deg,#d9c46a 0 4px,#9c8631 4px 8px);
+  background:repeating-linear-gradient(90deg,#EBC867 0 4px,#A97B17 4px 8px);
   box-shadow:inset 0 -2px 0 rgba(0,0,0,.25);transform-origin:10% 100%}
 .pack-top::after{content:"";position:absolute;left:4%;right:4%;bottom:-3px;border-bottom:2px dashed rgba(255,255,255,.55)}
 .pack-card{position:absolute;left:8%;right:8%;top:14%;z-index:1;transition:transform .8s cubic-bezier(.2,.8,.2,1)}
 .stage .pack-card .cw,.stage .pack-slot .cw{width:100%}
 .pack-hint{margin:0;color:var(--ink-soft);font-weight:600;text-align:center}
 .pack.opening{animation:pack-shake .55s ease}
-.pack.opening.r-epic{filter:drop-shadow(0 0 26px #8B5CF6)}
+.pack.opening.r-epic{filter:drop-shadow(0 0 26px #D0425F)}
 .pack.opening.r-legendary{filter:drop-shadow(0 0 34px #E8C34C)}
 .pack.torn .pack-top{animation:tear .6s ease-out forwards}
 .pack.torn .pack-card{transform:translateY(-50%)}
@@ -262,8 +283,8 @@ a{color:var(--amber-soft)}
 .pack-slot .flipper.turning-back{transition:transform .22s ease-out}
 .glow{position:absolute;inset:-30%;pointer-events:none;border-radius:50%;filter:blur(30px);opacity:0;animation:glow-in .7s ease-out .9s both}
 @keyframes glow-in{from{opacity:0;transform:scale(.6)}to{opacity:.55;transform:scale(1)}}
-.glow.common{background:radial-gradient(circle,var(--grey),transparent 70%)}
-.glow.epic{background:radial-gradient(circle,#8B5CF6,transparent 70%)}
+.glow.common{background:radial-gradient(circle,#6F86B8,transparent 70%)}
+.glow.epic{background:radial-gradient(circle,#D0425F,transparent 70%)}
 .glow.legendary{background:radial-gradient(circle,var(--gold),transparent 70%)}
 .glow.cat{background:radial-gradient(circle,var(--cat),transparent 70%)}
 .particles{position:absolute;inset:0;pointer-events:none}
@@ -292,39 +313,42 @@ a{color:var(--amber-soft)}
   100%{transform:perspective(900px) rotateY(0) scale(1);opacity:1}
 }
 
-/* Kaarten: rechte kaarten met ronde hoeken, volledige illustratie, duidelijke rand per type */
+/* Kaarten in varsity-stijl: illustratie over de hele kaart, een naamband met een gouden streep
+   bovenaan, een crèmekleurig "stiksel"-kader en onderaan een crème paneel met de stats */
 .cw{container-type:inline-size;width:100%;position:relative}
-.card{position:relative;aspect-ratio:5/7;border-radius:6.5cqw;border:2.2cqw solid var(--rc);
-  box-shadow:inset 0 0 0 2px rgba(255,255,255,.14), 0 10px 26px -10px rgba(0,0,0,.65), 0 0 20px -3px var(--rc);
-  background:var(--rbg);color:#241C0F;overflow:hidden}
+.card{position:relative;aspect-ratio:5/7;border-radius:5cqw;border:2.4cqw solid var(--rc);
+  box-shadow:0 10px 26px -10px rgba(0,0,0,.7), 0 0 18px -4px var(--rc);
+  background:var(--art);color:#2A1018;overflow:hidden}
+.card::after{content:"";position:absolute;inset:1.2cqw;border:.55cqw dashed rgba(243,230,202,.7);border-radius:3.4cqw;pointer-events:none;z-index:4}
 .art{position:absolute;inset:0;background:var(--art);display:grid;place-items:center;overflow:hidden}
-.art img{width:100%;height:100%;object-fit:cover;display:block}
-.chead{position:absolute;top:0;left:0;right:0;padding:3.4cqw 5cqw 8cqw;display:flex;justify-content:space-between;align-items:flex-start;gap:2cqw;
-  background:linear-gradient(180deg,rgba(255,255,255,.82),rgba(255,255,255,.55) 55%,rgba(255,255,255,0));
-  backdrop-filter:blur(5px) saturate(1.1);-webkit-backdrop-filter:blur(5px) saturate(1.1);
-  /* blur loopt zacht uit i.p.v. een harde rand */
-  -webkit-mask-image:linear-gradient(180deg,#000 55%,transparent);mask-image:linear-gradient(180deg,#000 55%,transparent)}
-.cname{color:#141414;font:800 6.4cqw/1.12 var(--display);text-shadow:none;
-  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;word-break:break-word;max-width:75%}
-.cname.xl{font-size:5.6cqw}
-.cname.xxl{font-size:4.8cqw}
-.hp{color:#141414;font:700 5cqw var(--body);white-space:nowrap;text-shadow:none}
-.ptile{width:38cqw;aspect-ratio:1;border-radius:50%;display:grid;place-items:center;background:rgba(0,0,0,.22);color:#fff;font:800 22cqw/1 var(--display)}
-.ptile.cat{background:transparent;font-size:28cqw}
-.cfoot{position:absolute;left:0;right:0;bottom:0;padding:9cqw 5cqw 3.6cqw;display:flex;flex-direction:column;gap:1.2cqw;color:#141414;
-  background:linear-gradient(0deg,rgba(255,255,255,.86),rgba(255,255,255,.7) 55%,rgba(255,255,255,0));
-  backdrop-filter:blur(5px) saturate(1.1);-webkit-backdrop-filter:blur(5px) saturate(1.1);
-  -webkit-mask-image:linear-gradient(0deg,#000 70%,transparent);mask-image:linear-gradient(0deg,#000 70%,transparent)}
-.cfoot .row1{display:flex;justify-content:space-between;gap:3cqw;font:700 4.8cqw var(--body);white-space:nowrap}
-.special{font:700 4.6cqw/1.2 var(--body);color:#141414;border-top:1px solid rgba(0,0,0,.2);padding-top:1.2cqw}
-.special small{display:none;font-weight:500;color:rgba(20,20,20,.78)}
+.art img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
+.chead{position:absolute;top:0;left:0;right:0;z-index:2;padding:3.6cqw 5cqw 3cqw;display:flex;justify-content:space-between;align-items:center;gap:2cqw;
+  background:var(--rc);box-shadow:0 1.1cqw 0 var(--rs),0 2.2cqw 0 var(--rc),0 3cqw 6cqw -1cqw rgba(0,0,0,.35)}
+.cname{color:var(--cn);font:400 6.2cqw/1.12 var(--display);letter-spacing:.01em;
+  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;word-break:break-word;max-width:76%}
+.cname.xl{font-size:5.4cqw}
+.cname.xxl{font-size:4.7cqw}
+.hp{color:var(--cn);font:800 5.2cqw var(--cond);letter-spacing:.04em;white-space:nowrap;
+  border:.5cqw solid currentColor;border-radius:2cqw;padding:.4cqw 1.6cqw}
+/* Tijdelijke illustratie zolang er geen foto is: een geborduurde varsity-letter */
+.ptile{display:grid;place-items:center;color:var(--cream);font:400 52cqw/1 var(--display);
+  -webkit-text-stroke:1.4cqw var(--rs);paint-order:stroke fill;text-shadow:0 1.8cqw 0 rgba(0,0,0,.35);transform:rotate(-6deg) translateY(-3cqw)}
+.ptile.cat{font-size:34cqw;-webkit-text-stroke:0;text-shadow:none;transform:none}
+.cfoot{position:absolute;left:0;right:0;bottom:0;z-index:2;padding:3cqw 5.5cqw 4.2cqw;display:flex;flex-direction:column;gap:1.2cqw;color:#2A1018;
+  background:rgba(243,230,202,.95);border-top:1.1cqw solid var(--rc);box-shadow:0 -1.1cqw 0 var(--rs)}
+.cfoot .row1{display:flex;justify-content:space-between;gap:3cqw;font:800 4.9cqw var(--cond);letter-spacing:.05em;text-transform:uppercase;white-space:nowrap}
+.cfoot .row1 span:first-child{color:var(--rc)}
+.r-legendary .cfoot .row1 span:first-child{color:#8A6510}
+.special{font:700 4.7cqw/1.2 var(--body);color:#2A1018;border-top:.4cqw dashed rgba(42,16,24,.35);padding-top:1.2cqw}
+.special small{display:none;font-weight:500;color:rgba(42,16,24,.78)}
 /* Beschrijving van de special enkel op grote kaarten (bv. bij het trekken) */
 @container (min-width:320px){.special small{display:block;margin-top:1cqw;font-size:4cqw;line-height:1.25}}
-.flavor{font:italic 500 4.6cqw/1.22 var(--body);color:rgba(20,20,20,.8);
+.flavor{font:italic 500 4.6cqw/1.22 var(--body);color:rgba(42,16,24,.82);
   display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
-.r-common{--rc:#8A98A1;--rbg:linear-gradient(165deg,#fff,#E7ECEF);--art:#DDE4E8}
-.r-epic{--rc:#7C4FE0;--rbg:linear-gradient(140deg,#F3EEFF,#D5C7F7 45%,#F3EEFF 60%,#C4B0F2);--art:linear-gradient(135deg,#B9A2F0,#7F5FD0)}
-.r-legendary{--rc:#D9A61C;--rbg:linear-gradient(140deg,#FFF6D6,#F1CF6A 45%,#FFF1BE 60%,#E2B83E);--art:linear-gradient(135deg,#F5D97A,#C99A1E)}
+/* --rc: kleur van de kaart, --rs: streep, --cn: tekst op de naamband, --art: achtergrond van de illustratie */
+.r-common{--rc:#1E2B47;--rs:#D6A936;--cn:#F3E6CA;--art:radial-gradient(circle at 50% 45%,#40568A,#1E2B47 72%)}
+.r-epic{--rc:#7A1F2E;--rs:#D6A936;--cn:#F3E6CA;--art:radial-gradient(circle at 50% 45%,#B03E55,#5A1220 72%)}
+.r-legendary{--rc:#C9971F;--rs:#7A1F2E;--cn:#3A0D17;--art:radial-gradient(circle at 50% 45%,#F2D27A,#B27F14 75%)}
 .r-legendary .art::after{
   content:"";position:absolute;inset:0;pointer-events:none;background-size:260% 260%;mix-blend-mode:overlay;
   background-image:linear-gradient(115deg,transparent 20%,rgba(255,255,255,.7) 35%,rgba(255,213,120,.55) 45%,transparent 58%,rgba(255,255,255,.45) 74%,transparent 90%);
@@ -334,10 +358,11 @@ a{color:var(--amber-soft)}
   0%{background-position:0% 0%}
   100%{background-position:100% 100%}
 }
-.r-cat{--rc:#1F8F8A;--rbg:linear-gradient(165deg,#EAFBF9,#C9EEEA);--art:#A9DDD8}
-.locked{filter:saturate(.15) brightness(.85)}
-.q{font:800 30cqw/1 var(--display);color:rgba(0,0,0,.28)}
-.dupe{position:absolute;right:-6px;top:-8px;background:var(--yellow);color:#15181D;border-radius:var(--r-sm);padding:2px 9px;font:700 12px var(--body);z-index:2}
+/* Detention (troostkaarten): groen schoolbord */
+.r-cat{--rc:#2F4F43;--rs:#F3E6CA;--cn:#F3E6CA;--art:radial-gradient(circle at 50% 45%,#4A7A64,#22392F 75%)}
+.locked{filter:saturate(.2) brightness(.8)}
+.q{font:400 34cqw/1 var(--display);color:rgba(243,230,202,.4)}
+.dupe{position:absolute;right:-6px;top:-8px;background:var(--yellow);color:#1A0A11;border-radius:var(--r-sm);padding:2px 9px;font:700 12px var(--body);z-index:2}
 
 /* Schikkingen die op één scherm passen */
 .two-col,.three-col,.stats-wrap{display:grid;gap:22px 36px;align-items:start}
@@ -350,15 +375,15 @@ a{color:var(--amber-soft)}
 }
 .bars-title{margin-top:24px}
 .index-title{display:flex;align-items:center;gap:8px}
-.index-page .info-btn{color:#8a6d12;border-color:#b8962a;background:rgba(201,180,88,.15);width:26px;height:26px;font-size:13px}
+.index-page .info-btn{color:#8a6d12;border-color:#b8962a;background:rgba(214,169,54,.15);width:26px;height:26px;font-size:13px}
 
 /* Statistieken */
 .stat-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:14px;margin-top:16px}
-.stat-card{background:rgba(35,41,50,.88);border:1px solid var(--line);border-radius:var(--r-sm);padding:16px 18px;display:flex;flex-direction:column;gap:6px;align-items:flex-start}
-.stat-num{font:800 34px var(--display);color:var(--green-soft)}
+.stat-card{background:rgba(46,21,32,.9);border:1px solid var(--line);border-radius:var(--r-sm);padding:16px 18px;display:flex;flex-direction:column;gap:6px;align-items:flex-start}
+.stat-num{font:400 34px var(--display);color:var(--yellow-soft)}
 .stat-label{color:var(--ink-soft);font-size:14.5px;font-weight:600}
 .bars{display:grid;gap:10px;margin-top:16px;max-width:560px}
-.bar-row{display:grid;grid-template-columns:70px 1fr 30px;align-items:center;gap:12px}
+.bar-row{display:grid;grid-template-columns:96px 1fr 30px;align-items:center;gap:12px}
 .bar-label{font-size:14.5px;color:var(--ink-soft);font-weight:600}
 .bar-track{background:var(--panel);border:1px solid var(--line);border-radius:var(--r-sm);height:22px;overflow:hidden}
 .bar-fill{height:100%;background:linear-gradient(90deg,var(--green),var(--yellow));min-width:3px;transition:width .4s ease}
@@ -404,7 +429,7 @@ a{color:var(--amber-soft)}
 .trade-actions{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:8px}
 .btn.small{width:auto;min-height:auto;padding:10px 18px;font-size:15px}
 .pill{background:var(--bg2);border:1px solid var(--line);color:var(--ink-soft);font:700 12.5px var(--body);padding:5px 12px;border-radius:999px}
-.pill-turn{background:var(--yellow);color:#15181D;border-color:transparent}
+.pill-turn{background:var(--yellow);color:#1A0A11;border-color:transparent}
 .tmsg:empty{display:none}
 
 /* Battle */
@@ -425,18 +450,18 @@ a{color:var(--amber-soft)}
 .energy .pip{font-size:15px;filter:grayscale(1);opacity:.3}
 .energy .pip.on{filter:none;opacity:1}
 .bt-side .bench{display:grid;gap:5px;width:100%;max-width:210px}
-.bench-card{display:flex;justify-content:space-between;gap:8px;min-width:0;padding:5px 9px;border-radius:10px;border:1px solid var(--line);background:rgba(35,41,50,.9);color:var(--ink);font:600 13px var(--body);text-align:left}
+.bench-card{display:flex;justify-content:space-between;gap:8px;min-width:0;padding:5px 9px;border-radius:10px;border:1px solid var(--line);background:rgba(46,21,32,.92);color:var(--ink);font:600 13px var(--body);text-align:left}
 .bench-card span:first-child{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .bench-card .bench-hp{color:var(--green-soft);white-space:nowrap}
 .bench-card.out{opacity:.4}
 .bench-card.out .bench-hp{color:#F0897E}
 .bench-card:disabled{cursor:default}
-.bt-side.choosing .bench-card:not(:disabled){cursor:pointer;border-color:var(--yellow);box-shadow:0 0 0 2px rgba(201,180,88,.35);animation:pulse 1s ease-in-out infinite}
-@keyframes pulse{50%{box-shadow:0 0 0 5px rgba(201,180,88,.15)}}
+.bt-side.choosing .bench-card:not(:disabled){cursor:pointer;border-color:var(--yellow);box-shadow:0 0 0 2px rgba(214,169,54,.35);animation:pulse 1s ease-in-out infinite}
+@keyframes pulse{50%{box-shadow:0 0 0 5px rgba(214,169,54,.15)}}
 .bt-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px;align-items:stretch;width:min(600px,100%)}
-.move-btn{display:grid;justify-items:center;align-content:center;gap:1px;min-width:96px;flex:1;padding:7px 8px;border:0;border-radius:14px;background:var(--yellow);color:#15181D;font:800 14.5px var(--body);cursor:pointer;
-  box-shadow:0 4px 0 #8f7f35;transition:transform .1s ease,box-shadow .1s ease}
-.move-btn:active:not(:disabled){transform:translateY(3px);box-shadow:0 1px 0 #8f7f35}
+.move-btn{display:grid;justify-items:center;align-content:center;gap:1px;min-width:96px;flex:1;padding:7px 8px;border:0;border-radius:14px;background:var(--yellow);color:#1A0A11;font:800 14.5px var(--body);cursor:pointer;
+  box-shadow:0 4px 0 #8E6A17;transition:transform .1s ease,box-shadow .1s ease}
+.move-btn:active:not(:disabled){transform:translateY(3px);box-shadow:0 1px 0 #8E6A17}
 .move-btn:disabled{opacity:.35;cursor:not-allowed}
 .move-btn .move-icon{font-size:18px;line-height:1}
 @media (max-width:560px){.move-btn{min-width:calc(50% - 4px)}.bt-head h2{font-size:20px}.bt-arena .vs{font-size:16px}}
@@ -447,13 +472,13 @@ a{color:var(--amber-soft)}
 .move-btn[data-move="switch"]{background:#b8a2f0;box-shadow:0 4px 0 #7c62c0}
 .battle-actions{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-top:12px}
 .battle-or{color:var(--muted);font-weight:600}
-.battle-box{background:rgba(35,41,50,.9);border:1px solid var(--line);border-radius:var(--r-sm);padding:12px 18px;max-width:640px}
+.battle-box{background:rgba(46,21,32,.92);border:1px solid var(--line);border-radius:var(--r-sm);padding:12px 18px;max-width:640px}
 .battle-box.highlight{border-color:var(--yellow)}
 .battle-box h3{margin-bottom:4px}
 .battle-row{display:flex;align-items:center;gap:12px;flex-wrap:wrap;padding:10px 0;border-bottom:1px solid var(--line);max-width:640px}
 .battle-row-text{flex:1;min-width:160px}
 .result-tag{font:700 12.5px var(--body);padding:4px 10px;border-radius:999px}
-.result-tag.won{background:var(--green);color:#12160f}
+.result-tag.won{background:var(--green);color:#1A0A11}
 .result-tag.lost{background:#5a2c28;color:#F0B3AB}
 .leaderboard{border-collapse:collapse;margin-top:8px;min-width:min(420px,100%);font-size:15px}
 .leaderboard th,.leaderboard td{text-align:left;padding:8px 14px;border-bottom:1px solid var(--line)}
@@ -469,7 +494,7 @@ a{color:var(--amber-soft)}
 .pick:hover{transform:translateY(-3px);opacity:1}
 .pick.selected{opacity:1}
 .pick.selected .card{outline:3px solid var(--yellow);outline-offset:3px}
-.pick-num{position:absolute;top:38%;left:-10px;z-index:3;width:30px;height:30px;border-radius:50%;display:grid;place-items:center;background:var(--yellow);color:#15181D;font:800 15px var(--body);box-shadow:0 3px 8px rgba(0,0,0,.4)}
+.pick-num{position:absolute;top:38%;left:-10px;z-index:3;width:30px;height:30px;border-radius:50%;display:grid;place-items:center;background:var(--yellow);color:#1A0A11;font:800 15px var(--body);box-shadow:0 3px 8px rgba(0,0,0,.4)}
 .pick-num[hidden]{display:none}
 .arena{display:grid;grid-template-columns:1fr auto 1fr;gap:20px;align-items:start;width:min(600px,100%);margin-top:6px}
 .fighter{display:grid;gap:8px;justify-items:center}
@@ -486,9 +511,9 @@ a{color:var(--amber-soft)}
 .bench-dot{width:12px;height:12px;border-radius:50%;background:var(--green-soft)}
 .bench-dot.now{outline:2px solid #fff;outline-offset:2px}
 .bench-dot.out{background:var(--line)}
-.vs{align-self:center;font:800 30px var(--display);color:var(--yellow-soft)}
+.vs{align-self:center;font:400 30px var(--display);color:var(--yellow-soft)}
 @media (max-width:560px){.arena{gap:10px}.vs{font-size:20px}}
-.dmg-pop{position:absolute;top:32%;left:50%;z-index:5;pointer-events:none;font:800 36px var(--display);color:#F0897E;text-shadow:0 2px 10px rgba(0,0,0,.7);animation:dmgpop .8s ease-out forwards}
+.dmg-pop{position:absolute;top:32%;left:50%;z-index:5;pointer-events:none;font:400 36px var(--display);color:#F0897E;text-shadow:0 2px 10px rgba(0,0,0,.7);animation:dmgpop .8s ease-out forwards}
 .dmg-pop.big{color:var(--yellow-soft);font-size:46px}
 @keyframes dmgpop{0%{opacity:0;transform:translate(-50%,10px) scale(.6)}20%{opacity:1;transform:translate(-50%,0) scale(1.1)}100%{opacity:0;transform:translate(-50%,-44px) scale(1)}}
 .battle-log{list-style:none;margin:16px 0 0;padding:12px 16px;max-width:640px;max-height:240px;overflow-y:auto;background:var(--panel);border:1px solid var(--line);border-radius:var(--r-sm);font-size:14.5px;display:grid;gap:4px}
@@ -509,24 +534,24 @@ a{color:var(--amber-soft)}
 
 /* Coming soon */
 .soon{text-align:center;padding:60px 20px;display:flex;flex-direction:column;align-items:center;gap:10px}
-.soon-badge{background:var(--yellow);color:#15181D;font:800 13px var(--body);letter-spacing:.06em;text-transform:uppercase;padding:6px 16px;border-radius:var(--r-sm);margin-bottom:6px}
+.soon-badge{background:var(--yellow);color:#1A0A11;font:800 13px var(--body);letter-spacing:.06em;text-transform:uppercase;padding:6px 16px;border-radius:var(--r-sm);margin-bottom:6px}
 
 /* Boek */
-.book{background:linear-gradient(160deg,#3B2E20,#241A10);border-radius:var(--r);padding:16px;box-shadow:0 30px 60px -20px rgba(0,0,0,.6)}
+.book{background:repeating-linear-gradient(45deg,rgba(255,255,255,.025) 0 2px,transparent 2px 6px),linear-gradient(160deg,#6E1B2A,#3E0E18);border-radius:var(--r);padding:16px;box-shadow:inset 0 0 0 3px #C9971F,inset 0 0 0 6px #5A1220,0 30px 60px -20px rgba(0,0,0,.6)}
 .spread{background:var(--page);border-radius:var(--r-sm);padding:0;display:grid;grid-template-columns:300px 1fr;min-height:620px;position:relative;color:#241C0F}
 .spread::before{content:"";position:absolute;left:300px;top:0;bottom:0;width:20px;margin-left:-10px;background:linear-gradient(90deg,transparent,rgba(0,0,0,.15),transparent);pointer-events:none}
 .index-page{padding:30px 22px;border-right:1px solid rgba(0,0,0,.1);overflow-y:auto}
-.index-page h3{color:#241C0F;font-size:21px;margin-bottom:4px}
+.index-page h3{color:var(--maroon);font-size:20px;margin-bottom:4px}
 .index-page .sub{color:#6B5E4C;font-size:14px;margin-bottom:20px}
 .index-list{list-style:none;margin:0;padding:0;display:grid;gap:4px}
 .index-list button{width:100%;text-align:left;background:none;border:0;padding:12px 12px;cursor:pointer;color:#241C0F;border-radius:0;display:flex;justify-content:space-between;align-items:center;gap:8px;font:600 16px var(--body)}
 .index-list button:hover{background:rgba(0,0,0,.05)}
 .index-list .index-dupes{border-top:1px solid rgba(0,0,0,.12);margin-top:6px;padding-top:6px}
-.index-list button[aria-current="page"]{background:var(--yellow);color:#15181D}
+.index-list button[aria-current="page"]{background:var(--maroon);color:var(--cream)}
 .index-list .frac{font:600 13.5px var(--body);color:#8A7A63;font-variant-numeric:tabular-nums}
-.index-list button[aria-current="page"] .frac{color:#15181D;opacity:.75}
+.index-list button[aria-current="page"] .frac{color:var(--cream);opacity:.8}
 .page-body{padding:30px 30px 22px;display:flex;flex-direction:column}
-.page-body .pname{font-size:26px;margin-bottom:2px;color:#241C0F}
+.page-body .pname{font-size:26px;margin-bottom:2px;color:var(--maroon);text-shadow:none}
 .page-body .pcount{color:#6B5E4C;font-size:15px;margin-bottom:20px}
 .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;flex:1;align-content:start;max-width:720px}
 .slot{display:block;background:none;border:0;padding:0;width:100%;text-align:left;color:inherit;font:inherit}
@@ -540,7 +565,7 @@ button.slot:hover{transform:translateY(-3px)}
 @keyframes pageturn{0%{opacity:0;transform:perspective(800px) rotateY(-8deg)}100%{opacity:1;transform:none}}
 
 dialog{border:0;padding:0;background:transparent;max-width:none;overflow:visible}
-dialog::backdrop{background:rgba(10,12,16,.78)}
+dialog::backdrop{background:rgba(14,5,9,.8)}
 @keyframes zoom-in{from{opacity:0;transform:scale(.88)}to{opacity:1;transform:scale(1)}}
 
 /* Kaart groot bekijken + omdraaien. Geen echte 3D met backface-visibility (werkt niet
@@ -553,12 +578,18 @@ dialog::backdrop{background:rgba(10,12,16,.78)}
 .zoom-card.turning-back .zoom-inner{transition:transform .2s ease-out}
 .zoomhint{color:var(--ink-soft);font-size:14px;margin:0;text-align:center}
 .zoombox .link{color:#fff}
-.cardback{aspect-ratio:5/7;border-radius:6.5cqw;border:2.2cqw solid var(--rc);
-  /* Ingezoomd op de groene kader van card-back.png (x 25-546, y 28-945 van 572x1024),
-     zodat de crèmekleurige rand van de afbeelding wegvalt; onderaan valt een stuk vloer weg */
-  background:#1d2a20 url('cards/card-back.png') 50% 9.5% / 110.5% auto no-repeat;
-  box-shadow:inset 0 0 0 2px rgba(255,255,255,.12),0 10px 26px -10px rgba(0,0,0,.65),0 0 20px -3px var(--rc);
-  display:grid;place-items:center;overflow:hidden}
+.cardback{position:relative;aspect-ratio:5/7;border-radius:5cqw;border:2.4cqw solid var(--rc);overflow:hidden;
+  background:
+    linear-gradient(180deg,transparent 9%,#D6A936 9% 11%,#F3E6CA 11% 13%,#D6A936 13% 15%,transparent 15% 85%,#D6A936 85% 87%,#F3E6CA 87% 89%,#D6A936 89% 91%,transparent 91%),
+    repeating-linear-gradient(45deg,rgba(255,255,255,.03) 0 2px,transparent 2px 6px),
+    radial-gradient(circle at 50% 45%,#9E3145,#5A1220 75%);
+  box-shadow:0 10px 26px -10px rgba(0,0,0,.65),0 0 18px -4px var(--rc);
+  display:grid;place-items:center;align-content:center;gap:2cqw;color:#F3E6CA;text-align:center}
+.cardback::after{content:"";position:absolute;inset:1.2cqw;border:.55cqw dashed rgba(243,230,202,.6);border-radius:3.4cqw;pointer-events:none}
+.cb-crest{width:42cqw;height:48cqw;display:grid;place-items:center;padding-bottom:6cqw;background:#7A1F2E;font:400 17cqw/1 var(--display);color:#F3E6CA;
+  clip-path:polygon(0 0,100% 0,100% 62%,50% 100%,0 62%);box-shadow:inset 0 0 0 2.2cqw #D6A936,inset 0 0 0 3.4cqw #7A1F2E,inset 0 0 0 4cqw rgba(243,230,202,.6)}
+.cb-name{font:400 7.4cqw/1 var(--display);letter-spacing:.04em;text-shadow:0 .8cqw 0 #3A0D17}
+.cb-est{font:700 4.6cqw/1 var(--cond);letter-spacing:.3em;color:#EBC867}
 @media (prefers-reduced-motion:reduce){.zoom-inner,.zoom-card.turning-back .zoom-inner{transition:none}}
 .loading{padding:60px 16px;text-align:center;color:var(--muted)}
 
@@ -566,7 +597,7 @@ dialog::backdrop{background:rgba(10,12,16,.78)}
 .accbox{width:min(420px,92vw);max-height:92vh;overflow-y:auto;padding:26px;display:grid;gap:6px;background:var(--panel);border:1px solid var(--line);border-radius:var(--r);animation:zoom-in .2s ease both}
 .accbox h2{margin-bottom:4px}
 .welcome-banner{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:26px;padding:16px 20px;
-  background:linear-gradient(120deg,rgba(93,163,82,.25),rgba(201,180,88,.2));border:1px solid var(--yellow);border-radius:var(--r-sm);color:var(--ink)}
+  background:linear-gradient(120deg,rgba(122,31,46,.55),rgba(214,169,54,.18));border:1px solid var(--yellow);border-radius:var(--r-sm);color:var(--ink)}
 .packbox{width:min(760px,94vw);max-height:92vh;overflow-y:auto;padding:24px;display:grid;gap:10px;justify-items:center;text-align:center;
   background:var(--panel);border:1px solid var(--line);border-radius:var(--r);animation:zoom-in .2s ease both}
 .packbox .stage{margin-top:4px;min-height:0}
@@ -595,7 +626,7 @@ dialog::backdrop{background:rgba(10,12,16,.78)}
 .swatch.locked{opacity:.55}
 .styleopts{display:flex;flex-wrap:wrap;gap:8px}
 .styleopts button{background:var(--panel);border:1px solid var(--line);color:var(--ink-soft);border-radius:var(--r-sm);padding:10px 16px;font:600 14.5px var(--body);cursor:pointer}
-.styleopts button.active{background:var(--amber);color:#12160f;border-color:var(--amber)}
+.styleopts button.active{background:var(--amber);color:#1A0A11;border-color:var(--amber)}
 .styleopts button.locked{opacity:.6}
 
 @media (max-width:760px){
@@ -640,17 +671,17 @@ const $ = (sel, el = document) => el.querySelector(sel);
 const sleep = ms => new Promise(r => setTimeout(r, ms));
 const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 
-const RARITY_LABEL = { common: 'Common', epic: 'Epic', legendary: 'Legendary', cat: 'Troostkat' };
+const RARITY_LABEL = { common: 'Common', epic: 'Epic', legendary: 'Legendary', cat: 'Detention' };
 const PARTICLE_COLORS = {
-  common: ['#9aa7b3', '#c8d0d8'],
-  epic: ['#8B5CF6', '#C4B0F2', '#F3EEFF'],
-  legendary: ['#E8C34C', '#FFF1BE', '#C99A1E'],
-  cat: ['#2FA79E', '#8fe0da']
+  common: ['#6F86B8', '#F3E6CA'],
+  epic: ['#D0425F', '#F3E6CA', '#EBC867'],
+  legendary: ['#EBC867', '#FFF1BE', '#C9971F'],
+  cat: ['#7CC4A0', '#F3E6CA']
 };
 
 const state = { session: null, recovery: IS_RECOVERY_LINK, cards: [], owned: new Map(), play: null, name: '', avatarUrl: null, friendCode: '', wallet: 0, incomingRequests: 0, incomingBattles: 0, welcomeAvailable: false, isAdmin: false, tab: 'today', page: 0 };
 
-// Werkt alle plekken bij die het polycoins-saldo tonen (topbalk + account-tab)
+// Werkt alle plekken bij die het credits-saldo tonen (topbalk + account-tab)
 function syncCoinUI() {
   document.querySelectorAll('[data-coin]').forEach(el => { el.textContent = state.wallet; });
 }
@@ -679,7 +710,7 @@ async function init() {
 // ---------- Snel wisselen tussen accounts op dit toestel ----------
 // Sessies van eerder gebruikte accounts worden lokaal bewaard, zodat je zonder
 // opnieuw in te loggen kan wisselen (bv. tussen admin en een gewoon testaccount).
-const SAVED_KEY = 'ptc-saved-accounts';
+const SAVED_KEY = 'rizz-saved-accounts';
 function savedAccounts() {
   try { return JSON.parse(localStorage.getItem(SAVED_KEY)) || {}; } catch (_) { return {}; }
 }
@@ -756,7 +787,7 @@ async function loadData() {
   // Bolletje Battle: uitdagingen aan jou + gevechten tegen vrienden waarin jij aan zet bent
   state.incomingBattles = battlesIn.error ? 0 : (battlesIn.data || []).filter(b =>
     b.status === 'pending' ? b.player_b === uid : !(b.moved || {})[b.player_a === uid ? 'A' : 'B']).length;
-  // Welkomstpakket nog niet opgehaald? (zonder schema-v7 bestaat de tabel niet: dan geen knop)
+  // Welkomstpakket nog niet opgehaald? (bestaat de tabel niet, dan geen knop)
   state.welcomeAvailable = !welcome.error && !welcome.data;
   state.cards = cards.data;
   state.owned = new Map();
@@ -780,9 +811,9 @@ function renderAuth(mode) {
   const reg = mode === 'register';
   app.innerHTML = `
   <main class="wrap">
-    <div class="hero" aria-hidden="true">${tiles('POLY', ['g','y','x','g'])}</div>
-    <h1>POLYGON <em>Trading Cards</em></h1>
-    <p class="hint">Speel elke dag twee Wordles, open pakjes en verzamel de kaarten van je collega's.</p>
+    <div class="hero" aria-hidden="true">${tiles('RIZZ', ['g','y','x','g'])}</div>
+    <h1>Rizz Academy <em>Trading Cards</em></h1>
+    <p class="hint">Welkom op de campus. Speel elke dag de Wordle, open pakjes en verzamel de kaarten van je vrienden.</p>
     <form id="authform" class="form">
       ${reg ? '<label>Naam<input name="name" required autocomplete="nickname" maxlength="30"></label>' : ''}
       <label>E-mail<input name="email" type="email" required autocomplete="email"></label>
@@ -834,7 +865,7 @@ function renderAuth(mode) {
 function renderForgot(email = '') {
   app.innerHTML = `
   <main class="wrap">
-    <div class="hero" aria-hidden="true">${tiles('POLY', ['g','y','x','g'])}</div>
+    <div class="hero" aria-hidden="true">${tiles('RIZZ', ['g','y','x','g'])}</div>
     <h1>Wachtwoord vergeten</h1>
     <p class="hint">Vul je e-mailadres in. We sturen je een link waarmee je een nieuw wachtwoord kan kiezen.</p>
     <form id="forgotform" class="form">
@@ -867,7 +898,7 @@ function renderForgot(email = '') {
 function renderResetPassword() {
   app.innerHTML = `
   <main class="wrap">
-    <div class="hero" aria-hidden="true">${tiles('POLY', ['g','y','x','g'])}</div>
+    <div class="hero" aria-hidden="true">${tiles('RIZZ', ['g','y','x','g'])}</div>
     <h1>Nieuw wachtwoord</h1>
     <p class="hint">Kies een nieuw wachtwoord voor ${esc(state.session?.user?.email)}.</p>
     <form id="resetform" class="form">
@@ -902,7 +933,9 @@ function renderResetPassword() {
 // ---------- Kaart tekenen ----------
 // ---------- Kaart groot bekijken, tik om om te draaien ----------
 function renderCardBack(c) {
-  return `<div class="cw"><div class="cardback r-${c.rarity}" role="img" aria-label="Achterkant van de kaart"></div></div>`;
+  return `<div class="cw"><div class="cardback r-${c.rarity}" role="img" aria-label="Achterkant van de kaart">
+    <span class="cb-crest" aria-hidden="true">RA</span><span class="cb-name" aria-hidden="true">RIZZ ACADEMY</span><span class="cb-est" aria-hidden="true">EST. 2026</span>
+  </div></div>`;
 }
 
 function openZoom(card) {
@@ -942,9 +975,11 @@ function renderCard(c, { locked = false, count = 1 } = {}) {
     </div></div>`;
   }
   const initial = esc((c.person || '?').trim().charAt(0).toUpperCase());
-  const art = c.image_url
-    ? `<img src="${esc(c.image_url)}" alt="${esc(c.name)}" loading="lazy">`
-    : (c.rarity === 'cat' ? '<span class="ptile cat">🐱</span>' : `<span class="ptile">${initial}</span>`);
+  // Varsity-letter als tijdelijke illustratie; de foto (als die al geüpload is) ligt erbovenop
+  const placeholder = c.rarity === 'cat' ? '<span class="ptile cat">📝</span>' : `<span class="ptile">${initial}</span>`;
+  const art = placeholder + (c.image_url
+    ? `<img src="${esc(c.image_url)}" alt="${esc(c.name)}" loading="lazy" onerror="this.remove()">`
+    : '');
   const special = c.special_name
     ? `<div class="special">★ ${esc(c.special_name)}${c.special_power ? ` (${esc(c.special_power)})` : ''}<small>${esc(c.special_desc)}</small></div>`
     : '';
@@ -958,7 +993,7 @@ function renderCard(c, { locked = false, count = 1 } = {}) {
       <div class="chead"><span class="${nameCls}">${esc(c.name)}</span><span class="hp">HP ${esc(c.hp)}</span></div>
       <div class="cfoot">
         ${flavor}
-        <div class="row1"><span>${label}</span><span>ATK ${esc(c.attack)} / DEF ${esc(c.defense)}</span></div>
+        <div class="row1"><span>${label} · #${esc(c.slot)}</span><span>ATK ${esc(c.attack)} / DEF ${esc(c.defense)}</span></div>
         ${special}
       </div>
     </div></div>`;
@@ -967,7 +1002,7 @@ function renderCard(c, { locked = false, count = 1 } = {}) {
 // ---------- Hoofdscherm ----------
 const TABS = [
   { id: 'today', label: 'Today', icon: '🎴' },
-  { id: 'book', label: 'My Book', icon: '📖' },
+  { id: 'book', label: 'Yearbook', icon: '📖' },
   { id: 'stats', label: 'Stats', icon: '📊' },
   { id: 'battle', label: 'Battle', icon: '⚔️', badge: 'battle' },
   { id: 'friends', label: 'Friends', icon: '👥', badge: 'friend' },
@@ -984,10 +1019,10 @@ function renderMain() {
   app.innerHTML = `
   <div class="wrap wide" id="wrap">
     <header class="top">
-      <span class="brand">POLYGON <em>Trading Cards</em></span>
+      <span class="brand"><span class="crest" aria-hidden="true">RA</span><span class="brand-name"><b>RIZZ ACADEMY</b><small>TRADING CARDS</small></span></span>
       <div class="topright">
         ${state.isAdmin ? '<span class="pill pill-turn">Admin</span>' : ''}
-        <span class="coinpill">🪙 <span data-coin>${state.wallet}</span></span>
+        <span class="coinpill" title="Credits">🪙 <span data-coin>${state.wallet}</span></span>
         <nav class="menu" aria-label="Menu">
           <button class="menu-btn" id="menuBtn" type="button" aria-haspopup="true" aria-expanded="false">
             <span class="menu-ico">${cur.icon}</span><span class="menu-label">${cur.label}</span>
@@ -1037,11 +1072,11 @@ function syncFriendBadge() { setBadge('[data-friend-badge]', state.incomingReque
 // ---------- Uitleg achter een info-icoontje ----------
 const INFO = {
   today: ['Hoe werkt het?', `
-    <p>Elke dag zijn er <strong>2 Wordles</strong>: de ochtendronde vanaf <strong>08:00</strong> en de middagronde vanaf <strong>13:00</strong> (Belgische tijd). Iedereen krijgt per ronde hetzelfde geheime woord — het is niet de officiële Wordle, dus opzoeken helpt niet.</p>
+    <p>Elke dag is er <strong>1 Wordle</strong>, vanaf middernacht (Belgische tijd). Iedereen krijgt hetzelfde geheime woord — het is niet de officiële Wordle, dus opzoeken helpt niet.</p>
     <ul><li>Raad het Engelse woord van 5 letters in maximaal 6 pogingen. Typ of gebruik het toetsenbord op het scherm.</li>
     <li>🟩 juiste letter op de juiste plek · 🟨 letter zit in het woord, maar elders · ⬛ letter zit er niet in.</li>
-    <li>Na elke ronde open je een pakje. Hoe minder pogingen, hoe zeldzamer je kaart.</li>
-    <li>Heb je de kaart al? Dan krijg je ze als dubbel om te ruilen, plus wat polycoins. Niet opgelost? Dan krijg je een troostkat.</li></ul>
+    <li>Daarna open je een pakje. Hoe minder pogingen, hoe zeldzamer je kaart.</li>
+    <li>Heb je de kaart al? Dan krijg je ze als dubbel om te ruilen, plus wat credits. Niet opgelost? Dan moet je nablijven en krijg je een Detention-kaart.</li></ul>
     <table class="odds-table">
       <thead><tr><th>Pogingen</th><th>Common</th><th>Epic</th><th>Legendary</th></tr></thead>
       <tbody>
@@ -1051,14 +1086,14 @@ const INFO = {
         <tr><td>4</td><td>75%</td><td>22%</td><td>3%</td></tr>
         <tr><td>5</td><td>88%</td><td>11%</td><td>1%</td></tr>
         <tr><td>6</td><td>95%</td><td>4,5%</td><td>0,5%</td></tr>
-        <tr><td>Niet opgelost</td><td colspan="3">Altijd een troostkat</td></tr>
+        <tr><td>Niet opgelost</td><td colspan="3">Altijd een Detention-kaart</td></tr>
       </tbody>
     </table>`],
-  book: ['Je verzamelboek', `
-    <p>Elke collega heeft een eigen pagina met 9 kaarten: 6 commons, 2 epics en 1 legendary. Troostkatten krijgen hun eigen pagina.</p>
+  book: ['Je yearbook', `
+    <p>Elke vriend heeft een eigen pagina met 9 kaarten: 6 commons, 2 epics en 1 legendary. De Detention-kaarten (voor wie de Wordle niet oplost) krijgen hun eigen pagina.</p>
     <ul><li>Klik op een kaart om ze groot te bekijken, tik nog eens om ze om te draaien.</li>
     <li>Achteraan vind je de pagina <strong>Dubbels</strong> met alle kaarten die je meer dan één keer hebt.</li></ul>`],
-  stats: ['Statistieken', `<p>Een overzicht van al je Wordles (2 per dag): hoe vaak je speelde, je huidige streak (opeenvolgende dagen), hoe vaak je de Wordle oploste en in hoeveel pogingen.</p>`],
+  stats: ['Statistieken', `<p>Een overzicht van al je Wordles: hoe vaak je speelde, je huidige streak (opeenvolgende dagen), hoe vaak je de Wordle oploste en in hoeveel pogingen.</p>`],
   battle: ['Zo werkt Battle', `
     <p>Kies 3 kaarten, in de volgorde waarin ze vechten. Elke ronde kies jij een zet — tegen een vriend kiezen jullie allebei tegelijk en geheim.</p>
     <ul><li>⚔️ <strong>Aanval</strong>: normale schade, +1 ⚡ energie.</li>
@@ -1067,9 +1102,9 @@ const INFO = {
     <li>★ <strong>Special</strong> (legendaries): vaste zware schade die door verdediging gaat, kost 4 ⚡.</li>
     <li>🔄 <strong>Wisselen</strong>: ruil je kaart met een kaart van je bank. Gebeurt vóór de aanvallen, +1 ⚡.</li></ul>
     <p>Elke ronde gebeuren eerst de wissels, daarna valt de kaart met de hoogste ATK eerst aan — die mag dus elke ronde als eerste slaan. Valt een kaart uit, dan komt de volgende uit je team erin. Wie eerst 3 kaarten verliest, verliest.</p>
-    <p><strong>Polycoins</strong>: computer makkelijk/normaal/moeilijk = 5/10/20 (max 5 per dag). Tegen een vriend: winnaar 25, verliezer 5 (max 3 per dag). Opgeven levert niets op.</p>`],
+    <p><strong>Credits</strong>: computer makkelijk/normaal/moeilijk = 5/10/20 (max 5 per dag). Tegen een vriend: winnaar 25, verliezer 5 (max 3 per dag). Opgeven levert niets op.</p>`],
   friends: ['Vrienden', `
-    <p>Deel je code met collega's, of voer hun code in om een vriendschapsverzoek te sturen.</p>
+    <p>Deel je code met je vrienden, of voer hun code in om een vriendschapsverzoek te sturen.</p>
     <ul><li>Zodra ze accepteren, kan je elkaars statistieken bekijken, kaarten ruilen en elkaar uitdagen in Battle.</li>
     <li>Klik op een vriend om zijn of haar statistieken te zien.</li></ul>`],
   ideas: ['Ideeënbus', `
@@ -1078,9 +1113,9 @@ const INFO = {
     <li>De populairste ideeën staan bovenaan. Seppe duidt aan wat 📅 gepland, ✅ klaar of ❌ niet gepland is.</li>
     <li>Je kan je eigen ideeën verwijderen.</li></ul>`],
   shop: ['Shop', `
-    <p>Besteed je polycoins — die verdien je met battles en met dubbele trekkingen.</p>
+    <p>Besteed je credits — die verdien je met battles en met dubbele trekkingen.</p>
     <ul><li><strong>Pakjes</strong>: Basic Pack (1 kaart, 60 🪙) of Epic Pack (3 kaarten, de 3e gegarandeerd epic of legendary, 200 🪙).</li>
-    <li><strong>Dubbels verkopen</strong>: common 15 · epic 40 · legendary 100 · troostkat 5 🪙 per extra exemplaar. Je houdt altijd 1 exemplaar.</li>
+    <li><strong>Dubbels verkopen</strong>: common 15 · epic 40 · legendary 100 · detention 5 🪙 per extra exemplaar. Je houdt altijd 1 exemplaar.</li>
     <li><strong>Wordle-hulp</strong> (op Today, tijdens een ronde): een letter onthullen voor 40 🪙 (max 2 per ronde) of een 7e poging voor 60 🪙.</li></ul>`],
   trade: ['Traden', `
     <p>Stel een ruil voor aan een vriend. Je kan enkel <strong>dubbels</strong> aanbieden — je houdt altijd minstens 1 exemplaar van elke kaart over.</p>
@@ -1103,15 +1138,16 @@ document.addEventListener('click', e => {
   if (b) openInfo(b.dataset.info);
 });
 
-// ---------- Speelse achtergrond: zwevende tegels die reageren op je muis ----------
+// ---------- Speelse achtergrond: varsity-letters, sterren en vaantjes die reageren op je muis ----------
 function initBackground() {
   const cv = document.createElement('canvas');
   cv.id = 'bgfx'; cv.setAttribute('aria-hidden', 'true');
   document.body.prepend(cv);
   const ctx = cv.getContext('2d');
   const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const COLORS = ['#5DA352', '#C9B458', '#8B93A0', '#7C4FE0', '#2FA79E', '#E0584B'];
-  const LETTERS = 'POLYGONCARDSWORDLE';
+  const COLORS = ['#9E3145', '#D6A936', '#F3E6CA', '#3A4E7A', '#7A1F2E'];
+  const LETTERS = 'RIZZACADEMY';
+  const KINDS = ['letter', 'letter', 'letter', 'star', 'star', 'pennant'];
   let W = 0, H = 0, shapes = [], bits = [];
   const ptr = { x: -999, y: -999, px: 0, py: 0, tx: 0, ty: 0 };
   const rnd = (a, b) => a + Math.random() * (b - a);
@@ -1119,8 +1155,7 @@ function initBackground() {
   const make = y => ({
     x: rnd(0, W), y: y ?? rnd(0, H), vx: 0, size: rnd(16, 46), z: rnd(.35, 1.2),
     vy: -rnd(8, 22), rot: rnd(0, 6.28), vr: rnd(-.35, .35),
-    kind: Math.random() < .62 ? 'tile' : 'poly', sides: 3 + Math.floor(rnd(0, 4)),
-    color: pick(COLORS), letter: pick(LETTERS), alpha: rnd(.08, .2)
+    kind: pick(KINDS), color: pick(COLORS), letter: pick(LETTERS), alpha: rnd(.08, .2)
   });
   const resize = () => {
     const dpr = Math.min(2, devicePixelRatio || 1);
@@ -1133,22 +1168,26 @@ function initBackground() {
     if (reduce) draw();
   };
   const shape = (sh, size) => {
-    if (sh.kind === 'tile') {
-      ctx.beginPath();
-      if (ctx.roundRect) ctx.roundRect(-size / 2, -size / 2, size, size, size * .2); else ctx.rect(-size / 2, -size / 2, size, size);
-      ctx.fillStyle = sh.color; ctx.fill();
-      ctx.fillStyle = 'rgba(255,255,255,.9)';
-      ctx.font = `800 ${size * .58}px 'Bricolage Grotesque', sans-serif`;
+    ctx.beginPath();
+    if (sh.kind === 'letter') {
+      // Geborduurde varsity-letter: gevuld met een dikke rand
+      ctx.font = `${size * 1.1}px Graduate, Georgia, serif`;
       ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-      ctx.fillText(sh.letter, 0, size * .04);
-    } else {
-      ctx.beginPath();
-      for (let i = 0; i < sh.sides; i++) {
-        const a = i / sh.sides * Math.PI * 2;
-        ctx[i ? 'lineTo' : 'moveTo'](Math.cos(a) * size / 2, Math.sin(a) * size / 2);
+      ctx.lineJoin = 'round'; ctx.lineWidth = size * .14;
+      ctx.strokeStyle = sh.color === '#D6A936' ? '#7A1F2E' : '#D6A936';
+      ctx.strokeText(sh.letter, 0, 0);
+      ctx.fillStyle = sh.color; ctx.fillText(sh.letter, 0, 0);
+    } else if (sh.kind === 'star') {
+      for (let i = 0; i < 10; i++) {
+        const a = i / 10 * Math.PI * 2 - Math.PI / 2, r = i % 2 ? size * .22 : size * .5;
+        ctx[i ? 'lineTo' : 'moveTo'](Math.cos(a) * r, Math.sin(a) * r);
       }
-      ctx.closePath();
-      ctx.lineWidth = 3; ctx.strokeStyle = sh.color; ctx.stroke();
+      ctx.closePath(); ctx.fillStyle = sh.color; ctx.fill();
+    } else {
+      // Vaantje aan een stokje
+      ctx.moveTo(-size / 2, -size * .32); ctx.lineTo(size * .6, 0); ctx.lineTo(-size / 2, size * .32); ctx.closePath();
+      ctx.fillStyle = sh.color; ctx.fill();
+      ctx.fillRect(-size / 2 - size * .08, -size * .45, size * .08, size * .95);
     }
   };
   function draw() {
@@ -1189,14 +1228,13 @@ function initBackground() {
     ptr.x = e.clientX; ptr.y = e.clientY;
     ptr.tx = e.clientX / W - .5; ptr.ty = e.clientY / H - .5;
   }, { passive: true });
-  // Klik of tik op een lege plek: een regen van tegels
+  // Klik of tik op een lege plek: een regen van confetti in schoolkleuren
   addEventListener('pointerdown', e => {
     if (reduce || e.target.closest('button,a,input,textarea,select,label,dialog,.card,.cw,.book,.menu,.stage,table,.friend-row,.trade-card,.battle-box,.battle-row,.stat-card,.pick,.mycode')) return;
     for (let i = 0; i < 16 && bits.length < 120; i++) {
       const a = rnd(0, Math.PI * 2), v = rnd(160, 420);
       bits.push({ x: e.clientX, y: e.clientY, vx: Math.cos(a) * v, vy: Math.sin(a) * v - 220, rot: rnd(0, 6.28), vr: rnd(-8, 8),
-        size: rnd(14, 26), kind: Math.random() < .7 ? 'tile' : 'poly', sides: 3 + Math.floor(rnd(0, 4)),
-        color: pick(COLORS), letter: pick(LETTERS), life: 1 });
+        size: rnd(14, 26), kind: pick(KINDS), color: pick(COLORS), letter: pick(LETTERS), life: 1 });
     }
   });
   resize();
@@ -1331,9 +1369,9 @@ function renderView() {
   else if (state.tab === 'ideas') renderIdeas(view);
 }
 
-// ---------- Tab: Today — eigen Wordle, 2 rondes per dag ----------
+// ---------- Tab: Today — eigen Wordle, 1 ronde per dag ----------
 // Het woord blijft in Supabase: elke gok gaat naar wordle_guess(), die enkel de kleurtjes teruggeeft.
-const ROUNDS = { 1: { icon: '☀️', name: 'Ochtend' }, 2: { icon: '🌤️', name: 'Middag' } };
+const ROUNDS = { 1: { icon: '🏈', name: 'Vandaag' } };
 const KB_ROWS = ['QWERTYUIOP', 'ASDFGHJKL', '⏎ZXCVBNM⌫'];
 const wordle = { data: null, slot: null, input: '', busy: false, timer: null, loadedAt: 0 };
 let WORDS = null; // geldige gokwoorden (words.txt), één keer geladen
@@ -1361,7 +1399,7 @@ function roundStatus(s) {
 }
 function roundSummary(s) {
   if (s.status === 'won') return `Opgelost in ${s.attempts} ${plural(s.attempts)}! Je pakje is geopend.`;
-  if (s.status === 'lost') return `Niet opgelost. Het woord was <strong>${esc(s.answer || '?')}</strong>. Je kreeg een troostkat.`;
+  if (s.status === 'lost') return `Niet opgelost. Het woord was <strong>${esc(s.answer || '?')}</strong>. Nablijven: je kreeg een Detention-kaart.`;
   return '';
 }
 
@@ -1419,7 +1457,7 @@ function drawToday(view) {
   view.innerHTML = `${welcomeBanner()}<section class="today-grid">
     <div class="col">
       ${pageHead('Wordle', 'today')}
-      <div class="round-tabs" id="roundTabs">${roundTabsHtml()}</div>
+      <div class="round-tabs" id="roundTabs"${slots.length < 2 ? ' hidden' : ''}>${roundTabsHtml()}</div>
       ${s.open ? `
         <div class="wboard" id="wboard" style="--rows:${s.max_guesses || 6}">${boardHtml(s)}</div>
         <p class="msg wmsg${isDone(s) ? ' ok' : ''}" id="wmsg" role="alert">${roundSummary(s)}</p>
@@ -1427,7 +1465,7 @@ function drawToday(view) {
         <div class="whelp" id="whelp">${helpHtml(s)}</div>`}`
       : `<div class="round-closed">
           <div class="big-lock" aria-hidden="true">🔒</div>
-          <p>De ${ROUNDS[s.slot].name.toLowerCase()}-Wordle opent om <strong>${s.opens}</strong> (Belgische tijd).</p>
+          <p>De volgende Wordle opent om <strong>${s.opens}</strong> (Belgische tijd).</p>
           <p class="countdown" id="wcount"></p>
         </div>`}
     </div>
@@ -1475,7 +1513,7 @@ function bindHelp(s) {
     const b = e.target.closest('[data-help]');
     if (!b || b.disabled || wordle.busy) return;
     const kind = b.dataset.help;
-    if (!confirm(kind === 'hint' ? `Een letter onthullen voor ${SHOP.hint} polycoins?` : `Een 7e poging kopen voor ${SHOP.extra} polycoins?`)) return;
+    if (!confirm(kind === 'hint' ? `Een letter onthullen voor ${SHOP.hint} credits?` : `Een 7e poging kopen voor ${SHOP.extra} credits?`)) return;
     wordle.busy = true;
     const { data, error } = await sb.rpc(kind === 'hint' ? 'wordle_hint' : 'wordle_extra_guess', { p_slot: s.slot });
     wordle.busy = false;
@@ -1497,7 +1535,7 @@ function bindHelp(s) {
 
 function roundTabsHtml() {
   return wordle.data.slots.map(x => `<button type="button" class="round-tab${x.slot === wordle.slot ? ' active' : ''}${isDone(x) ? ' done' : ''}" data-round="${x.slot}">
-    <span>${ROUNDS[x.slot].icon} ${ROUNDS[x.slot].name}</span><small>${roundStatus(x)}</small></button>`).join('');
+    <span>${ROUNDS[x.slot]?.icon || '🏈'} ${ROUNDS[x.slot]?.name || `Ronde ${x.slot}`}</span><small>${roundStatus(x)}</small></button>`).join('');
 }
 function bindRoundTabs(view) {
   view.querySelectorAll('[data-round]').forEach(b => {
@@ -1610,7 +1648,7 @@ async function openPack(stage, cards) {
   stage.innerHTML = `<div class="pack-stage">
     <button class="pack r-${best}" type="button" id="packBtn" aria-label="Pakje openen">
       <div class="pack-card">${renderCardBack(cards[0])}</div>
-      <div class="pack-body"><div class="pack-label" aria-hidden="true"><span class="pack-logo">POLYGON</span><span class="pack-sub">TRADING CARDS</span><span class="pack-count">${cards.length === 1 ? '1 kaart' : `${cards.length} kaarten`}</span></div></div>
+      <div class="pack-body"><div class="pack-label" aria-hidden="true"><span class="pack-logo">RIZZ</span><span class="pack-sub">ACADEMY</span><span class="pack-count">${cards.length === 1 ? '1 kaart' : `${cards.length} kaarten`}</span></div></div>
       <div class="pack-top"></div>
     </button>
     <p class="pack-hint">Tik op het pakje om het open te scheuren</p>
@@ -1642,7 +1680,7 @@ async function openPack(stage, cards) {
 function confettiHtml() {
   return `<div class="confetti">${Array.from({ length: 24 }, () => {
     const left = Math.random() * 100, delay = Math.random() * .6;
-    const c = ['#E8C34C', '#F0897E', '#8B5CF6', '#4C8A47'][Math.floor(Math.random() * 4)];
+    const c = ['#EBC867', '#F3E6CA', '#9E3145', '#3A4E7A'][Math.floor(Math.random() * 4)];
     return `<span style="--l:${left}%;--cd:${delay}s;--cc:${c}"></span>`;
   }).join('')}</div>`;
 }
@@ -1654,10 +1692,10 @@ async function revealCard(res) {
   const text = res.solved
     ? (res.isDuplicate
         ? (res.cardAdded
-            ? `Opgelost in ${res.attempts} ${plural(res.attempts)}. Je had "${esc(res.card.name)}" al — nu heb je een dubbel om te ruilen, plus ${res.coinsEarned} polycoins.`
-            : `Opgelost in ${res.attempts} ${plural(res.attempts)}. Je had "${esc(res.card.name)}" al — omgezet in ${res.coinsEarned} polycoins.`)
+            ? `Opgelost in ${res.attempts} ${plural(res.attempts)}. Je had "${esc(res.card.name)}" al — nu heb je een dubbel om te ruilen, plus ${res.coinsEarned} credits.`
+            : `Opgelost in ${res.attempts} ${plural(res.attempts)}. Je had "${esc(res.card.name)}" al — omgezet in ${res.coinsEarned} credits.`)
         : `Opgelost in ${res.attempts} ${plural(res.attempts)}. Je trok een ${RARITY_LABEL[res.rarity]}-kaart.`)
-    : `Niet opgelost${res.answer ? ` — het woord was ${esc(res.answer)}` : ''}. Je krijgt een troostkat.`;
+    : `Niet opgelost${res.answer ? ` — het woord was ${esc(res.answer)}` : ''}. Nablijven: je krijgt een Detention-kaart.`;
   stage.insertAdjacentHTML('beforeend', `${!reduce && res.rarity === 'legendary' ? confettiHtml() : ''}<p class="result">${text}</p>`);
 }
 
@@ -1665,7 +1703,7 @@ async function revealCard(res) {
 function welcomeBanner() {
   if (!state.welcomeAvailable) return '';
   return `<div class="welcome-banner">
-    <div><strong>Welkom bij Polygon Trading Cards!</strong><br>Je welkomstpakket met 3 kaarten staat klaar.</div>
+    <div><strong>Welkom op Rizz Academy, freshman!</strong><br>Je welkomstpakket met 3 kaarten staat klaar.</div>
     <button class="btn small" id="claimWelcome" type="button">Open je welkomstpakket</button>
   </div>`;
 }
@@ -1698,8 +1736,8 @@ function bookGroups() {
     g.cards.push(c);
   }
   for (const g of groups) g.cards.sort((a, b) => a.slot - b.slot);
-  // Troostkatten altijd na de collega's, ook als er later nieuwe collega's bijkomen
-  const cats = groups.findIndex(g => g.name === 'Katten');
+  // Detention-kaarten (troostkaarten) altijd na de vrienden, ook als er later vrienden bijkomen
+  const cats = groups.findIndex(g => g.cards.every(c => c.rarity === 'cat'));
   if (cats >= 0) groups.push(...groups.splice(cats, 1));
   // Extra pagina achteraan met alle kaarten die je meer dan één keer hebt
   const dupeCards = state.cards
@@ -1720,14 +1758,14 @@ function renderBook(view) {
 
 function drawBook(view, groups, animate) {
   const g = groups[state.page];
-  const people = groups.filter(x => x.name !== 'Katten' && !x.dupes);
+  const people = groups.filter(x => !x.dupes && !x.cards.every(c => c.rarity === 'cat'));
   const total = people.reduce((n, x) => n + x.cards.length, 0);
   const have = people.reduce((n, x) => n + ownedIn(x), 0);
   const dupes = [...state.owned.values()].reduce((n, v) => n + (v - 1), 0);
 
   view.innerHTML = `<div class="book"><div class="spread">
-    <nav class="index-page" aria-label="Collega's">
-      <h3 class="index-title">Verzamelboek ${infoBtn('book')}</h3>
+    <nav class="index-page" aria-label="Vrienden">
+      <h3 class="index-title">Yearbook ${infoBtn('book')}</h3>
       <p class="sub">${have}/${total} kaarten${dupes ? ` · ${dupes} dubbel` : ''}</p>
       <ul class="index-list">${groups.map((x, i) =>
         `<li${x.dupes ? ' class="index-dupes"' : ''}><button data-i="${i}" aria-current="${i === state.page}">${esc(x.name)}<span class="frac">${x.dupes ? `${dupes} extra` : `${ownedIn(x)}/${x.cards.length}`}</span></button></li>`).join('')}</ul>
@@ -1817,7 +1855,7 @@ function statsHtml(plays, extraCards = '') {
       <div class="stat-card"><span class="stat-num">${total}</span><span class="stat-label">Totaal gespeeld</span></div>
       <div class="stat-card"><span class="stat-num">${streak}</span><span class="stat-label">Huidige streak (dagen)</span></div>
       <div class="stat-card"><span class="stat-num">${solvedCount}</span><span class="stat-label">Opgelost</span></div>
-      <div class="stat-card"><span class="stat-num">${catCount}</span><span class="stat-label">Troostkatten</span></div>
+      <div class="stat-card"><span class="stat-num">${catCount}</span><span class="stat-label">Detentions</span></div>
       ${extraCards}
     </div></div><div>
     <h3 class="bars-title">Aantal pogingen bij oplossen</h3>
@@ -2189,7 +2227,7 @@ function openCounterBuilder(t, others) {
   $('#tradeBuilder').scrollIntoView({ behavior: 'smooth', block: 'center' });
 }
 
-// ---------- Tab: Shop — alles wordt server-side afgerekend (schema-v10-shop.sql) ----------
+// ---------- Tab: Shop — alles wordt server-side afgerekend (supabase/setup.sql) ----------
 const SHOP = {
   packs: {
     basic: { name: 'Basic Pack', price: 60, count: 1, desc: '1 kaart · 75% common, 22% epic, 3% legendary' },
@@ -2211,7 +2249,7 @@ function renderShop(view) {
   view.innerHTML = `<section class="col" style="max-width:none">
     <div class="battle-top">
       ${pageHead('Shop', 'shop')}
-      <span class="coinpill shop-balance">🪙 <span data-coin>${state.wallet}</span> polycoins</span>
+      <span class="coinpill shop-balance">🪙 <span data-coin>${state.wallet}</span> credits</span>
     </div>
     <p class="msg tmsg" id="shopMsg" role="alert"></p>
     <div class="two-col shop-grid">
@@ -2219,7 +2257,7 @@ function renderShop(view) {
         <h3>Pakjes</h3>
         <div class="shop-packs">${Object.entries(SHOP.packs).map(([k, p]) => `
           <div class="shop-pack">
-            <div class="pack mini" aria-hidden="true"><div class="pack-body"><div class="pack-label"><span class="pack-logo">POLYGON</span><span class="pack-sub">TRADING CARDS</span><span class="pack-count">${p.count === 1 ? '1 kaart' : `${p.count} kaarten`}</span></div></div><div class="pack-top"></div></div>
+            <div class="pack mini" aria-hidden="true"><div class="pack-body"><div class="pack-label"><span class="pack-logo">RIZZ</span><span class="pack-sub">ACADEMY</span><span class="pack-count">${p.count === 1 ? '1 kaart' : `${p.count} kaarten`}</span></div></div><div class="pack-top"></div></div>
             <div class="shop-pack-info"><strong>${p.name}</strong><small>${p.desc}</small>
               <button class="btn small" data-buy-pack="${k}" type="button" ${state.wallet < p.price ? 'disabled' : ''}>Kopen · ${p.price} 🪙</button></div>
           </div>`).join('')}</div>
@@ -2249,7 +2287,7 @@ function renderShop(view) {
 
   view.querySelectorAll('[data-buy-pack]').forEach(b => b.onclick = async () => {
     const p = SHOP.packs[b.dataset.buyPack];
-    if (!confirm(`${p.name} kopen voor ${p.price} polycoins?`)) return;
+    if (!confirm(`${p.name} kopen voor ${p.price} credits?`)) return;
     b.disabled = true;
     const { data, error } = await sb.rpc('shop_buy_pack', { p_kind: b.dataset.buyPack });
     if (error) { msg(error.message); b.disabled = false; return; }
@@ -2267,18 +2305,18 @@ function renderShop(view) {
 
   view.querySelectorAll('[data-sell]').forEach(b => b.onclick = async () => {
     const c = cardById(b.dataset.sell), n = Number(b.dataset.count);
-    if (n > 1 && !confirm(`${n} exemplaren van "${c.name}" verkopen voor ${n * SHOP.sell[c.rarity]} polycoins?`)) return;
+    if (n > 1 && !confirm(`${n} exemplaren van "${c.name}" verkopen voor ${n * SHOP.sell[c.rarity]} credits?`)) return;
     b.disabled = true;
     const { data, error } = await sb.rpc('shop_sell_duplicates', { p_card_id: c.id, p_count: n });
     if (error) { msg(error.message); b.disabled = false; return; }
     setWallet(data.wallet);
     state.owned.set(c.id, state.owned.get(c.id) - data.sold);
     renderShop(view);
-    msg(`Verkocht: ${data.sold}× "${c.name}" voor ${data.earned} polycoins.`, true);
+    msg(`Verkocht: ${data.sold}× "${c.name}" voor ${data.earned} credits.`, true);
   });
 }
 
-// ---------- Tab: Ideas — ideeënbus met upvotes (schema-v11-suggestions.sql) ----------
+// ---------- Tab: Ideas — ideeënbus met upvotes (supabase/setup.sql) ----------
 const IDEA_STATUS = {
   open: { icon: '💭', label: 'Open' },
   planned: { icon: '📅', label: 'Gepland' },
@@ -2396,7 +2434,7 @@ async function renderIdeas(view) {
 }
 
 // ---------- Tab: Battle (tactisch, ronde per ronde) ----------
-// Alle regels en de computer-tegenstander zitten in Supabase (schema-v9-tactical-battles.sql):
+// Alle regels en de computer-tegenstander zitten in Supabase (supabase/setup.sql):
 // de website stuurt enkel de gekozen zet door en speelt het resultaat af.
 const TEAM_SIZE = 3;
 const RARITY_ORDER = { legendary: 0, epic: 1, common: 2, cat: 3 };
@@ -2745,7 +2783,7 @@ async function openBattle(view, id, prev = null) {
     $('#battleResult').innerHTML = `<div class="battle-result ${won ? 'won' : 'lost'}">
       <h3>${won ? 'Gewonnen!' : 'Verloren…'}</h3>
       <p>${b.forfeit ? (won ? `${esc(oppName)} gaf op.` : 'Je gaf op.') : won ? `Je team heeft ${esc(oppName)} verslagen.` : `${esc(oppName)} was deze keer sterker.`}
-        ${coins ? `<strong>+${coins} polycoins!</strong>` : won ? '(Je daglimiet voor beloningen is bereikt.)' : ''}</p>
+        ${coins ? `<strong>+${coins} credits!</strong>` : won ? '(Je daglimiet voor beloningen is bereikt.)' : ''}</p>
       <div class="battle-bar">
         ${b.mode === 'pve' ? `<button class="btn small" id="btAgain" type="button">Opnieuw (${DIFFS[b.difficulty].label})</button>` : ''}
         <button class="link" id="btBack2" type="button">Terug naar Battle</button>
