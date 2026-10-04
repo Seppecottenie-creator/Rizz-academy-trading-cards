@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="theme-color" content="#0E1A2C">
+<meta name="theme-color" content="#7A0B12">
 <title>Rizz Academy</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -860,6 +860,219 @@ button.slot:hover{transform:translateY(-6px)}
 @media (prefers-reduced-motion:reduce){
   #view,.bulb.tw,.crest::after,.cardback::after,.pack,.pack-top,.seal,.glow,.page-body.turning,.shake,.particle,.rays,.fan .cw,.ghost-pack,.vs,.welcome-banner::after,.cb-in::after,.pack-hint,.stamp,.flash,.quake{animation:none !important}
 }
+
+/* =====================================================================
+   VARSITY: rood & wit zoals een echte college letterman jacket
+   (rode wollen romp, witte leren mouwen, crème patches, gouden stiksel)
+   Deze laag overschrijft de kleuren hierboven.
+   ===================================================================== */
+:root{
+  --red:#B3121D; --red2:#D21F2B; --red-dark:#7A0B12; --red-deep:#4E070C;
+  --white:#FFFFFF; --ivory:#FBF6EC; --beige:#E9DCC3; --tan:#CDB58C;
+  --crimson:#B3121D; --crimson2:#D21F2B; --wine:#4E070C;
+  --ink:#FFF8EC; --ink-soft:#F1DCC6; --muted:#D8BFA8; --line:rgba(255,240,220,.22);
+  --gold:#D4A93A; --gold2:#F0D68A; --err:#FFD0D3;
+  --navy:#7A0B12; --navy2:#9C1019;
+}
+html{background:#6E0A12}
+.scene{background:#6E0A12}
+/* Muur: diep varsity-rood met crème krijtstreep */
+.wall{background:
+  radial-gradient(34% 30% at 22% 34%,rgba(255,206,140,.16),transparent 70%),
+  radial-gradient(34% 30% at 84% 34%,rgba(255,206,140,.16),transparent 70%),
+  radial-gradient(70% 45% at 50% 0%,rgba(255,220,170,.14),transparent 70%),
+  repeating-linear-gradient(90deg,rgba(255,240,220,.07) 0 2px,transparent 2px 12px,rgba(0,0,0,.05) 12px 13px,transparent 13px 60px),
+  linear-gradient(180deg,#951019,#7A0B12 55%,#5E0910)}
+.vignette{background:radial-gradient(120% 90% at 50% 45%,transparent 55%,rgba(30,2,5,.55))}
+.letters{color:#FBF6EC;-webkit-text-stroke-color:#4E070C;opacity:.12}
+.pennant.p1{--pc:#FBF6EC;--pt:#B3121D}
+.pennant.p2{--pc:#E9DCC3;--pt:#7A0B12}
+.pennant{opacity:.7}
+
+/* Lichte panelen (crème leer met rode stiksels): donkere tekst binnenin */
+.stat-card,.friend-row,.trade-card,.battle-box,.idea,.shop-pack,.round-closed,.odds,.battle-result,.battle-log,.infobox,.accbox,.packbox,.update-bar,.glass,
+.side,.dock,.auth-box,.welcome-banner,.leaderboard{
+  --ink:#2B1416; --ink-soft:#6E5054; --muted:#8C7A6E; --gold2:#9A6F0A; --line:rgba(122,11,18,.18); --green-soft:#1E7A45; --err:#B3121D; color:var(--ink)}
+.stat-card,.friend-row,.trade-card,.battle-box,.idea,.shop-pack,.round-closed,.odds,.battle-result,.battle-log,.infobox,.accbox,.packbox,.update-bar,.glass{
+  background:linear-gradient(180deg,#FFFDF8,#F6EEDD);border:1px solid rgba(179,18,29,.55);
+  box-shadow:inset 0 0 0 4px #FFFDF8,inset 0 0 0 5px rgba(179,18,29,.28),0 18px 36px -20px rgba(30,2,5,.9)}
+.infobox h2,.accbox h2,.packbox h2,.statbox-head h2,.battle-result h3{color:var(--red-dark);text-shadow:none}
+.trade-card h3,.battle-box h3,.infobox h3{color:var(--red-dark)}
+.msg.err,.err,.link.danger{color:var(--err)}
+.link{color:var(--ink-soft)}
+.link:hover{color:var(--red2)}
+.side .link:hover,.accbox .link:hover{color:var(--red)}
+
+/* Zijbalk = witte leren mouw met rood-witte boordstrepen */
+.side{background:
+    linear-gradient(90deg,transparent calc(100% - 22px),#B3121D calc(100% - 22px) calc(100% - 16px),#FBF6EC calc(100% - 16px) calc(100% - 11px),#B3121D calc(100% - 11px) calc(100% - 5px),transparent calc(100% - 5px)),
+    repeating-linear-gradient(0deg,rgba(0,0,0,.012) 0 1px,transparent 1px 4px),
+    linear-gradient(180deg,#FFFDF8,#F3EADA);
+  border-right:0;box-shadow:12px 0 40px -18px rgba(30,2,5,.7)}
+.logo-txt b{color:var(--red-dark)}
+.logo-txt small{color:#9A6F0A}
+.nav-btn{color:#5A3438}
+.nav-btn:hover{color:var(--red)}
+.nav-btn .ni{background:rgba(179,18,29,.08);border-color:rgba(179,18,29,.25)}
+.nav-btn[aria-current="page"]{color:#fff;background:linear-gradient(90deg,#D21F2B,#9C1019);box-shadow:inset 4px 0 0 var(--gold)}
+.nav-btn[aria-current="page"] .ni{background:#FBF6EC;border-color:var(--gold)}
+.me-btn{background:rgba(179,18,29,.05);border-color:rgba(179,18,29,.25);color:var(--ink)}
+.me-btn:hover{background:rgba(179,18,29,.1);border-color:var(--red)}
+.me-name small{color:#9A6F0A}
+.avbtn,.friend-av,.photopreview{background-color:#B3121D;color:#fff;border-color:var(--gold)}
+.tab-badge{box-shadow:0 0 0 2px #FBF6EC}
+@media (max-width:899px){
+  .mtop .logo-txt b{color:#fff}
+  .mtop .logo-txt small{color:var(--gold2)}
+  .dock{background:linear-gradient(180deg,#FFFDF8,#EFE4CF);border-color:rgba(179,18,29,.45);box-shadow:0 18px 40px -10px rgba(30,2,5,.9),inset 0 -3px 0 #B3121D}
+  .dock .nav-btn{color:#5A3438}
+  .dock .nav-btn[aria-current="page"]{background:linear-gradient(180deg,#D21F2B,#9C1019);color:#fff;box-shadow:inset 0 2px 0 var(--gold)}
+}
+
+/* Plaquettes = chenille patches: rood met wit cijfer en wit/goud stiksel, op een crème lat */
+.plaques{background:linear-gradient(180deg,#FFFDF8,#F1E7D3);border:1px solid rgba(179,18,29,.5);
+  box-shadow:inset 0 0 0 4px #FFFDF8,inset 0 0 0 5px rgba(179,18,29,.25),0 14px 30px -14px rgba(30,2,5,.9)}
+.plaque{background:linear-gradient(180deg,#C8161F,#9C1019);border-radius:8px;
+  box-shadow:inset 0 0 0 2px #9C1019,inset 0 0 0 3.5px #FBF6EC,inset 0 0 0 5px rgba(212,169,58,.7),0 3px 6px rgba(30,2,5,.45)}
+.plaque::before,.plaque::after{display:none}
+.pl-label{color:#F3DEB0}
+.pl-val{color:#fff;text-shadow:0 2px 0 rgba(0,0,0,.25)}
+.motto{color:var(--red-dark);text-shadow:none}
+.motto i{color:#8A6A40}
+
+/* Titels op de rode muur */
+.page-head h2{color:#fff;text-shadow:0 3px 0 #4E070C,0 10px 24px rgba(30,2,5,.55)}
+.page-head::after{background:linear-gradient(#F0D68A,#F0D68A) left center/calc(50% - 10px) 1px no-repeat,linear-gradient(#F0D68A,#F0D68A) right center/calc(50% - 10px) 1px no-repeat,linear-gradient(45deg,transparent 35%,#F0D68A 35% 65%,transparent 65%) center/9px 9px no-repeat}
+.kicker{color:#F3DEB0}
+h3{color:#F3DEB0}
+.info-btn{border-color:rgba(255,240,220,.7);background:rgba(255,240,220,.12);color:#FFF3DA}
+.hint{color:var(--ink-soft)}
+
+/* Knoppen: op de muur wit leer met rode tekst; in crème panelen rood met witte tekst */
+.btn{background:linear-gradient(180deg,#FFFFFF,#F3EADA);color:#9C1019;text-shadow:none;
+  box-shadow:0 5px 0 #C9B48E,0 12px 24px -10px rgba(30,2,5,.6),inset 0 1px 0 #fff,inset 0 0 0 1px rgba(179,18,29,.3)}
+.btn:active:not(:disabled){box-shadow:0 1px 0 #C9B48E,inset 0 1px 0 #fff}
+.btn.small{box-shadow:0 4px 0 #C9B48E,inset 0 1px 0 #fff,inset 0 0 0 1px rgba(179,18,29,.3)}
+.btn.small:active:not(:disabled){box-shadow:0 1px 0 #C9B48E}
+:is(.auth-box,.welcome-banner,.stat-card,.friend-row,.trade-card,.battle-box,.idea,.shop-pack,.round-closed,.battle-result,.infobox,.accbox,.packbox,.update-bar) .btn{
+  background:linear-gradient(180deg,#D8222E,#A8111B);color:#fff;text-shadow:0 1px 0 rgba(0,0,0,.25);
+  box-shadow:0 5px 0 #6E0A12,0 12px 24px -10px rgba(179,18,29,.6),inset 0 1px 0 rgba(255,255,255,.35)}
+:is(.auth-box,.welcome-banner,.stat-card,.friend-row,.trade-card,.battle-box,.idea,.shop-pack,.round-closed,.battle-result,.infobox,.accbox,.packbox,.update-bar) .btn.small{box-shadow:0 4px 0 #6E0A12,inset 0 1px 0 rgba(255,255,255,.35)}
+.pill{background:rgba(255,240,220,.14);border-color:rgba(255,240,220,.3);color:#FFF3DA}
+:is(.side,.trade-card,.battle-box,.friend-row,.accbox) .pill{background:rgba(179,18,29,.08);border-color:rgba(179,18,29,.25);color:var(--red-dark)}
+.pill-turn{background:linear-gradient(180deg,#F0D68A,#D4A93A);color:#3A2705;border-color:transparent}
+.coinpill{background:#fff;color:var(--red);box-shadow:0 3px 0 #C9B48E}
+
+/* Formulieren */
+.form label{color:#F3DEB0}
+.auth-box .form label{color:var(--red-dark)}
+.form input,.form textarea,.tselect,.idea-set{background:#FFFDF8;color:#2B1416;border-color:rgba(122,11,18,.35)}
+.form input:focus,.form textarea:focus,.tselect:focus{border-color:var(--gold);box-shadow:0 0 0 4px rgba(212,169,58,.3)}
+.tselect option{background:#fff;color:#2B1416}
+
+/* Inlogscherm */
+.auth h1{color:#fff;text-shadow:0 2px 0 #D4A93A,0 4px 0 #4E070C,0 16px 30px rgba(30,2,5,.7)}
+.auth h1 em{color:#F0D68A}
+.auth-tag{color:#F6E6D2}
+.auth-box{border-color:#B3121D;box-shadow:inset 0 0 0 6px #F7F0DE,inset 0 0 0 7px rgba(179,18,29,.6),0 40px 80px -30px rgba(30,2,5,.95)}
+.auth-box .kicker{color:var(--red)}
+.auth-box h2{color:var(--red-dark)}
+
+/* Welkomst-uitnodiging */
+.welcome-banner{border-color:#B3121D;box-shadow:inset 0 0 0 5px #F7F0DE,inset 0 0 0 6px rgba(179,18,29,.5),0 20px 40px -20px rgba(30,2,5,.8)}
+.wb-text strong{color:var(--red-dark)}
+
+/* Wordle-plaquette blijft hout; de rest van Today */
+.stage-placeholder p{color:#F6E6D2}
+.round-tab{color:#fff}
+
+/* Inktstempel op een crème labeltje (rood op rood zou je niet zien) */
+.stamp{background:#FFFDF8;color:#B3121D;text-shadow:none;box-shadow:0 20px 50px rgba(30,2,5,.55);
+  -webkit-mask-image:repeating-linear-gradient(118deg,#000 0 9px,rgba(0,0,0,.93) 9px 11px,#000 11px 23px);mask-image:repeating-linear-gradient(118deg,#000 0 9px,rgba(0,0,0,.93) 9px 11px,#000 11px 23px)}
+.stamp.k-legendary{color:#9A6F0A}
+.stamp.k-epic{color:#B3121D}
+.stamp.k-common{color:#2B1416}
+.stamp.k-cat{color:#2E5E48}
+.stamp small{color:inherit}
+
+/* Kaarten: rood & wit */
+.r-common{--rc:#B3121D;--paper:linear-gradient(170deg,#FFFFFF,#F4ECDD);--gilt:#C9A227;--ribbon:#B3121D;--ribbon-ink:#FFFFFF;--ink-c:#2B1416;--accent:#B3121D;
+  --art:radial-gradient(120% 90% at 50% 30%,#D21F2B,#8E0E17 62%,#4E070C)}
+.r-epic{--rc:#7A0B12;--paper:linear-gradient(170deg,#C8161F,#7A0B12);--gilt:#F0D68A;--ribbon:#FFFFFF;--ribbon-ink:#9C1019;--ink-c:#FFF8EC;--accent:#F0D68A;
+  --art:radial-gradient(120% 90% at 50% 30%,#FBF6EC,#E3D3B5 60%,#B89E74)}
+.r-epic .ptile{color:#B3121D;-webkit-text-stroke-color:#FFFFFF}
+.r-legendary{--rc:#C9A227;--ribbon:#B3121D;--ribbon-ink:#FFF3D0;--ink-c:#3A2705;--accent:#9C1019;
+  --art:radial-gradient(120% 90% at 50% 30%,#D21F2B,#7A0B12 62%,#3E060B)}
+.trade-chip.r-epic{background:#7A0B12}
+.card.locked .art{background:repeating-linear-gradient(135deg,rgba(255,255,255,.05) 0 3cqw,transparent 3cqw 6cqw),#3E060B}
+.dupe{background:#fff;color:var(--red);box-shadow:0 0 0 2px var(--red),0 4px 12px rgba(30,2,5,.5)}
+dialog::backdrop{background:radial-gradient(circle at 50% 40%,rgba(110,10,18,.88),rgba(30,2,5,.95))}
+
+/* Kaarten zijn geen tekst: geen cursor/selectie, wel duidelijk klikbaar */
+.cw,.card,.cardback,.pack,.zoom-card,.slot,.pick{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none;caret-color:transparent}
+body{-webkit-tap-highlight-color:transparent}
+.stage .card[data-card],.pack-results .card[data-card]{cursor:zoom-in}
+.zoom-card{cursor:pointer}
+.zoom-card:focus-visible{outline:none}
+
+/* Yearbook: oxblood leren kaft met goud, rood in de inhoudstafel */
+.book{background:radial-gradient(circle at 30% 20%,rgba(255,255,255,.06),transparent 40%),repeating-radial-gradient(circle at 70% 60%,rgba(0,0,0,.05) 0 2px,transparent 2px 5px),linear-gradient(160deg,#4E070C,#2E0407 60%,#1E0204);
+  box-shadow:inset 0 0 0 2px #D4A93A,inset 0 0 0 7px #2E0407,inset 0 0 0 8px rgba(240,214,138,.6),0 40px 80px -30px rgba(30,2,5,.95)}
+.spread{color:#2B1416}
+.index-title{color:var(--red)}
+.ix-av{background:linear-gradient(160deg,#D21F2B,#8E0E17);box-shadow:inset 0 0 0 2px var(--gold)}
+.index-list button{color:#2B1416}
+.index-list button[aria-current="true"]{background:linear-gradient(90deg,#B3121D,#8E0E17);color:#fff;box-shadow:0 8px 20px -10px rgba(122,11,18,.8)}
+.index-list button[aria-current="true"] .frac{color:#F0D68A}
+.pname{color:#2B1416}
+.pname .ribbon{background:var(--red)}
+.pageturn button{background:var(--red);box-shadow:0 4px 0 #6E0A12}
+.pageturn button:active:not(:disabled){box-shadow:0 1px 0 #6E0A12}
+
+/* Statistieken op de rode muur */
+.stat-num{color:var(--red)}
+.bar-label{color:#F6E6D2}
+.bar-track{background:rgba(255,240,220,.15);border-color:rgba(255,240,220,.35)}
+.bar-fill{background:linear-gradient(90deg,#F0D68A,#FFFFFF)}
+.bar-val{color:#fff}
+
+/* Studentenkaart */
+.mycode{background:linear-gradient(120deg,#FFFFFF,#F4ECDD 55%,#E9DCC3);border-color:#B3121D;box-shadow:inset 0 0 0 5px rgba(255,255,255,.6),inset 0 0 0 6px rgba(179,18,29,.5),0 24px 50px -24px rgba(30,2,5,.8)}
+.mycode::before{color:var(--red)}
+.mycode::after{background:repeating-linear-gradient(90deg,#2B1416 0 2px,transparent 2px 4px,#2B1416 4px 5px,transparent 5px 9px,#2B1416 9px 12px,transparent 12px 14px);opacity:.6}
+.mycode-value{color:var(--red-dark);text-shadow:none}
+.mycode .link{color:var(--red)}
+.friend-row:hover{border-color:var(--red)}
+.friend-open:hover .friend-name{color:var(--red)}
+
+/* Traden en Battle */
+.trade-arrow{color:var(--red)}
+.step-btn{border-color:rgba(179,18,29,.35);background:#fff;color:var(--red)}
+.step-val{color:var(--red)}
+.leaderboard th{color:#F3DEB0}
+.leaderboard td{background:#FFFDF8;color:#2B1416;border-color:rgba(179,18,29,.25)}
+.leaderboard td:first-child{color:var(--red);border-color:rgba(179,18,29,.25)}
+.leaderboard td:last-child{border-color:rgba(179,18,29,.25)}
+.leaderboard tr.me td{background:linear-gradient(90deg,#B3121D,#8E0E17);color:#fff}
+.leaderboard tr.me td:first-child{color:#F0D68A}
+.battle-or{color:#F3DEB0}
+.bench-card{background:rgba(255,253,248,.95);color:#2B1416;border-color:rgba(179,18,29,.3)}
+.bench-card .bench-hp{color:#1E7A45}
+.vs{color:#fff;text-shadow:0 3px 0 #B3121D,0 0 18px rgba(255,255,255,.35)}
+.move-btn{background:linear-gradient(180deg,#FFFFFF,#F3EADA);color:#9C1019;box-shadow:0 4px 0 #C9B48E,inset 0 0 0 1px rgba(179,18,29,.3)}
+.move-btn:active:not(:disabled){box-shadow:0 1px 0 #C9B48E}
+.move-btn[data-move="power"]{background:linear-gradient(180deg,#D8222E,#A8111B);color:#fff;box-shadow:0 4px 0 #6E0A12}
+.move-btn[data-move="guard"]{background:linear-gradient(180deg,#E9DCC3,#CDB58C);color:#4E070C;box-shadow:0 4px 0 #8A7350}
+.move-btn[data-move="special"]{background:linear-gradient(135deg,#FFF3C4,#F0D68A 40%,#D4A93A);color:#3A2705;box-shadow:0 4px 0 #8A6A12,0 0 20px rgba(212,169,58,.5)}
+.battle-log li.theirs{color:#B3121D}
+
+/* Shop en ideeënbus */
+.seg{background:rgba(255,240,220,.12);border-color:rgba(255,240,220,.3)}
+.seg button{color:#F6E6D2}
+.seg button.on{background:#fff;color:var(--red)}
+.vote{background:#fff;border-color:rgba(179,18,29,.3);color:#6E5054}
+.vote.on{background:var(--red);border-color:var(--red);color:#fff}
+.hint-chip{background:rgba(255,240,220,.18);border-color:#F0D68A;color:#FFF3DA}
 </style>
 </head>
 <body>
@@ -1236,7 +1449,7 @@ function renderCard(c, { locked = false, count = 1 } = {}) {
   const nameCls = nameLen > 18 ? 'cname xxl' : nameLen > 12 ? 'cname xl' : 'cname';
   return `<div class="cw">
     ${count > 1 ? `<span class="dupe">×${count}</span>` : ''}
-    <div class="card r-${c.rarity}">
+    <div class="card r-${c.rarity}" data-card="${c.id}">
       <div class="cframe"></div>
       <span class="cbadge" aria-hidden="true">RIZZ</span>
       <span class="hp">HP ${esc(c.hp)}</span>
@@ -1404,6 +1617,15 @@ function openInfo(key) {
   $('#infoClose').onclick = () => dlg.close();
   dlg.showModal();
 }
+// Klik op een kaart (Today, net geopende envelop, welkomstenvelop): groot bekijken en omdraaien.
+// In het Yearbook doet de knop rond de kaart dit al; bij Battle selecteert een klik de kaart.
+document.addEventListener('click', e => {
+  const el = e.target.closest('.card[data-card]');
+  if (!el || el.closest('[data-zoom], .pick, .zoom-card, .fighter-card, .pack') || !el.closest('.stage, .pack-results')) return;
+  const c = state.cards.find(x => x.id === Number(el.dataset.card));
+  if (c && $('#zoom')) openZoom(c);
+});
+
 // Eén keer registreren: werkt voor elke info-knop, ook die later getekend worden
 document.addEventListener('click', e => {
   const b = e.target.closest('[data-info]');
