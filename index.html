@@ -832,11 +832,18 @@ h3{color:var(--gold)}
 .r-legendary.tilting::before{opacity:.9;animation-duration:3s}
 @keyframes holo{to{background-position:300% 300%,200% 0}}
 .cw:has(> .card.r-legendary) > .card{z-index:1}
-.cw:has(> .card.r-legendary)::before{content:"";position:absolute;inset:-4%;border-radius:8cqw;z-index:0;pointer-events:none;
-  background:conic-gradient(from 0deg,#FFD86B,#FF8EC7,#8FE0FF,#9DFFC4,#FFD86B);filter:blur(5cqw);opacity:.45;animation:legglow 2.6s ease-in-out infinite alternate}
-@keyframes legglow{to{opacity:.8}}
-.lite .r-legendary::before,.lite .cw:has(> .card.r-legendary)::before{animation:none}
-@media (prefers-reduced-motion:reduce){.r-legendary::before,.cw:has(> .card.r-legendary)::before{animation:none}}
+/* Stralenkrans: een draaiende holografische ring (enkel rotatie = vlot) */
+.cw:has(> .card.r-legendary)::before{content:"";position:absolute;left:-40%;top:-15%;width:180%;height:130%;z-index:0;pointer-events:none;border-radius:50%;
+  background:conic-gradient(from 0deg,#FFD86B,#FF9FD0 12%,#FFE9A8 22%,#8FE0FF 35%,#FFD86B 48%,#C9F5D9 60%,#FF9FD0 74%,#FFE9A8 86%,#FFD86B);
+  -webkit-mask:radial-gradient(closest-side,transparent 34%,#000 52%,rgba(0,0,0,.35) 72%,transparent 100%);mask:radial-gradient(closest-side,transparent 34%,#000 52%,rgba(0,0,0,.35) 72%,transparent 100%);
+  opacity:.75;animation:leg-spin 9s linear infinite}
+@keyframes leg-spin{to{transform:rotate(360deg)}}
+/* Gouden halo vlak rond de kaart: pulseert (enkel doorzichtigheid) */
+.cw:has(> .card.r-legendary)::after{content:"";position:absolute;inset:0;z-index:0;pointer-events:none;border-radius:4cqw;
+  box-shadow:0 0 3cqw .8cqw rgba(255,214,120,.85),0 0 9cqw 2.5cqw rgba(255,190,90,.45),0 0 18cqw 4cqw rgba(255,150,210,.22);animation:leg-pulse 2.2s ease-in-out infinite alternate}
+@keyframes leg-pulse{from{opacity:.55}to{opacity:1}}
+.lite .r-legendary::before,.lite .cw:has(> .card.r-legendary)::before,.lite .cw:has(> .card.r-legendary)::after{animation:none}
+@media (prefers-reduced-motion:reduce){.r-legendary::before,.cw:has(> .card.r-legendary)::before,.cw:has(> .card.r-legendary)::after{animation:none}}
 /* Jaarboek: 3 kolommen, legendary middenonder */
 .grid.person{grid-template-columns:repeat(3,minmax(0,1fr));max-width:820px}
 .grid.person > :nth-child(8){order:9}
@@ -1410,6 +1417,64 @@ div.wf-inner{cursor:default}
 .cstats .no{font-family:var(--display);font-style:italic;letter-spacing:.04em}
 .cinfo::before{content:"";position:absolute;left:18%;right:18%;top:-.8cqw;height:.25cqw;background:linear-gradient(90deg,transparent,var(--gold-a),transparent);opacity:.8}
 .card.locked .cband .cname{background:rgba(20,26,48,.9);color:#8790A8;border-left-color:#5A6380;box-shadow:none}
+
+/* =====================================================================
+   THE ARENA v2: stadionbanner, stappen, scorebord
+   ===================================================================== */
+.arena-hero{position:relative;display:flex;align-items:flex-end;justify-content:space-between;gap:18px;flex-wrap:wrap;min-height:190px;padding:22px 24px;margin-bottom:16px;border-radius:18px;overflow:hidden;
+  border:1px solid var(--line2);box-shadow:0 30px 60px -30px rgba(0,0,0,.9);
+  background:linear-gradient(180deg,rgba(8,12,26,.15),rgba(8,12,26,.88)),url(img/arena.webp) center 40%/cover,
+    radial-gradient(40% 70% at 15% 0%,rgba(255,240,200,.25),transparent 70%),radial-gradient(40% 70% at 85% 0%,rgba(255,240,200,.25),transparent 70%),
+    linear-gradient(180deg,#1A2546 0%,#14203C 55%,#1F5C38 55.2%,#17462B 100%)}
+.ah-txt .kicker{color:var(--gold)}
+.ah-txt h2{margin:2px 0 4px;font-size:clamp(30px,4vw,44px)}
+.ah-txt p{margin:0;color:var(--ink);font:500 14px var(--body);text-shadow:0 1px 6px rgba(0,0,0,.8)}
+.ah-stats{display:flex;gap:10px}
+.ah-stats div{display:grid;justify-items:center;gap:2px;min-width:92px;padding:10px 12px;border-radius:12px;background:rgba(8,12,26,.72);border:1px solid rgba(212,168,75,.35)}
+.ah-stats b{font:400 22px var(--varsity);color:var(--gold2)}
+.ah-stats small{font:600 9.5px var(--body);letter-spacing:.12em;text-transform:uppercase;color:var(--ink-soft);text-align:center}
+.stepnum{display:inline-grid;place-items:center;width:24px;height:24px;margin-right:10px;border-radius:50%;background:var(--red);color:#fff;font:400 13px var(--varsity);letter-spacing:0;vertical-align:1px}
+.roster-box{margin-top:16px;padding:16px 18px 6px;border-radius:16px;background:linear-gradient(180deg,#1A2340,#141B31);border:1px solid var(--line)}
+.roster-box h3{margin:0}
+.roster-box h3 small{margin-left:6px;color:var(--muted);font-size:inherit}
+.arena-lists{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:16px;margin-top:16px}
+.al-box{padding:16px 18px;border-radius:16px;background:linear-gradient(180deg,#1A2340,#141B31);border:1px solid var(--line)}
+.al-box h3{margin-top:0}
+.al-box .battle-row{padding:8px 0;border-top:1px solid var(--line)}
+.al-box .battle-row:first-of-type{border-top:0}
+.result-tag.wait{background:rgba(212,168,75,.15);color:var(--gold2)}
+@media (max-width:899px){.arena-lists{grid-template-columns:minmax(0,1fr)}.ah-stats{width:100%}.ah-stats div{flex:1;min-width:0}.arena-hero{min-height:170px;padding:16px}}
+
+/* Speelscherm: echt stadion */
+.duel{background:linear-gradient(180deg,rgba(6,10,22,.25),rgba(6,10,22,.5)),url(img/arena.webp) center 55%/cover,
+  radial-gradient(40% 60% at 15% 0%,rgba(255,240,200,.14),transparent 70%),radial-gradient(40% 60% at 85% 0%,rgba(255,240,200,.14),transparent 70%),
+  linear-gradient(180deg,#1A2546 0%,#14203C 55%,#1F5C38 55.2%,#17462B 100%);min-height:420px}
+.duel::before,.duel::after{display:none}
+.jumbo{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);align-items:center;gap:14px;padding:10px 16px;border-radius:14px;
+  background:linear-gradient(180deg,#0B0F1C,#05070E);border:2px solid #2A3350;box-shadow:inset 0 0 0 1px rgba(255,255,255,.04),0 14px 30px -16px rgba(0,0,0,.9)}
+.jb-side{display:flex;align-items:center;gap:12px;min-width:0}
+.jb-side.op{flex-direction:row-reverse}
+.jb-name{font:400 18px var(--varsity);letter-spacing:.06em;color:#FFE9A8;text-shadow:0 0 10px rgba(255,200,90,.45);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.jb-side.op .jb-name{color:#FF8C9E;text-shadow:0 0 10px rgba(255,60,90,.45)}
+.jb-team{display:flex;gap:5px}
+.jb-team i{width:12px;height:12px;border-radius:50%;background:#7FD3A0;box-shadow:0 0 8px rgba(127,211,160,.6)}
+.jb-team i.act{background:#FFE9A8;box-shadow:0 0 10px rgba(255,233,168,.9)}
+.jb-team i.ko{background:transparent;box-shadow:inset 0 0 0 2px #4A3040}
+.jb-mid{display:grid;justify-items:center;padding:4px 16px;border-radius:10px;background:#140A0E;border:1px solid #3A1A22}
+.jb-mid small{font:700 9px var(--body);letter-spacing:.2em;text-transform:uppercase;color:#FF8C9E}
+.dh-right #btRound{display:none}
+.jb-mid b{font:400 28px/1 var(--varsity);color:#FF5A72;text-shadow:0 0 12px rgba(255,60,90,.6)}
+.duel .hpbar{height:11px}
+.duel .bench-card{background:rgba(6,10,22,.78);backdrop-filter:none}
+@media (max-width:899px){
+  .jumbo{gap:8px;padding:8px 10px}
+  .jb-side{gap:6px;flex-wrap:wrap}
+  .jb-side.op{flex-direction:row;justify-content:flex-end}
+  .jb-name{font-size:14px;max-width:100%}
+  .jb-side .hype b{display:none}
+  .jb-mid{padding:3px 10px}.jb-mid b{font-size:22px}
+  .duel-side{grid-template-areas:"card hp" "card txt" "card bench"}
+}
 </style>
 </head>
 <body>
@@ -1848,27 +1913,12 @@ const navHtml = () => TABS.map(t => `<button type="button" class="nav-btn" data-
   <span class="ni" aria-hidden="true">${t.icon}</span><span class="nl">${t.label}</span><span class="ns">${t.short}</span>${t.badge ? `<span class="tab-badge" data-${t.badge}-badge hidden></span>` : ''}</button>`).join('');
 const logoHtml = () => `<div class="logo"><span class="crest" aria-hidden="true">RIZZ</span><span class="logo-txt"><b>RIZZ ACADEMY</b><small>EST. MMXXVI</small></span></div>`;
 
-const HOUSE_RULES = [
-  'Never chase. Collect.',
-  'What happens at the academy gets traded at the academy.',
-  'Legends aren\'t born. They\'re pulled.',
-  'Six guesses. No excuses.',
-  'Duplicates are leverage. Use them.',
-  'Real ones play every day.',
-  'Lose the battle. Win the trade.',
-  'Talk is cheap. Rizz is earned.',
-  'Nobody remembers second place. Except the Yearbook.',
-  'Sleep is for people without a streak.',
-  'Don\'t sell your legendary. Ever.',
-  'First the Wordle. Then the world.',
-];
 // Statusbalk bovenaan: credits, collectie, streak en de pickup line van de dag
 function scoreboardHtml() {
   return `<div class="plaques" role="group" aria-label="Jouw stand">
     <div class="plaque"><span class="pl-label">Credits</span><span class="pl-val" data-coin>${state.wallet}</span></div>
     <div class="plaque"><span class="pl-label">Collectie</span><span class="pl-val" data-coll>${collectionText()}</span></div>
     <div class="plaque"><span class="pl-label">Streak</span><span class="pl-val" data-streak>${computeStreak(state.playDates)}</span></div>
-    <div class="motto"><b>House rule</b><span>${esc(HOUSE_RULES[wordleNumber() % HOUSE_RULES.length])}</span></div>
   </div>`;
 }
 
@@ -3544,16 +3594,6 @@ const mySide = b => (b.player_a === state.session.user.id ? 'A' : 'B');
 const otherSide = s => (s === 'A' ? 'B' : 'A');
 const stopBattlePoll = () => { clearInterval(battleState.poll); battleState.poll = null; };
 
-const rulesHtml = () => `<div class="rules-strip" aria-label="Spelregels">
-  <div class="rs-tri">
-    <span class="rs-mv m-flex">${MV_ICON.flex}Flex</span><span class="rs-arrow">beats</span>
-    <span class="rs-mv m-charm">${MV_ICON.charm}Charm</span><span class="rs-arrow">beats</span>
-    <span class="rs-mv m-roast">${MV_ICON.roast}Roast</span><span class="rs-arrow">beats</span>
-    <span class="rs-mv m-flex">${MV_ICON.flex}Flex</span>
-  </div>
-  <p>Win de clash = jij slaat, de ander niet. Elke gewonnen clash geeft <b>+1 hype</b>. Bij 3 hype: <b>signature move</b>, die wint van alles.</p>
-</div>`;
-
 async function renderBattle(view) {
   stopBattlePoll();
   view.innerHTML = `<section class="col" style="max-width:none"><p class="hint">Laden…</p></section>`;
@@ -3563,14 +3603,16 @@ async function renderBattle(view) {
     .sort((a, b) => (RARITY_ORDER[a.rarity] - RARITY_ORDER[b.rarity]) || (b.attack - a.attack));
   battleState.team = battleState.team.filter(id => state.owned.has(id));
 
-  const [friendRows, rows, board, rewards] = await Promise.all([
+  const [friendRows, rows, board, rewards, record] = await Promise.all([
     sb.from('friendships').select('friend_id').eq('user_id', uid),
     sb.from('tbattles').select('id, mode, difficulty, player_a, player_b, status, winner, round, coins_a, coins_b, forfeit, updated_at, moved:state->moved')
       .or(`player_a.eq.${uid},player_b.eq.${uid}`).order('updated_at', { ascending: false }).limit(40),
     sb.rpc('tb_leaderboard'),
     sb.rpc('tb_rewards_today'),
+    sb.rpc('room_battle_stats', { p_user: uid }),
   ]);
   if (state.tab !== 'battle') return;
+  const rec = record.data || {};
   if (rows.error) {
     view.innerHTML = `<section class="col">${pageHead('The Arena', 'battle')}<p class="msg err">De Arena kon niet geladen worden: ${esc(rows.error.message)}</p></section>`;
     return;
@@ -3599,9 +3641,17 @@ async function renderBattle(view) {
   battleState.friend = null;
 
   view.innerHTML = `<section class="col arena-page" style="max-width:none">
-    <div class="battle-top">
-      ${pageHead('The Arena', 'battle')}
-      <span class="pill">Beloond vandaag: computer ${rw.pve}/${rw.pve_max} · vrienden ${rw.pvp}/${rw.pvp_max}</span>
+    <div class="arena-hero">
+      <div class="ah-txt">
+        <span class="kicker">Rizz Academy · Varsity Athletics</span>
+        <div class="ph-row"><h2>The Arena</h2>${infoBtn('battle')}</div>
+        <p>Kies je drie kaarten, kies je tegenstander en win de clash.</p>
+      </div>
+      <div class="ah-stats">
+        <div><b>${rec.wins || 0}–${rec.losses || 0}</b><small>Record</small></div>
+        <div><b>${rw.pve}/${rw.pve_max}</b><small>Beloond vs computer</small></div>
+        <div><b>${rw.pvp}/${rw.pvp_max}</b><small>Beloond vs vrienden</small></div>
+      </div>
     </div>
 
     ${myTurn.length || incoming.length ? `<div class="battle-box highlight">
@@ -3610,8 +3660,8 @@ async function renderBattle(view) {
         <button class="btn small" data-open-battle="${b.id}" type="button">Speel verder</button>
       </div>`).join('')}
       ${incoming.map(b => `<div class="battle-row">
-        <span class="battle-row-text"><strong>${esc(nameOf(b.player_a))}</strong> daagt je uit. Kies je drie en accepteer.</span>
-        <button class="btn small" data-accept-battle="${b.id}" type="button">Accepteren met mijn team</button>
+        <span class="battle-row-text"><strong>${esc(nameOf(b.player_a))}</strong> daagt je uit. Kies je drie hieronder en accepteer.</span>
+        <button class="btn small" data-accept-battle="${b.id}" type="button">Accepteren</button>
         <button class="link danger" data-decline-battle="${b.id}" type="button">Weigeren</button>
       </div>`).join('')}
       <p class="msg tmsg" id="incomingMsg" role="alert"></p>
@@ -3621,19 +3671,19 @@ async function renderBattle(view) {
       ? `<p class="hint" style="margin-top:14px">Je hebt minstens ${TEAM_SIZE} verschillende kaarten nodig om te vechten. Je hebt er nu ${owned.length}.</p>`
       : `<div class="lobby">
           <div class="lineup-box">
-            <div class="lb-head"><h3>Your starting three</h3><button class="link" id="clearTeam" type="button">Wissen</button></div>
+            <div class="lb-head"><h3><span class="stepnum">1</span>Je starting three</h3><button class="link" id="clearTeam" type="button">Wissen</button></div>
             <div class="lineup" id="lineup"></div>
-            <p class="hint lb-hint">Tik hieronder op kaarten. Nummer 1 begint het gevecht.</p>
+            <p class="hint lb-hint">Tik onderaan op je kaarten. Nummer 1 start het gevecht, 2 en 3 staan op de bank.</p>
           </div>
           <div class="opp-box">
-            <h3>Choose your opponent</h3>
+            <h3><span class="stepnum">2</span>Kies je tegenstander</h3>
             <div class="opp-grid">
               ${Object.entries(DIFFS).map(([k, d]) => `<button class="opp-btn d-${k}" data-pve="${k}" type="button">
                 <b>${d.label}</b><small>${d.hint}</small><span class="opp-reward">+${d.coins} credits</span></button>`).join('')}
               <div class="opp-btn friend${friendIds.length ? '' : ' off'}">
                 <b>Rivalry</b>
                 ${friendIds.length ? `<select id="battleFriend" class="tselect">
-                    <option value="">Kies een vriend…</option>
+                    <option value="">Kies een huisgenoot…</option>
                     ${friendIds.map(id => `<option value="${id}"${id === preFriend ? ' selected' : ''}>${esc(nameOf(id))}</option>`).join('')}
                   </select>
                   <button class="btn small" id="challengeBattle" type="button">Uitdagen</button>`
@@ -3644,34 +3694,32 @@ async function renderBattle(view) {
             <p class="msg tmsg" id="battleMsg" role="alert"></p>
           </div>
         </div>
-        ${rulesHtml()}
-        <h3 style="margin-top:18px">Your roster</h3>
-        <div class="battle-pick">${owned.map(c => `
-          <button class="pick" type="button" data-pick="${c.id}" aria-pressed="false">
-            <span class="pick-num" hidden></span>${renderCard(c)}
-          </button>`).join('')}</div>`}
+        <div class="roster-box">
+          <h3>Je kaarten <small>${owned.length}</small></h3>
+          <div class="battle-pick">${owned.map(c => `
+            <button class="pick" type="button" data-pick="${c.id}" aria-pressed="false">
+              <span class="pick-num" hidden></span>${renderCard(c)}
+            </button>`).join('')}</div>
+        </div>`}
 
-    <div class="three-col" style="margin-top:18px">
-      <div><h3>Wachten op zet</h3>
-        ${waiting.length || sent.length ? [...waiting.map(b => `<div class="battle-row">
-            <span class="battle-row-text">${esc(opponentOf(b))} · ronde ${b.round + 1}</span>
+    <div class="arena-lists">
+      <div class="al-box"><h3>Wedstrijden</h3>
+        ${waiting.length || sent.length || done.length ? [...waiting.map(b => `<div class="battle-row">
+            <span class="result-tag wait">Bezig</span><span class="battle-row-text">${esc(opponentOf(b))} · ronde ${b.round + 1}</span>
             <button class="link" data-open-battle="${b.id}" type="button">Bekijk</button></div>`),
           ...sent.map(b => `<div class="battle-row">
-            <span class="battle-row-text">Uitdaging aan <strong>${esc(nameOf(b.player_b))}</strong></span>
-            <button class="link danger" data-cancel-battle="${b.id}" type="button">Annuleren</button></div>`)].join('')
-          : '<p class="hint">Niets om op te wachten.</p>'}
+            <span class="result-tag wait">Verstuurd</span><span class="battle-row-text">${esc(nameOf(b.player_b))}</span>
+            <button class="link danger" data-cancel-battle="${b.id}" type="button">Annuleren</button></div>`),
+          ...done.slice(0, 6).map(b => {
+            const won = b.winner === mySide(b);
+            const coins = mySide(b) === 'A' ? b.coins_a : b.coins_b;
+            return `<div class="battle-row">
+              <span class="result-tag ${won ? 'won' : 'lost'}">${won ? 'Winst' : 'Verlies'}</span>
+              <span class="battle-row-text">${esc(opponentOf(b))}${coins ? ` · +${coins}` : ''}</span>
+              <button class="link" data-open-battle="${b.id}" type="button">Bekijk</button></div>`;
+          })].join('') : '<p class="hint">Nog geen wedstrijden gespeeld.</p>'}
       </div>
-      <div><h3>Recente gevechten</h3>
-        ${done.length ? done.map(b => {
-          const won = b.winner === mySide(b);
-          const coins = mySide(b) === 'A' ? b.coins_a : b.coins_b;
-          return `<div class="battle-row">
-            <span class="result-tag ${won ? 'won' : 'lost'}">${won ? 'W' : 'L'}</span>
-            <span class="battle-row-text">${esc(opponentOf(b))}${coins ? ` · +${coins}` : ''}</span>
-            <button class="link" data-open-battle="${b.id}" type="button">Bekijk</button></div>`;
-        }).join('') : '<p class="hint">Nog geen gevechten.</p>'}
-      </div>
-      <div><h3>Ranglijst</h3>
+      <div class="al-box"><h3>Ranglijst</h3>
         ${board.error ? `<p class="msg err">${esc(board.error.message)}</p>` : `<table class="leaderboard">
           <thead><tr><th>#</th><th>Naam</th><th>W</th><th>V</th></tr></thead>
           <tbody>${(board.data || []).map((r, i) => `<tr${r.user_id === uid ? ' class="me"' : ''}>
@@ -3774,6 +3822,19 @@ function eventText(e, b, names) {
   return '';
 }
 
+// Scorebord bovenaan: per team de naam, welke kaarten nog staan, de hype en de ronde
+function jumboHtml(b, disp, me, op, round) {
+  const team = (s, mine) => {
+    const d = disp[s], side = b.state[s], hype = d.hype || 0;
+    return `<div class="jb-side ${mine ? 'me' : 'op'}">
+      <span class="jb-name">${mine ? 'Jij' : esc(d.name)}</span>
+      <span class="jb-team">${side.cards.map((id, i) => `<i class="${d.hp[i] <= 0 ? 'ko' : i === d.active ? 'act' : ''}" title="${esc(cardById(id)?.name || '')}"></i>`).join('')}</span>
+      <span class="hype${hype >= 3 ? ' full' : ''}" title="Hype ${hype}/3">${[0, 1, 2].map(i => `<i class="${i < hype ? 'on' : ''}"></i>`).join('')}<b>Hype</b></span>
+    </div>`;
+  };
+  return `${team(me, true)}<div class="jb-mid"><small>Round</small><b>${round}</b></div>${team(op, false)}`;
+}
+
 // Eén kant van het speelveld op basis van een weergave-toestand {active, hp[], hype}
 function sideHtml(b, s, disp, mine) {
   const side = b.state[s];
@@ -3781,9 +3842,7 @@ function sideHtml(b, s, disp, mine) {
   const hp = disp.hp[disp.active], max = side.max[disp.active];
   const pct = Math.max(0, hp / max * 100);
   const hype = disp.hype || 0;
-  return `<div class="ds-top"><span class="ds-name">${mine ? 'Jij' : esc(disp.name)}</span>
-      <span class="hype${hype >= 3 ? ' full' : ''}" title="Hype ${hype}/3">${[0, 1, 2].map(i => `<i class="${i < hype ? 'on' : ''}"></i>`).join('')}<b>Hype</b></span></div>
-    <div class="fighter-card" data-active="${disp.active}">${c ? renderCard(c) : ''}</div>
+  return `<div class="fighter-card" data-active="${disp.active}">${c ? renderCard(c) : ''}</div>
     <div class="hpbar"><div class="hpfill${pct <= 25 ? ' low' : pct <= 50 ? ' mid' : ''}" style="width:${pct}%"></div></div>
     <div class="hptext"><b>${hp}</b> / ${max} HP</div>
     <div class="bench">${side.cards.map((id, i) => {
@@ -3826,6 +3885,7 @@ async function openBattle(view, id, prev = null) {
       <div class="dh-right"><span class="pill" id="btRound">Ronde ${b.round + (b.status === 'active' ? 1 : 0)}</span>
       ${b.status === 'active' ? '<button class="link danger forfeit" id="btForfeit" type="button">Opgeven</button>' : ''}</div>
     </div>
+    <div class="jumbo" id="jumbo"></div>
     <div class="duel">
       <div class="duel-side me" id="side-me"></div>
       <div class="clash" id="clash" aria-live="polite"></div>
@@ -3840,7 +3900,9 @@ async function openBattle(view, id, prev = null) {
   </section>`;
   $('#btBack').onclick = () => { stopBattlePoll(); renderBattle(view); };
   const sideEl = s => $(s === me ? '#side-me' : '#side-op');
-  const drawSide = s => { sideEl(s).innerHTML = sideHtml(b, s, disp[s], s === me); bindBench(); };
+  let shownRound = b.round + (replay || b.status !== 'active' ? 0 : 1);
+  const drawJumbo = () => { const j = $('#jumbo'); if (j) j.innerHTML = jumboHtml(b, disp, me, op, Math.max(1, shownRound)); };
+  const drawSide = s => { sideEl(s).innerHTML = sideHtml(b, s, disp[s], s === me); bindBench(); drawJumbo(); };
   const drawSides = () => { drawSide(me); drawSide(op); };
   const updateHp = s => {
     const el = sideEl(s), d = disp[s], side = b.state[s];
@@ -3848,6 +3910,7 @@ async function openBattle(view, id, prev = null) {
     const fill = el.querySelector('.hpfill');
     if (fill) { fill.style.width = pct + '%'; fill.className = 'hpfill' + (pct <= 25 ? ' low' : pct <= 50 ? ' mid' : ''); }
     const t = el.querySelector('.hptext b'); if (t) t.textContent = hp;
+    drawJumbo();
   };
   const pop = (s, text, cls) => {
     if (reduce) return;
@@ -3904,7 +3967,7 @@ async function openBattle(view, id, prev = null) {
 
   // Nieuwe ronde afspelen
   for (const e of newEvents) {
-    if (e.t === 'clash') await showClash(e);
+    if (e.t === 'clash') { shownRound = e.r; drawJumbo(); await showClash(e); }
     else if (e.t === 'switch' || e.t === 'enter') {
       disp[e.s].active = e.i; drawSide(e.s); anim(e.s, 'enter');
       if (!reduce) await sleep(450);
@@ -3957,6 +4020,7 @@ async function openBattle(view, id, prev = null) {
     return;
   }
   $('#btRound').textContent = `Ronde ${b.round + 1}`;
+  shownRound = b.round + 1; drawJumbo();
 
   const forfeit = async () => {
     if (!confirm('Wil je echt opgeven?')) return;
