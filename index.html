@@ -1901,6 +1901,143 @@ div.wf-inner{cursor:default}
   .facade-title h2{font-size:18px !important}
   .arena-hero .hero-over,.duel-head,.battle-top{padding-right:96px}
 }
+
+/* =====================================================================
+   FRAT HOUSE zonder bewoners, kamerteller op de plank
+   ===================================================================== */
+.fplate.lit::after{display:none}
+.fplate.full::after{display:block;content:"";position:absolute;top:-.35cqw;right:-.35cqw;width:.8cqw;height:.8cqw;min-width:6px;min-height:6px;border-radius:50%;background:#F2CC72;box-shadow:0 0 0 2px #0C1120,0 0 8px #F2CC72}
+.rs-tally{position:absolute;left:8.6%;width:70.4%;top:55.5%;z-index:2;display:flex;justify-content:center;gap:2.2cqw}
+.rs-tally span{display:grid;justify-items:center;gap:.2cqw;padding:.45cqw 1.2cqw .5cqw;border-radius:.4cqw;background:linear-gradient(180deg,#E9D29A,#B8914A);color:#3A2A10;
+  box-shadow:0 .3cqw .8cqw rgba(0,0,0,.55),inset 0 0 0 1px rgba(90,60,20,.4);font:700 clamp(6px,.75cqw,11px) var(--body);letter-spacing:.14em;text-transform:uppercase}
+.rs-tally b{font:400 clamp(11px,1.6cqw,22px)/1 var(--varsity);letter-spacing:.04em}
+.rs-tally .rt-epic b{color:#5B2A8C}.rs-tally .rt-legendary b{color:#8C0B21}
+.rs-tally span.done{background:linear-gradient(180deg,#FFF0B8,#E6B54A);box-shadow:0 0 1.2cqw rgba(246,210,120,.6),0 .3cqw .8cqw rgba(0,0,0,.55)}
+.rm-full{color:#F2CC72 !important}
+
+/* =====================================================================
+   FRIENDS (The Quad)
+   ===================================================================== */
+.shell[data-place="friends"] .place-bg{opacity:1;background-image:linear-gradient(180deg,rgba(8,12,26,.4),rgba(8,12,26,.66) 40%,rgba(8,12,26,.86)),url(img/quad-day.webp),url(img/campus-day.webp)}
+.shell[data-place="friends"][data-phase="night"] .place-bg{background-image:linear-gradient(180deg,rgba(8,12,26,.3),rgba(8,12,26,.6) 40%,rgba(8,12,26,.84)),url(img/quad-night.webp),url(img/campus-night.webp)}
+.fr-grid{display:grid;grid-template-columns:minmax(0,1fr);gap:14px;margin-top:12px}
+.fr-panel{background:rgba(14,19,38,.86);border:1px solid rgba(255,255,255,.1);border-radius:16px;padding:14px;backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);min-width:0}
+.fr-panel h4{margin:14px 0 8px;font:600 11px var(--body);letter-spacing:.2em;text-transform:uppercase;color:var(--brass);display:flex;align-items:center;gap:8px}
+.fr-panel h4:first-child{margin-top:0}
+.fr-count{min-width:20px;height:20px;padding:0 6px;border-radius:10px;background:rgba(255,255,255,.08);color:var(--ink);display:inline-grid;place-items:center;letter-spacing:0;font-size:11px}
+.fr-code{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:12px;background:linear-gradient(120deg,#C8102E,#8C0B21 55%,#1C2540)}
+.fr-code span{font:600 9.5px var(--body);letter-spacing:.2em;text-transform:uppercase;color:var(--cream)}
+.fr-code b{font:600 22px/1 var(--display);letter-spacing:.14em;color:#fff;flex:1}
+.fr-code .link{color:#fff;font-size:12px}
+.fr-add{display:flex;gap:8px;margin-top:10px}
+.fr-add input{flex:1;min-width:0;padding:9px 12px;border-radius:10px;border:1px solid var(--line2);background:rgba(0,0,0,.25);color:var(--ink);font:600 14px var(--body);letter-spacing:.12em;text-transform:uppercase}
+.fr-add input::placeholder{letter-spacing:.02em;text-transform:none;font-weight:400;color:var(--ink-soft)}
+.fr-side .msg{margin:6px 0 0;font-size:12.5px}
+.fr-side .msg:empty{display:none}
+.fr-rows{list-style:none;margin:0;padding:0;display:grid;gap:6px}
+.fr-row{display:flex;align-items:center;gap:10px;padding:6px 8px;border-radius:10px;background:rgba(255,255,255,.04)}
+.fr-row .friend-av,.fr-friend .friend-av{width:32px;height:32px;font-size:13px}
+.fr-name{flex:1;min-width:0;font:600 14px var(--body);color:var(--ink);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.fr-name small{display:block;font:500 11.5px var(--body);color:var(--ink-soft);margin-top:1px}
+.fr-wait{font-size:11.5px;color:var(--ink-soft)}
+.fr-x,.fr-plus{width:30px;height:30px;flex-shrink:0;display:grid;place-items:center;border-radius:50%;border:1px solid var(--line2);background:none;color:var(--ink-soft);cursor:pointer;font-size:13px}
+.fr-plus{background:var(--brass);border-color:transparent;color:#1A1408}
+.fr-plus svg{width:16px;height:16px}
+.fr-x:hover{color:#fff;border-color:#C8102E}
+.fr-friend{width:100%;display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:12px;border:1px solid transparent;background:rgba(255,255,255,.04);color:inherit;font:inherit;text-align:left;cursor:pointer}
+.fr-friend:hover{border-color:var(--line2)}
+.fr-friend.on{border-color:var(--brass);background:rgba(233,201,120,.1)}
+.fr-grade{width:28px;height:28px;flex-shrink:0;border-radius:8px;display:grid;place-items:center;font:400 15px var(--varsity);background:rgba(255,255,255,.08);color:var(--ink)}
+.fr-grade.none{color:var(--ink-soft)}
+.g-A{color:#7FD3A0 !important}.g-B{color:#A9D47F !important}.g-C{color:#F2CC72 !important}.g-D{color:#F0A060 !important}.g-F{color:#FF6B7A !important}
+.fr-empty{height:100%;display:grid;place-content:center;text-align:center;gap:6px;color:var(--ink-soft)}
+.fr-empty b{font:400 26px var(--varsity);color:var(--ink)}
+.frd-head{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.frd-head .friend-av{width:52px;height:52px;font-size:20px;box-shadow:0 0 0 2px var(--brass)}
+.frd-head h3{margin:0;font-size:24px}
+.frd-head small{color:var(--ink-soft);font-size:12.5px}
+.frd-actions{margin-left:auto;display:flex;gap:8px}
+.frd-tiles{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-top:14px}
+.frd-tile{display:grid;gap:2px;padding:9px 10px;border-radius:10px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.07)}
+.frd-tile b{font:600 20px/1.1 var(--display);color:var(--ink)}
+.frd-tile span{font:600 9.5px var(--body);letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft)}
+.frd-cols{display:grid;grid-template-columns:minmax(0,1fr);gap:4px}
+.frd-bars{display:grid;gap:5px}
+.frd-bar{display:grid;grid-template-columns:16px 1fr 24px;align-items:center;gap:8px;font:600 12px var(--body);color:var(--ink-soft)}
+.frd-bar i{height:8px;border-radius:4px;background:rgba(255,255,255,.07);overflow:hidden}
+.frd-bar em{display:block;height:100%;border-radius:4px;background:linear-gradient(90deg,#B8914A,#F2CC72)}
+.frd-bar em.f{background:linear-gradient(90deg,#8C0B21,#FF6B7A)}
+.frd-bar b{text-align:right;color:var(--ink)}
+.frd-trophies{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:6px}
+.frd-tro{display:grid;justify-items:center;gap:3px;padding:6px 2px;border-radius:8px;background:rgba(255,255,255,.04);color:#5C5A66;text-align:center}
+.frd-tro svg{width:20px;height:20px}
+.frd-tro small{font:600 8.5px/1.15 var(--body);letter-spacing:.04em;text-transform:uppercase}
+.frd-tro.got{color:#F2CC72;background:rgba(233,201,120,.1)}
+.frd-tro.got svg{filter:drop-shadow(0 0 5px rgba(246,210,120,.5))}
+.frd-remove{margin-top:14px;font-size:12.5px}
+@media (min-width:600px){.frd-cols{grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr);gap:18px}.frd-tiles{grid-template-columns:repeat(6,minmax(0,1fr))}}
+/* Computer en liggende gsm: alles in één scherm, lijsten scrollen binnen hun paneel */
+@media (min-width:900px), (min-width:600px) and (max-height:500px){
+  .fr-page{display:flex;flex-direction:column;height:calc(100vh - 34px)}
+  .fr-page .page-head{flex-shrink:0}
+  .fr-grid{flex:1;min-height:0;grid-template-columns:270px minmax(0,1fr);grid-template-rows:auto minmax(0,1fr)}
+  .fr-side{grid-column:1;grid-row:1;max-height:46vh;overflow:auto}
+  .fr-list{grid-column:1;grid-row:2;overflow:auto}
+  .fr-detail{grid-column:2;grid-row:1/3;overflow:auto}
+}
+@media (min-width:1280px){
+  .fr-grid{grid-template-columns:290px 300px minmax(0,1fr);grid-template-rows:minmax(0,1fr)}
+  .fr-side{grid-column:1;grid-row:1;max-height:none}
+  .fr-list{grid-column:2;grid-row:1}
+  .fr-detail{grid-column:3;grid-row:1}
+}
+@media (min-width:600px) and (max-height:500px){
+  .fr-page{height:calc(100vh - 14px)}
+  .fr-page .joke{display:none}
+  .fr-page .page-head h2{font-size:20px}
+  .fr-grid{margin-top:6px;gap:8px;grid-template-columns:230px minmax(0,1fr)}
+  .fr-panel{padding:10px;border-radius:12px}
+  .fr-side{max-height:44vh}
+  .frd-tiles{margin-top:8px;gap:5px}.frd-tile{padding:5px 7px}.frd-tile b{font-size:15px}
+  .frd-head .friend-av{width:38px;height:38px}.frd-head h3{font-size:18px}
+  .fr-panel h4{margin:8px 0 5px}
+}
+
+/* Liggende gsm: 10 knoppen in de rail moeten passen */
+@media (min-width:600px) and (max-height:500px){
+  .side{gap:4px}
+  .nav-btn{padding:clamp(3px,1.1vh,7px) 0}
+  .nav-btn .ni svg{width:19px;height:19px}
+  .nav-btn[data-tab="campus"]{margin-bottom:3px;padding:clamp(5px,1.4vh,8px) 0}
+  .me-btn{padding:2px}
+  .me-btn .avbtn{width:30px;height:30px}
+}
+@media (min-width:600px) and (max-height:420px){.side .logo{display:none}}
+/* Friends: niets mag uit de panelen lopen */
+.fr-rows{grid-template-columns:minmax(0,1fr)}
+.fr-code b{min-width:0}
+.frd-tiles{grid-template-columns:repeat(auto-fit,minmax(88px,1fr)) !important}
+.frd-tile span{letter-spacing:.06em;font-size:9px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.frd-tile b{font-family:var(--body);font-weight:700}
+.frd-trophies{grid-template-columns:repeat(auto-fill,minmax(62px,1fr))}
+.frd-tro small{letter-spacing:0;font-size:8px;overflow-wrap:anywhere}
+@media (min-width:600px) and (max-height:500px){
+  .fr-code{padding:7px 9px;gap:6px}
+  .fr-code span{display:none}
+  .fr-code b{font-size:17px}
+  .fr-add input{padding:7px 9px;font-size:12px}
+  .fr-add .btn{padding:6px 10px;font-size:12px}
+  .fr-row,.fr-friend{padding:5px 7px;gap:7px}
+  .fr-name{font-size:12.5px}.fr-name small{font-size:10.5px}
+  .frd-actions .btn{padding:6px 12px;font-size:12px}
+  .frd-tiles{grid-template-columns:repeat(6,minmax(0,1fr)) !important}
+  .frd-tile span{font-size:7.5px;letter-spacing:.04em}
+}
+@media (max-width:899px) and (min-height:501px), (max-width:599px){
+  .dock .nav-btn[data-tab="campus"] .nl{display:none !important}
+  .dock .nav-btn[data-tab="campus"] .ns{display:block !important;color:#1A1408}
+  .dock .nav-btn[data-tab="campus"]{padding:6px 2px;min-width:0;margin:0}
+}
 </style>
 </head>
 <body>
@@ -2396,7 +2533,8 @@ const ICON = d => `<svg viewBox="0 0 24 24" width="20" height="20" fill="none" s
 const TABS = [
   { id: 'campus', label: 'Campus', short: 'Campus', icon: ICON('<path d="M3 6.5 9 4l6 2.5L21 4v13.5L15 20l-6-2.5L3 20z"/><path d="M9 4v13.5M15 6.5V20"/>') },
   { id: 'today', label: 'Exam Hall', short: 'Exam', icon: ICON('<rect x="4" y="3" width="13" height="17" rx="2"/><path d="M8 7h5M8 11h5"/><path d="M20 7v13a1 1 0 0 1-1 1H8"/>') },
-  { id: 'house', label: 'Frat House', short: 'House', icon: ICON('<path d="M3 11 12 4l9 7"/><path d="M5 10v10h14V10"/><path d="M10 20v-5h4v5"/>'), badge: 'friend' },
+  { id: 'house', label: 'Frat House', short: 'House', icon: ICON('<path d="M3 11 12 4l9 7"/><path d="M5 10v10h14V10"/><path d="M10 20v-5h4v5"/>') },
+  { id: 'friends', label: 'Friends', short: 'Friends', icon: ICON('<circle cx="9" cy="8" r="3.5"/><path d="M2.5 20a6.5 6.5 0 0 1 13 0"/><circle cx="17" cy="9" r="2.6"/><path d="M15.5 14.2A5 5 0 0 1 21.5 19"/>'), badge: 'friend' },
   { id: 'battle', label: 'The Arena', short: 'Arena', icon: ICON('<path d="M14.5 17.5 3 6V3h3l11.5 11.5M13 19l6-6M16 16l4 4M19 21l2-2"/><path d="M9.5 17.5 21 6V3h-3L6.5 14.5M11 19l-6-6M8 16l-4 4M5 21l-2-2"/>'), badge: 'battle' },
   { id: 'trade', label: 'Black Market', short: 'Market', icon: ICON('<path d="M4 8h14l-4-4M20 16H6l4 4"/>'), badge: 'trade' },
   { id: 'shop', label: 'The Vault', short: 'Vault', icon: ICON('<rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="12" cy="12" r="3.5"/><path d="M12 8.5V7M15.5 12H17M12 15.5V17M8.5 12H7"/>') },
@@ -2511,15 +2649,15 @@ const INFO = {
     <li>De computer onthoudt welke zetten je vaak kiest. Voorspelbaar spelen wordt afgestraft.</li></ul>
     <p><strong>Credits</strong>: Scrimmage/Varsity/Championship = 5/10/20 (max 5 per dag). Tegen een vriend: winnaar 25, verliezer 5 (max 3 per dag). Opgeven levert niets op.</p>`],
   house: ['Het Frat House', `
-    <p>Elke persoon van de kaarten heeft een kamer in het huis. In die kamer hangen zijn 9 kaarten in houten kaders: dat is jouw collectie van die persoon (vroeger het yearbook). Kaarten die je nog niet hebt, blijven leeg.</p>
-    <ul><li>Een verlicht raam: de bewoner heeft vandaag de Wordle gespeeld.</li>
-    <li>Op de plank staan de <strong>trofeeën</strong> van de bewoner. Tik op een trofee voor de uitleg.</li>
-    <li>Vanuit de kamer van iemand anders kan je hem uitdagen of een ruil voorstellen.</li>
-    <li>Je account wordt automatisch aan je kamer gekoppeld op basis van je naam. Lukt dat niet, dan tik je in je kamer op "Dit is mijn kamer".</li></ul>`],
-  friends: ['Vrienden', `
-    <p>Deel je code met je vrienden, of voer hun code in om een vriendschapsverzoek te sturen.</p>
-    <ul><li>Zodra ze accepteren, kan je elkaars statistieken bekijken, kaarten ruilen en elkaar uitdagen in Battle.</li>
-    <li>Klik op een vriend om zijn of haar statistieken te zien.</li></ul>`],
+    <p>Elke persoon van de kaarten heeft een kamer in het huis. In die kamer hangen zijn 9 kaarten in houten kaders: dat is <strong>jouw collectie</strong> van die persoon. Kaarten die je nog niet hebt, blijven donker.</p>
+    <ul><li>Een verlicht raam: je hebt al minstens één kaart van die persoon.</li>
+    <li>Tik op een kaart aan de muur om ze groot te bekijken.</li>
+    <li>De stats en trofeeën van je vrienden vind je op de Friends-pagina (The Quad).</li></ul>`],
+  friends: ['Friends', `
+    <p>Voeg vrienden toe met hun code, of rechtstreeks uit de lijst "Op de campus". Zodra ze accepteren, zijn jullie vrienden.</p>
+    <ul><li>Van je vrienden zie je hun collectie, cijfers, F's, Arena-score en trofeeën. Tik op een vriend.</li>
+    <li>Enkel vrienden kan je uitdagen in The Arena of een ruil voorstellen in de Black Market.</li>
+    <li>Iemand verwijderen kan altijd; die persoon krijgt daar geen melding van.</li></ul>`],
   ideas: ['Ideeënbus', `
     <p>Heb je een idee om de site beter of leuker te maken? Dien het hier in — iedereen kan alle ideeën zien.</p>
     <ul><li>Stem met ▲ op de ideeën die jij ook wil. Nog eens klikken trekt je stem in.</li>
@@ -2831,6 +2969,7 @@ function renderView() {
   else if (state.tab === 'house') renderHouse(view);
   else if (state.tab === 'today') renderToday(view);
   else if (state.tab === 'stats') renderStats(view);
+  else if (state.tab === 'friends') renderFriends(view);
   else if (state.tab === 'battle') renderBattle(view);
   else if (state.tab === 'trade') renderTrade(view);
   else if (state.tab === 'shop') renderShop(view);
@@ -2852,6 +2991,7 @@ const CAMPUS_PLACES = [
   { id: 'today', name: 'Exam Hall', what: 'Dagelijkse Wordle', box: [36.8, 5.5, 26.8, 32.3], pin: [50, 38.5] },
   { id: 'battle', name: 'The Arena', what: 'Battles', box: [2.6, 15.8, 30.5, 21.4], pin: [21.5, 33] },
   { id: 'house', name: 'Frat House', what: 'Kamers en vrienden', box: [73, 21.5, 16.2, 19.3], pin: [81, 41.5] },
+  { id: 'friends', name: 'The Quad', what: 'Friends', box: [44, 42, 12, 12], pin: [50, 57] },
   { id: 'stats', name: 'The Library', what: 'Stats', box: [0, 39, 22.7, 39.2], pin: [11.5, 79] },
   { id: 'trade', name: 'Black Market', what: 'Ruilen', box: [27.5, 67.7, 19, 21.1], pin: [37, 89.5] },
   { id: 'shop', name: 'The Vault', what: 'Envelopes en credits', box: [55.7, 63.2, 16.6, 26.7], pin: [64, 90.5] },
@@ -2905,6 +3045,7 @@ async function renderCampus(view) {
   setStatus('trade', state.incomingTrades ? `${state.incomingTrades} offer${state.incomingTrades > 1 ? 's' : ''} waiting` : 'Doors open', state.incomingTrades || '');
   setStatus('ideas', 'Speak up');
   setStatus('house', `${collectionText()} collected`);
+  setStatus('friends', state.incomingRequests ? `${state.incomingRequests} friend request${state.incomingRequests > 1 ? 's' : ''}` : 'Friends & their stats', state.incomingRequests || '');
 }
 
 // ---------- Lessenrooster: elke dag een ander vak met een eigen minigame ----------
@@ -3910,6 +4051,137 @@ function statsHtml(plays, extraCards = '') {
 
 const friendAv = p => `<span class="friend-av" style="${p.avatar_url ? `background-image:url('${esc(p.avatar_url)}')` : ''}">${p.avatar_url ? '' : esc((p.display_name || '?').charAt(0).toUpperCase())}</span>`;
 
+// ---------- Tab: Friends (The Quad) ----------
+// Alles komt uit friends_overview() in Supabase (supabase/update-08-vrienden.sql).
+// De details van een vriend (cijfers, trofeeën) komen uit member_room(), dat enkel werkt voor vrienden.
+async function renderFriends(view) {
+  view.innerHTML = `<section class="col" style="max-width:none"><p class="hint">Laden…</p></section>`;
+  const { data, error } = await sb.rpc('friends_overview');
+  if (state.tab !== 'friends') return;
+  if (error || !data) { view.innerHTML = `<section class="col">${pageHead('Friends', 'friends')}<p class="msg err">${esc(error?.message || 'Niet ingelogd.')}</p></section>`; return; }
+  const { friends = [], incoming = [], outgoing = [], others = [] } = data;
+  state.incomingRequests = incoming.length;
+  syncFriendBadge();
+  const total = state.cards.filter(c => c.rarity !== 'cat').length;
+  if (!friends.some(f => f.id === state.friendSel)) state.friendSel = friends[0]?.id || null;
+
+  const person = (p, right) => `<li class="fr-row">${friendAv(p)}<span class="fr-name">${esc(p.display_name)}</span>${right}</li>`;
+  const plus = ICON('<path d="M12 5v14M5 12h14"/>');
+  view.innerHTML = `<section class="col fr-page" style="max-width:none">
+    ${pageHead('Friends', 'friends')}
+    <div class="fr-grid">
+      <div class="fr-side fr-panel">
+        ${state.isAdmin ? `<p class="hint" style="margin:0">Je admin-account is onzichtbaar en kan geen vrienden hebben.</p>` : `
+        <div class="fr-code"><span>Jouw code</span><b>${esc(state.friendCode)}</b><button class="link" id="copyCode" type="button">Kopiëren</button></div>
+        <form id="addFriendForm" class="fr-add">
+          <input id="friendCodeInput" maxlength="6" autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="Code van een vriend" aria-label="Vriendencode">
+          <button class="btn small" type="submit">Toevoegen</button>
+        </form>
+        <p id="addFriendMsg" class="msg" role="alert"></p>`}
+        ${incoming.length ? `<h4>Verzoeken <span class="fr-count">${incoming.length}</span></h4><ul class="fr-rows">${incoming.map(r => person(r, `
+          <button class="btn small" data-req="${r.id}" data-action="accept" type="button">Accepteren</button>
+          <button class="fr-x" data-req="${r.id}" data-action="decline" type="button" aria-label="Weigeren">✕</button>`)).join('')}</ul>` : ''}
+        ${outgoing.length ? `<h4>Verstuurd</h4><ul class="fr-rows">${outgoing.map(r => person(r, `
+          <span class="fr-wait">Wacht…</span><button class="fr-x" data-req="${r.id}" data-action="cancel" type="button" aria-label="Annuleren">✕</button>`)).join('')}</ul>` : ''}
+        ${others.length ? `<h4>Op de campus</h4><ul class="fr-rows">${others.map(o => person(o, `
+          <button class="fr-plus" data-add="${o.user_id}" type="button" aria-label="${esc(o.display_name)} toevoegen">${plus}</button>`)).join('')}</ul>` : ''}
+      </div>
+      <div class="fr-list fr-panel">
+        <h4>Je vrienden <span class="fr-count">${friends.length}</span></h4>
+        ${friends.length ? `<ul class="fr-rows">${friends.map(f => `<li><button type="button" class="fr-friend${f.id === state.friendSel ? ' on' : ''}" data-open="${f.id}">
+            ${friendAv(f)}<span class="fr-name">${esc(f.display_name)}<small>${f.cards}/${total} kaarten · ${f.fs}× F · ${f.wins}–${f.losses}</small></span>
+            ${f.today ? `<span class="fr-grade g-${f.today}" title="Cijfer vandaag">${f.today}</span>` : '<span class="fr-grade none" title="Vandaag nog niet gespeeld">–</span>'}
+          </button></li>`).join('')}</ul>`
+        : `<p class="hint">Nog geen vrienden. Stuur een verzoek met hun code of tik op + bij "Op de campus".</p>`}
+      </div>
+      <div class="fr-detail fr-panel" id="frDetail"></div>
+    </div>
+  </section>`;
+
+  const detail = $('#frDetail');
+  const showFriend = async id => {
+    const f = friends.find(x => x.id === id);
+    view.querySelectorAll('.fr-friend').forEach(b => b.classList.toggle('on', b.dataset.open === id));
+    if (!f) { detail.innerHTML = `<div class="fr-empty"><b>The Quad</b><p>Hier zie je de stats van je vrienden: hun collectie, cijfers, F's, Arena-score en trofeeën.</p></div>`; return; }
+    state.friendSel = id;
+    detail.innerHTML = `<div class="frd-head">${friendAv(f)}<h3>${esc(f.display_name)}</h3></div><p class="hint">Laden…</p>`;
+    const { data: rd } = await sb.rpc('member_room', { p_user: id });
+    if (state.friendSel !== id || !detail.isConnected) return;
+    const plays = rd?.plays || [];
+    const bs = rd?.battle || {};
+    const trophies = trophiesFor(plays, new Set(rd?.cards || []), bs);
+    const dist = { A: 0, B: 0, C: 0, D: 0, F: 0 };
+    for (const p of plays) if (dist[p.grade] !== undefined) dist[p.grade]++;
+    const maxD = Math.max(1, ...Object.values(dist));
+    const tile = (num, label) => `<div class="frd-tile"><b>${num}</b><span>${label}</span></div>`;
+    detail.innerHTML = `
+      <div class="frd-head">${friendAv(f)}<div><h3>${esc(f.display_name)}</h3>
+        <small>${f.today ? `Vandaag een <b class="g-${f.today}">${f.today}</b>` : 'Vandaag nog geen examen'}</small></div>
+        <div class="frd-actions">
+          <button class="btn small" id="frBattle" type="button">Uitdagen</button>
+          <button class="btn small ghost" id="frTrade" type="button">Ruilen</button>
+        </div></div>
+      <div class="frd-tiles">
+        ${tile(`${f.cards}/${total}`, 'Collectie')}${tile(f.legendaries, 'Legendaries')}
+        ${tile(`${bs.wins || 0}–${bs.losses || 0}`, 'Arena W–L')}${tile(computeStreak(new Set(plays.map(p => p.play_date))), 'Streak')}
+        ${tile(plays.length, 'Examens')}${tile(`<span class="fcount">${dist.F}</span>`, "F's")}
+      </div>
+      <div class="frd-cols">
+        <div><h4>Cijfers</h4><div class="frd-bars">${['A', 'B', 'C', 'D', 'F'].map(g => `<div class="frd-bar"><span>${g}</span>
+          <i><em class="${g === 'F' ? 'f' : ''}" style="width:${dist[g] / maxD * 100}%"></em></i><b>${dist[g]}</b></div>`).join('')}</div></div>
+        <div><h4>Trofeeën · ${trophies.filter(t => t.ok).length}/${trophies.length}</h4>
+          <div class="frd-trophies">${trophies.map(t => `<span class="frd-tro${t.ok ? ' got' : ''}" title="${esc(t.name)}: ${esc(t.how)}${t.ok ? '' : ' (nog niet)'}">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">${TROPHY_ICON[t.icon]}</svg><small>${esc(t.name)}</small></span>`).join('')}</div></div>
+      </div>
+      <button class="link danger frd-remove" id="frRemove" type="button">${esc(f.display_name)} verwijderen als vriend</button>`;
+    $('#frBattle').onclick = () => { battleState.friend = id; state.tab = 'battle'; renderMain(); scrollTo({ top: 0 }); };
+    $('#frTrade').onclick = () => { state.tradeWith = id; state.tab = 'trade'; renderMain(); scrollTo({ top: 0 }); };
+    $('#frRemove').onclick = async () => {
+      if (!confirm(`${f.display_name} verwijderen als vriend?`)) return;
+      const { error } = await sb.rpc('remove_friend', { p_user: id });
+      if (error) { alert(error.message); return; }
+      state.friendSel = null; renderFriends(view);
+    };
+  };
+  view.querySelectorAll('[data-open]').forEach(b => b.onclick = () => {
+    showFriend(b.dataset.open);
+    if (matchMedia('(max-width:899px) and (min-height:501px), (max-width:599px)').matches) detail.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+  showFriend(state.friendSel);
+
+  const msg = $('#addFriendMsg');
+  const sent = d => {
+    msg.className = 'msg ok';
+    msg.textContent = d.status === 'accepted' ? `${d.name} had jou al een verzoek gestuurd: jullie zijn nu vrienden!` : `Verzoek verstuurd naar ${d.name}.`;
+    setTimeout(() => { if (state.tab === 'friends') renderFriends(view); }, 1100);
+  };
+  if ($('#copyCode')) $('#copyCode').onclick = async () => {
+    try { await navigator.clipboard.writeText(state.friendCode); $('#copyCode').textContent = 'Gekopieerd!'; } catch (_) { /* clipboard niet beschikbaar */ }
+  };
+  if ($('#addFriendForm')) $('#addFriendForm').onsubmit = async e => {
+    e.preventDefault();
+    const code = $('#friendCodeInput').value.trim().toUpperCase();
+    if (!code) { msg.className = 'msg err'; msg.textContent = 'Vul een code in.'; return; }
+    msg.className = 'msg'; msg.textContent = 'Bezig…';
+    const { data: d, error: err } = await sb.rpc('send_friend_request', { p_code: code });
+    if (err) { msg.className = 'msg err'; msg.textContent = err.message; return; }
+    sent(d);
+  };
+  view.querySelectorAll('[data-add]').forEach(b => b.onclick = async () => {
+    b.disabled = true;
+    const { data: d, error: err } = await sb.rpc('send_friend_request_to', { p_user: b.dataset.add });
+    if (err) { b.disabled = false; if (msg) { msg.className = 'msg err'; msg.textContent = err.message; } else alert(err.message); return; }
+    if (msg) sent(d); else renderFriends(view);
+  });
+  view.querySelectorAll('[data-req]').forEach(b => b.onclick = async () => {
+    if (b.dataset.action === 'decline' && !confirm('Dit vriendschapsverzoek weigeren?')) return;
+    b.disabled = true;
+    const { error: err } = await sb.rpc('respond_friend_request', { p_request_id: Number(b.dataset.req), p_action: b.dataset.action });
+    if (err) { alert(err.message); b.disabled = false; return; }
+    renderFriends(view);
+  });
+}
+
 // ---------- Tab: Traden ----------
 function tradeCardLine(ids) {
   if (!ids || !ids.length) return '<span class="hint" style="margin:0">— niets —</span>';
@@ -4341,28 +4613,21 @@ const houseRooms = () => housePersons();
 const roomCards = p => state.cards.filter(c => (p === DETENTION ? c.rarity === 'cat' : c.person === p && c.rarity !== 'cat')).sort((a, b) => a.slot - b.slot);
 
 async function renderHouse(view) {
-  view.innerHTML = `<section class="col" style="max-width:none"><p class="hint">Laden…</p></section>`;
-  const uid = state.session.user.id;
-  const { data, error } = await sb.rpc('house_members');
-  if (state.tab !== 'house') return;
-  if (error) { view.innerHTML = `<section class="col"><p class="msg err">${esc(error.message)}</p></section>`; return; }
-  const persons = housePersons();
-  const owners = roomOwners(data || [], persons);
-  state.houseOwners = owners;
   if (state.room) return renderRoom(view, state.room);
+  const persons = housePersons();
   const rooms = houseRooms();
-  const myRoom = persons.find(p => owners[p]?.user_id === uid);
   const phase = dayPhase();
   const pct = (v, total) => `${(v / total * 100).toFixed(2)}%`;
   const have = p => roomCards(p).filter(c => ownedCount(c.id)).length;
 
+  // Licht aan in de kamers van wie je al minstens één kaart hebt
   const windowHtml = (p, i) => {
     const w = FACADE_WINDOWS[i];
     if (!w) return '';
-    const o = owners[p], mine = o?.user_id === uid, det = p === DETENTION;
-    return `<button type="button" class="fwin${o?.played ? ' lit' : ''}${mine ? ' me' : ''}${det ? ' det' : ''}" data-room="${esc(p)}" data-win="${i}"
-        aria-label="Kamer van ${esc(p)}: ${have(p)}/${roomCards(p).length} verzameld" style="left:${pct(w[0], FACADE_W)};top:${pct(w[1], FACADE_H)};width:${pct(w[2], FACADE_W)};height:${pct(w[3], FACADE_H)}"></button>
-      <span class="fplate${mine ? ' me' : ''}${det ? ' det' : ''}${o?.played ? ' lit' : ''}" data-plate="${i}"
+    const n = have(p), all = n && n === roomCards(p).length, det = p === DETENTION;
+    return `<button type="button" class="fwin${n ? ' lit' : ''}${det ? ' det' : ''}" data-room="${esc(p)}" data-win="${i}"
+        aria-label="Kamer van ${esc(p)}: ${n}/${roomCards(p).length} verzameld" style="left:${pct(w[0], FACADE_W)};top:${pct(w[1], FACADE_H)};width:${pct(w[2], FACADE_W)};height:${pct(w[3], FACADE_H)}"></button>
+      <span class="fplate${all ? ' full' : ''}${det ? ' det' : ''}${n ? ' lit' : ''}" data-plate="${i}"
         style="left:${pct(w[0] + w[2] / 2, FACADE_W)};top:${pct(det ? w[1] - 22 : w[1] + w[3] - 3, FACADE_H)}"><b>${esc(det ? 'Detention' : plateName(p))}</b></span>`;
   };
 
@@ -4375,7 +4640,7 @@ async function renderHouse(view) {
           ${rooms.map(windowHtml).join('')}
         </div>
       </div>
-      <div class="campus-hint">${collectionText()} collected · ${persons.filter(p => owners[p]?.played).length} lights on today <span>Tik op een raam.</span></div>
+      <div class="campus-hint">${collectionText()} collected · lights on in ${persons.filter(p => have(p)).length}/${persons.length} rooms <span>Tik op een raam.</span></div>
     </div>
   </section>`;
 
@@ -4389,7 +4654,6 @@ async function renderHouse(view) {
   const sc = $('#houseScroll');
   sc.scrollLeft = (sc.scrollWidth - sc.clientWidth) / 2;
   view.querySelectorAll('[data-room]').forEach(b => b.onclick = () => { state.room = b.dataset.room; renderRoom(view, state.room); scrollTo({ top: 0 }); });
-  if (!myRoom && !state.isAdmin) { /* kamer kiezen kan in de kamer zelf */ }
 }
 
 // Kort naambordje: voornaam, of voornaam + initiaal als twee mensen dezelfde voornaam hebben
@@ -4399,29 +4663,6 @@ function plateName(p) {
 }
 // De 13 personen van de kaarten
 const housePersons = () => [...new Set(state.cards.filter(c => c.rarity !== 'cat').map(c => c.person))].sort((a, b) => a.localeCompare(b));
-
-// Welk account woont in welke kamer: eerst de zelf gekozen kamer, anders op basis van de naam
-function roomOwners(members, persons) {
-  const owner = {};
-  const taken = new Set();
-  for (const m of members) if (m.room && persons.includes(m.room)) { owner[m.room] = m; taken.add(m.user_id); }
-  const norm = s => (s || '').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[^a-z ]/g, ' ').replace(/\s+/g, ' ').trim();
-  const free = members.filter(m => !m.room);
-  for (const p of persons) {
-    if (owner[p]) continue;
-    const full = norm(p), [first, ...rest] = full.split(' '), last = rest.join(' ');
-    const firstUnique = persons.filter(q => norm(q).split(' ')[0] === first).length === 1;
-    const cands = free.filter(m => {
-      if (taken.has(m.user_id)) return false;
-      const d = norm(m.display_name), t = d.split(' ');
-      if (d === full || d.replace(/ /g, '') === full.replace(/ /g, '')) return true;
-      if (firstUnique) return t[0] === first || (t[0].length >= 4 && t[0].slice(0, 4) === first.slice(0, 4));
-      return t[0] === first && !!t[1] && !!last && last.startsWith(t[1]);
-    });
-    if (cands.length === 1) { owner[p] = cands[0]; taken.add(cands[0].user_id); }
-  }
-  return owner;
-}
 
 // Langste reeks opeenvolgende speeldagen
 function bestStreak(plays) {
@@ -4479,16 +4720,16 @@ const ROOM_FRAMES = {
 }
 
 async function renderRoom(view, person) {
-  const uid = state.session.user.id;
   const rooms = houseRooms();
   if (!rooms.includes(person)) { state.room = null; return renderHouse(view); }
-  const owner = person === DETENTION ? null : (state.houseOwners || {})[person];
-  const mine = owner?.user_id === uid;
   const cards = roomCards(person);
   const have = cards.filter(c => ownedCount(c.id)).length;
   const idx = rooms.indexOf(person);
   const prev = rooms[(idx - 1 + rooms.length) % rooms.length], next = rooms[(idx + 1) % rooms.length];
-  const myRoom = Object.values(state.houseOwners || {}).some(o => o.user_id === uid);
+  const tally = ['common', 'epic', 'legendary'].map(r => {
+    const all = cards.filter(c => c.rarity === r);
+    return all.length ? { r, n: all.filter(c => ownedCount(c.id)).length, of: all.length } : null;
+  }).filter(Boolean);
 
   view.innerHTML = `<section class="col room-page" style="max-width:none">
     <div class="room-wrap">
@@ -4506,21 +4747,15 @@ async function renderRoom(view, person) {
               ${c.slot === 9 ? `<span class="wf-plate">${n ? esc(c.name) : 'Legendary'}</span>` : ''}
             </div>`;
           }).join('')}
-          <div class="rs-shelf" id="rsShelf"></div>
-          <div class="rs-labels" id="rsLabels"></div>
-          <div class="tro-pop" id="troPop" hidden></div>
+          <div class="rs-tally">${tally.map(t => `<span class="rt-${t.r}${t.n === t.of ? ' done' : ''}"><b>${t.n}/${t.of}</b>${t.r === 'common' ? 'Commons' : t.r === 'epic' ? 'Epics' : 'Legendary'}</span>`).join('')}</div>
           <div class="rm-over">
             <div class="rmo-left">
               <button class="link" id="roomBack" type="button">← Frat House</button>
-              <span class="kicker">${mine ? 'Your room' : 'Room of'}</span>
+              <span class="kicker">Room of</span>
               <h2>${esc(person)}</h2>
-              <p class="rm-sub">${have}/${cards.length} in je collectie${owner
-                ? ` · ${esc(owner.display_name)}${owner.played ? ' · vandaag gespeeld' : ''} · <span class="fcount">${owner.fs || 0}× F</span>`
-                : ' · nog niet ingetrokken'}</p>
+              <p class="rm-sub">${have}/${cards.length} in je collectie${have === cards.length ? ' · <b class="rm-full">Full set</b>' : ''}</p>
             </div>
             <div class="rmo-right">
-              ${owner && !mine ? `<button class="btn small" id="roomBattle" type="button">Uitdagen</button><button class="btn small ghost" id="roomTrade" type="button">Ruilen</button>` : ''}
-              ${!owner && !myRoom && !state.isAdmin ? `<button class="btn small ghost" id="roomClaim" type="button">Dit is mijn kamer</button>` : ''}
               <button class="btn small ghost" id="roomPrev" type="button">← ${esc(plateName(prev))}</button>
               <button class="btn small ghost" id="roomNext" type="button">${esc(plateName(next))} →</button>
             </div>
@@ -4533,46 +4768,9 @@ async function renderRoom(view, person) {
   $('#roomBack').onclick = () => { state.room = null; renderHouse(view); };
   $('#roomPrev').onclick = () => { state.room = prev; renderRoom(view, prev); };
   $('#roomNext').onclick = () => { state.room = next; renderRoom(view, next); };
-  if ($('#roomBattle')) $('#roomBattle').onclick = () => { battleState.friend = owner.user_id; state.room = null; state.tab = 'battle'; renderMain(); scrollTo({ top: 0 }); };
-  if ($('#roomTrade')) $('#roomTrade').onclick = () => { state.tradeWith = owner.user_id; state.room = null; state.tab = 'trade'; renderMain(); scrollTo({ top: 0 }); };
-  if ($('#roomClaim')) $('#roomClaim').onclick = async () => {
-    if (!confirm(`Is dit jouw kamer (${person})? Dit kan je maar één keer kiezen.`)) return;
-    const { error } = await sb.rpc('claim_room', { p_room: person });
-    if (error) { alert(error.message); return; }
-    renderHouse(view);
-  };
   view.querySelectorAll('[data-zoom]').forEach(b => { b.onclick = () => openZoom(cardById(b.dataset.zoom)); });
   const rsc = $('#roomScroll');
   if (rsc) rsc.scrollLeft = (rsc.scrollWidth - rsc.clientWidth) * .42;
-
-  // Trofeeën van de bewoner op de plank
-  const shelf = $('#rsShelf');
-  if (!owner) {
-    shelf.innerHTML = `<span class="rs-empty">${person === DETENTION ? 'Niemand wil hier trofeeën.' : 'Nog geen bewoner: de plank is leeg.'}</span>`;
-    return;
-  }
-  const { data: rd } = await sb.rpc('member_room', { p_user: owner.user_id });
-  if (state.room !== person || !$('#rsShelf')) return;
-  const ownedSet = new Set(mine ? state.owned.keys() : rd?.cards || []);
-  const trophies = trophiesFor(rd?.plays || [], ownedSet, rd?.battle);
-  shelf.innerHTML = trophies.map((t, i) => `<button type="button" class="rs-trophy${t.ok ? ' got' : ''}" data-trophy="${i}" aria-label="${esc(t.name)}">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">${TROPHY_ICON[t.icon]}</svg></button>`).join('');
-  $('#rsLabels').innerHTML = trophies.map(t => `<span class="${t.ok ? 'got' : ''}">${t.name}</span>`).join('');
-  // Uitleg meteen bij de trofee zelf
-  const pop = $('#troPop'), scene = $('#roomScene');
-  let openI = null;
-  shelf.querySelectorAll('[data-trophy]').forEach(b => b.onclick = e => {
-    e.stopPropagation();
-    const i = Number(b.dataset.trophy);
-    if (openI === i) { pop.hidden = true; openI = null; return; }
-    const t = trophies[i];
-    const r = b.getBoundingClientRect(), sr = scene.getBoundingClientRect();
-    pop.innerHTML = `<b>${esc(t.name)}</b><span>${esc(t.how)}</span><em class="${t.ok ? 'ok' : ''}">${t.ok ? 'Behaald' : 'Nog niet behaald'}</em>`;
-    pop.style.left = `${((r.left + r.width / 2 - sr.left) / sr.width * 100).toFixed(2)}%`;
-    pop.style.top = `${((r.top - sr.top) / sr.height * 100).toFixed(2)}%`;
-    pop.hidden = false; openI = i;
-  });
-  scene.addEventListener('click', () => { pop.hidden = true; openI = null; });
 }
 
 // ---------- Tab: Stats ----------
