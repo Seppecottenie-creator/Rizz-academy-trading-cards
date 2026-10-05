@@ -911,7 +911,7 @@ h3{color:var(--gold)}
 .hot{position:absolute;z-index:2;padding:0;border:0;border-radius:22px;background:transparent;cursor:pointer;outline:none;
   box-shadow:0 0 0 0 rgba(6,10,24,0);transition:box-shadow .35s ease}
 .campus-map[data-hover="today"] .hot[data-go="today"],.campus-map[data-hover="battle"] .hot[data-go="battle"],
-.campus-map[data-hover="house"] .hot[data-go="house"],.campus-map[data-hover="book"] .hot[data-go="book"],
+.campus-map[data-hover="house"] .hot[data-go="house"],.campus-map[data-hover="stats"] .hot[data-go="stats"],
 .campus-map[data-hover="trade"] .hot[data-go="trade"],.campus-map[data-hover="shop"] .hot[data-go="shop"],
 .campus-map[data-hover="ideas"] .hot[data-go="ideas"]{
   box-shadow:0 0 0 2px rgba(255,226,160,.85),0 0 30px 6px rgba(255,214,130,.45),0 0 0 3000px rgba(6,10,24,.5);z-index:3}
@@ -923,11 +923,11 @@ h3{color:var(--gold)}
 .cpin b{font:400 14px/1.1 var(--varsity);letter-spacing:.08em;text-transform:uppercase}
 .cpin small{font:600 10.5px var(--body);color:#4A4436;letter-spacing:.02em}
 .campus-map[data-hover="today"] [data-pin="today"],.campus-map[data-hover="battle"] [data-pin="battle"],
-.campus-map[data-hover="house"] [data-pin="house"],.campus-map[data-hover="book"] [data-pin="book"],
+.campus-map[data-hover="house"] [data-pin="house"],.campus-map[data-hover="stats"] [data-pin="stats"],
 .campus-map[data-hover="trade"] [data-pin="trade"],.campus-map[data-hover="shop"] [data-pin="shop"],
 .campus-map[data-hover="ideas"] [data-pin="ideas"]{transform:translate(-50%,-62%) scale(1.08);background:#C8102E;border-color:#F4EBDD;color:#fff}
 .campus-map[data-hover] .cpin:hover small,.campus-map[data-hover="today"] [data-pin="today"] small,.campus-map[data-hover="battle"] [data-pin="battle"] small,
-.campus-map[data-hover="house"] [data-pin="house"] small,.campus-map[data-hover="book"] [data-pin="book"] small,.campus-map[data-hover="trade"] [data-pin="trade"] small,
+.campus-map[data-hover="house"] [data-pin="house"] small,.campus-map[data-hover="stats"] [data-pin="stats"] small,.campus-map[data-hover="trade"] [data-pin="trade"] small,
 .campus-map[data-hover="shop"] [data-pin="shop"] small,.campus-map[data-hover="ideas"] [data-pin="ideas"] small{color:#FBE3E7}
 .cpin-badge{position:absolute;top:-10px;right:-10px;min-width:22px;height:22px;padding:0 6px;border-radius:999px;background:#E0284A;border:2px solid #fff;color:#fff;font:700 11px/18px var(--body);
   animation:c-bounce 1.6s ease-in-out infinite}
@@ -935,23 +935,9 @@ h3{color:var(--gold)}
 .campus.night .cpin{background:rgba(16,22,44,.9);border-color:#D4A84B;color:#F6DE9C}
 .campus.night .cpin small{color:#BFB6A8}
 
-/* Overzicht onder de kaart */
-.campus-dir{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:10px;margin-top:14px}
-.cdir{position:relative;display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:12px;border:1px solid var(--line);background:linear-gradient(180deg,#1A2340,#141B31);color:var(--ink);text-align:left;cursor:pointer;
-  transition:border-color .15s,transform .15s}
-.cdir:hover{border-color:var(--red2);transform:translateY(-2px)}
-.cdir-ico{width:38px;height:38px;flex-shrink:0;display:grid;place-items:center;border-radius:10px;background:rgba(200,16,46,.16);color:var(--red2)}
-.cdir-txt{display:grid;gap:2px;min-width:0}
-.cdir-txt b{font:400 15px var(--varsity);letter-spacing:.04em}
-.cdir-txt small{font:500 12px var(--body);color:var(--ink-soft);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.cdir-badge{position:absolute;top:8px;right:10px;min-width:20px;height:20px;padding:0 6px;border-radius:999px;background:var(--red2);color:#fff;font:700 11px/20px var(--body);text-align:center}
 @media (max-width:899px){
   .campus{border-radius:14px;margin:0 -2px}
   .campus-map{min-width:1000px}
-  .campus-dir{grid-template-columns:1fr 1fr;gap:8px}
-  .cdir{padding:10px;gap:9px}
-  .cdir-ico{width:32px;height:32px}
-  .cdir-txt b{font-size:13px}
 }
 @media (prefers-reduced-motion:reduce){.cpin-badge{animation:none}}
 
@@ -1346,6 +1332,84 @@ button.opp-btn:disabled{opacity:.45;cursor:not-allowed}
 .trophy-caption{margin:10px 2px 0;font:500 13.5px var(--body);color:var(--ink-soft)}
 .trophy-caption b{color:var(--gold2)}
 .trophy-caption .ok{color:var(--green-soft)}.trophy-caption .muted{color:var(--muted)}
+
+/* =====================================================================
+   KAMER = COLLECTIE: houten kaders aan de muur
+   ===================================================================== */
+:root{
+  --wood:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='260' height='260'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.01 0.28' numOctaves='3' seed='7'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1.1 0 0 0 -0.32'/%3E%3C/filter%3E%3Crect width='260' height='260' fill='%236A4024'/%3E%3Crect width='260' height='260' filter='url(%23g)'/%3E%3C/svg%3E");
+}
+.room-scene{container-type:inline-size}
+.wframe{position:absolute;z-index:2;padding:.6cqw;border-radius:.25cqw;background:var(--wood),#6A4024;background-size:160px 160px;
+  box-shadow:inset .12cqw .12cqw 0 rgba(255,225,180,.35),inset -.14cqw -.14cqw 0 rgba(0,0,0,.55),inset 0 0 0 .32cqw rgba(0,0,0,.18),
+    0 1.1cqw 1.6cqw -.4cqw rgba(0,0,0,.75),0 .2cqw .4cqw rgba(0,0,0,.5);transition:transform .25s}
+.wframe::before{content:"";position:absolute;inset:.3cqw;border-radius:.15cqw;pointer-events:none;box-shadow:inset 0 0 0 .1cqw rgba(0,0,0,.45),0 0 0 .1cqw rgba(255,226,170,.18)}
+.wframe.r-epic{padding:.8cqw;background:var(--wood),#3E2414;background-size:160px 160px;background-blend-mode:multiply}
+.wframe.r-legendary{padding:1.05cqw;background:var(--wood),linear-gradient(135deg,#F6DE9C,#B8862F 38%,#F1D58C 60%,#8F6A1E);background-size:160px 160px,100% 100%;background-blend-mode:overlay;
+  box-shadow:inset .15cqw .15cqw 0 rgba(255,245,210,.7),inset -.15cqw -.15cqw 0 rgba(80,50,10,.7),0 1.4cqw 2.2cqw -.4cqw rgba(0,0,0,.8),0 0 3cqw rgba(246,222,156,.18)}
+.wframe.r-cat{background:var(--wood),#2C2A26;background-size:160px 160px;background-blend-mode:multiply}
+.wframe:hover{transform:translateY(-.3cqw)}
+.wf-inner{position:relative;display:block;width:100%;padding:0;border:0;background:#0B0B0D;cursor:pointer;box-shadow:0 0 0 .14cqw rgba(214,180,110,.55)}
+div.wf-inner{cursor:default}
+.wframe .card{border-radius:.4cqw}
+.wframe.empty .wf-inner::after{content:"";position:absolute;inset:0;z-index:7;pointer-events:none;background:linear-gradient(125deg,rgba(255,255,255,.10),transparent 35%,transparent 70%,rgba(255,255,255,.05))}
+.wframe.empty .card{filter:brightness(.6) saturate(.6)}
+.wf-plate{position:absolute;left:50%;top:calc(100% + .7cqw);transform:translateX(-50%);padding:.35cqw 1.2cqw;border-radius:.2cqw;white-space:nowrap;max-width:140%;overflow:hidden;text-overflow:ellipsis;
+  background:linear-gradient(180deg,#F1E3C0,#B8933F);color:#3A2A10;font:600 .85cqw/1.2 var(--body);letter-spacing:.12em;text-transform:uppercase;box-shadow:0 .3cqw .6cqw rgba(0,0,0,.5)}
+.room-scene .wframe .dupe{font-size:9px}
+.rs-empty{grid-column:1/-1;align-self:end;margin-bottom:.4cqw;font:italic 500 1.1cqw var(--display);color:#8C8899}
+.room-nav{display:flex;gap:8px;flex-wrap:wrap}
+.rm-sub{margin:4px 0 0;font:500 14px var(--body);color:var(--ink-soft)}
+.rm-sub b{color:var(--ink)}
+.rm-head2 .room-actions{margin-top:10px}
+/* Uitleg-ballon bij een trofee */
+.tro-pop{position:absolute;z-index:20;transform:translate(-50%,calc(-100% - 10px));min-width:150px;max-width:220px;display:grid;gap:3px;padding:10px 12px;border-radius:10px;
+  background:#F4EBDD;color:#1C2540;box-shadow:0 12px 24px -8px rgba(0,0,0,.7);text-align:center;font:500 12.5px/1.35 var(--body);animation:pop-in .18s ease-out}
+.tro-pop::after{content:"";position:absolute;left:50%;bottom:-6px;width:12px;height:12px;margin-left:-6px;background:#F4EBDD;transform:rotate(45deg)}
+.tro-pop b{font:400 14px var(--varsity);letter-spacing:.05em;color:#8C0B21}
+.tro-pop em{font:700 10px var(--body);letter-spacing:.14em;text-transform:uppercase;font-style:normal;color:#8790A8}
+.tro-pop em.ok{color:#2E7A44}
+@keyframes pop-in{from{opacity:0;transform:translate(-50%,calc(-100% - 2px))}}
+/* Bewonerslijst met voortgang */
+.res-prog{position:relative;width:36px;height:36px;flex-shrink:0;display:grid;place-items:center;border-radius:50%;background:conic-gradient(var(--gold) var(--p),rgba(255,255,255,.1) 0)}
+.res-prog::before{content:"";position:absolute;inset:3px;border-radius:50%;background:#141B31}
+.res-prog b{position:relative;font:400 14px var(--varsity);color:var(--ink)}
+.fplate.det{background:linear-gradient(180deg,#3F6B57,#1F3A2E);color:#E9E1D3}
+/* Stats */
+.trophy-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px}
+.tg{display:grid;justify-items:center;gap:4px;padding:14px 10px;border-radius:12px;border:1px solid var(--line);background:linear-gradient(180deg,#1A2340,#141B31);text-align:center;opacity:.5}
+.tg.got{opacity:1;border-color:rgba(212,168,75,.5)}
+.tg-ico{width:44px;height:44px;display:grid;place-items:center;border-radius:50%;background:rgba(255,255,255,.06);color:#8790A8}
+.tg.got .tg-ico{background:radial-gradient(circle at 40% 35%,#6E5520,#3A2A10);color:#F6DE9C;box-shadow:0 0 0 2px #D4A84B}
+.tg b{font:400 14px var(--varsity);letter-spacing:.04em}
+.tg small{font:500 11.5px/1.3 var(--body);color:var(--ink-soft)}
+.house-table{width:100%;max-width:720px}
+
+/* =====================================================================
+   ROYALE KAARTEN: lak, goudfolie en gegraveerde letters
+   ===================================================================== */
+.card{box-shadow:0 2cqw 5cqw -2cqw rgba(0,0,0,.85),inset 0 0 0 .7cqw var(--gold-a),inset 0 0 0 1.5cqw var(--lac),inset 0 0 0 1.75cqw var(--gold-b)}
+.r-common{--frame:linear-gradient(160deg,#1B2647 0%,#0E1630 60%,#0A1024);--lac:#101A36;--gold-a:#C9A55A;--gold-b:rgba(201,165,90,.55);--trim:#C9A55A;--art:#0E1630;
+  --badge:#C9A55A;--tagc:#0E1630;--band:linear-gradient(90deg,rgba(10,16,36,.92),rgba(10,16,36,.6));--bandc:#F4EBDD;--statl:#BFA36A;--statv:#F4EBDD}
+.r-epic{--frame:linear-gradient(160deg,#6E1222 0%,#45091A 60%,#2E0611);--lac:#4A0A1A;--gold-a:#D9B25E;--gold-b:rgba(217,178,94,.6);--trim:#D9B25E;--art:#2E0611;
+  --badge:#D9B25E;--tagc:#45091A;--band:linear-gradient(90deg,rgba(46,6,17,.92),rgba(46,6,17,.6));--bandc:#FBE9C6;--statl:#E2BE73;--statv:#FFF4DE}
+.r-legendary{--lac:#14100A;--gold-a:#F1D58C;--gold-b:rgba(241,213,140,.8);--trim:#F1D58C;--art:#14100A;--badge:#14100A;--tagc:#F6DE9C;
+  --band:linear-gradient(90deg,rgba(20,16,10,.94),rgba(20,16,10,.62));--bandc:#F6DE9C;--statl:#5A4313;--statv:#1A1206}
+.r-cat{--frame:linear-gradient(160deg,#24473A,#14291F);--lac:#16301F;--gold-a:#B8A06A;--gold-b:rgba(184,160,106,.5);--trim:#B8A06A;--art:#14291F;
+  --badge:#B8A06A;--tagc:#14291F;--band:linear-gradient(90deg,rgba(14,30,22,.92),rgba(14,30,22,.6));--bandc:#EDE4CF;--statl:#BFD3C5;--statv:#F4EBDD}
+.photo{box-shadow:0 0 0 .35cqw var(--trim),0 0 0 .9cqw rgba(0,0,0,.35)}
+.cbadge{color:var(--tagc);background:linear-gradient(180deg,#F6DE9C,#B8862F);font-family:var(--display);font-weight:700;letter-spacing:.06em}
+.r-legendary .cbadge{background:linear-gradient(180deg,#2A2014,#0E0A05);color:#F6DE9C;box-shadow:inset 0 0 0 .3cqw #F1D58C}
+.rtag{background:linear-gradient(180deg,#F6DE9C,#C9A55A);color:#1A1206;font-family:var(--display);font-weight:700;letter-spacing:.1em;box-shadow:0 .3cqw .8cqw rgba(0,0,0,.4)}
+.r-epic .rtag{background:linear-gradient(180deg,#F6DE9C,#C9A55A);color:#45091A}
+.cband .cname{font-family:var(--display);font-weight:700;font-variant:small-caps;letter-spacing:.03em;border-left:.9cqw solid var(--gold-a);border-radius:0 .6cqw .6cqw 0;
+  box-shadow:inset 0 -.25cqw 0 var(--gold-b)}
+.cband .flavor{font-family:var(--display);color:#FBF3E4}
+.cstats{font-family:var(--display);font-variant:small-caps;letter-spacing:.08em}
+.cstats b{font-family:var(--display);font-weight:700}
+.cstats .no{font-family:var(--display);font-style:italic;letter-spacing:.04em}
+.cinfo::before{content:"";position:absolute;left:18%;right:18%;top:-.8cqw;height:.25cqw;background:linear-gradient(90deg,transparent,var(--gold-a),transparent);opacity:.8}
+.card.locked .cband .cname{background:rgba(20,26,48,.9);color:#8790A8;border-left-color:#5A6380;box-shadow:none}
 </style>
 </head>
 <body>
@@ -1776,7 +1840,7 @@ const TABS = [
   { id: 'battle', label: 'The Arena', short: 'Arena', icon: ICON('<path d="M14.5 17.5 3 6V3h3l11.5 11.5M13 19l6-6M16 16l4 4M19 21l2-2"/><path d="M9.5 17.5 21 6V3h-3L6.5 14.5M11 19l-6-6M8 16l-4 4M5 21l-2-2"/>'), badge: 'battle' },
   { id: 'trade', label: 'Black Market', short: 'Market', icon: ICON('<path d="M4 8h14l-4-4M20 16H6l4 4"/>'), badge: 'trade' },
   { id: 'shop', label: 'The Vault', short: 'Vault', icon: ICON('<rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="12" cy="12" r="3.5"/><path d="M12 8.5V7M15.5 12H17M12 15.5V17M8.5 12H7"/>') },
-  { id: 'book', label: 'Yearbook', short: 'Yearbook', icon: ICON('<path d="M4 4.5A1.5 1.5 0 0 1 5.5 3H20v15H5.5A1.5 1.5 0 0 0 4 19.5z"/><path d="M4 19.5A1.5 1.5 0 0 0 5.5 21H20"/>') },
+  { id: 'stats', label: 'Stats', short: 'Stats', icon: ICON('<path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/>') },
   { id: 'ideas', label: 'Town Hall', short: 'Town Hall', icon: ICON('<path d="M3 10v4a1 1 0 0 0 1 1h3l6 4V5L7 9H4a1 1 0 0 0-1 1zM17 9a4 4 0 0 1 0 6"/>') },
 ];
 
@@ -1908,11 +1972,12 @@ const INFO = {
     <li>De computer onthoudt welke zetten je vaak kiest. Voorspelbaar spelen wordt afgestraft.</li></ul>
     <p><strong>Credits</strong>: Scrimmage/Varsity/Championship = 5/10/20 (max 5 per dag). Tegen een vriend: winnaar 25, verliezer 5 (max 3 per dag). Opgeven levert niets op.</p>`],
   house: ['Het Frat House', `
-    <p>Iedereen woont in het huis: elke persoon van de kaarten heeft een eigen kamer. Is het raam verlicht, dan heeft die persoon vandaag de Wordle al gespeeld.</p>
-    <ul><li>In <strong>je eigen kamer</strong> hang je je beste kaarten aan de muur: één in de gouden lijst en twaalf op het bord. Kies ook een kleur en een motto.</li>
-    <li>Op de plank staan je <strong>trofeeën</strong>. Elke trofee verdien je door iets te doen: een reeks dagen spelen, een legendary vinden, battles winnen…</li>
-    <li>Iedereen in het huis is automatisch bevriend. In elke kamer zie je de muur van die persoon. Kaarten die jij nog niet hebt, tonen geen foto. Je kan hem van daaruit uitdagen of een ruil voorstellen.</li>
-    <li>Je account wordt automatisch aan je kamer gekoppeld op basis van je naam. Lukt dat niet, dan kies je één keer zelf je kamer.</li></ul>`],
+    <p>Elke persoon van de kaarten heeft een kamer in het huis. In die kamer hangen zijn 9 kaarten in houten kaders: dat is jouw collectie van die persoon (vroeger het yearbook). Kaarten die je nog niet hebt, blijven leeg.</p>
+    <ul><li>Het kleine raam boven de deur is de <strong>Detention</strong>-kamer met de troostkaarten.</li>
+    <li>Een verlicht raam: de bewoner heeft vandaag de Wordle gespeeld.</li>
+    <li>Op de plank staan de <strong>trofeeën</strong> van de bewoner. Tik op een trofee voor de uitleg.</li>
+    <li>Vanuit de kamer van iemand anders kan je hem uitdagen of een ruil voorstellen.</li>
+    <li>Je account wordt automatisch aan je kamer gekoppeld op basis van je naam. Lukt dat niet, dan tik je in je kamer op "Dit is mijn kamer".</li></ul>`],
   friends: ['Vrienden', `
     <p>Deel je code met je vrienden, of voer hun code in om een vriendschapsverzoek te sturen.</p>
     <ul><li>Zodra ze accepteren, kan je elkaars statistieken bekijken, kaarten ruilen en elkaar uitdagen in Battle.</li>
@@ -2227,7 +2292,7 @@ function renderView() {
   if (state.tab === 'campus') renderCampus(view);
   else if (state.tab === 'house') renderHouse(view);
   else if (state.tab === 'today') renderToday(view);
-  else if (state.tab === 'book') renderBook(view);
+  else if (state.tab === 'stats') renderStats(view);
   else if (state.tab === 'battle') renderBattle(view);
   else if (state.tab === 'trade') renderTrade(view);
   else if (state.tab === 'shop') renderShop(view);
@@ -2249,7 +2314,7 @@ const CAMPUS_PLACES = [
   { id: 'today', name: 'Exam Hall', what: 'Dagelijkse Wordle', box: [36.8, 5.5, 26.8, 32.3], pin: [50, 38.5] },
   { id: 'battle', name: 'The Arena', what: 'Battles', box: [2.6, 15.8, 30.5, 21.4], pin: [21.5, 33] },
   { id: 'house', name: 'Frat House', what: 'Kamers en vrienden', box: [73, 21.5, 16.2, 19.3], pin: [81, 41.5] },
-  { id: 'book', name: 'Yearbook', what: 'Je volledige collectie', box: [0, 39, 22.7, 39.2], pin: [11.5, 79] },
+  { id: 'stats', name: 'The Library', what: 'Stats', box: [0, 39, 22.7, 39.2], pin: [11.5, 79] },
   { id: 'trade', name: 'Black Market', what: 'Ruilen', box: [27.5, 67.7, 19, 21.1], pin: [37, 89.5] },
   { id: 'shop', name: 'The Vault', what: 'Envelopes en credits', box: [55.7, 63.2, 16.6, 26.7], pin: [64, 90.5] },
   { id: 'ideas', name: 'Town Hall', what: 'Ideeën en stemmen', box: [79.8, 47.1, 16, 29.5], pin: [88, 77.5] },
@@ -2273,10 +2338,6 @@ async function renderCampus(view) {
       </div>
       <div class="campus-hint">${phase === 'night' ? 'Lights are on in the Frat House.' : phase === 'dusk' ? 'Golden hour on the quad.' : 'Classes are in session.'} <span>Swipe en tik op een gebouw.</span></div>
     </div>
-    <div class="campus-dir" id="campusDir">${CAMPUS_PLACES.map(p => `<button type="button" class="cdir" data-go="${p.id}">
-      <span class="cdir-ico">${TABS.find(t => t.id === p.id)?.icon || ''}</span>
-      <span class="cdir-txt"><b>${p.name}</b><small data-cstatus="${p.id}">${p.what}</small></span>
-      <span class="cdir-badge" data-cbadge="${p.id}" hidden></span></button>`).join('')}</div>
   </section>`;
   const go = id => { state.tab = id; renderMain(); scrollTo({ top: 0 }); };
   view.querySelectorAll('[data-go]').forEach(el => { el.onclick = () => go(el.dataset.go); });
@@ -2299,7 +2360,7 @@ async function renderCampus(view) {
   };
   const played = state.playDates.has(todayBrussels());
   setStatus('today', state.welcomeAvailable ? 'Welcome envelope waiting' : played ? 'Exam passed ✓' : 'Exam open', state.welcomeAvailable || !played ? '!' : '');
-  setStatus('book', `${collectionText()} collected`);
+  setStatus('stats', `${collectionText()} collected`);
   setStatus('shop', `${state.wallet} credits`);
   setStatus('battle', state.incomingBattles ? `${state.incomingBattles} waiting on you` : 'Open for matches', state.incomingBattles || '');
   setStatus('trade', state.incomingTrades ? `${state.incomingTrades} offer${state.incomingTrades > 1 ? 's' : ''} waiting` : 'Doors open', state.incomingTrades || '');
@@ -2394,40 +2455,6 @@ async function renderToday(view) {
   drawToday(view);
 }
 
-// Campuskrant en prikbord: elke dag andere koppen en weetjes (voor iedereen dezelfde)
-const pickDay = (arr, salt = 0) => arr[(wordleNumber() * 7 + salt) % arr.length];
-const FORECASTS = [
-  'Clear skies. Perfect weather for a two-guess solve.',
-  'Heavy rain of commons. Scattered epics in the afternoon.',
-  'High pressure over the Arena. Bring your best three.',
-  'Storm warning: one wrong letter and it\'s detention.',
-  'Cold front in the Black Market. Prices dropping.',
-  'Heatwave. Someone is pulling a legendary today.',
-];
-const RUMORS = [
-  'Someone has every epic but won\'t say who.',
-  'A legendary changed hands last night. Price unknown.',
-  'One member of the crew hasn\'t missed a day. Yet.',
-  'Somebody solved yesterday\'s Wordle in one. Allegedly.',
-  'The Dean plays too. Under a fake name.',
-  'Detention cards are worth more than you think.',
-];
-const SCOUTING = [
-  'Open with your strongest card. Mercy is for amateurs.',
-  'Vowels first. Feelings later.',
-  'Never show your full hand in a trade.',
-  'Doubles are bargaining chips. Not souvenirs.',
-  'A streak is worth more than a lucky pull.',
-  'Play before noon. The pressure only grows.',
-];
-function bulletinHtml() {
-  return `<div class="board" aria-label="Campus bulletin">
-    <div class="note"><b>Forecast</b>${esc(pickDay(FORECASTS, 1))}</div>
-    <div class="note"><b>Word on campus</b>${esc(pickDay(RUMORS, 2))}</div>
-    <div class="note"><b>Playbook</b><i>${esc(pickDay(SCOUTING, 3))}</i></div>
-  </div>`;
-}
-
 function drawToday(view) {
   const slots = wordle.data.slots;
   const s = slots.find(x => x.slot === wordle.slot);
@@ -2451,7 +2478,7 @@ function drawToday(view) {
     <div class="stage" id="stage" aria-live="polite">${card
       ? `<div class="cardflip">${renderCard(card)}</div>`
       : '<div class="stage-placeholder"><div class="ghost-pack" aria-hidden="true">?</div><p>Solve it. Earn your envelope.</p></div>'}
-      ${bulletinHtml()}</div>
+</div>
   </section>`;
   attachWelcome();
   bindRoundTabs(view);
@@ -2732,91 +2759,6 @@ function attachWelcome() {
 }
 
 // ---------- Tab: Mijn boek ----------
-function bookGroups() {
-  const groups = [];
-  for (const c of state.cards) {
-    let g = groups.find(x => x.name === c.person);
-    if (!g) { g = { name: c.person, cards: [] }; groups.push(g); }
-    g.cards.push(c);
-  }
-  for (const g of groups) g.cards.sort((a, b) => a.slot - b.slot);
-  // Detention-kaarten (troostkaarten) altijd na de vrienden, ook als er later vrienden bijkomen
-  const cats = groups.findIndex(g => g.cards.every(c => c.rarity === 'cat'));
-  if (cats >= 0) groups.push(...groups.splice(cats, 1));
-  // Extra pagina achteraan met alle kaarten die je meer dan één keer hebt
-  const dupeCards = state.cards
-    .filter(c => (state.owned.get(c.id) || 0) > 1)
-    .sort((a, b) => (state.owned.get(b.id) - state.owned.get(a.id)) || (RARITY_ORDER[a.rarity] - RARITY_ORDER[b.rarity]));
-  groups.push({ name: 'Dubbels', dupes: true, cards: dupeCards });
-  return groups;
-}
-const ownedCount = id => state.owned.get(id) || (state.isAdmin ? 1 : 0);
-const ownedIn = g => g.cards.filter(c => ownedCount(c.id)).length;
-
-function renderBook(view) {
-  const groups = bookGroups();
-  if (!groups.length) { view.innerHTML = '<p class="hint">Er zijn nog geen kaarten in de database.</p>'; return; }
-  if (state.page >= groups.length) state.page = 0;
-  drawBook(view, groups, false);
-}
-
-function drawBook(view, groups, animate) {
-  const g = groups[state.page];
-  const isDet = x => !x.dupes && x.cards.length > 0 && x.cards.every(c => c.rarity === 'cat');
-  const people = groups.filter(x => !x.dupes && !isDet(x));
-  const pct = x => Math.round(ownedIn(x) / Math.max(1, x.cards.length) * 100);
-  const total = people.reduce((n, x) => n + x.cards.length, 0);
-  const have = people.reduce((n, x) => n + ownedIn(x), 0);
-  const dupes = [...state.owned.values()].reduce((n, v) => n + (v - 1), 0);
-
-  view.innerHTML = `<div class="book"><div class="spread">
-    <nav class="index-page" aria-label="Vrienden">
-      <h3 class="index-title">Yearbook ${infoBtn('book')}</h3>
-      <span class="sub">Class of MMXXVI · ${have}/${total} kaarten${dupes ? ` · ${dupes} dubbel` : ''}</span>
-      <ul class="index-list">${groups.map((x, i) =>
-        `<li${x.dupes ? ' class="index-dupes"' : ''}><button data-i="${i}" aria-current="${i === state.page}">
-          <span class="ix-av${isDet(x) ? ' det' : x.dupes ? ' dup' : ''}" aria-hidden="true">${x.dupes ? '×2' : isDet(x) ? '✎' : esc(x.name.charAt(0))}</span>
-          <span class="ix-name">${esc(x.name)}</span>
-          <span class="frac">${x.dupes ? `${dupes} extra` : `${ownedIn(x)}/${x.cards.length}`}</span>
-          ${x.dupes ? '' : `<span class="ix-bar" aria-hidden="true"><i style="width:${pct(x)}%"></i></span>`}
-        </button></li>`).join('')}</ul>
-    </nav>
-    <div class="page-body${animate ? ' turning' : ''}">
-      <h3 class="pname">${esc(g.name)}<span class="ribbon">${g.dupes ? 'Trade bait' : isDet(g) ? 'Detention' : 'Class of MMXXVI'}</span></h3>
-      <p class="pcount">${g.dupes
-        ? (g.cards.length ? `${g.cards.length} ${g.cards.length === 1 ? 'kaart' : 'kaarten'} met dubbels · ${dupes} extra ${dupes === 1 ? 'exemplaar' : 'exemplaren'}. Ruil ze met vrienden via Traden.` : '')
-        : `${ownedIn(g)} van ${g.cards.length} verzameld`}</p>
-      ${g.dupes ? '' : `<div class="pbar" aria-hidden="true"><i style="width:${pct(g)}%"></i></div>`}
-      ${g.dupes && !g.cards.length ? '<p class="pcount">Je hebt nog geen dubbele kaarten. Trek je een kaart die je al hebt, dan komt ze hier terecht.</p>' : ''}
-      <div class="grid${g.dupes ? '' : ' person'}">${g.cards.map(c => {
-        const n = ownedCount(c.id);
-        return n
-          ? `<button class="slot" type="button" data-zoom="${c.id}" aria-label="${esc(c.name)} groot bekijken">${renderCard(c, { count: n })}</button>`
-          : `<div class="slot">${renderCard(c, { locked: true })}</div>`;
-      }).join('')}</div>
-      <div class="pageturn">
-        <button id="prevp" ${state.page === 0 ? 'disabled' : ''}>← Vorige</button>
-        <span class="pnum">${state.page + 1} / ${groups.length}</span>
-        <button id="nextp" ${state.page === groups.length - 1 ? 'disabled' : ''}>Volgende →</button>
-      </div>
-    </div>
-  </div></div>`;
-
-  view.querySelectorAll('.index-list button').forEach(b => {
-    b.onclick = () => { state.page = Number(b.dataset.i); drawBook(view, groups, true); };
-  });
-  // Op gsm staat de inhoudstafel horizontaal: houd de actieve vriend in beeld
-  if (matchMedia('(max-width: 899px)').matches) {
-    const cur = view.querySelector('.index-list [aria-current="true"]');
-    if (cur) cur.parentElement.parentElement.scrollLeft = cur.parentElement.offsetLeft - 12;
-  }
-  $('#prevp', view).onclick = () => { state.page = Math.max(0, state.page - 1); drawBook(view, groups, true); };
-  $('#nextp', view).onclick = () => { state.page = Math.min(groups.length - 1, state.page + 1); drawBook(view, groups, true); };
-  view.querySelectorAll('[data-zoom]').forEach(b => {
-    b.onclick = () => openZoom(state.cards.find(c => c.id === Number(b.dataset.zoom)));
-  });
-}
-
 // ---------- Tab: Statistieken ----------
 // Alle gespeelde Wordles: de oude dagtrekkingen (daily_plays) + de nieuwe rondes (wordle_games)
 async function loadPlays(userId, isFriend = false) {
@@ -3285,67 +3227,66 @@ async function renderIdeas(view) {
   });
 }
 
-// ---------- Frat House: een kamer per lid ----------
-// Je ziet je eigen kamer en die van je vrienden. Een licht raam = vandaag de Wordle gespeeld.
-const ROOM_THEMES = { navy: 'Navy', crimson: 'Crimson', forest: 'Forest', charcoal: 'Charcoal' };
-const ROOM_PIN_X = [9.2, 17.7, 26.2, 55.2, 63.7, 72.2]; // kolommen van het prikbord op de muur (in %)
-const ROOM_SLOTS = 13; // plek 0 = de grote gouden lijst, 1-12 = de muur
-
+// ---------- Frat House: een kamer per persoon van de kaarten ----------
+// Elke kamer toont de 9 kaarten van die persoon, uit JOUW collectie (zoals vroeger een
+// pagina in het yearbook). Het kleine raam boven de deur is de Detention-kamer.
 // Ramen van de gevel (img/frathouse-*.webp, 1376×768): x, y, breedte, hoogte in pixels.
-// 5 ramen boven, 4 in het midden (niet het kleine raam boven de deur), 4 beneden = 13 kamers.
 const FACADE_W = 1376, FACADE_H = 768;
 const FACADE_WINDOWS = [
   ...[390, 514, 664, 813, 937].map(x => [x, 228, 50, 68]),
   ...[390, 514, 813, 937].map(x => [x, 341, 50, 79]),
   ...[390, 514, 813, 937].map(x => [x, 476, 50, 82]),
+  [664, 341, 49, 45], // Detention (klein raam boven de deur)
 ];
+const DETENTION = 'Detention';
+const ownedCount = id => state.owned.get(id) || (state.isAdmin ? 1 : 0);
+// Alle kamers: de personen alfabetisch, Detention als laatste
+const houseRooms = () => [...housePersons(), ...(state.cards.some(c => c.rarity === 'cat') ? [DETENTION] : [])];
+const roomCards = p => state.cards.filter(c => (p === DETENTION ? c.rarity === 'cat' : c.person === p && c.rarity !== 'cat')).sort((a, b) => a.slot - b.slot);
 
 async function renderHouse(view) {
-  if (state.room) return renderRoom(view, state.room);
   view.innerHTML = `<section class="col" style="max-width:none"><p class="hint">Laden…</p></section>`;
   const uid = state.session.user.id;
   const { data, error } = await sb.rpc('house_members');
-  if (state.tab !== 'house' || state.room) return;
+  if (state.tab !== 'house') return;
   if (error) { view.innerHTML = `<section class="col"><p class="msg err">${esc(error.message)}</p></section>`; return; }
-  const members = data || [];
   const persons = housePersons();
-  const owners = roomOwners(members, persons);
+  const owners = roomOwners(data || [], persons);
   state.houseOwners = owners;
+  if (state.room) return renderRoom(view, state.room);
+  const rooms = houseRooms();
   const myRoom = persons.find(p => owners[p]?.user_id === uid);
-  const residents = persons.filter(p => owners[p]).length;
   const phase = dayPhase();
   const pct = (v, total) => `${(v / total * 100).toFixed(2)}%`;
-  const status = o => (o ? (o.played ? 'Played today' : 'Lights off') : 'Not moved in');
+  const have = p => roomCards(p).filter(c => ownedCount(c.id)).length;
 
   const windowHtml = (p, i) => {
     const w = FACADE_WINDOWS[i];
     if (!w) return '';
-    const o = owners[p], mine = o?.user_id === uid;
-    const act = o ? `data-room="${o.user_id}"` : myRoom ? 'disabled' : `data-claim="${esc(p)}"`;
-    return `<button type="button" class="fwin${o?.played ? ' lit' : ''}${mine ? ' me' : ''}${o ? '' : ' vacant'}" ${act} data-win="${i}"
-        aria-label="${esc(p)}: ${status(o)}" style="left:${pct(w[0], FACADE_W)};top:${pct(w[1], FACADE_H)};width:${pct(w[2], FACADE_W)};height:${pct(w[3], FACADE_H)}"></button>
-      <span class="fplate${mine ? ' me' : ''}${o ? '' : ' vacant'}${o?.played ? ' lit' : ''}" data-plate="${i}"
-        style="left:${pct(w[0] + w[2] / 2, FACADE_W)};top:${pct(w[1] + w[3] - 3, FACADE_H)}"><b>${esc(plateName(p))}</b></span>`;
+    const o = owners[p], mine = o?.user_id === uid, det = p === DETENTION;
+    return `<button type="button" class="fwin${o?.played ? ' lit' : ''}${mine ? ' me' : ''}${det ? ' det' : ''}" data-room="${esc(p)}" data-win="${i}"
+        aria-label="Kamer van ${esc(p)}: ${have(p)}/${roomCards(p).length} verzameld" style="left:${pct(w[0], FACADE_W)};top:${pct(w[1], FACADE_H)};width:${pct(w[2], FACADE_W)};height:${pct(w[3], FACADE_H)}"></button>
+      <span class="fplate${mine ? ' me' : ''}${det ? ' det' : ''}${o?.played ? ' lit' : ''}" data-plate="${i}"
+        style="left:${pct(w[0] + w[2] / 2, FACADE_W)};top:${pct(det ? w[1] - 22 : w[1] + w[3] - 3, FACADE_H)}"><b>${esc(det ? 'Detention' : plateName(p))}</b></span>`;
   };
 
   view.innerHTML = `<section class="col" style="max-width:none">
     ${pageHead('Frat House', 'house')}
-    ${myRoom ? '' : `<div class="battle-box highlight house-claim"><strong>Welke kamer is van jou?</strong> We konden je account niet automatisch aan een kamer koppelen. Tik op het raam van je eigen kamer om erin te trekken.<p class="msg" id="claimMsg" role="alert"></p></div>`}
     <div class="facade-wrap ${phase}">
       <div class="campus-scroll" id="houseScroll">
         <div class="facade">
           <img class="campus-img" src="img/frathouse-${phase === 'night' ? 'night' : 'day'}.webp" alt="Het Frat House" width="1376" height="768" decoding="async">
-          ${persons.map(windowHtml).join('')}
+          ${rooms.map(windowHtml).join('')}
         </div>
       </div>
-      <div class="campus-hint">${residents}/${persons.length} moved in · ${persons.filter(p => owners[p]?.played).length} lights on today <span>Tik op een raam.</span></div>
+      <div class="campus-hint">${collectionText()} collected · ${persons.filter(p => owners[p]?.played).length} lights on today <span>Tik op een raam.</span></div>
     </div>
-    <div class="res-list">${persons.map(p => {
-      const o = owners[p], mine = o?.user_id === uid;
-      return `<button type="button" class="res${mine ? ' me' : ''}${o ? '' : ' vacant'}" ${o ? `data-room="${o.user_id}"` : myRoom ? 'disabled' : `data-claim="${esc(p)}"`}>
-        ${o ? friendAv(o) : '<span class="friend-av res-empty"></span>'}
-        <span class="res-txt"><b>${esc(p)}${mine ? ' <em>you</em>' : ''}</b><small>${o ? `${o.cards} cards · ${o.legendaries} legendary` : myRoom ? 'Nog niet geregistreerd' : 'Is dit jouw kamer?'}</small></span>
-        <span class="res-dot${o?.played ? ' on' : ''}" title="${status(o)}"></span></button>`;
+    <div class="res-list">${rooms.map(p => {
+      const o = owners[p], mine = o?.user_id === uid, n = roomCards(p).length;
+      return `<button type="button" class="res${mine ? ' me' : ''}" data-room="${esc(p)}">
+        <span class="res-prog" style="--p:${have(p) / Math.max(1, n) * 100}%"><b>${have(p)}</b></span>
+        <span class="res-txt"><b>${esc(p)}${mine ? ' <em>you</em>' : ''}</b><small>${have(p)}/${n} in je collectie${p === DETENTION ? '' : o ? '' : ' · nog niet ingetrokken'}</small></span>
+        <span class="res-dot${o?.played ? ' on' : ''}" title="${o?.played ? 'Vandaag gespeeld' : ''}"></span></button>`;
     }).join('')}</div>
   </section>`;
 
@@ -3358,13 +3299,8 @@ async function renderHouse(view) {
   });
   const sc = $('#houseScroll');
   sc.scrollLeft = (sc.scrollWidth - sc.clientWidth) / 2;
-  view.querySelectorAll('[data-room]').forEach(b => b.onclick = () => { state.room = b.dataset.room; renderHouse(view); scrollTo({ top: 0 }); });
-  view.querySelectorAll('[data-claim]').forEach(b => b.onclick = async () => {
-    if (!confirm(`Is dit de kamer van ${b.dataset.claim}? Dit kan je maar één keer kiezen.`)) return;
-    const { error: e } = await sb.rpc('claim_room', { p_room: b.dataset.claim });
-    if (e) { const m = $('#claimMsg'); if (m) { m.className = 'msg err'; m.textContent = e.message; } else alert(e.message); return; }
-    renderHouse(view);
-  });
+  view.querySelectorAll('[data-room]').forEach(b => b.onclick = () => { state.room = b.dataset.room; renderRoom(view, state.room); scrollTo({ top: 0 }); });
+  if (!myRoom && !state.isAdmin) { /* kamer kiezen kan in de kamer zelf */ }
 }
 
 // Kort naambordje: voornaam, of voornaam + initiaal als twee mensen dezelfde voornaam hebben
@@ -3372,7 +3308,7 @@ function plateName(p) {
   const [first, ...rest] = p.split(' ');
   return housePersons().filter(q => q.split(' ')[0] === first).length > 1 && rest.length ? `${first} ${rest[0][0]}.` : first;
 }
-// De 13 kamers: één per persoon van de kaarten
+// De 13 personen van de kaarten
 const housePersons = () => [...new Set(state.cards.filter(c => c.rarity !== 'cat').map(c => c.person))].sort((a, b) => a.localeCompare(b));
 
 // Welk account woont in welke kamer: eerst de zelf gekozen kamer, anders op basis van de naam
@@ -3390,7 +3326,7 @@ function roomOwners(members, persons) {
       if (taken.has(m.user_id)) return false;
       const d = norm(m.display_name), t = d.split(' ');
       if (d === full || d.replace(/ /g, '') === full.replace(/ /g, '')) return true;
-      if (firstUnique) return t[0] === first || (t[0].length >= 4 && first.startsWith(t[0].slice(0, 4)) && t[0].slice(0, 4) === first.slice(0, 4));
+      if (firstUnique) return t[0] === first || (t[0].length >= 4 && t[0].slice(0, 4) === first.slice(0, 4));
       return t[0] === first && !!t[1] && !!last && last.startsWith(t[1]);
     });
     if (cands.length === 1) { owner[p] = cands[0]; taken.add(cands[0].user_id); }
@@ -3444,131 +3380,136 @@ function trophiesFor(plays, ownedSet, bs) {
   ];
 }
 
-// Standaardmuur als je kamer nog niet ingericht is: je beste kaarten
-function defaultPins(ownedIds) {
-  const best = state.cards.filter(c => ownedIds.has(c.id) && c.rarity !== 'cat')
-    .sort((a, b) => (RARITY_ORDER[a.rarity] - RARITY_ORDER[b.rarity]) || (b.attack - a.attack)).slice(0, ROOM_SLOTS).map(c => c.id);
-  return Array.from({ length: ROOM_SLOTS }, (_, i) => best[i] || 0);
+// Plaats van de 9 kaders aan de muur (in % van de kamerfoto), per slot 1-9.
+// Slot 9 (legendary) in het midden, de 2 epics ernaast, de 6 commons links en rechts.
+const ROOM_FRAMES = {
+  1: [9.2, 5.5, 7], 2: [16.9, 5.5, 7], 3: [13.05, 30.5, 7],
+  4: [64.9, 5.5, 7], 5: [72.6, 5.5, 7], 6: [68.75, 30.5, 7],
+  7: [24.4, 10, 10.4], 8: [53.4, 10, 10.4],
+  9: [36.1, 3, 16],
+};
+
+async function renderRoom(view, person) {
+  const uid = state.session.user.id;
+  const rooms = houseRooms();
+  if (!rooms.includes(person)) { state.room = null; return renderHouse(view); }
+  const owner = person === DETENTION ? null : (state.houseOwners || {})[person];
+  const mine = owner?.user_id === uid;
+  const cards = roomCards(person);
+  const have = cards.filter(c => ownedCount(c.id)).length;
+  const idx = rooms.indexOf(person);
+  const prev = rooms[(idx - 1 + rooms.length) % rooms.length], next = rooms[(idx + 1) % rooms.length];
+  const myRoom = Object.values(state.houseOwners || {}).some(o => o.user_id === uid);
+
+  view.innerHTML = `<section class="col" style="max-width:none">
+    <div class="room-top">
+      <button class="link" id="roomBack" type="button">← Frat House</button>
+      <div class="room-nav">
+        <button class="btn small ghost" id="roomPrev" type="button">← ${esc(prev === DETENTION ? 'Detention' : plateName(prev))}</button>
+        <button class="btn small ghost" id="roomNext" type="button">${esc(next === DETENTION ? 'Detention' : plateName(next))} →</button>
+      </div>
+    </div>
+    <div class="rm-head2">
+      <span class="kicker">${person === DETENTION ? 'Detention room' : mine ? 'Your room' : 'Room of'}</span>
+      <h2>${esc(person)}</h2>
+      <p class="rm-sub">${have}/${cards.length} in je collectie${person === DETENTION ? '' : owner
+        ? ` · bewoner: <b>${esc(owner.display_name)}</b>${owner.played ? ' · vandaag gespeeld' : ''}`
+        : ' · nog niet ingetrokken'}</p>
+      ${owner && !mine ? `<div class="room-actions"><button class="btn small" id="roomBattle" type="button">Uitdagen in de Arena</button><button class="btn small ghost" id="roomTrade" type="button">Ruilen</button></div>` : ''}
+      ${!owner && person !== DETENTION && !myRoom ? `<div class="room-actions"><button class="btn small ghost" id="roomClaim" type="button">Dit is mijn kamer</button></div>` : ''}
+    </div>
+    <div class="room-wrap">
+      <div class="campus-scroll" id="roomScroll">
+        <div class="room-scene${person === DETENTION ? ' det' : ''}" id="roomScene">
+          <img class="campus-img" src="img/room.webp" alt="" width="1376" height="768" decoding="async">
+          <div class="room-spot" aria-hidden="true"></div>
+          ${cards.map(c => {
+            const f = ROOM_FRAMES[c.slot];
+            if (!f) return '';
+            const n = ownedCount(c.id);
+            return `<div class="wframe r-${c.rarity}${n ? '' : ' empty'}" style="left:${f[0]}%;top:${f[1]}%;width:${f[2]}%">
+              ${n ? `<button type="button" class="wf-inner" data-zoom="${c.id}" aria-label="${esc(c.name)} groot bekijken">${renderCard(c, { count: n })}</button>`
+                  : `<div class="wf-inner">${renderCard(c, { locked: true })}</div>`}
+              ${c.slot === 9 ? `<span class="wf-plate">${n ? esc(c.name) : 'Legendary'}</span>` : ''}
+            </div>`;
+          }).join('')}
+          <div class="rs-shelf" id="rsShelf"></div>
+          <div class="rs-labels" id="rsLabels"></div>
+          <div class="tro-pop" id="troPop" hidden></div>
+        </div>
+      </div>
+    </div>
+  </section>`;
+
+  $('#roomBack').onclick = () => { state.room = null; renderHouse(view); };
+  $('#roomPrev').onclick = () => { state.room = prev; renderRoom(view, prev); };
+  $('#roomNext').onclick = () => { state.room = next; renderRoom(view, next); };
+  if ($('#roomBattle')) $('#roomBattle').onclick = () => { battleState.friend = owner.user_id; state.room = null; state.tab = 'battle'; renderMain(); scrollTo({ top: 0 }); };
+  if ($('#roomTrade')) $('#roomTrade').onclick = () => { state.tradeWith = owner.user_id; state.room = null; state.tab = 'trade'; renderMain(); scrollTo({ top: 0 }); };
+  if ($('#roomClaim')) $('#roomClaim').onclick = async () => {
+    if (!confirm(`Is dit jouw kamer (${person})? Dit kan je maar één keer kiezen.`)) return;
+    const { error } = await sb.rpc('claim_room', { p_room: person });
+    if (error) { alert(error.message); return; }
+    renderHouse(view);
+  };
+  view.querySelectorAll('[data-zoom]').forEach(b => { b.onclick = () => openZoom(cardById(b.dataset.zoom)); });
+  const rsc = $('#roomScroll');
+  if (rsc) rsc.scrollLeft = (rsc.scrollWidth - rsc.clientWidth) * .42;
+
+  // Trofeeën van de bewoner op de plank
+  const shelf = $('#rsShelf');
+  if (!owner) {
+    shelf.innerHTML = `<span class="rs-empty">${person === DETENTION ? 'Niemand wil hier trofeeën.' : 'Nog geen bewoner: de plank is leeg.'}</span>`;
+    return;
+  }
+  const { data: rd } = await sb.rpc('member_room', { p_user: owner.user_id });
+  if (state.room !== person || !$('#rsShelf')) return;
+  const ownedSet = new Set(mine ? state.owned.keys() : rd?.cards || []);
+  const trophies = trophiesFor(rd?.plays || [], ownedSet, rd?.battle);
+  shelf.innerHTML = trophies.map((t, i) => `<button type="button" class="rs-trophy${t.ok ? ' got' : ''}" data-trophy="${i}" aria-label="${esc(t.name)}">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">${TROPHY_ICON[t.icon]}</svg></button>`).join('');
+  $('#rsLabels').innerHTML = trophies.map(t => `<span class="${t.ok ? 'got' : ''}">${t.name}</span>`).join('');
+  // Uitleg meteen bij de trofee zelf
+  const pop = $('#troPop'), scene = $('#roomScene');
+  let openI = null;
+  shelf.querySelectorAll('[data-trophy]').forEach(b => b.onclick = e => {
+    e.stopPropagation();
+    const i = Number(b.dataset.trophy);
+    if (openI === i) { pop.hidden = true; openI = null; return; }
+    const t = trophies[i];
+    const r = b.getBoundingClientRect(), sr = scene.getBoundingClientRect();
+    pop.innerHTML = `<b>${esc(t.name)}</b><span>${esc(t.how)}</span><em class="${t.ok ? 'ok' : ''}">${t.ok ? 'Behaald' : 'Nog niet behaald'}</em>`;
+    pop.style.left = `${((r.left + r.width / 2 - sr.left) / sr.width * 100).toFixed(2)}%`;
+    pop.style.top = `${((r.top - sr.top) / sr.height * 100).toFixed(2)}%`;
+    pop.hidden = false; openI = i;
+  });
+  scene.addEventListener('click', () => { pop.hidden = true; openI = null; });
 }
 
-async function renderRoom(view, userId) {
-  view.innerHTML = `<section class="col" style="max-width:none"><p class="hint">Kamer openen…</p></section>`;
+// ---------- Tab: Stats ----------
+async function renderStats(view) {
+  view.innerHTML = `<section class="col" style="max-width:none"><p class="hint">Statistieken laden…</p></section>`;
   const uid = state.session.user.id;
-  const mine = userId === uid;
-  const { data: rd, error: rErr } = await sb.rpc('member_room', { p_user: userId });
-  if (state.tab !== 'house' || state.room !== userId) return;
-  if (rErr || !rd) { view.innerHTML = `<section class="col"><p class="msg err">${esc(rErr?.message || 'Kamer niet gevonden.')}</p></section>`; return; }
-  const roomName = Object.entries(state.houseOwners || {}).find(([, o]) => o.user_id === userId)?.[0];
-  const name = roomName || (mine ? state.name : '…');
-  const ownedSet = new Set(mine ? state.owned.keys() : rd.cards || []);
-  const plays = rd.plays || [];
-  const bs = { data: rd.battle };
-  const saved = rd.pins ? rd : null;
-  let pins = (saved?.pins || []).map(id => (ownedSet.has(id) ? id : 0));
-  if (!pins.some(Boolean)) pins = defaultPins(ownedSet);
-  pins = Array.from({ length: ROOM_SLOTS }, (_, i) => pins[i] || 0);
-  let theme = ROOM_THEMES[saved?.theme] ? saved.theme : 'navy';
-  let motto = saved?.motto || '';
-  const trophies = trophiesFor(plays, ownedSet, bs.data);
-  const wins = bs.data?.wins || 0, losses = bs.data?.losses || 0;
-  let editing = false;
-
-  const slotHtml = (id, i) => {
-    const c = id ? cardById(id) : null;
-    const lockedPhoto = c && !state.photos.has(c.id) && !state.owned.has(c.id);
-    return `<div class="rm-slot${i === 0 ? ' frame' : ''}${c ? '' : ' empty'}" data-slot="${i}" style="--r:${i === 0 ? 0 : ((i * 37) % 7) - 3}deg">
-      ${c ? `<div class="rm-card" data-zoomid="${c.id}">${renderCard(c)}${lockedPhoto ? '<span class="rm-lock">Not in your collection</span>' : ''}</div>`
-          : `<span class="rm-empty">${i === 0 ? 'Gouden lijst' : '+'}</span>`}
-      ${i === 0 ? '' : '<span class="rm-pin" aria-hidden="true"></span>'}
-    </div>`;
-  };
-  const draw = () => {
-    view.innerHTML = `<section class="col" style="max-width:none">
-      <div class="room-top">
-        <button class="link" id="roomBack" type="button">← Frat House</button>
-        <div class="room-actions">
-          ${mine
-            ? (editing ? `<button class="btn small" id="roomSave" type="button">Opslaan</button><button class="link" id="roomCancel" type="button">Annuleren</button>`
-                       : `<button class="btn small" id="roomEdit" type="button">Kamer inrichten</button>`)
-            : `<button class="btn small" id="roomBattle" type="button">Uitdagen in de Arena</button><button class="btn small ghost" id="roomTrade" type="button">Ruilen</button>`}
-        </div>
-      </div>
-      ${editing ? `<div class="room-editbar">
-        <span class="reb-label">Muur</span>
-        ${Object.entries(ROOM_THEMES).map(([k, v]) => `<button type="button" class="swatch t-${k}${k === theme ? ' on' : ''}" data-theme="${k}" aria-label="${v}" title="${v}"></button>`).join('')}
-        <label class="reb-motto">Motto<input id="roomMotto" maxlength="60" value="${esc(motto)}" placeholder="bv. Never chase. Collect."></label>
-        <span class="reb-hint">Tik op een plek aan de muur om een kaart op te hangen.</span>
-      </div>` : ''}
-      <div class="rm-head2">
-        <span class="kicker">${mine ? 'Your room' : 'Room of'}</span>
-        <h2>${esc(name)}</h2>
-        ${motto ? `<p class="rm-motto">“${esc(motto)}”</p>` : mine ? '<p class="rm-motto muted">Nog geen motto.</p>' : ''}
-      </div>
-      <div class="room-wrap">
-        <div class="campus-scroll" id="roomScroll">
-          <div class="room-scene t-${theme}${editing ? ' editing' : ''}">
-            <img class="campus-img" src="img/room.webp" alt="" width="1376" height="768" decoding="async">
-            <div class="room-tint a" aria-hidden="true"></div><div class="room-tint b" aria-hidden="true"></div>
-            <div class="room-spot" aria-hidden="true"></div>
-            <div class="rs-frame">${slotHtml(pins[0], 0)}<span class="rm-plaque">${pins[0] ? esc(cardById(pins[0])?.name || '') : 'The centerpiece'}</span></div>
-            ${pins.slice(1).map((id, i) => `<div class="rs-pin" style="left:${ROOM_PIN_X[i % 6]}%;top:${i < 6 ? 7 : 29.5}%">${slotHtml(id, i + 1)}</div>`).join('')}
-            <div class="rs-shelf">${trophies.map((t, i) => `<button type="button" class="rs-trophy${t.ok ? ' got' : ''}" data-trophy="${i}" title="${esc(t.name)}: ${esc(t.how)}">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">${TROPHY_ICON[t.icon]}</svg></button>`).join('')}</div>
-            <div class="rs-labels">${trophies.map(t => `<span class="${t.ok ? 'got' : ''}">${t.name}</span>`).join('')}</div>
-          </div>
-        </div>
-      </div>
-      <p class="trophy-caption" id="trophyCaption">${trophies.filter(t => t.ok).length}/${trophies.length} trofeeën. Tik op een trofee voor meer uitleg.</p>
-      <div class="rm-desk">
-        <h3>Track record</h3>
-        ${statsHtml(plays, `<div class="stat-card"><span class="stat-num">${wins}–${losses}</span><span class="stat-label">Arena (W–L)</span></div>
-          <div class="stat-card"><span class="stat-num">${trophies.filter(t => t.ok).length}/${trophies.length}</span><span class="stat-label">Trofeeën</span></div>`)}
-      </div>
-    </section>`;
-
-    $('#roomBack').onclick = () => { state.room = null; renderHouse(view); };
-    if ($('#roomBattle')) $('#roomBattle').onclick = () => { battleState.friend = userId; state.room = null; state.tab = 'battle'; renderMain(); scrollTo({ top: 0 }); };
-    if ($('#roomTrade')) $('#roomTrade').onclick = () => { state.tradeWith = userId; state.room = null; state.tab = 'trade'; renderMain(); scrollTo({ top: 0 }); };
-    if ($('#roomEdit')) $('#roomEdit').onclick = () => { editing = true; draw(); };
-    if ($('#roomCancel')) $('#roomCancel').onclick = () => { renderRoom(view, userId); };
-    if ($('#roomSave')) $('#roomSave').onclick = async () => {
-      motto = $('#roomMotto').value;
-      $('#roomSave').disabled = true;
-      const { error } = await sb.rpc('set_room', { p_pins: pins, p_theme: theme, p_motto: motto });
-      if (error) { alert(error.message); $('#roomSave').disabled = false; return; }
-      editing = false; draw();
-      showStamp('Room saved', 'k-ok', 'Looking sharp', 900);
-    };
-    view.querySelectorAll('[data-theme]').forEach(b => b.onclick = () => { theme = b.dataset.theme; motto = $('#roomMotto').value; draw(); });
-    view.querySelectorAll('[data-trophy]').forEach(b => b.onclick = () => {
-      const t = trophies[Number(b.dataset.trophy)];
-      $('#trophyCaption').innerHTML = `<b>${esc(t.name)}</b>: ${esc(t.how)} ${t.ok ? '<span class="ok">✓ behaald</span>' : '<span class="muted">nog niet behaald</span>'}`;
-    });
-    const rsc = $('#roomScroll');
-    if (rsc) rsc.scrollLeft = (rsc.scrollWidth - rsc.clientWidth) * .42;
-    view.querySelectorAll('.rm-slot').forEach(slot => slot.onclick = () => {
-      const i = Number(slot.dataset.slot);
-      if (editing) { motto = $('#roomMotto').value; return pickForSlot(i); }
-      const c = cardById(pins[i]);
-      if (c) openZoom(c);
-    });
-  };
-
-  // Kaart kiezen voor een plek aan de muur (enkel eigen kaarten)
-  const pickForSlot = i => {
-    const dlg = $('#zoom');
-    const options = state.cards.filter(c => state.owned.has(c.id) && !pins.includes(c.id))
-      .sort((a, b) => (RARITY_ORDER[a.rarity] - RARITY_ORDER[b.rarity]) || (b.attack - a.attack));
-    dlg.innerHTML = `<div class="accbox pickbox">
-      <h2>${i === 0 ? 'Wat komt in de gouden lijst?' : `Plek ${i} aan de muur`}</h2>
-      <div class="pick-grid">${pins[i] ? '<button type="button" class="pick-clear" data-pickid="0">Plek leegmaken</button>' : ''}
-        ${options.map(c => `<button type="button" class="pick-opt" data-pickid="${c.id}">${renderCard(c)}</button>`).join('') || '<p class="hint">Al je kaarten hangen al aan de muur.</p>'}</div>
-      <button type="button" class="link" id="pickClose">Sluiten</button></div>`;
-    dlg.showModal();
-    $('#pickClose').onclick = () => dlg.close();
-    dlg.querySelectorAll('[data-pickid]').forEach(b => b.onclick = () => { pins[i] = Number(b.dataset.pickid); dlg.close(); draw(); });
-  };
-  draw();
+  const [rd, members] = await Promise.all([sb.rpc('member_room', { p_user: uid }), sb.rpc('house_members')]);
+  if (state.tab !== 'stats') return;
+  if (rd.error) { view.innerHTML = `<section class="col"><p class="msg err">${esc(rd.error.message)}</p></section>`; return; }
+  const plays = rd.data.plays || [];
+  const bs = rd.data.battle || {};
+  const trophies = trophiesFor(plays, new Set(state.owned.keys()), bs);
+  const rows = (members.data || []).slice().sort((a, b) => (b.cards - a.cards) || (b.legendaries - a.legendaries));
+  view.innerHTML = `<section class="col" style="max-width:none">
+    ${pageHead('Stats', 'stats')}
+    ${statsHtml(plays, `<div class="stat-card"><span class="stat-num">${bs.wins || 0}–${bs.losses || 0}</span><span class="stat-label">Arena (W–L)</span></div>
+      <div class="stat-card"><span class="stat-num">${collectionText()}</span><span class="stat-label">Collectie</span></div>`)}
+    <h3 style="margin-top:26px">Trofeeën · ${trophies.filter(t => t.ok).length}/${trophies.length}</h3>
+    <div class="trophy-grid">${trophies.map(t => `<div class="tg${t.ok ? ' got' : ''}">
+      <span class="tg-ico"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">${TROPHY_ICON[t.icon]}</svg></span>
+      <b>${t.name}</b><small>${esc(t.how)}</small></div>`).join('')}</div>
+    <h3 style="margin-top:26px">Het huis</h3>
+    <table class="leaderboard house-table"><thead><tr><th>#</th><th>Naam</th><th>Kaarten</th><th>Legendary</th><th>Vandaag</th></tr></thead>
+      <tbody>${rows.map((m, i) => `<tr${m.user_id === uid ? ' class="me"' : ''}><td>${i + 1}</td><td>${esc(m.display_name)}</td><td>${m.cards}</td><td>${m.legendaries}</td><td>${m.played ? '✓' : '–'}</td></tr>`).join('')}</tbody>
+    </table>
+  </section>`;
 }
 
 // ---------- Tab: The Arena (battles, ronde per ronde) ----------
