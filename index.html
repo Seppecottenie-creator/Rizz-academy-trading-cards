@@ -1552,6 +1552,18 @@ div.wf-inner{cursor:default}
 .exam-hero .tt-day.party{background:rgba(30,12,36,.78)}
 .exam-hero .tt-day.today{opacity:1;background:rgba(20,16,10,.85)}
 @media (max-width:899px){.exam-hero{padding:16px 10px 10px}.exam-hero .page-head{min-height:90px;padding:0 6px}}
+
+/* Foto-banners: de volledige foto in beeld, tekst onderaan erover (gsm: eronder) */
+.photo-hero{position:relative;display:block;min-height:0;padding:0;margin-bottom:18px;border-radius:18px;overflow:hidden;border:1px solid var(--line2);
+  box-shadow:0 30px 60px -30px rgba(0,0,0,.9);background:#0A0D18}
+.photo-hero .hero-img{display:block;width:100%;height:auto;aspect-ratio:1376/768}
+.photo-hero .hero-over{position:absolute;left:0;right:0;bottom:0;padding:90px 22px 18px;background:linear-gradient(180deg,transparent,rgba(8,12,26,.72) 38%,rgba(8,12,26,.94))}
+.arena-hero .hero-over{display:flex;align-items:flex-end;justify-content:space-between;gap:18px;flex-wrap:wrap}
+.exam-hero .page-head{min-height:0;margin-bottom:12px}
+@media (max-width:899px){
+  .photo-hero .hero-over{position:relative;margin-top:-56px;padding:40px 12px 12px;background:linear-gradient(180deg,transparent,rgba(8,12,26,.9) 40px,#0E1426 70px)}
+  .exam-hero .page-head{padding:0 4px}
+}
 </style>
 </head>
 <body>
@@ -2866,7 +2878,9 @@ function gamePour(box, rnd) {
 const EXAM_GAMES = { math: gameMath, hoops: gameHoops, history: gameHistory, darts: gameDarts, pong: gamePong, pour: gamePour };
 
 // Banner van de Exam Hall: foto van de examenzaal (dag of avond) met titel en rooster
-const examHero = (dow, done) => `<div class="exam-hero ${dayPhase() === 'night' ? 'night' : 'day'}">${pageHead('Exam Hall', 'today')}${timetableHtml(dow, done)}</div>`;
+const examHero = (dow, done) => `<div class="photo-hero exam-hero">
+  <img class="hero-img" src="img/examhall-${dayPhase() === 'night' ? 'night' : 'day'}.webp" alt="De examenzaal" width="1376" height="768" decoding="async">
+  <div class="hero-over">${pageHead('Exam Hall', 'today')}${timetableHtml(dow, done)}</div></div>`;
 
 // Weekrooster bovenaan de Exam Hall
 function timetableHtml(dow, doneToday) {
@@ -4164,7 +4178,9 @@ async function renderBattle(view) {
   battleState.friend = null;
 
   view.innerHTML = `<section class="col arena-page" style="max-width:none">
-    <div class="arena-hero">
+    <div class="photo-hero arena-hero">
+      <img class="hero-img" src="img/arena.webp" alt="Het stadion" width="1376" height="768" decoding="async">
+      <div class="hero-over">
       <div class="ah-txt">
         <span class="kicker">Rizz Academy · Varsity Athletics</span>
         <div class="ph-row"><h2>The Arena</h2>${infoBtn('battle')}</div>
@@ -4174,6 +4190,7 @@ async function renderBattle(view) {
         <div><b>${rec.wins || 0}–${rec.losses || 0}</b><small>Record</small></div>
         <div><b>${rw.pve}/${rw.pve_max}</b><small>Beloond vs computer</small></div>
         <div><b>${rw.pvp}/${rw.pvp_max}</b><small>Beloond vs vrienden</small></div>
+      </div>
       </div>
     </div>
 
