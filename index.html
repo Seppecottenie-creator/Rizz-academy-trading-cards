@@ -1538,6 +1538,20 @@ div.wf-inner{cursor:default}
 .bar-fill.f{background:linear-gradient(90deg,#8C0B21,#E0284A)}
 .bar-label small{color:var(--muted);font-size:10.5px;margin-left:4px}
 .fcount{color:var(--err)}
+
+/* Exam Hall: foto van de examenzaal als banner */
+.exam-hero{position:relative;padding:22px 22px 16px;margin-bottom:18px;border-radius:18px;overflow:hidden;border:1px solid var(--line2);box-shadow:0 30px 60px -30px rgba(0,0,0,.9);
+  background:linear-gradient(180deg,rgba(8,12,26,.25),rgba(8,12,26,.55) 45%,rgba(8,12,26,.92)),url(img/examhall-day.webp) center 38%/cover,#1A1410}
+.exam-hero.night{background:linear-gradient(180deg,rgba(8,12,26,.15),rgba(8,12,26,.5) 45%,rgba(8,12,26,.92)),url(img/examhall-night.webp) center 38%/cover,#0E0B08}
+.exam-hero .page-head{min-height:120px;display:flex;flex-direction:column;justify-content:flex-end;margin-bottom:12px}
+.exam-hero .kicker{color:var(--gold2)}
+.exam-hero h2{text-shadow:0 2px 14px rgba(0,0,0,.8)}
+.exam-hero .joke{color:var(--ink);text-shadow:0 1px 6px rgba(0,0,0,.9)}
+.exam-hero .timetable{margin:0}
+.exam-hero .tt-day{background:rgba(10,14,28,.78);opacity:.8}
+.exam-hero .tt-day.party{background:rgba(30,12,36,.78)}
+.exam-hero .tt-day.today{opacity:1;background:rgba(20,16,10,.85)}
+@media (max-width:899px){.exam-hero{padding:16px 10px 10px}.exam-hero .page-head{min-height:90px;padding:0 6px}}
 </style>
 </head>
 <body>
@@ -2851,6 +2865,9 @@ function gamePour(box, rnd) {
 
 const EXAM_GAMES = { math: gameMath, hoops: gameHoops, history: gameHistory, darts: gameDarts, pong: gamePong, pour: gamePour };
 
+// Banner van de Exam Hall: foto van de examenzaal (dag of avond) met titel en rooster
+const examHero = (dow, done) => `<div class="exam-hero ${dayPhase() === 'night' ? 'night' : 'day'}">${pageHead('Exam Hall', 'today')}${timetableHtml(dow, done)}</div>`;
+
 // Weekrooster bovenaan de Exam Hall
 function timetableHtml(dow, doneToday) {
   return `<div class="timetable" aria-label="Lessenrooster">${SCHEDULE.map(s => `<div class="tt-day${s.dow === dow ? ' today' : ''}${s.dow > 5 ? ' party' : ''}">
@@ -2862,7 +2879,7 @@ function timetableHtml(dow, doneToday) {
 async function renderExam(view, info) {
   const s = SCHEDULE.find(x => x.game === info.game) || examGameOf(info.dow), meta = EXAM_INFO[s.game];
   const tomorrow = examGameOf(info.dow % 7 + 1);
-  const head = `${welcomeBanner()}${pageHead('Exam Hall', 'today')}${timetableHtml(info.dow, info.status === 'done')}`;
+  const head = `${welcomeBanner()}${examHero(info.dow, info.status === 'done')}`;
   const gradeRow = `<div class="grade-row">${['A', 'B', 'C', 'D'].map((g, i) => `<span><b>${g}</b>≥ ${meta.grades[i]}</span>`).join('')}<span class="f"><b>F</b>minder</span></div>`;
   if (info.status === 'done') {
     const card = info.card ? state.cards.find(c => c.id === info.card.id) || info.card : null;
@@ -3022,7 +3039,7 @@ function drawToday(view) {
   const slots = wordle.data.slots;
   const s = slots.find(x => x.slot === wordle.slot);
   const card = s.card_id ? state.cards.find(c => c.id === s.card_id) : null;
-  view.innerHTML = `${welcomeBanner()}${pageHead('Exam Hall', 'today')}${timetableHtml(1, isDone(s))}<section class="today-grid">
+  view.innerHTML = `${welcomeBanner()}${examHero(1, isDone(s))}<section class="today-grid">
     <div class="col">
       <div class="round-tabs" id="roundTabs"${slots.length < 2 ? ' hidden' : ''}>${roundTabsHtml()}</div>
       ${s.open ? `<div class="board-frame">
