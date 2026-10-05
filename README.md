@@ -16,3 +16,8 @@ Black Market (ruilen), The Vault (shop), The Library (stats) en Town Hall (idee�
 
 SQL uitvoeren: Supabase → SQL Editor → nieuwe query → het volledige bestand plakken → Run →
 kies "Run without RLS" (de scripts zetten RLS zelf aan). Alle scripts mogen opnieuw uitgevoerd worden.
+
+**Op gsm** werkt de site als app: wie ze in Safari/Chrome opent, krijgt eerst de uitleg om ze op het beginscherm
+te zetten (`manifest.webmanifest`, `sw.js`, iconen in `img/`). In de app speel je liggend (Android draait vanzelf,
+op iPhone verschijnt "Draai je gsm"). Noodsleutel om toch in de browser te werken: voeg `?browser=1` toe aan de link
+(`?browser=0` zet het terug).
