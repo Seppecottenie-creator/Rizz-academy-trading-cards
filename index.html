@@ -849,13 +849,6 @@ h3{color:var(--gold)}
 /* Joke onder elke paginatitel */
 .joke{margin:8px 0 0;font:italic 500 15px/1.4 var(--display);color:var(--ink-soft)}
 .joke b{font:600 10px var(--body);letter-spacing:.2em;text-transform:uppercase;color:var(--gold);font-style:normal;margin-right:8px}
-/* Today: de campuskrant */
-.gazette{margin-bottom:24px;padding:16px 22px 14px;border-radius:14px;background:linear-gradient(180deg,#F4EBDD,#E6DAC5);color:#1C2540;
-  box-shadow:inset 0 -4px 0 var(--red),0 20px 40px -24px rgba(0,0,0,.9)}
-.gz-top{display:flex;justify-content:space-between;gap:12px;font:600 10.5px var(--body);letter-spacing:.18em;text-transform:uppercase;color:#6B5F4E;border-bottom:1px solid rgba(28,37,64,.25);padding-bottom:6px}
-.gz-name{display:block;text-align:center;font:400 clamp(30px,4.6vw,52px)/1.05 var(--varsity);color:#8C0B21;margin:8px 0 4px;letter-spacing:.02em}
-.gz-head{display:block;text-align:center;font:italic 600 clamp(15px,1.6vw,19px)/1.35 var(--display);color:#1C2540;border-top:3px double rgba(28,37,64,.4);padding-top:8px}
-@media (max-width:899px){.gz-top span:nth-child(2){display:none}.gazette{padding:12px 14px 10px}}
 .bf-title::before{content:"MIDTERM · ";color:var(--red2);font-size:.7em}
 /* Prikbord */
 .board{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:18px;width:100%;max-width:560px;margin-top:6px}
@@ -898,15 +891,12 @@ h3{color:var(--gold)}
   .dock .nav-btn[aria-current="page"] .ni{color:var(--red2)}
   .board-frame{padding:16px 12px 14px}
   .wboard{width:min(300px,100%)}
-  .gz-name{font-size:clamp(28px,9vw,40px)}
-  .gz-head{font-size:15px}
 }
 @media (max-width:370px){.dock .nav-btn{font-size:8.5px}}
 
 /* =====================================================================
    CAMPUS: luchtfoto met klikbare gebouwen (startscherm)
    ===================================================================== */
-.campus-page .gazette{margin-bottom:16px}
 .campus{position:relative;border-radius:18px;overflow:hidden;border:1px solid var(--line2);box-shadow:0 30px 60px -30px rgba(0,0,0,.9);background:#0A1024}
 .campus-scroll{overflow-x:auto;overflow-y:hidden;scrollbar-width:none;-webkit-overflow-scrolling:touch}
 .campus-scroll::-webkit-scrollbar{display:none}
@@ -984,7 +974,7 @@ h3{color:var(--gold)}
     repeating-linear-gradient(0deg,transparent 0 22px,rgba(0,0,0,.13) 22px 24px),
     repeating-linear-gradient(90deg,transparent 0 46px,rgba(0,0,0,.08) 46px 48px),
     linear-gradient(180deg,#9A3340,#7A2531);box-shadow:inset 0 8px 0 #F2E8D5}
-.rooms-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}
+.rooms-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:16px}
 .room-tile{position:relative;display:grid;gap:8px;padding:10px;border:0;border-radius:6px;background:#F2E8D5;color:#1C2540;text-align:center;cursor:pointer;
   box-shadow:0 10px 18px -10px rgba(0,0,0,.7),inset 0 -4px 0 #D8C9AA;animation:rt-in .5s var(--d,0ms) both cubic-bezier(.2,.8,.2,1);transition:transform .2s}
 @keyframes rt-in{from{opacity:0;transform:translateY(14px)}}
@@ -1013,7 +1003,8 @@ h3{color:var(--gold)}
 .front-desk h3{margin-top:0}
 .front-desk .mycode{margin:0}
 @media (max-width:899px){
-  .rooms-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+  .rooms-grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+  .room-tile{padding:6px;gap:5px}.rt-plate b{font-size:12px}.rt-plate small,.rt-status,.rt-rent{display:none}
   .house-body{padding:16px 14px 0}
   .house-steps{margin:16px -14px 0}
   .house-roof{padding-top:38px}
@@ -1834,6 +1825,12 @@ const INFO = {
     <li><strong>Wisselen</strong>: tik op een kaart op je bank. Je slaat die ronde niet, en de ander krijgt een vrije slag.</li>
     <li>De computer onthoudt welke zetten je vaak kiest. Voorspelbaar spelen wordt afgestraft.</li></ul>
     <p><strong>Credits</strong>: Scrimmage/Varsity/Championship = 5/10/20 (max 5 per dag). Tegen een vriend: winnaar 25, verliezer 5 (max 3 per dag). Opgeven levert niets op.</p>`],
+  house: ['Het Frat House', `
+    <p>Iedereen woont in het huis: elke persoon van de kaarten heeft een eigen kamer. Is het raam verlicht, dan heeft die persoon vandaag de Wordle al gespeeld.</p>
+    <ul><li>In <strong>je eigen kamer</strong> hang je je beste kaarten aan de muur: één in de gouden lijst en twaalf op het bord. Kies ook een kleur en een motto.</li>
+    <li>Op de plank staan je <strong>trofeeën</strong>. Elke trofee verdien je door iets te doen: een reeks dagen spelen, een legendary vinden, battles winnen…</li>
+    <li>Iedereen in het huis is automatisch bevriend. In elke kamer zie je de muur van die persoon. Kaarten die jij nog niet hebt, tonen geen foto. Je kan hem van daaruit uitdagen of een ruil voorstellen.</li>
+    <li>Je account wordt automatisch aan je kamer gekoppeld op basis van je naam. Lukt dat niet, dan kies je één keer zelf je kamer.</li></ul>`],
   friends: ['Vrienden', `
     <p>Deel je code met je vrienden, of voer hun code in om een vriendschapsverzoek te sturen.</p>
     <ul><li>Zodra ze accepteren, kan je elkaars statistieken bekijken, kaarten ruilen en elkaar uitdagen in Battle.</li>
@@ -2180,7 +2177,6 @@ async function renderCampus(view) {
   const phase = dayPhase();
   const img = phase === 'night' ? 'img/campus-night.webp' : 'img/campus-day.webp';
   view.innerHTML = `<section class="col campus-page" style="max-width:none">
-    ${gazetteHtml()}
     <div class="campus ${phase}" id="campus">
       <div class="campus-scroll" id="campusScroll">
         <div class="campus-map">
@@ -2318,17 +2314,6 @@ async function renderToday(view) {
 
 // Campuskrant en prikbord: elke dag andere koppen en weetjes (voor iedereen dezelfde)
 const pickDay = (arr, salt = 0) => arr[(wordleNumber() * 7 + salt) % arr.length];
-const HEADLINES = [
-  'Legendary pulled at dawn. Puller refuses to comment.',
-  'Wordle solved in two. Group chat goes silent.',
-  'Black market prices soar after rare card sighting.',
-  'Arena record broken. Loser demands rematch, is denied.',
-  'Dean confirms: no extra guesses. Not today. Not ever.',
-  'Freshman trades away epic. Class mourns.',
-  'Streak of the year still alive. Pressure mounting.',
-  'Vault restocked. Credits disappear within the hour.',
-  'Detention rate hits season high. Coffee sales follow.',
-];
 const FORECASTS = [
   'Clear skies. Perfect weather for a two-guess solve.',
   'Heavy rain of commons. Scattered epics in the afternoon.',
@@ -2353,13 +2338,6 @@ const SCOUTING = [
   'A streak is worth more than a lucky pull.',
   'Play before noon. The pressure only grows.',
 ];
-function gazetteHtml() {
-  return `<header class="gazette">
-    <div class="gz-top"><span>Vol. MMXXVI · Nº ${wordleNumber()}</span><span>${esc(dateLabel())}</span><span>Price: 1 credit</span></div>
-    <span class="gz-name">The Daily Rizz</span>
-    <span class="gz-head">${esc(pickDay(HEADLINES))}</span>
-  </header>`;
-}
 function bulletinHtml() {
   return `<div class="board" aria-label="Campus bulletin">
     <div class="note"><b>Forecast</b>${esc(pickDay(FORECASTS, 1))}</div>
@@ -2845,7 +2823,7 @@ async function renderTrade(view) {
   if (!friends.length) {
     view.innerHTML = `<section class="col soon">
       ${pageHead('Black Market', 'trade')}
-      <p class="hint">Nodig eerst een vriend uit in het <strong>Frat House</strong> om te kunnen ruilen.</p>
+      <p class="hint">Er woont nog niemand anders in het <strong>Frat House</strong>. Zodra iemand registreert, kan je met hem ruilen.</p>
     </section>`;
     return;
   }
@@ -3234,119 +3212,74 @@ async function renderHouse(view) {
   if (state.room) return renderRoom(view, state.room);
   view.innerHTML = `<section class="col" style="max-width:none"><p class="hint">Laden…</p></section>`;
   const uid = state.session.user.id;
-  const [friendRows, requestRows, today] = await Promise.all([
-    sb.from('friendships').select('friend_id').eq('user_id', uid),
-    sb.from('friend_requests').select('id, sender_id, recipient_id').or(`sender_id.eq.${uid},recipient_id.eq.${uid}`).order('created_at', { ascending: false }),
-    sb.rpc('house_today'),
-  ]);
+  const { data, error } = await sb.rpc('house_members');
   if (state.tab !== 'house' || state.room) return;
-  const loadErr = friendRows.error || requestRows.error;
-  if (loadErr) { view.innerHTML = `<section class="col"><p class="msg err">${esc(loadErr.message)}</p></section>`; return; }
-  const friendIds = friendRows.data.map(r => r.friend_id);
-  const incoming = requestRows.data.filter(r => r.recipient_id === uid);
-  const outgoing = requestRows.data.filter(r => r.sender_id === uid);
-  const ids = [...new Set([...friendIds, ...incoming.map(r => r.sender_id), ...outgoing.map(r => r.recipient_id)])];
-  const profiles = {};
-  const counts = {};
-  if (ids.length) {
-    const [profs, cards] = await Promise.all([
-      sb.from('profiles').select('id, display_name, avatar_url').in('id', ids),
-      friendIds.length ? sb.from('user_cards').select('user_id, card_id').in('user_id', friendIds) : { data: [] },
-    ]);
-    for (const p of profs.data || []) profiles[p.id] = p;
-    for (const r of cards.data || []) (counts[r.user_id] ||= new Set()).add(r.card_id);
-  }
-  if (state.tab !== 'house' || state.room) return;
-  const prof = id => profiles[id] || { id, display_name: '…' };
-  state.incomingRequests = incoming.length;
-  syncFriendBadge();
-  const played = new Set((today.data || []).filter(r => r.played).map(r => r.user_id));
-  if (state.playDates.has(todayBrussels())) played.add(uid);
-  const people = state.cards.filter(c => c.rarity !== 'cat');
-  const summary = set => {
-    const have = people.filter(c => set.has(c.id));
-    return `${have.length} cards · ${have.filter(c => c.rarity === 'legendary').length} legendary`;
-  };
-  const me = { id: uid, display_name: state.name, avatar_url: state.avatarUrl };
-  const members = [me, ...friendIds.map(prof).sort((a, b) => (a.display_name || '').localeCompare(b.display_name || ''))];
-  const vacant = Math.max(0, Math.max(6, Math.ceil(members.length / 3) * 3) - members.length);
+  if (error) { view.innerHTML = `<section class="col"><p class="msg err">${esc(error.message)}</p></section>`; return; }
+  const members = data || [];
+  const persons = housePersons();
+  const owners = roomOwners(members, persons);
+  state.houseOwners = owners;
+  const myRoom = persons.find(p => owners[p]?.user_id === uid);
+  const residents = persons.filter(p => owners[p]).length;
 
   const roomTile = (p, i) => {
-    const mine = p.id === uid;
-    const set = mine ? new Set(state.owned.keys()) : (counts[p.id] || new Set());
-    return `<button type="button" class="room-tile${mine ? ' me' : ''}${played.has(p.id) ? ' lit' : ''}" data-room="${p.id}" style="--d:${i * 60}ms">
-      <span class="rt-window"><span class="rt-glass">${friendAv(p)}</span><span class="rt-curtain l"></span><span class="rt-curtain r"></span></span>
-      <span class="rt-plate"><b>${esc(p.display_name)}</b><small>${summary(set)}</small></span>
+    const o = owners[p];
+    const mine = o?.user_id === uid;
+    const cls = `room-tile${mine ? ' me' : ''}${o?.played ? ' lit' : ''}${o ? '' : ' vacant'}`;
+    const inner = `<span class="rt-window"><span class="rt-glass">${o ? friendAv(o) : '<span class="rt-rent">Not moved in</span>'}</span><span class="rt-curtain l"></span><span class="rt-curtain r"></span></span>
+      <span class="rt-plate"><b>${esc(p)}</b><small>${o ? `${o.cards} cards · ${o.legendaries} legendary` : 'Nog niet geregistreerd'}</small></span>
       ${mine ? '<span class="rt-tag">Your room</span>' : ''}
-      <span class="rt-status">${played.has(p.id) ? 'Played today' : 'Lights off'}</span>
-    </button>`;
+      <span class="rt-status">${o ? (o.played ? 'Played today' : 'Lights off') : myRoom ? 'Vacant' : 'Is dit jouw kamer?'}</span>`;
+    return o
+      ? `<button type="button" class="${cls}" data-room="${o.user_id}" style="--d:${i * 50}ms">${inner}</button>`
+      : `<button type="button" class="${cls}" ${myRoom ? 'disabled' : `data-claim="${esc(p)}"`} style="--d:${i * 50}ms">${inner}</button>`;
   };
 
   view.innerHTML = `<section class="col" style="max-width:none">
     ${pageHead('Frat House', 'house')}
-    <div class="house-layout">
-      <div class="house">
-        <div class="house-roof"><span class="hr-letters">RIZZ</span><span class="hr-name">Rizz Academy House</span><span class="hr-est">Est. MMXXVI · ${members.length} member${members.length === 1 ? '' : 's'}</span></div>
-        <div class="house-body">
-          <div class="rooms-grid">
-            ${members.map(roomTile).join('')}
-            ${Array.from({ length: vacant }, (_, i) => `<div class="room-tile vacant" style="--d:${(members.length + i) * 60}ms">
-              <span class="rt-window"><span class="rt-glass"><span class="rt-rent">For rent</span></span></span>
-              <span class="rt-plate"><b>Vacant</b><small>Invite with your code</small></span></div>`).join('')}
-          </div>
-          <div class="house-steps"><span class="house-door"></span></div>
-        </div>
+    ${myRoom ? '' : `<div class="battle-box highlight house-claim"><strong>Welke kamer is van jou?</strong> We konden je account niet automatisch aan een kamer koppelen. Tik op je eigen kamer om erin te trekken.<p class="msg" id="claimMsg" role="alert"></p></div>`}
+    <div class="house">
+      <div class="house-roof"><span class="hr-letters">RIZZ</span><span class="hr-name">Rizz Academy House</span><span class="hr-est">Est. MMXXVI · ${residents}/${persons.length} moved in</span></div>
+      <div class="house-body">
+        <div class="rooms-grid">${persons.map(roomTile).join('')}</div>
+        <div class="house-steps"><span class="house-door"></span></div>
       </div>
-      <aside class="front-desk">
-        <h3>Front desk</h3>
-        <div class="mycode">
-          <span class="mycode-label">Your code</span>
-          <span class="mycode-value" id="myCode">${esc(state.friendCode)}</span>
-          <button class="link" id="copyCode" type="button">Kopiëren</button>
-        </div>
-        <form id="addFriendForm" class="form" style="margin-top:14px">
-          <label>Code van een vriend<input id="friendCodeInput" maxlength="6" autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="bv. 4F9K2A"></label>
-          <p id="addFriendMsg" class="msg" role="alert"></p>
-          <button class="btn" type="submit">Uitnodigen in het huis</button>
-        </form>
-        ${incoming.length ? `<h3 style="margin-top:20px">At the door (${incoming.length})</h3>
-          <ul class="friend-list">${incoming.map(r => `<li class="friend-row">
-            ${friendAv(prof(r.sender_id))}<span class="friend-name">${esc(prof(r.sender_id).display_name)}</span>
-            <button class="btn small" data-req="${r.id}" data-action="accept" type="button">Binnenlaten</button>
-            <button class="link danger" data-req="${r.id}" data-action="decline" type="button">Weigeren</button></li>`).join('')}</ul>` : ''}
-        ${outgoing.length ? `<h3 style="margin-top:20px">Invited</h3>
-          <ul class="friend-list">${outgoing.map(r => `<li class="friend-row">
-            ${friendAv(prof(r.recipient_id))}<span class="friend-name">${esc(prof(r.recipient_id).display_name)}</span>
-            <button class="link danger" data-req="${r.id}" data-action="cancel" type="button">Annuleren</button></li>`).join('')}</ul>` : ''}
-      </aside>
     </div>
   </section>`;
 
   view.querySelectorAll('[data-room]').forEach(b => b.onclick = () => { state.room = b.dataset.room; renderHouse(view); scrollTo({ top: 0 }); });
-  $('#copyCode').onclick = async () => {
-    try { await navigator.clipboard.writeText(state.friendCode); $('#copyCode').textContent = 'Gekopieerd!'; } catch (_) {}
-  };
-  $('#addFriendForm').onsubmit = async e => {
-    e.preventDefault();
-    const msg = $('#addFriendMsg');
-    const code = $('#friendCodeInput').value.trim().toUpperCase();
-    msg.className = 'msg'; msg.textContent = 'Bezig…';
-    try {
-      if (!code) throw new Error('Vul een code in.');
-      const { data, error } = await sb.rpc('send_friend_request', { p_code: code });
-      if (error) throw error;
-      msg.className = 'msg ok';
-      msg.textContent = data.status === 'accepted' ? `${data.name} stond al aan de deur: welkom in het huis!` : `Uitnodiging verstuurd naar ${data.name}.`;
-      setTimeout(() => renderHouse(view), 900);
-    } catch (err) { msg.className = 'msg err'; msg.textContent = err.message; }
-  };
-  view.querySelectorAll('[data-req]').forEach(btn => btn.onclick = async () => {
-    if (btn.dataset.action === 'decline' && !confirm('Deze uitnodiging weigeren?')) return;
-    btn.disabled = true;
-    const { error } = await sb.rpc('respond_friend_request', { p_request_id: Number(btn.dataset.req), p_action: btn.dataset.action });
-    if (error) { alert(error.message); btn.disabled = false; return; }
+  view.querySelectorAll('[data-claim]').forEach(b => b.onclick = async () => {
+    if (!confirm(`Is dit de kamer van ${b.dataset.claim}? Dit kan je maar één keer kiezen.`)) return;
+    const { error: e } = await sb.rpc('claim_room', { p_room: b.dataset.claim });
+    if (e) { const m = $('#claimMsg'); if (m) { m.className = 'msg err'; m.textContent = e.message; } return; }
     renderHouse(view);
   });
+}
+
+// De 13 kamers: één per persoon van de kaarten
+const housePersons = () => [...new Set(state.cards.filter(c => c.rarity !== 'cat').map(c => c.person))].sort((a, b) => a.localeCompare(b));
+
+// Welk account woont in welke kamer: eerst de zelf gekozen kamer, anders op basis van de naam
+function roomOwners(members, persons) {
+  const owner = {};
+  const taken = new Set();
+  for (const m of members) if (m.room && persons.includes(m.room)) { owner[m.room] = m; taken.add(m.user_id); }
+  const norm = s => (s || '').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[^a-z ]/g, ' ').replace(/\s+/g, ' ').trim();
+  const free = members.filter(m => !m.room);
+  for (const p of persons) {
+    if (owner[p]) continue;
+    const full = norm(p), [first, ...rest] = full.split(' '), last = rest.join(' ');
+    const firstUnique = persons.filter(q => norm(q).split(' ')[0] === first).length === 1;
+    const cands = free.filter(m => {
+      if (taken.has(m.user_id)) return false;
+      const d = norm(m.display_name), t = d.split(' ');
+      if (d === full || d.replace(/ /g, '') === full.replace(/ /g, '')) return true;
+      if (firstUnique) return t[0] === first || (t[0].length >= 4 && first.startsWith(t[0].slice(0, 4)) && t[0].slice(0, 4) === first.slice(0, 4));
+      return t[0] === first && !!t[1] && !!last && last.startsWith(t[1]);
+    });
+    if (cands.length === 1) { owner[p] = cands[0]; taken.add(cands[0].user_id); }
+  }
+  return owner;
 }
 
 // Langste reeks opeenvolgende speeldagen
@@ -3406,17 +3339,15 @@ async function renderRoom(view, userId) {
   view.innerHTML = `<section class="col" style="max-width:none"><p class="hint">Kamer openen…</p></section>`;
   const uid = state.session.user.id;
   const mine = userId === uid;
-  const [prof, room, cards, plays, bs] = await Promise.all([
-    mine ? { data: { display_name: state.name, avatar_url: state.avatarUrl } } : sb.from('profiles').select('display_name, avatar_url').eq('id', userId).maybeSingle(),
-    sb.from('rooms').select('pins, theme, motto').eq('user_id', userId).maybeSingle(),
-    mine ? { data: [...state.owned.keys()].map(card_id => ({ card_id })) } : sb.from('user_cards').select('card_id').eq('user_id', userId),
-    loadPlays(userId, !mine).catch(() => []),
-    sb.rpc('room_battle_stats', { p_user: userId }),
-  ]);
+  const { data: rd, error: rErr } = await sb.rpc('member_room', { p_user: userId });
   if (state.tab !== 'house' || state.room !== userId) return;
-  const name = prof.data?.display_name || '…';
-  const ownedSet = new Set((cards.data || []).map(r => r.card_id));
-  const saved = room.data;
+  if (rErr || !rd) { view.innerHTML = `<section class="col"><p class="msg err">${esc(rErr?.message || 'Kamer niet gevonden.')}</p></section>`; return; }
+  const roomName = Object.entries(state.houseOwners || {}).find(([, o]) => o.user_id === userId)?.[0];
+  const name = roomName || (mine ? state.name : '…');
+  const ownedSet = new Set(mine ? state.owned.keys() : rd.cards || []);
+  const plays = rd.plays || [];
+  const bs = { data: rd.battle };
+  const saved = rd.pins ? rd : null;
   let pins = (saved?.pins || []).map(id => (ownedSet.has(id) ? id : 0));
   if (!pins.some(Boolean)) pins = defaultPins(ownedSet);
   pins = Array.from({ length: ROOM_SLOTS }, (_, i) => pins[i] || 0);
@@ -3646,7 +3577,7 @@ async function renderBattle(view) {
                     ${friendIds.map(id => `<option value="${id}"${id === preFriend ? ' selected' : ''}>${esc(nameOf(id))}</option>`).join('')}
                   </select>
                   <button class="btn small" id="challengeBattle" type="button">Uitdagen</button>`
-                  : '<small>Nodig eerst iemand uit in het Frat House.</small>'}
+                  : '<small>Er woont nog niemand anders in het huis.</small>'}
                 <span class="opp-reward">+25 credits</span>
               </div>
             </div>
