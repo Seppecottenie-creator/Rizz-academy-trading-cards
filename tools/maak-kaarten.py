@@ -156,19 +156,6 @@ VRIENDEN = [
   ]),
 ]
 
-# Troostkaarten (rarity 'cat'): wie de Wordle niet oplost, moet nablijven.
-DETENTION = [
-    ('Late for Class', 'Alarm went off. He didn\'t.'),
-    ('The Hangover', 'Never again. Until Friday.'),
-    ('Left on Read', 'Seen 23:41. No reply.'),
-    ('Phone Confiscated', 'Back at the end of the year.'),
-    ('Study Hall', 'Write it 100 times: solve the Wordle.'),
-    ('Beer Pong Defeat', 'Every cup. Every single one.'),
-    ('Missed the Last Train', 'Tonight: someone else\'s couch.'),
-    ('Rage Quit', 'The controller didn\'t make it.'),
-    ('Asleep in Lecture', 'Woke up in a different class.'),
-]
-
 def roll(key, lo, hi):
     h = int(hashlib.md5(key.encode()).hexdigest(), 16)
     return lo + h % (hi - lo + 1)
@@ -192,9 +179,6 @@ for person, slug, _map, kaarten in VRIENDEN:
         if rarity == 'legendary':
             sname, sdesc, spow = k[3], k[4], roll(person + 'sp', 45, 55)
         rows.append((person, slot, k[1], rarity, hp, atk, df, f'cards/{slug}-{slot}.jpg', k[2], sname, sdesc, spow))
-for i, (name, flavor) in enumerate(DETENTION, 1):
-    hp, atk, df = stats('detention' + str(i), 'cat')
-    rows.append(('Detention', i, name, 'cat', hp, atk, df, f'cards/detention-{i}.jpg', flavor, None, None, None))
 
 lines = [f"  ({q(p)}, {s}, {q(n)}, {q(r)}, {hp}, {a}, {d}, {q(img)}, {q(f)}, {q(sn)}, {q(sd)}, {'null' if sp is None else sp})"
          for p, s, n, r, hp, a, d, img, f, sn, sd, sp in rows]
@@ -203,7 +187,7 @@ names = ', '.join(f"'{v[0]}'" for v in VRIENDEN)
 sql = f"""-- =====================================================================
 -- RIZZ ACADEMY: alle kaarten ({len(rows)} kaarten)
 -- {len(VRIENDEN)} vrienden x 9 kaarten (slot 1-6 common, 7-8 epic, 9 legendary)
--- + 9 Detention-kaarten (troostkaarten, rarity 'cat').
+-- (Geen Detention-kaarten meer: wie de dagelijkse les niet haalt, krijgt een F.)
 --
 -- Gebruik: Supabase -> SQL Editor -> nieuwe query -> dit VOLLEDIGE bestand plakken -> Run.
 -- Kies bij de waarschuwing "Run without RLS".

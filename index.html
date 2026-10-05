@@ -1475,6 +1475,69 @@ div.wf-inner{cursor:default}
   .jb-mid{padding:3px 10px}.jb-mid b{font-size:22px}
   .duel-side{grid-template-areas:"card hp" "card txt" "card bench"}
 }
+
+/* =====================================================================
+   LESSENROOSTER EN MINIGAMES
+   ===================================================================== */
+.timetable{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:8px;margin:4px 0 18px}
+.tt-day{position:relative;display:grid;justify-items:center;gap:2px;padding:10px 6px;border-radius:12px;border:1px solid var(--line);background:linear-gradient(180deg,#1A2340,#141B31);text-align:center;opacity:.6}
+.tt-day.party{background:linear-gradient(180deg,#2A1530,#1A0F22)}
+.tt-day.today{opacity:1;border-color:var(--gold);box-shadow:0 0 0 1px var(--gold),0 12px 24px -14px rgba(212,168,75,.6)}
+.tt-d{font:700 10px var(--body);letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
+.tt-day.today .tt-d{color:var(--gold)}
+.tt-i{font-size:20px}
+.tt-day b{font:400 12.5px var(--varsity);letter-spacing:.03em}
+.tt-day small{font:500 10.5px/1.2 var(--body);color:var(--ink-soft)}
+.tt-ok{position:absolute;top:6px;right:8px;color:var(--green-soft);font-weight:700}
+@media (max-width:899px){.timetable{gap:4px}.tt-day{padding:7px 2px}.tt-day small{display:none}.tt-day b{font-size:10px}.tt-i{font-size:16px}}
+.exam-intro,.exam-done,.exam-play{max-width:640px;padding:22px 24px;border-radius:18px;background:linear-gradient(180deg,#1A2340,#141B31);border:1px solid var(--line2);box-shadow:0 30px 60px -30px rgba(0,0,0,.9)}
+.exam-intro .kicker{color:var(--gold)}
+.exam-intro h3{margin:4px 0 10px;font:400 30px var(--varsity);letter-spacing:.03em;text-transform:none;color:var(--ink)}
+.exam-intro ul{margin:0 0 14px;padding-left:18px;color:var(--ink);font:500 15px/1.5 var(--body)}
+.grade-row{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 14px}
+.grade-row span{display:flex;align-items:center;gap:6px;padding:6px 10px;border-radius:8px;background:rgba(255,255,255,.05);font:500 12.5px var(--body);color:var(--ink-soft)}
+.grade-row b{font:400 18px var(--varsity);color:var(--gold2)}
+.grade-row .f b{color:var(--err)}
+.exam-done{display:grid;grid-template-columns:auto minmax(0,1fr) 180px;gap:22px;align-items:center;max-width:820px}
+.exam-grade{display:grid;justify-items:center;gap:4px;width:120px;padding:14px 8px;border-radius:14px;background:#F4EBDD;color:#8C0B21;box-shadow:inset 0 0 0 3px #C8102E,0 14px 30px -14px rgba(0,0,0,.8);transform:rotate(-4deg)}
+.exam-grade span{font:400 64px/1 var(--varsity)}
+.exam-grade small{font:italic 600 11px var(--display);text-align:center}
+.exam-grade.g-F{color:#5A0E1A;background:#E9D3D3}
+.exam-done-txt h3{margin:0 0 6px}
+.exam-done-txt p{margin:0 0 6px;color:var(--ink)}
+.exam-card .cw{width:100%}
+@media (max-width:899px){.exam-done{grid-template-columns:auto minmax(0,1fr)}.exam-card{grid-column:1/-1;width:min(220px,70%);justify-self:center}}
+.exam-play{max-width:520px;margin:0 auto}
+.exam-play-head{margin-bottom:10px}
+.exam-play-head .kicker{color:var(--gold)}
+.exam-play-head h3{margin:2px 0 0;font:400 24px var(--varsity);text-transform:none;letter-spacing:.03em;color:var(--ink)}
+.game-box{position:relative}
+.game-canvas{display:block;width:100%;aspect-ratio:4/5;border-radius:14px;touch-action:none;user-select:none;-webkit-user-select:none;cursor:crosshair;box-shadow:inset 0 0 0 1px rgba(255,255,255,.06)}
+.game-hud{position:absolute;left:10px;right:10px;top:10px;display:flex;justify-content:space-between;pointer-events:none;font:600 13px var(--body);color:var(--ink)}
+.game-hud span{padding:5px 10px;border-radius:999px;background:rgba(8,12,26,.75)}
+.game-hud b{font:400 15px var(--varsity);color:var(--gold2);margin-left:4px}
+/* Speed Math en History */
+.mg-top{display:flex;align-items:center;gap:12px;margin-bottom:14px;font:600 14px var(--body)}
+.mg-top span:first-child{font:400 18px var(--varsity);color:var(--gold2)}
+.mg-time{flex:1;height:10px;border-radius:10px;background:rgba(255,255,255,.08);overflow:hidden}
+.mg-time i{display:block;height:100%;background:linear-gradient(90deg,var(--red),var(--gold));transition:width .1s linear}
+.mg-q{padding:26px 10px;border-radius:14px;background:#F4EBDD;color:#1C2540;text-align:center;font:400 46px var(--varsity);margin-bottom:14px}
+.mg-q.ok{animation:mg-ok .3s ease}.mg-q.bad{animation:shake .35s ease}
+@keyframes mg-ok{50%{background:#C9F0D6}}
+.mg-opts{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.mg-opts button{padding:18px 8px;border-radius:12px;border:0;background:linear-gradient(160deg,#243052,#1A2340);color:var(--ink);font:400 26px var(--varsity);cursor:pointer;box-shadow:inset 0 0 0 1px var(--line2);touch-action:manipulation}
+.mg-opts button:active{transform:scale(.97);background:#2C3A60}
+.hg-ask{margin:0 0 12px;font:400 20px var(--varsity);text-align:center}
+.hg-opts{display:grid;gap:10px}
+.hg-opts button{display:grid;gap:4px;padding:18px 14px;border-radius:14px;border:0;background:#F4EBDD;color:#1C2540;cursor:pointer;text-align:center;font:inherit;touch-action:manipulation;transition:background .2s,transform .1s}
+.hg-opts button b{font:700 18px/1.25 var(--display)}
+.hg-year{font:400 16px var(--varsity);color:#8C0B21;visibility:hidden}
+.hg-opts.reveal .hg-year{visibility:visible}
+.hg-opts button.ok{background:#C9F0D6}.hg-opts button.bad{background:#F3C4CC}.hg-opts button.other{opacity:.7}
+.hg-or{text-align:center;font:italic 600 13px var(--display);color:var(--muted)}
+.bar-fill.f{background:linear-gradient(90deg,#8C0B21,#E0284A)}
+.bar-label small{color:var(--muted);font-size:10.5px;margin-left:4px}
+.fcount{color:var(--err)}
 </style>
 </head>
 <body>
@@ -1644,7 +1707,7 @@ async function loadData() {
     sb.from('admins').select('user_id').eq('user_id', uid).maybeSingle(),
     sb.from('tbattles').select('player_a, player_b, status, moved:state->moved').eq('mode', 'pvp').in('status', ['pending', 'active']).or(`player_a.eq.${uid},player_b.eq.${uid}`),
     sb.from('welcome_packs').select('user_id').eq('user_id', uid).maybeSingle(),
-    sb.from('wordle_games').select('round_date').eq('user_id', uid).neq('status', 'playing'),
+    sb.from('exam_results').select('exam_date').eq('user_id', uid).eq('status', 'done'),
     sb.from('trade_requests').select('id', { count: 'exact', head: true }).eq('status', 'pending').eq('turn', uid)
   ]);
   for (const r of [cards, mine, prof, wallet]) if (r.error) throw new Error(r.error.message);
@@ -1658,7 +1721,7 @@ async function loadData() {
     b.status === 'pending' ? b.player_b === uid : !(b.moved || {})[b.player_a === uid ? 'A' : 'B']).length;
   // Welkomstpakket nog niet opgehaald? (bestaat de tabel niet, dan geen knop)
   state.welcomeAvailable = !welcome.error && !welcome.data;
-  state.playDates = new Set(played.error ? [] : (played.data || []).map(r => r.round_date));
+  state.playDates = new Set(played.error ? [] : (played.data || []).map(r => r.exam_date));
   state.cards = cards.data;
   state.owned = new Map();
   for (const row of mine.data) state.owned.set(row.card_id, (state.owned.get(row.card_id) || 0) + 1);
@@ -1987,28 +2050,23 @@ function syncTradeBadge() { setBadge('[data-trade-badge]', state.incomingTrades)
 
 // ---------- Uitleg achter een info-icoontje ----------
 const INFO = {
-  today: ['Hoe werkt het?', `
-    <p>Elke dag is er <strong>1 Wordle</strong>, vanaf middernacht (Belgische tijd). Iedereen krijgt hetzelfde geheime woord — het is niet de officiële Wordle, dus opzoeken helpt niet.</p>
-    <ul><li>Raad het Engelse woord van 5 letters in maximaal 6 pogingen. Typ of gebruik het toetsenbord op het scherm.</li>
-    <li>🟩 juiste letter op de juiste plek · 🟨 letter zit in het woord, maar elders · ⬛ letter zit er niet in.</li>
-    <li>Daarna open je een pakje. Hoe minder pogingen, hoe zeldzamer je kaart.</li>
-    <li>Heb je de kaart al? Dan krijg je ze als dubbel om te ruilen, plus wat credits. Niet opgelost? Dan moet je nablijven en krijg je een Detention-kaart.</li></ul>
+  today: ['Het lessenrooster', `
+    <p>Elke dag (Belgische tijd) staat er een ander vak op het rooster, met een eigen spel. Je hebt <strong>één poging per dag</strong>.</p>
+    <ul><li><strong>Ma</strong> English: de Wordle · <strong>Di</strong> Math: Speed Math · <strong>Wo</strong> Phys. Ed.: Free Throws · <strong>Do</strong> History: Which Came First? · <strong>Vr</strong> Physics: Darts</li>
+    <li><strong>Za en Zo</strong>: geen school, dus party games: Beer Pong en Pour the Pint.</li>
+    <li>Je score wordt een cijfer. Hoe beter het cijfer, hoe groter de kans op een zeldzame kaart. Een <strong>F</strong> = gebuisd: geen kaart, en iedereen ziet hoeveel F's je hebt.</li>
+    <li>Wie een spel start en het niet afmaakt (pagina herladen of weggaan), krijgt een F.</li></ul>
     <table class="odds-table">
-      <thead><tr><th>Pogingen</th><th>Common</th><th>Epic</th><th>Legendary</th></tr></thead>
+      <thead><tr><th>Cijfer</th><th>Common</th><th>Epic</th><th>Legendary</th></tr></thead>
       <tbody>
-        <tr><td>1</td><td>0%</td><td>20%</td><td>80%</td></tr>
-        <tr><td>2</td><td>20%</td><td>50%</td><td>30%</td></tr>
-        <tr><td>3</td><td>55%</td><td>35%</td><td>10%</td></tr>
-        <tr><td>4</td><td>75%</td><td>22%</td><td>3%</td></tr>
-        <tr><td>5</td><td>88%</td><td>11%</td><td>1%</td></tr>
-        <tr><td>6</td><td>95%</td><td>4,5%</td><td>0,5%</td></tr>
-        <tr><td>Niet opgelost</td><td colspan="3">Altijd een Detention-kaart</td></tr>
+        <tr><td>A</td><td>20%</td><td>50%</td><td>30%</td></tr>
+        <tr><td>B</td><td>55%</td><td>35%</td><td>10%</td></tr>
+        <tr><td>C</td><td>75%</td><td>22%</td><td>3%</td></tr>
+        <tr><td>D</td><td>91,5%</td><td>8%</td><td>0,5%</td></tr>
+        <tr><td>F</td><td colspan="3">Geen kaart</td></tr>
       </tbody>
-    </table>`],
-  book: ['Je yearbook', `
-    <p>Elke vriend heeft een eigen pagina met 9 kaarten: 6 commons, 2 epics en 1 legendary. De Detention-kaarten (voor wie de Wordle niet oplost) krijgen hun eigen pagina.</p>
-    <ul><li>Klik op een kaart om ze groot te bekijken, tik nog eens om ze om te draaien.</li>
-    <li>Achteraan vind je de pagina <strong>Dubbels</strong> met alle kaarten die je meer dan één keer hebt.</li></ul>`],
+    </table>
+    <p>Wordle: 1-2 pogingen = A, 3 = B, 4 = C, 5-6 = D, niet opgelost = F. Heb je de kaart al? Dan krijg je een dubbel om te ruilen plus wat credits.</p>`],
   stats: ['Statistieken', `<p>Een overzicht van al je Wordles: hoe vaak je speelde, je huidige streak (opeenvolgende dagen), hoe vaak je de Wordle oploste en in hoeveel pogingen.</p>`],
   battle: ['Zo werkt The Arena', `
     <p>Kies 3 kaarten. Nummer 1 begint, de andere twee staan op de bank. Elke ronde kiezen jij en je tegenstander <strong>tegelijk en geheim</strong> een zet:</p>
@@ -2023,8 +2081,7 @@ const INFO = {
     <p><strong>Credits</strong>: Scrimmage/Varsity/Championship = 5/10/20 (max 5 per dag). Tegen een vriend: winnaar 25, verliezer 5 (max 3 per dag). Opgeven levert niets op.</p>`],
   house: ['Het Frat House', `
     <p>Elke persoon van de kaarten heeft een kamer in het huis. In die kamer hangen zijn 9 kaarten in houten kaders: dat is jouw collectie van die persoon (vroeger het yearbook). Kaarten die je nog niet hebt, blijven leeg.</p>
-    <ul><li>Het kleine raam boven de deur is de <strong>Detention</strong>-kamer met de troostkaarten.</li>
-    <li>Een verlicht raam: de bewoner heeft vandaag de Wordle gespeeld.</li>
+    <ul><li>Een verlicht raam: de bewoner heeft vandaag de Wordle gespeeld.</li>
     <li>Op de plank staan de <strong>trofeeën</strong> van de bewoner. Tik op een trofee voor de uitleg.</li>
     <li>Vanuit de kamer van iemand anders kan je hem uitdagen of een ruil voorstellen.</li>
     <li>Je account wordt automatisch aan je kamer gekoppeld op basis van je naam. Lukt dat niet, dan tik je in je kamer op "Dit is mijn kamer".</li></ul>`],
@@ -2424,6 +2481,457 @@ async function renderCampus(view) {
   if (!state.incomingRequests) setStatus('house', `${lit}/${rows.length + 1} played today`);
 }
 
+// ---------- Lessenrooster: elke dag een ander vak met een eigen minigame ----------
+// Het spel draait in de browser; de score gaat naar exam_submit() in Supabase, die het cijfer
+// berekent en de kaart trekt. Eén poging per dag (exam_start() telt als poging).
+const SCHEDULE = [
+  { dow: 1, game: 'wordle', subject: 'English', title: 'The Wordle', icon: '📖' },
+  { dow: 2, game: 'math', subject: 'Math', title: 'Speed Math', icon: '➗' },
+  { dow: 3, game: 'hoops', subject: 'Phys. Ed.', title: 'Free Throws', icon: '🏀' },
+  { dow: 4, game: 'history', subject: 'History', title: 'Which Came First?', icon: '🏛️' },
+  { dow: 5, game: 'darts', subject: 'Physics', title: 'Darts', icon: '🎯' },
+  { dow: 6, game: 'pong', subject: 'Party', title: 'Beer Pong', icon: '🍺' },
+  { dow: 7, game: 'pour', subject: 'Party', title: 'Pour the Pint', icon: '🍻' },
+];
+const DAY_SHORT = ['', 'Ma', 'Di', 'Wo', 'Do', 'Vr', 'Za', 'Zo'];
+const GRADE_TEXT = { A: 'Summa cum laude', B: 'Magna cum laude', C: 'Cum laude', D: 'Geslaagd', F: 'Gebuisd' };
+const EXAM_INFO = {
+  math: { rules: ['60 seconden: tik zo snel mogelijk het juiste antwoord.', 'Juist = +1, fout = −1.'], unit: 'juist', grades: [24, 18, 12, 7] },
+  hoops: { rules: ['Swipe de bal omhoog naar de ring. Lengte = kracht, richting = mikken.', '10 worpen. Vanaf worp 4 beweegt de ring.'], unit: 'raak', grades: [8, 6, 4, 2] },
+  history: { rules: ['Twee gebeurtenissen: tik op wat het EERST gebeurde.', '10 vragen, 8 seconden per vraag.'], unit: 'juist', grades: [9, 7, 5, 3] },
+  darts: { rules: ['Hou ingedrukt om te mikken en laat los om te gooien. Hoe langer je mikt, hoe meer je hand trilt.', '6 pijlen. Bull = 50, binnenring ×3, buitenring ×2.'], unit: 'punten', grades: [170, 125, 85, 45] },
+  pong: { rules: ['Swipe de bal naar de bekers. Lengte = afstand, richting = mikken.', '10 ballen voor 6 bekers.'], unit: 'bekers', grades: [6, 5, 4, 2] },
+  pour: { rules: ['Hou ingedrukt om te tappen en laat los aan de gouden lijn. Het schuim stijgt nog wat na!', '5 pintjes, elk glas tapt sneller. Overlopen = 0.'], unit: 'punten', grades: [440, 380, 300, 200] },
+};
+const examGameOf = dow => SCHEDULE.find(s => s.dow === dow) || SCHEDULE[0];
+const isoDow = () => { const d = new Date(todayBrussels() + 'T12:00:00'); return d.getDay() || 7; };
+
+function mulberry32(a) {
+  return () => { a |= 0; a = a + 0x6D2B79F5 | 0; let t = Math.imul(a ^ a >>> 15, 1 | a); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; };
+}
+
+// Canvas met een vaste logische grootte (400×500), geschaald naar de breedte van het scherm
+function gameCanvas(box) {
+  box.innerHTML = '<canvas class="game-canvas" width="800" height="1000"></canvas><div class="game-hud" id="gameHud"></div>';
+  const c = box.querySelector('canvas'), ctx = c.getContext('2d');
+  ctx.scale(2, 2);
+  const pos = e => { const r = c.getBoundingClientRect(); return { x: (e.clientX - r.left) / r.width * 400, y: (e.clientY - r.top) / r.height * 500 }; };
+  return { c, ctx, pos, hud: html => { const h = box.querySelector('#gameHud'); if (h) h.innerHTML = html; } };
+}
+const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
+const lerp = (a, b, t) => a + (b - a) * t;
+
+// ---------- Di · Speed Math ----------
+function gameMath(box, rnd) {
+  return new Promise(resolve => {
+    let score = 0, n = 0, end = performance.now() + 60000, q;
+    box.innerHTML = `<div class="math-game"><div class="mg-top"><span id="mgScore">0 juist</span><span class="mg-time"><i id="mgBar"></i></span></div>
+      <div class="mg-q" id="mgQ"></div><div class="mg-opts" id="mgOpts"></div></div>`;
+    const next = () => {
+      n++;
+      const lvl = Math.min(4, Math.floor(n / 6));
+      const op = ['+', '−', '×', '+', '×'][Math.floor(rnd() * (lvl < 1 ? 2 : lvl < 2 ? 4 : 5))];
+      let a, b, ans;
+      if (op === '×') { a = 2 + Math.floor(rnd() * (6 + lvl * 2)); b = 2 + Math.floor(rnd() * 9); ans = a * b; }
+      else { a = 5 + Math.floor(rnd() * (20 + lvl * 25)); b = 2 + Math.floor(rnd() * (10 + lvl * 15)); if (op === '−' && b > a) [a, b] = [b, a]; ans = op === '+' ? a + b : a - b; }
+      const opts = new Set([ans]);
+      while (opts.size < 4) { const d = (1 + Math.floor(rnd() * 6)) * (rnd() < .5 ? -1 : 1) * (op === '×' && rnd() < .5 ? b : 1); if (ans + d >= 0) opts.add(ans + d); }
+      q = ans;
+      $('#mgQ').textContent = `${a} ${op} ${b}`;
+      $('#mgOpts').innerHTML = [...opts].sort(() => rnd() - .5).map(v => `<button type="button" data-v="${v}">${v}</button>`).join('');
+    };
+    $('#mgOpts').onclick = e => {
+      const b = e.target.closest('[data-v]'); if (!b) return;
+      const ok = Number(b.dataset.v) === q;
+      score = Math.max(0, score + (ok ? 1 : -1));
+      $('#mgScore').textContent = `${score} juist`;
+      const qEl = $('#mgQ'); qEl.className = 'mg-q ' + (ok ? 'ok' : 'bad'); void qEl.offsetWidth;
+      next();
+    };
+    next();
+    const tick = () => {
+      const left = end - performance.now();
+      if (!$('#mgBar')) return resolve(score);
+      $('#mgBar').style.width = `${clamp(left / 600, 0, 100)}%`;
+      if (left <= 0) return resolve(score);
+      requestAnimationFrame(tick);
+    };
+    tick();
+  });
+}
+
+// ---------- Do · Which Came First? ----------
+const HISTORY_EVENTS = [
+  ['De piramides van Gizeh', -2560], ['Val van het West-Romeinse Rijk', 476], ['De Zwarte Dood in Europa', 1347], ['Gutenberg drukt boeken', 1440],
+  ['Columbus bereikt Amerika', 1492], ['Amerikaanse onafhankelijkheid', 1776], ['Franse Revolutie', 1789], ['Napoleon wordt keizer', 1804],
+  ['Slag bij Waterloo', 1815], ['België wordt onafhankelijk', 1830], ['De Eiffeltoren is af', 1889], ['Eerste moderne Olympische Spelen', 1896],
+  ['Eerste vlucht van de gebroeders Wright', 1903], ['De Titanic zinkt', 1912], ['Begin Eerste Wereldoorlog', 1914], ['Penicilline ontdekt', 1928],
+  ['Eerste WK voetbal', 1930], ['Eerste McDonald\'s', 1940], ['Einde Tweede Wereldoorlog', 1945], ['Het Atomium wordt gebouwd', 1958],
+  ['Eerste album van The Beatles', 1963], ['Eerste mens op de maan', 1969], ['Eerste Star Wars-film', 1977], ['Thriller van Michael Jackson', 1982],
+  ['Ramp van Tsjernobyl', 1986], ['Val van de Berlijnse Muur', 1989], ['PlayStation 1 komt uit', 1994], ['Eerste Harry Potter-boek', 1997],
+  ['Google wordt opgericht', 1998], ['De euro in je portemonnee', 2002], ['Facebook gaat online', 2004], ['YouTube gaat online', 2005],
+  ['Eerste iPhone', 2007], ['Spotify start', 2008], ['Bitcoin bestaat', 2009], ['Instagram start', 2010], ['Minecraft komt uit', 2011],
+  ['Fortnite komt uit', 2017], ['Rode Duivels 3e op het WK', 2018], ['Corona-lockdowns', 2020], ['ChatGPT verschijnt', 2022], ['Eerste Tomorrowland', 2005],
+];
+const yearLabel = y => (y < 0 ? `${-y} v.C.` : String(y));
+function gameHistory(box, rnd) {
+  return new Promise(resolve => {
+    const ev = HISTORY_EVENTS.slice().sort(() => rnd() - .5);
+    const pairs = [];
+    for (let i = 0; i + 1 < ev.length && pairs.length < 10; i += 2) if (Math.abs(ev[i][1] - ev[i + 1][1]) >= 2) pairs.push([ev[i], ev[i + 1]]);
+    let i = 0, score = 0, timer = null;
+    box.innerHTML = `<div class="hist-game"><div class="mg-top"><span id="hgScore">0 juist</span><span id="hgN">1/10</span><span class="mg-time"><i id="mgBar"></i></span></div>
+      <p class="hg-ask">Wat gebeurde er eerst?</p><div class="hg-opts" id="hgOpts"></div></div>`;
+    const show = () => {
+      if (i >= pairs.length || !$('#hgOpts')) return resolve(score);
+      $('#hgN').textContent = `${i + 1}/${pairs.length}`;
+      const [a, b] = pairs[i];
+      $('#hgOpts').innerHTML = [a, b].map((e, k) => `<button type="button" data-k="${k}"><b>${esc(e[0])}</b><small class="hg-year">${yearLabel(e[1])}</small></button>`).join('<span class="hg-or">of</span>');
+      const t0 = performance.now();
+      const run = () => {
+        if (!$('#mgBar')) return;
+        const left = 8000 - (performance.now() - t0);
+        $('#mgBar').style.width = `${clamp(left / 80, 0, 100)}%`;
+        if (left <= 0) return answer(-1);
+        timer = requestAnimationFrame(run);
+      };
+      run();
+    };
+    const answer = k => {
+      cancelAnimationFrame(timer);
+      const [a, b] = pairs[i], first = a[1] < b[1] ? 0 : 1;
+      if (k === first) score++;
+      $('#hgScore').textContent = `${score} juist`;
+      const opts = $('#hgOpts');
+      opts.classList.add('reveal');
+      opts.querySelectorAll('[data-k]').forEach(btn => btn.classList.add(Number(btn.dataset.k) === first ? 'ok' : (Number(btn.dataset.k) === k ? 'bad' : 'other')));
+      i++;
+      setTimeout(show, 1100);
+    };
+    $('#hgOpts').onclick = e => { const b = e.target.closest('[data-k]'); if (b && !$('#hgOpts').classList.contains('reveal')) answer(Number(b.dataset.k)); };
+    const obs = new MutationObserver(() => { $('#hgOpts')?.classList.remove('reveal'); });
+    obs.observe($('#hgOpts'), { childList: true });
+    show();
+  });
+}
+
+// ---------- Swipe-worp (basketbal en beer pong) ----------
+function swipeInput(c, pos, onThrow) {
+  let start = null;
+  c.addEventListener('pointerdown', e => { start = { ...pos(e), t: performance.now() }; c.setPointerCapture(e.pointerId); });
+  c.addEventListener('pointerup', e => {
+    if (!start) return;
+    const p = pos(e), dx = p.x - start.x, dy = p.y - start.y;
+    start = null;
+    if (dy < -30) onThrow(dx, -dy);
+  });
+}
+
+// ---------- Wo · Free Throws ----------
+function gameHoops(box, rnd) {
+  return new Promise(resolve => {
+    const { c, ctx, pos, hud } = gameCanvas(box);
+    let shot = 0, made = 0, ball = null, hx = 200, t0 = performance.now(), msg = '', msgT = 0, done = false;
+    const RIM_Y = 150, RIM_W = 34;
+    const hoopX = now => (shot < 3 ? 200 : 200 + Math.sin((now - t0) / (shot < 6 ? 900 : 560)) * (shot < 6 ? 70 : 95));
+    swipeInput(c, pos, (dx, p) => {
+      if (ball || done) return;
+      // kracht bepaalt of de bal tot aan de ring komt; links/rechts wordt beslist bij aankomst
+      ball = { t: 0, xl: 200 + dx * 1.15, kind: p < 160 ? 'short' : p > 345 ? 'long' : 'ok' };
+    });
+    const draw = now => {
+      if (done) return;
+      hx = hoopX(now);
+      ctx.clearRect(0, 0, 400, 500);
+      // vloer en muur
+      const g = ctx.createLinearGradient(0, 0, 0, 500); g.addColorStop(0, '#1A2340'); g.addColorStop(.62, '#20294A'); g.addColorStop(.62, '#B9824C'); g.addColorStop(1, '#8E5E33');
+      ctx.fillStyle = g; ctx.fillRect(0, 0, 400, 500);
+      ctx.strokeStyle = 'rgba(255,255,255,.35)'; ctx.lineWidth = 2; ctx.beginPath(); ctx.ellipse(200, 470, 120, 30, 0, Math.PI, 0); ctx.stroke();
+      // bord
+      ctx.fillStyle = 'rgba(255,255,255,.92)'; ctx.fillRect(hx - 62, 60, 124, 84);
+      ctx.strokeStyle = '#C8102E'; ctx.lineWidth = 3; ctx.strokeRect(hx - 62, 60, 124, 84); ctx.strokeRect(hx - 22, 100, 44, 34);
+      // net (achter)
+      ctx.strokeStyle = 'rgba(255,255,255,.75)'; ctx.lineWidth = 1.5;
+      for (let k = -3; k <= 3; k++) { ctx.beginPath(); ctx.moveTo(hx + k * 11, RIM_Y); ctx.lineTo(hx + k * 7, RIM_Y + 42); ctx.stroke(); }
+      // bal
+      const drawBall = (x, y, r) => {
+        const bg = ctx.createRadialGradient(x - r * .3, y - r * .3, r * .2, x, y, r); bg.addColorStop(0, '#F5A35A'); bg.addColorStop(1, '#C2601E');
+        ctx.fillStyle = bg; ctx.beginPath(); ctx.arc(x, y, r, 0, 7); ctx.fill();
+        ctx.strokeStyle = 'rgba(40,20,10,.7)'; ctx.lineWidth = 1.5; ctx.beginPath(); ctx.arc(x, y, r, 0, 7); ctx.moveTo(x - r, y); ctx.lineTo(x + r, y); ctx.moveTo(x, y - r); ctx.lineTo(x, y + r); ctx.stroke();
+      };
+      let front = null;
+      if (ball) {
+        ball.t += 1 / 50;
+        const t = Math.min(ball.t, 1), b = ball;
+        if (ball.t >= 1 && b.kind === 'ok') b.kind = Math.abs(b.xl - hx) < RIM_W - 6 ? 'in' : Math.abs(b.xl - hx) < RIM_W + 14 ? 'rim' : 'miss';
+        const tx = b.xl;
+        let x = lerp(200, tx, t), y, r = lerp(26, 15, t);
+        const endY = b.kind === 'short' ? 250 : b.kind === 'long' ? 70 : RIM_Y - 8;
+        y = lerp(430, endY, t) - Math.sin(t * Math.PI) * 170;
+        if (ball.t > 1) {
+          const u = ball.t - 1;
+          if (b.kind === 'in') { x = lerp(tx, hx, Math.min(1, u * 4)); y = RIM_Y - 8 + u * 160; front = true; }
+          else if (b.kind === 'rim') { x = tx + (tx < hx ? -1 : 1) * u * 120; y = RIM_Y - 8 - Math.sin(u * 4) * 30 + u * 160; }
+          else { y = endY + u * 260; }
+          if (u > .7) {
+            if (b.kind === 'in') { made++; msg = ['Swish!', 'Money!', 'Buckets!'][made % 3]; } else msg = { short: 'Te kort', long: 'Te ver', rim: 'Op de ring…', miss: 'Mis' }[b.kind];
+            msgT = now; shot++; ball = null;
+            if (shot >= 10) { done = true; setTimeout(() => resolve(made), 700); }
+          }
+        }
+        if (ball) drawBall(x, y, r);
+      } else if (shot < 10) drawBall(200, 430, 26);
+      // ring vooraan
+      ctx.strokeStyle = '#E8541C'; ctx.lineWidth = 5; ctx.beginPath(); ctx.ellipse(hx, RIM_Y, RIM_W, 7, 0, 0, Math.PI); ctx.stroke();
+      if (msg && now - msgT < 900) { ctx.fillStyle = '#FFE9A8'; ctx.font = '700 28px Graduate, Georgia, serif'; ctx.textAlign = 'center'; ctx.fillText(msg, 200, 300); }
+      hud(`<span>Raak <b>${made}</b></span><span>Worp <b>${Math.min(shot + 1, 10)}/10</b></span>`);
+      if (!done) requestAnimationFrame(draw);
+    };
+    requestAnimationFrame(draw);
+  });
+}
+
+// ---------- Za · Beer Pong ----------
+function gamePong(box, rnd) {
+  return new Promise(resolve => {
+    const { c, ctx, pos, hud } = gameCanvas(box);
+    const cups = [[160, 105], [200, 105], [240, 105], [180, 138], [220, 138], [200, 171]].map(([x, y]) => ({ x, y, hit: false }));
+    let balls = 0, hits = 0, ball = null, msg = '', msgT = 0, done = false;
+    swipeInput(c, pos, (dx, p) => {
+      if (ball || done) return;
+      ball = { t: 0, xl: 200 + dx * 1.05, yl: 440 - p * 1.12 };
+    });
+    const draw = now => {
+      if (done) return;
+      ctx.clearRect(0, 0, 400, 500);
+      ctx.fillStyle = '#0C1120'; ctx.fillRect(0, 0, 400, 500);
+      // tafel in perspectief
+      ctx.fillStyle = '#1F5C38'; ctx.beginPath(); ctx.moveTo(110, 60); ctx.lineTo(290, 60); ctx.lineTo(390, 500); ctx.lineTo(10, 500); ctx.closePath(); ctx.fill();
+      ctx.strokeStyle = 'rgba(255,255,255,.6)'; ctx.lineWidth = 2; ctx.beginPath(); ctx.moveTo(200, 60); ctx.lineTo(200, 500); ctx.stroke();
+      // bekers
+      for (const cp of cups) {
+        if (cp.hit) continue;
+        ctx.fillStyle = '#C8102E'; ctx.beginPath(); ctx.moveTo(cp.x - 17, cp.y); ctx.lineTo(cp.x + 17, cp.y); ctx.lineTo(cp.x + 13, cp.y + 26); ctx.lineTo(cp.x - 13, cp.y + 26); ctx.closePath(); ctx.fill();
+        ctx.fillStyle = '#F4EBDD'; ctx.beginPath(); ctx.ellipse(cp.x, cp.y, 17, 6, 0, 0, 7); ctx.fill();
+        ctx.fillStyle = '#D9A441'; ctx.beginPath(); ctx.ellipse(cp.x, cp.y + 1, 13, 4, 0, 0, 7); ctx.fill();
+      }
+      const drawBall = (x, y, r) => { ctx.fillStyle = '#FFFFFF'; ctx.beginPath(); ctx.arc(x, y, r, 0, 7); ctx.fill(); ctx.strokeStyle = 'rgba(0,0,0,.25)'; ctx.stroke(); };
+      if (ball) {
+        ball.t += 1 / 46;
+        const t = Math.min(ball.t, 1);
+        const x = lerp(200, ball.xl, t), y = lerp(440, ball.yl, t) - Math.sin(t * Math.PI) * 120, r = lerp(14, 7, t);
+        drawBall(x, y, r);
+        if (ball.t >= 1) {
+          const cp = cups.find(q => !q.hit && Math.hypot(q.x - ball.xl, (q.y - ball.yl) * 1.6) < 15);
+          if (cp) { cp.hit = true; hits++; msg = ['Splash!', 'Drink!', 'Re-rack!'][hits % 3]; } else msg = 'Mis';
+          msgT = now; balls++; ball = null;
+          if (hits >= 6 || balls >= 10) { done = true; setTimeout(() => resolve(hits), 700); }
+        }
+      } else if (balls < 10) drawBall(200, 440, 14);
+      if (msg && now - msgT < 800) { ctx.fillStyle = '#FFE9A8'; ctx.font = '700 28px Graduate, Georgia, serif'; ctx.textAlign = 'center'; ctx.fillText(msg, 200, 300); }
+      hud(`<span>Bekers <b>${hits}/6</b></span><span>Bal <b>${Math.min(balls + 1, 10)}/10</b></span>`);
+      if (!done) requestAnimationFrame(draw);
+    };
+    requestAnimationFrame(draw);
+  });
+}
+
+// ---------- Vr · Darts ----------
+const DART_ORDER = [20, 1, 18, 4, 13, 6, 10, 15, 2, 17, 3, 19, 7, 16, 8, 11, 14, 9, 12, 5];
+function dartScore(dx, dy) {
+  const r = Math.hypot(dx, dy);
+  if (r <= 8) return 50; if (r <= 18) return 25; if (r > 170) return 0;
+  const ang = (Math.atan2(dx, -dy) * 180 / Math.PI + 360 + 9) % 360;
+  const base = DART_ORDER[Math.floor(ang / 18)];
+  return r >= 96 && r <= 106 ? base * 3 : r >= 160 ? base * 2 : base;
+}
+function gameDarts(box, rnd) {
+  return new Promise(resolve => {
+    const { c, ctx, pos, hud } = gameCanvas(box);
+    const CX = 200, CY = 235;
+    let aim = null, holdT = 0, darts = [], total = 0, msg = '', msgT = 0, done = false;
+    const touch = matchMedia('(pointer: coarse)').matches;
+    c.addEventListener('pointerdown', e => { if (done || darts.length >= 6) return; aim = pos(e); holdT = performance.now(); c.setPointerCapture(e.pointerId); });
+    c.addEventListener('pointermove', e => { if (aim) aim = pos(e); });
+    c.addEventListener('pointerup', () => {
+      if (!aim) return;
+      const p = sway(performance.now());
+      const s = dartScore(p.x - CX, p.y - CY);
+      darts.push({ x: p.x, y: p.y }); total += s; msg = s ? (s === 50 ? 'BULLSEYE!' : `+${s}`) : 'Naast';
+      msgT = performance.now(); aim = null;
+      if (darts.length >= 6) { done = true; setTimeout(() => resolve(total), 900); }
+    });
+    // Hand trilt meer naarmate je langer mikt
+    const sway = now => {
+      const h = (now - holdT) / 1000, amp = 5 + 18 * Math.min(1, h / 2.2);
+      const off = touch ? -70 : 0;
+      return { x: aim.x + Math.sin(now / 190) * amp + Math.sin(now / 77) * amp * .35, y: aim.y + off + Math.cos(now / 230) * amp + Math.sin(now / 61) * amp * .3 };
+    };
+    const drawBoard = () => {
+      ctx.fillStyle = '#111'; ctx.beginPath(); ctx.arc(CX, CY, 192, 0, 7); ctx.fill();
+      for (let i = 0; i < 20; i++) {
+        const a0 = (i * 18 - 9 - 90) * Math.PI / 180, a1 = a0 + 18 * Math.PI / 180, even = i % 2 === 0;
+        const ring = (r0, r1, col) => { ctx.fillStyle = col; ctx.beginPath(); ctx.arc(CX, CY, r1, a0, a1); ctx.arc(CX, CY, r0, a1, a0, true); ctx.fill(); };
+        ring(18, 170, even ? '#1A1A1A' : '#EFE3C4');
+        ring(96, 106, even ? '#C8102E' : '#2E7A44');
+        ring(160, 170, even ? '#C8102E' : '#2E7A44');
+        ctx.fillStyle = '#F4EBDD'; ctx.font = '700 15px Inter, Arial'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+        const am = (i * 18 - 90) * Math.PI / 180; ctx.fillText(DART_ORDER[i], CX + Math.cos(am) * 182, CY + Math.sin(am) * 182);
+      }
+      ctx.fillStyle = '#2E7A44'; ctx.beginPath(); ctx.arc(CX, CY, 18, 0, 7); ctx.fill();
+      ctx.fillStyle = '#C8102E'; ctx.beginPath(); ctx.arc(CX, CY, 8, 0, 7); ctx.fill();
+    };
+    const draw = now => {
+      ctx.fillStyle = '#2A1C14'; ctx.fillRect(0, 0, 400, 500);
+      drawBoard();
+      for (const d of darts) { ctx.fillStyle = '#FFE9A8'; ctx.beginPath(); ctx.arc(d.x, d.y, 4, 0, 7); ctx.fill(); ctx.strokeStyle = '#3A2A10'; ctx.lineWidth = 2; ctx.beginPath(); ctx.moveTo(d.x, d.y); ctx.lineTo(d.x + 10, d.y + 14); ctx.stroke(); }
+      if (aim) {
+        const p = sway(now);
+        ctx.strokeStyle = '#7FD3A0'; ctx.lineWidth = 2; ctx.beginPath(); ctx.arc(p.x, p.y, 10, 0, 7); ctx.moveTo(p.x - 16, p.y); ctx.lineTo(p.x + 16, p.y); ctx.moveTo(p.x, p.y - 16); ctx.lineTo(p.x, p.y + 16); ctx.stroke();
+      } else if (!done) { ctx.fillStyle = 'rgba(244,235,221,.75)'; ctx.font = '600 14px Inter, Arial'; ctx.textAlign = 'center'; ctx.fillText('Hou ingedrukt om te mikken, laat los om te gooien', 200, 480); }
+      if (msg && now - msgT < 800) { ctx.fillStyle = '#FFE9A8'; ctx.font = '700 30px Graduate, Georgia, serif'; ctx.textAlign = 'center'; ctx.fillText(msg, 200, 45); }
+      hud(`<span>Punten <b>${total}</b></span><span>Pijl <b>${Math.min(darts.length + 1, 6)}/6</b></span>`);
+      if (c.isConnected && (!done || now - msgT < 900)) requestAnimationFrame(draw);
+    };
+    requestAnimationFrame(draw);
+  });
+}
+
+// ---------- Zo · Pour the Pint ----------
+function gamePour(box, rnd) {
+  return new Promise(resolve => {
+    const { c, ctx, hud } = gameCanvas(box);
+    const targets = Array.from({ length: 5 }, () => .62 + rnd() * .26);
+    let glass = 0, level = 0, foam = 0, pouring = false, settle = 0, total = 0, scores = [], msg = '', msgT = 0, done = false, last = performance.now();
+    const speed = () => .22 + glass * .07;
+    c.addEventListener('pointerdown', e => { if (done || settle) return; pouring = true; c.setPointerCapture(e.pointerId); });
+    const stop = () => { if (!pouring) return; pouring = false; settle = performance.now(); };
+    c.addEventListener('pointerup', stop); c.addEventListener('pointercancel', stop);
+    const draw = now => {
+      const dt = Math.min(.05, (now - last) / 1000); last = now;
+      if (pouring) { level += speed() * dt; foam = Math.min(.12, foam + dt * .25); }
+      else if (settle) {
+        // het schuim stijgt nog even na
+        const s = (now - settle) / 1000;
+        if (s < .6) level += speed() * dt * .35 * (1 - s / .6);
+        if (s > 1.1) {
+          const top = level + foam * .4, t = targets[glass];
+          const sc = top > 1 ? 0 : Math.max(0, Math.round(100 - Math.abs(top - t) * 420));
+          scores.push(sc); total += sc; msg = top > 1 ? 'Overgelopen!' : sc >= 90 ? 'Perfect pint!' : sc >= 70 ? 'Mooi getapt' : `+${sc}`; msgT = now;
+          glass++; level = 0; foam = 0; settle = 0;
+          if (glass >= 5) { done = true; setTimeout(() => resolve(total), 900); }
+        }
+      }
+      ctx.fillStyle = '#1B120C'; ctx.fillRect(0, 0, 400, 500);
+      // tap
+      ctx.fillStyle = '#B8933F'; ctx.fillRect(176, 20, 48, 34); ctx.fillRect(192, 54, 16, 40);
+      if (pouring) { ctx.fillStyle = 'rgba(230,170,60,.9)'; ctx.fillRect(196, 94, 8, 330); }
+      // glas
+      const gx0 = 130, gx1 = 270, gy0 = 130, gy1 = 460, H = gy1 - gy0;
+      const fillTop = gy1 - clamp(level, 0, 1.05) * H;
+      if (level > 0) {
+        const bg = ctx.createLinearGradient(0, fillTop, 0, gy1); bg.addColorStop(0, '#F2B640'); bg.addColorStop(1, '#C97A16');
+        ctx.fillStyle = bg; ctx.fillRect(gx0 + 4, fillTop, gx1 - gx0 - 8, gy1 - fillTop);
+        ctx.fillStyle = '#FBF3E0'; ctx.fillRect(gx0 + 4, fillTop - foam * H, gx1 - gx0 - 8, foam * H);
+      }
+      ctx.strokeStyle = 'rgba(255,255,255,.75)'; ctx.lineWidth = 4; ctx.beginPath(); ctx.moveTo(gx0, gy0); ctx.lineTo(gx0 + 6, gy1); ctx.lineTo(gx1 - 6, gy1); ctx.lineTo(gx1, gy0); ctx.stroke();
+      if (glass < 5) {
+        const ty = gy1 - targets[glass] * H;
+        ctx.strokeStyle = '#FFD86B'; ctx.lineWidth = 3; ctx.setLineDash([10, 6]); ctx.beginPath(); ctx.moveTo(gx0 - 20, ty); ctx.lineTo(gx1 + 20, ty); ctx.stroke(); ctx.setLineDash([]);
+        ctx.fillStyle = '#FFD86B'; ctx.font = '700 12px Inter, Arial'; ctx.textAlign = 'left'; ctx.fillText('STOP', gx1 + 24, ty + 4);
+      }
+      if (!pouring && !settle && !done) { ctx.fillStyle = 'rgba(244,235,221,.8)'; ctx.font = '600 14px Inter, Arial'; ctx.textAlign = 'center'; ctx.fillText('Hou ingedrukt om te tappen', 200, 490); }
+      if (msg && now - msgT < 900) { ctx.fillStyle = '#FFE9A8'; ctx.font = '700 26px Graduate, Georgia, serif'; ctx.textAlign = 'center'; ctx.fillText(msg, 200, 115); }
+      hud(`<span>Punten <b>${total}</b></span><span>Glas <b>${Math.min(glass + 1, 5)}/5</b></span>`);
+      if (c.isConnected && (!done || now - msgT < 950)) requestAnimationFrame(draw);
+    };
+    requestAnimationFrame(draw);
+  });
+}
+
+const EXAM_GAMES = { math: gameMath, hoops: gameHoops, history: gameHistory, darts: gameDarts, pong: gamePong, pour: gamePour };
+
+// Weekrooster bovenaan de Exam Hall
+function timetableHtml(dow, doneToday) {
+  return `<div class="timetable" aria-label="Lessenrooster">${SCHEDULE.map(s => `<div class="tt-day${s.dow === dow ? ' today' : ''}${s.dow > 5 ? ' party' : ''}">
+    <span class="tt-d">${DAY_SHORT[s.dow]}</span><span class="tt-i" aria-hidden="true">${s.icon}</span>
+    <b>${s.subject}</b><small>${s.title}</small>${s.dow === dow && doneToday ? '<span class="tt-ok">✓</span>' : ''}</div>`).join('')}</div>`;
+}
+
+// Examen van vandaag (alles behalve de Wordle)
+async function renderExam(view, info) {
+  const s = SCHEDULE.find(x => x.game === info.game) || examGameOf(info.dow), meta = EXAM_INFO[s.game];
+  const tomorrow = examGameOf(info.dow % 7 + 1);
+  const head = `${welcomeBanner()}${pageHead('Exam Hall', 'today')}${timetableHtml(info.dow, info.status === 'done')}`;
+  const gradeRow = `<div class="grade-row">${['A', 'B', 'C', 'D'].map((g, i) => `<span><b>${g}</b>≥ ${meta.grades[i]}</span>`).join('')}<span class="f"><b>F</b>minder</span></div>`;
+  if (info.status === 'done') {
+    const card = info.card ? state.cards.find(c => c.id === info.card.id) || info.card : null;
+    view.innerHTML = `${head}<section class="exam-done">
+      <div class="exam-grade g-${info.grade}"><span>${info.grade}</span><small>${GRADE_TEXT[info.grade]}</small></div>
+      <div class="exam-done-txt"><h3>${s.subject} · ${s.title}</h3>
+        <p>Je score: <b>${info.score ?? 0} ${meta.unit}</b>. ${info.grade === 'F' ? 'Gebuisd: geen kaart vandaag.' : 'Je kaart van vandaag:'}</p>
+        <p class="hint">Morgen: <b>${tomorrow.subject}</b> · ${tomorrow.title}.</p></div>
+      ${card ? `<div class="exam-card">${renderCard(card)}</div>` : ''}
+    </section>`;
+    attachWelcome();
+    return;
+  }
+  if (info.status === 'playing') {
+    view.innerHTML = `${head}<section class="exam-intro"><h3>Examen onderbroken</h3>
+      <p>Je had het examen van vandaag al gestart, maar de pagina werd verlaten. Eén poging per dag: dit telt als een <b>F</b>.</p>
+      <button class="btn" id="examGiveUp" type="button">Inleveren</button></section>`;
+    attachWelcome();
+    $('#examGiveUp').onclick = async () => {
+      const { error } = await sb.rpc('exam_submit', { p_score: 0 });
+      if (error) { alert(error.message); return; }
+      state.playDates.add(todayBrussels());
+      renderToday(view);
+    };
+    return;
+  }
+  view.innerHTML = `${head}<section class="exam-intro">
+    <span class="kicker">${DAY_SHORT[info.dow]} · ${s.subject}</span>
+    <h3><span aria-hidden="true">${s.icon}</span> ${s.title}</h3>
+    <ul>${meta.rules.map(r => `<li>${r}</li>`).join('')}</ul>
+    ${gradeRow}
+    <p class="hint">Eén poging. Herlaad de pagina niet tijdens het spel, anders telt het als een F. Een F = geen kaart.</p>
+    <button class="btn" id="examStart" type="button">Start het examen</button>
+    <p class="msg" id="examMsg" role="alert"></p>
+  </section>`;
+  attachWelcome();
+  $('#examStart').onclick = async () => {
+    $('#examStart').disabled = true;
+    const { data, error } = await sb.rpc('exam_start');
+    if (error) { $('#examMsg').className = 'msg err'; $('#examMsg').textContent = error.message; $('#examStart').disabled = false; return; }
+    view.innerHTML = `<section class="exam-play"><div class="exam-play-head"><span class="kicker">${s.subject}</span><h3>${s.title}</h3></div>
+      <div class="game-box" id="gameBox"></div></section>`;
+    $('#gameBox').scrollIntoView({ block: 'center' });
+    const rnd = mulberry32(wordleNumber() * 7919 + (s.game === 'math' || s.game === 'history' ? 0 : data.seed));
+    const score = await EXAM_GAMES[s.game]($('#gameBox'), rnd);
+    if (state.tab !== 'today') { await sb.rpc('exam_submit', { p_score: score }); return; }
+    $('#gameBox').innerHTML = '<p class="loading">Inleveren…</p>';
+    let res = await sb.rpc('exam_submit', { p_score: score });
+    if (res.error && /verdacht snel/.test(res.error.message)) { await sleep(4000); res = await sb.rpc('exam_submit', { p_score: score }); }
+    if (res.error) { $('#gameBox').innerHTML = `<p class="msg err">${esc(res.error.message)}</p>`; return; }
+    const r = res.data;
+    state.playDates.add(todayBrussels());
+    if (r.coinsEarned) state.wallet += r.coinsEarned;
+    syncCoinUI();
+    view.innerHTML = `<section class="exam-play"><div class="exam-play-head"><span class="kicker">${s.subject} · ${s.title}</span><h3>Score: ${r.score} ${meta.unit}</h3></div>
+      <div class="stage" id="stage"></div></section>`;
+    if (r.grade === 'F') {
+      await showStamp('F', 'fail', 'Gebuisd');
+      $('#stage').innerHTML = '<p class="result">Gebuisd. Geen kaart vandaag. Morgen een nieuwe kans.</p>';
+    } else {
+      window.celebrate?.('common');
+      await showStamp(r.grade, 'grade', GRADE_TEXT[r.grade]);
+      state.owned.set(r.card.id, (state.owned.get(r.card.id) || 0) + 1);
+      await openPack($('#stage'), [r.card]);
+      $('#stage').insertAdjacentHTML('beforeend', `<p class="result">${r.isDuplicate ? `Je had "${esc(r.card.name)}" al: een dubbel om te ruilen, plus ${r.coinsEarned} credits.` : `Cijfer ${r.grade}: je trok een ${RARITY_LABEL[r.card.rarity]}-kaart!`}</p>`);
+    }
+  };
+}
+
 // ---------- Tab: Today — eigen Wordle, 1 ronde per dag ----------
 // Het woord blijft in Supabase: elke gok gaat naar wordle_guess(), die enkel de kleurtjes teruggeeft.
 const ROUNDS = { 1: { icon: '📜', name: 'Vandaag' } };
@@ -2454,7 +2962,7 @@ function roundStatus(s) {
 }
 function roundSummary(s) {
   if (s.status === 'won') return `Opgelost in ${s.attempts} ${plural(s.attempts)}! Je pakje is geopend.`;
-  if (s.status === 'lost') return `Niet opgelost. Het woord was <strong>${esc(s.answer || '?')}</strong>. Nablijven: je kreeg een Detention-kaart.`;
+  if (s.status === 'lost') return `Niet opgelost. Het woord was <strong>${esc(s.answer || '?')}</strong>. Gebuisd: F, geen kaart.`;
   return '';
 }
 
@@ -2485,8 +2993,13 @@ function keyboardHtml(s) {
 
 async function renderToday(view) {
   clearInterval(wordle.timer);
-  view.innerHTML = `${welcomeBanner()}<section class="col"><p class="loading">Wordle laden…</p></section>`;
+  view.innerHTML = `${welcomeBanner()}<section class="col"><p class="loading">Rooster laden…</p></section>`;
   attachWelcome();
+  const exam = await sb.rpc('exam_today');
+  if (state.tab !== 'today') return;
+  if (exam.error) { view.innerHTML = `<section class="col"><p class="msg err">${esc(exam.error.message)}</p></section>`; return; }
+  state.exam = exam.data;
+  if (exam.data.game !== 'wordle') return renderExam(view, exam.data);
   const [{ data, error }] = await Promise.all([sb.rpc('wordle_state'), loadWords().catch(() => null)]);
   if (state.tab !== 'today') return;
   if (error) {
@@ -2509,7 +3022,7 @@ function drawToday(view) {
   const slots = wordle.data.slots;
   const s = slots.find(x => x.slot === wordle.slot);
   const card = s.card_id ? state.cards.find(c => c.id === s.card_id) : null;
-  view.innerHTML = `${welcomeBanner()}<section class="today-grid">
+  view.innerHTML = `${welcomeBanner()}${pageHead('Exam Hall', 'today')}${timetableHtml(1, isDone(s))}<section class="today-grid">
     <div class="col">
       <div class="round-tabs" id="roundTabs"${slots.length < 2 ? ' hidden' : ''}>${roundTabsHtml()}</div>
       ${s.open ? `<div class="board-frame">
@@ -2654,8 +3167,8 @@ async function submitGuess(s) {
   if ($('#wkeys')) $('#wkeys').innerHTML = keyboardHtml(s);
 
   if (data.status !== 'playing') {
-    Object.assign(s, { status: data.status, attempts: data.attempts, card_id: data.card.id, answer: data.answer });
-    state.owned.set(data.card.id, (state.owned.get(data.card.id) || 0) + 1);
+    Object.assign(s, { status: data.status, attempts: data.attempts, card_id: data.card?.id || null, answer: data.answer });
+    if (data.card) state.owned.set(data.card.id, (state.owned.get(data.card.id) || 0) + 1);
     state.playDates.add(todayBrussels());
     if (data.coinsEarned) state.wallet += data.coinsEarned;
     syncCoinUI();
@@ -2665,13 +3178,15 @@ async function submitGuess(s) {
     $('#roundTabs').innerHTML = roundTabsHtml();
     bindRoundTabs($('#view'));
     const stage = $('#stage');
-    if (data.status === 'won') {
-      const [grade, honour] = GRADES[Math.min(data.attempts, 7) - 1];
-      window.celebrate?.('common');
-      await showStamp(grade, 'grade', honour);
-    } else await showStamp('F', 'fail', 'Detention');
     stage.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-    await revealCard(data);
+    if (data.card) {
+      window.celebrate?.('common');
+      await showStamp(data.grade, 'grade', GRADE_TEXT[data.grade]);
+      await revealCard(data);
+    } else {
+      await showStamp('F', 'fail', 'Gebuisd');
+      stage.innerHTML = `<p class="result">Gebuisd${data.answer ? `: het woord was ${esc(data.answer)}` : ''}. Geen kaart vandaag.</p>`;
+    }
   } else {
     $('#roundTabs').innerHTML = roundTabsHtml();
     bindRoundTabs($('#view'));
@@ -2709,7 +3224,6 @@ const PULL_STAMP = {
   legendary: ['HALL OF FAME', 'legendary', 'Legendary pull'],
   epic: ["DEAN'S LIST", 'epic', 'Epic pull'],
   common: ['ENROLLED', 'common', 'Welkom in het huis'],
-  cat: ['DETENTION', 'cat', 'Nablijven'],
 };
 
 // Toont een envelop met waszegel. Na een tik breekt het zegel, gaat de klep open, schuift de kaart
@@ -2773,8 +3287,8 @@ async function revealCard(res) {
         ? (res.cardAdded
             ? `Opgelost in ${res.attempts} ${plural(res.attempts)}. Je had "${esc(res.card.name)}" al — nu heb je een dubbel om te ruilen, plus ${res.coinsEarned} credits.`
             : `Opgelost in ${res.attempts} ${plural(res.attempts)}. Je had "${esc(res.card.name)}" al — omgezet in ${res.coinsEarned} credits.`)
-        : `Opgelost in ${res.attempts} ${plural(res.attempts)}. Je trok een ${RARITY_LABEL[res.rarity]}-kaart!`)
-    : `Niet opgelost${res.answer ? ` — het woord was ${esc(res.answer)}` : ''}. Nablijven: je krijgt een Detention-kaart.`;
+        : `Opgelost in ${res.attempts} ${plural(res.attempts)}: cijfer ${res.grade}. Je trok een ${RARITY_LABEL[res.rarity]}-kaart!`)
+    : '';
   stage.insertAdjacentHTML('beforeend', `<p class="result">${text}</p>`);
 }
 
@@ -2829,32 +3343,25 @@ async function loadPlays(userId, isFriend = false) {
 // Statistiek-tegels + verdeling van pogingen; gebruikt voor jezelf en voor vrienden
 function statsHtml(plays, extraCards = '') {
   const total = plays.length;
-  const solvedCount = plays.filter(p => p.solved).length;
-  const catCount = total - solvedCount;
-
-  // Streak: aantal opeenvolgende dagen (tot en met vandaag of gisteren) dat er gespeeld is.
   const streak = computeStreak(new Set(plays.map(p => p.play_date)));
-
-  // Verdeling van het aantal pogingen
-  const dist = { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0 };
-  for (const p of plays) if (p.solved && dist[p.attempts] !== undefined) dist[p.attempts]++;
+  const dist = { A: 0, B: 0, C: 0, D: 0, F: 0 };
+  for (const p of plays) if (dist[p.grade] !== undefined) dist[p.grade]++;
   const maxDist = Math.max(1, ...Object.values(dist));
-
   return `<div class="stats-wrap"><div>
     <div class="stat-cards">
-      <div class="stat-card"><span class="stat-num">${total}</span><span class="stat-label">Totaal gespeeld</span></div>
+      <div class="stat-card"><span class="stat-num">${total}</span><span class="stat-label">Examens</span></div>
       <div class="stat-card"><span class="stat-num">${streak}</span><span class="stat-label">Huidige streak (dagen)</span></div>
-      <div class="stat-card"><span class="stat-num">${solvedCount}</span><span class="stat-label">Opgelost</span></div>
-      <div class="stat-card"><span class="stat-num">${catCount}</span><span class="stat-label">Detentions</span></div>
+      <div class="stat-card"><span class="stat-num">${dist.A}</span><span class="stat-label">A's</span></div>
+      <div class="stat-card"><span class="stat-num">${dist.F}</span><span class="stat-label">F's</span></div>
       ${extraCards}
     </div></div><div>
-    <h3 class="bars-title">Aantal pogingen bij oplossen</h3>
+    <h3 class="bars-title">Je cijfers</h3>
     <div class="bars">
-      ${[1, 2, 3, 4, 5, 6].map(n => `
+      ${['A', 'B', 'C', 'D', 'F'].map(g => `
         <div class="bar-row">
-          <span class="bar-label">${n} ${plural(n)}</span>
-          <div class="bar-track"><div class="bar-fill" style="width:${(dist[n] / maxDist) * 100}%"></div></div>
-          <span class="bar-val">${dist[n]}</span>
+          <span class="bar-label">${g} <small>${GRADE_TEXT[g]}</small></span>
+          <div class="bar-track"><div class="bar-fill${g === 'F' ? ' f' : ''}" style="width:${(dist[g] / maxDist) * 100}%"></div></div>
+          <span class="bar-val">${dist[g]}</span>
         </div>`).join('')}
     </div></div></div>`;
 }
@@ -3279,19 +3786,18 @@ async function renderIdeas(view) {
 
 // ---------- Frat House: een kamer per persoon van de kaarten ----------
 // Elke kamer toont de 9 kaarten van die persoon, uit JOUW collectie (zoals vroeger een
-// pagina in het yearbook). Het kleine raam boven de deur is de Detention-kamer.
+// pagina in het yearbook).
 // Ramen van de gevel (img/frathouse-*.webp, 1376×768): x, y, breedte, hoogte in pixels.
 const FACADE_W = 1376, FACADE_H = 768;
 const FACADE_WINDOWS = [
   ...[390, 514, 664, 813, 937].map(x => [x, 228, 50, 68]),
   ...[390, 514, 813, 937].map(x => [x, 341, 50, 79]),
   ...[390, 514, 813, 937].map(x => [x, 476, 50, 82]),
-  [664, 341, 49, 45], // Detention (klein raam boven de deur)
 ];
 const DETENTION = 'Detention';
 const ownedCount = id => state.owned.get(id) || (state.isAdmin ? 1 : 0);
-// Alle kamers: de personen alfabetisch, Detention als laatste
-const houseRooms = () => [...housePersons(), ...(state.cards.some(c => c.rarity === 'cat') ? [DETENTION] : [])];
+// Alle kamers: de personen alfabetisch
+const houseRooms = () => housePersons();
 const roomCards = p => state.cards.filter(c => (p === DETENTION ? c.rarity === 'cat' : c.person === p && c.rarity !== 'cat')).sort((a, b) => a.slot - b.slot);
 
 async function renderHouse(view) {
@@ -3335,7 +3841,7 @@ async function renderHouse(view) {
       const o = owners[p], mine = o?.user_id === uid, n = roomCards(p).length;
       return `<button type="button" class="res${mine ? ' me' : ''}" data-room="${esc(p)}">
         <span class="res-prog" style="--p:${have(p) / Math.max(1, n) * 100}%"><b>${have(p)}</b></span>
-        <span class="res-txt"><b>${esc(p)}${mine ? ' <em>you</em>' : ''}</b><small>${have(p)}/${n} in je collectie${p === DETENTION ? '' : o ? '' : ' · nog niet ingetrokken'}</small></span>
+        <span class="res-txt"><b>${esc(p)}${mine ? ' <em>you</em>' : ''}</b><small>${have(p)}/${n} in je collectie${o ? (o.fs ? ` · ${o.fs}× F` : '') : ' · nog niet ingetrokken'}</small></span>
         <span class="res-dot${o?.played ? ' on' : ''}" title="${o?.played ? 'Vandaag gespeeld' : ''}"></span></button>`;
     }).join('')}</div>
   </section>`;
@@ -3411,14 +3917,14 @@ function trophiesFor(plays, ownedSet, bs) {
   const fullSet = persons.some(p => people.filter(c => c.person === p).every(c => ownedSet.has(c.id)));
   const unique = people.filter(c => ownedSet.has(c.id)).length;
   const legend = people.some(c => c.rarity === 'legendary' && ownedSet.has(c.id));
-  const det = state.cards.some(c => c.rarity === 'cat' && ownedSet.has(c.id));
   const best = bestStreak(plays);
-  const sharp = plays.some(p => p.solved && p.attempts <= 2);
+  const sharp = plays.some(p => p.grade === 'A');
+  const flunk = plays.some(p => p.grade === 'F');
   return [
-    { icon: 'clock', name: 'Freshman', how: 'Eerste Wordle gespeeld', ok: plays.length > 0 },
-    { icon: 'flame', name: 'On Fire', how: '3 dagen op rij gespeeld', ok: best >= 3 },
-    { icon: 'flame', name: 'Iron Streak', how: '7 dagen op rij gespeeld', ok: best >= 7 },
-    { icon: 'target', name: 'Sniper', how: 'Wordle in 2 pogingen of minder', ok: sharp },
+    { icon: 'clock', name: 'Freshman', how: 'Eerste examen afgelegd', ok: plays.length > 0 },
+    { icon: 'flame', name: 'On Fire', how: '3 dagen op rij een examen', ok: best >= 3 },
+    { icon: 'flame', name: 'Iron Streak', how: '7 dagen op rij een examen', ok: best >= 7 },
+    { icon: 'target', name: 'Straight A', how: 'Een A gehaald op een examen', ok: sharp },
     { icon: 'star', name: 'Legend Hunter', how: 'Een legendary verzameld', ok: legend },
     { icon: 'stack', name: 'Collector', how: '50 verschillende kaarten', ok: unique >= 50 },
     { icon: 'crown', name: 'Full Set', how: 'Alle 9 kaarten van één persoon', ok: fullSet },
@@ -3426,7 +3932,7 @@ function trophiesFor(plays, ownedSet, bs) {
     { icon: 'swords', name: 'Gladiator', how: '10 battles gewonnen', ok: (bs?.wins || 0) >= 10 },
     { icon: 'cup', name: 'Champion', how: 'Gewonnen op Championship', ok: (bs?.hard_wins || 0) >= 1 },
     { icon: 'cup', name: 'Rival', how: 'Een vriend verslagen', ok: (bs?.pvp_wins || 0) >= 1 },
-    { icon: 'clock', name: 'Detention', how: 'Moeten nablijven', ok: det },
+    { icon: 'clock', name: 'Flunked', how: 'Een F gehaald', ok: flunk },
   ];
 }
 
@@ -3463,7 +3969,7 @@ async function renderRoom(view, person) {
       <span class="kicker">${person === DETENTION ? 'Detention room' : mine ? 'Your room' : 'Room of'}</span>
       <h2>${esc(person)}</h2>
       <p class="rm-sub">${have}/${cards.length} in je collectie${person === DETENTION ? '' : owner
-        ? ` · bewoner: <b>${esc(owner.display_name)}</b>${owner.played ? ' · vandaag gespeeld' : ''}`
+        ? ` · bewoner: <b>${esc(owner.display_name)}</b>${owner.played ? ' · vandaag gespeeld' : ''} · <span class="fcount">${owner.fs || 0}× F</span>`
         : ' · nog niet ingetrokken'}</p>
       ${owner && !mine ? `<div class="room-actions"><button class="btn small" id="roomBattle" type="button">Uitdagen in de Arena</button><button class="btn small ghost" id="roomTrade" type="button">Ruilen</button></div>` : ''}
       ${!owner && person !== DETENTION && !myRoom ? `<div class="room-actions"><button class="btn small ghost" id="roomClaim" type="button">Dit is mijn kamer</button></div>` : ''}
@@ -3556,8 +4062,8 @@ async function renderStats(view) {
       <span class="tg-ico"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">${TROPHY_ICON[t.icon]}</svg></span>
       <b>${t.name}</b><small>${esc(t.how)}</small></div>`).join('')}</div>
     <h3 style="margin-top:26px">Het huis</h3>
-    <table class="leaderboard house-table"><thead><tr><th>#</th><th>Naam</th><th>Kaarten</th><th>Legendary</th><th>Vandaag</th></tr></thead>
-      <tbody>${rows.map((m, i) => `<tr${m.user_id === uid ? ' class="me"' : ''}><td>${i + 1}</td><td>${esc(m.display_name)}</td><td>${m.cards}</td><td>${m.legendaries}</td><td>${m.played ? '✓' : '–'}</td></tr>`).join('')}</tbody>
+    <table class="leaderboard house-table"><thead><tr><th>#</th><th>Naam</th><th>Kaarten</th><th>Legendary</th><th>F's</th><th>Vandaag</th></tr></thead>
+      <tbody>${rows.map((m, i) => `<tr${m.user_id === uid ? ' class="me"' : ''}><td>${i + 1}</td><td>${esc(m.display_name)}</td><td>${m.cards}</td><td>${m.legendaries}</td><td class="fcount">${m.fs || 0}</td><td>${m.played ? '✓' : '–'}</td></tr>`).join('')}</tbody>
     </table>
   </section>`;
 }

@@ -54,6 +54,7 @@ end $$;
 grant execute on function public.claim_room(text) to authenticated;
 
 -- Alle bewoners met hun kamer, of ze vandaag speelden en hoeveel kaarten ze hebben
+drop function if exists public.house_members();
 create or replace function public.house_members()
 returns table (user_id uuid, display_name text, avatar_url text, room text, played boolean, cards int, legendaries int)
 language sql stable security definer set search_path = public as $$

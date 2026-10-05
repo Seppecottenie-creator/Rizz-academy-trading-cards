@@ -1,7 +1,7 @@
 -- =====================================================================
--- RIZZ ACADEMY: alle kaarten (126 kaarten)
+-- RIZZ ACADEMY: alle kaarten (117 kaarten)
 -- 13 vrienden x 9 kaarten (slot 1-6 common, 7-8 epic, 9 legendary)
--- + 9 Detention-kaarten (troostkaarten, rarity 'cat').
+-- (Geen Detention-kaarten meer: wie de dagelijkse les niet haalt, krijgt een F.)
 --
 -- Gebruik: Supabase -> SQL Editor -> nieuwe query -> dit VOLLEDIGE bestand plakken -> Run.
 -- Kies bij de waarschuwing "Run without RLS".
@@ -126,16 +126,7 @@ insert into public.cards (person, slot, name, rarity, hp, attack, defense, image
   ('Wout', 6, 'The Crate', 'common', 72, 20, 15, 'cards/wout-6.jpg', 'Where he sits, the crate follows.', null, null, null),
   ('Wout', 7, 'Top Shelf', 'epic', 90, 27, 22, 'cards/wout-7.jpg', 'Pours faster than you drink.', null, null, null),
   ('Wout', 8, 'The Boss', 'epic', 89, 29, 19, 'cards/wout-8.jpg', 'Has a plan. The plan works.', null, null, null),
-  ('Wout', 9, 'The Gardener', 'legendary', 96, 33, 22, 'cards/wout-9.jpg', 'Grows things. Breaks things.', 'Wheelbarrow Charge', 'Rolls straight through the opponent.', 49),
-  ('Detention', 1, 'Late for Class', 'cat', 40, 13, 11, 'cards/detention-1.jpg', 'Alarm went off. He didn''t.', null, null, null),
-  ('Detention', 2, 'The Hangover', 'cat', 40, 14, 12, 'cards/detention-2.jpg', 'Never again. Until Friday.', null, null, null),
-  ('Detention', 3, 'Left on Read', 'cat', 45, 13, 8, 'cards/detention-3.jpg', 'Seen 23:41. No reply.', null, null, null),
-  ('Detention', 4, 'Phone Confiscated', 'cat', 50, 14, 9, 'cards/detention-4.jpg', 'Back at the end of the year.', null, null, null),
-  ('Detention', 5, 'Study Hall', 'cat', 50, 10, 7, 'cards/detention-5.jpg', 'Write it 100 times: solve the Wordle.', null, null, null),
-  ('Detention', 6, 'Beer Pong Defeat', 'cat', 41, 13, 10, 'cards/detention-6.jpg', 'Every cup. Every single one.', null, null, null),
-  ('Detention', 7, 'Missed the Last Train', 'cat', 50, 10, 9, 'cards/detention-7.jpg', 'Tonight: someone else''s couch.', null, null, null),
-  ('Detention', 8, 'Rage Quit', 'cat', 51, 10, 9, 'cards/detention-8.jpg', 'The controller didn''t make it.', null, null, null),
-  ('Detention', 9, 'Asleep in Lecture', 'cat', 46, 11, 8, 'cards/detention-9.jpg', 'Woke up in a different class.', null, null, null)
+  ('Wout', 9, 'The Gardener', 'legendary', 96, 33, 22, 'cards/wout-9.jpg', 'Grows things. Breaks things.', 'Wheelbarrow Charge', 'Rolls straight through the opponent.', 49)
 on conflict (person, slot) do update set
   name = excluded.name, rarity = excluded.rarity, hp = excluded.hp, attack = excluded.attack,
   defense = excluded.defense, image_url = excluded.image_url, flavor_text = excluded.flavor_text,
