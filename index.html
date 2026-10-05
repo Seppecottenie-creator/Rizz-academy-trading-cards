@@ -3067,7 +3067,7 @@ async function renderToday(view) {
   const [{ data, error }] = await Promise.all([sb.rpc('wordle_state'), loadWords().catch(() => null)]);
   if (state.tab !== 'today') return;
   if (error) {
-    view.innerHTML = `${welcomeBanner()}<section class="col">${pageHead('Daily Draw', 'today')}<p class="msg err">De Wordle kon niet geladen worden: ${esc(error.message)}</p></section>`;
+    view.innerHTML = `${welcomeBanner()}<section class="col">${pageHead('Exam Hall', 'today')}<p class="msg err">De Wordle kon niet geladen worden: ${esc(error.message)}</p></section>`;
     attachWelcome();
     return;
   }
@@ -3096,7 +3096,7 @@ function drawToday(view) {
         ${isDone(s) ? '' : `<div class="wkeys" id="wkeys">${keyboardHtml(s)}</div>
         <div class="whelp" id="whelp">${helpHtml(s)}</div>`}
       </div>`
-      : `${pageHead('Daily Draw', 'today')}<div class="round-closed">
+      : `${pageHead('Exam Hall', 'today')}<div class="round-closed">
           <div class="big-lock" aria-hidden="true">🔒</div>
           <p>De volgende Wordle opent om <strong>${s.opens}</strong> (Belgische tijd).</p>
           <p class="countdown" id="wcount"></p>
