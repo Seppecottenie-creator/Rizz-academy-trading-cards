@@ -1571,7 +1571,7 @@ div.wf-inner{cursor:default}
    ===================================================================== */
 .place-bg{position:fixed;inset:0;z-index:0;pointer-events:none;opacity:0;background:#0A0D18 center/cover no-repeat;transition:opacity .4s}
 .shell[data-place="today"] .place-bg,.shell[data-place="battle"] .place-bg,.shell[data-place="trade"] .place-bg,
-.shell[data-place="shop"] .place-bg,.shell[data-place="ideas"] .place-bg{opacity:1}
+.shell[data-place="shop"] .place-bg,.shell[data-place="ideas"] .place-bg,.shell[data-place="stats"] .place-bg{opacity:1}
 .shell[data-place="today"] .place-bg{background-image:linear-gradient(180deg,rgba(8,12,26,.35),rgba(8,12,26,.62) 40%,rgba(8,12,26,.82)),url(img/examhall-day.webp)}
 .shell[data-place="today"][data-phase="night"] .place-bg{background-image:linear-gradient(180deg,rgba(8,12,26,.25),rgba(8,12,26,.58) 40%,rgba(8,12,26,.8)),url(img/examhall-night.webp)}
 .shell[data-place="battle"] .place-bg{background-image:linear-gradient(180deg,rgba(6,10,22,.2),rgba(6,10,22,.55) 45%,rgba(6,10,22,.8)),url(img/arena.webp)}
@@ -1597,6 +1597,97 @@ div.wf-inner{cursor:default}
 .shell[data-place] .tt-day.today{background:rgba(24,18,10,.9)}
 @media (max-width:899px){.exam-hero .page-head,.arena-hero .ah-txt,.shell[data-place="trade"] .page-head,.shell[data-place="shop"] .page-head,.shell[data-place="ideas"] .page-head{min-height:16vh}}
 .shell[data-place="battle"] .duel{background:linear-gradient(180deg,rgba(6,10,22,.15),rgba(6,10,22,.35));border-color:rgba(255,255,255,.12)}
+.shell[data-place="stats"] .place-bg{background-image:linear-gradient(180deg,rgba(8,12,26,.35),rgba(8,12,26,.62) 40%,rgba(8,12,26,.84)),url(img/library-day.webp)}
+.shell[data-place="stats"][data-phase="night"] .place-bg{background-image:linear-gradient(180deg,rgba(8,12,26,.25),rgba(8,12,26,.58) 40%,rgba(8,12,26,.82)),url(img/library-night.webp)}
+.shell[data-place="stats"] .stat-card,.shell[data-place="stats"] .tg,.shell[data-place="stats"] .house-table{background:rgba(14,19,38,.84)}
+
+/* =====================================================================
+   COMPUTER: alles in één scherm, zonder scrollen waar het niet nodig is
+   ===================================================================== */
+@media (min-width:900px){
+  .main{padding-top:16px;padding-bottom:16px}
+  .plaques{margin-bottom:10px}
+  .page-head{margin-bottom:10px}
+  .page-head h2{margin:0}
+  .joke{margin-top:2px}
+  /* Titels zonder extra witruimte */
+  .exam-hero .page-head,.arena-hero .ah-txt,.shell[data-place="trade"] .page-head,.shell[data-place="shop"] .page-head,.shell[data-place="ideas"] .page-head{min-height:0}
+  .photo-hero{margin-bottom:10px}
+  .photo-hero .hero-over,.shell .photo-hero .hero-over{padding:4px 0 0}
+
+  /* Exam Hall: compact rooster, bord en kaart passen in de hoogte */
+  .timetable{gap:6px;margin:0}
+  .tt-day{grid-template-columns:auto auto;grid-template-areas:"d i" "b b";column-gap:6px;row-gap:0;padding:6px 6px}
+  .tt-d{grid-area:d;align-self:center}.tt-i{grid-area:i;font-size:15px}.tt-day b{grid-area:b;font-size:11.5px}.tt-day small{display:none}
+  .board-frame{padding:14px 16px 12px}
+  .bf-head{margin-bottom:10px}
+  .wboard{width:min(300px,calc((100vh - 485px) * 5 / var(--rows)));min-width:180px;gap:5px;margin-bottom:8px}
+  @media (max-height:800px){.wboard{width:calc((100vh - 515px) * 5 / var(--rows));min-width:150px;gap:4px}.wrow{gap:4px}.wkey{height:32px}.wkeys{gap:4px}.wtile{font-size:20px}}
+  .wrow{gap:5px}
+  .wkey{height:clamp(34px,5vh,46px)}
+  .wmsg{margin-bottom:6px}
+  .today-grid{gap:20px}
+  .today-grid .stage .cw,.today-grid .cardflip{max-width:calc((100vh - 380px) * .714);margin-inline:auto}
+  .today-grid .stage .result{margin-top:8px}
+  .exam-intro,.exam-done{padding:16px 20px}
+  .exam-play{max-width:calc((100vh - 230px) * .8 + 48px);padding:14px 20px}
+
+  /* Frat House: gevel links, bewoners rechts */
+  .facade-wrap{width:min(100%,calc((100vh - 230px) * 1376 / 768))}
+  .shell[data-place="house"] .col:has(.facade-wrap){display:grid;grid-template-columns:auto minmax(220px,1fr);grid-template-areas:"head head" "fac res";gap:0 16px;align-items:start}
+  .shell[data-place="house"] .col:has(.facade-wrap) > .page-head{grid-area:head}
+  .shell[data-place="house"] .facade-wrap{grid-area:fac}
+  .shell[data-place="house"] .res-list{grid-area:res;margin:0;grid-template-columns:1fr;gap:4px;max-height:calc(100vh - 230px);overflow:auto}
+  .shell[data-place="house"] .res{padding:4px 10px}
+  .shell[data-place="house"] .res-prog{width:28px;height:28px}
+  .shell[data-place="house"] .res-txt small{font-size:10.5px}
+  /* Kamer: foto past in de hoogte */
+  .room-top{margin-bottom:4px}
+  .rm-head2{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;margin-bottom:8px}
+  .rm-head2 h2{margin:0}
+  .rm-head2 .room-actions{margin:0 0 0 auto}
+  .room-wrap{width:min(100%,calc((100vh - 220px) * 1376 / 768));margin-inline:auto}
+
+  /* Arena: alles naast elkaar */
+  .arena-page{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,1fr);grid-template-areas:"hero hero" "inc inc" "lineup opp" "roster lists";gap:12px 14px;align-items:start}
+  .arena-page > .arena-hero{grid-area:hero;margin:0}
+  .arena-page > .battle-box{grid-area:inc;margin:0}
+  .arena-page > .lobby{display:contents}
+  .arena-page .lineup-box{grid-area:lineup}.arena-page .opp-box{grid-area:opp}
+  .arena-page > .roster-box{grid-area:roster;margin:0}
+  .arena-page > .arena-lists{grid-area:lists;margin:0;grid-template-columns:1fr;gap:12px;max-height:calc(100vh - 470px);min-height:200px;overflow:auto}
+  .arena-page > .hint{grid-column:1/-1}
+  .lineup-box,.opp-box,.roster-box,.al-box{padding:12px 14px}
+  .lineup{gap:12px;margin-top:8px}
+  .lineup .lu-slot{min-height:0;aspect-ratio:5/7;max-height:min(300px,calc(100vh - 640px));min-height:120px;justify-self:center;width:100%;max-width:min(214px,calc((100vh - 640px) * .714));min-width:86px}
+  .lb-hint{display:none}
+  .opp-grid{gap:8px}
+  .opp-btn{padding:10px 12px 28px}
+  .opp-btn b{font-size:16px}
+  .opp-btn small{font-size:11.5px}
+  .opp-reward{bottom:8px}
+  .roster-box .battle-pick{padding:10px 4px 6px}
+  .roster-box .battle-pick .pick{flex-basis:min(180px,calc((100vh - 660px) * .714));min-width:96px}
+  .ah-stats div{padding:6px 10px}
+
+  /* Stats: cijfers en trofeeën links, het huis rechts */
+  .stats-page{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(260px,1fr);gap:20px;align-items:start}
+  .stats-page .stats-wrap{grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:16px}
+  .stats-page .stat-cards{grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+  .stats-page .stat-card{padding:10px 12px}
+  .stats-page .stat-num{font-size:24px}
+  .stats-page h3{margin:14px 0 8px !important}
+  .stats-page .trophy-grid{grid-template-columns:repeat(6,minmax(0,1fr));gap:6px}
+  .stats-page .tg{padding:8px 4px;gap:2px}
+  .stats-page .tg-ico{width:32px;height:32px}
+  .stats-page .tg-ico svg{width:18px;height:18px}
+  .stats-page .tg b{font-size:11.5px}
+  .stats-page .tg small{font-size:10px}
+  .stats-page .st-right{max-height:calc(100vh - 200px);overflow:auto}
+  .stats-page .st-right h3{margin-top:0 !important}
+  .stats-page .house-table td,.stats-page .house-table th{padding:6px 8px}
+  .stats-page .bar-row{margin:0}
+}
 </style>
 </head>
 <body>
@@ -4119,16 +4210,18 @@ async function renderStats(view) {
   const rows = (members.data || []).slice().sort((a, b) => (b.cards - a.cards) || (b.legendaries - a.legendaries));
   view.innerHTML = `<section class="col" style="max-width:none">
     ${pageHead('Stats', 'stats')}
+    <div class="stats-page"><div class="st-left">
     ${statsHtml(plays, `<div class="stat-card"><span class="stat-num">${bs.wins || 0}–${bs.losses || 0}</span><span class="stat-label">Arena (W–L)</span></div>
       <div class="stat-card"><span class="stat-num">${collectionText()}</span><span class="stat-label">Collectie</span></div>`)}
     <h3 style="margin-top:26px">Trofeeën · ${trophies.filter(t => t.ok).length}/${trophies.length}</h3>
     <div class="trophy-grid">${trophies.map(t => `<div class="tg${t.ok ? ' got' : ''}">
       <span class="tg-ico"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">${TROPHY_ICON[t.icon]}</svg></span>
       <b>${t.name}</b><small>${esc(t.how)}</small></div>`).join('')}</div>
+    </div><div class="st-right">
     <h3 style="margin-top:26px">Het huis</h3>
     <table class="leaderboard house-table"><thead><tr><th>#</th><th>Naam</th><th>Kaarten</th><th>Legendary</th><th>F's</th><th>Vandaag</th></tr></thead>
       <tbody>${rows.map((m, i) => `<tr${m.user_id === uid ? ' class="me"' : ''}><td>${i + 1}</td><td>${esc(m.display_name)}</td><td>${m.cards}</td><td>${m.legendaries}</td><td class="fcount">${m.fs || 0}</td><td>${m.played ? '✓' : '–'}</td></tr>`).join('')}</tbody>
-    </table>
+    </table></div></div>
   </section>`;
 }
 
