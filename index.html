@@ -2197,6 +2197,39 @@ body.as-app:has(.shell) .rotate-msg{z-index:5000}
   .me-btn{width:auto !important;padding:0 !important;border:0 !important;background:none !important;justify-content:center}
   .me-btn .avbtn{width:clamp(28px,8.5vh,34px) !important;height:clamp(28px,8.5vh,34px) !important;font-size:13px}
 }
+
+/* =====================================================================
+   ENVELOP OPENEN: envelop en kaarten passen altijd in de hoogte van het scherm
+   ===================================================================== */
+.pack-stage{padding-top:min(100px,9vh)}
+.pack{width:min(250px,62vw,calc((100vh - 170px) * .8))}
+.pack-slot{width:min(320px,80vw,calc((100vh - 190px) * .714))}
+.pack-results.multi .pack-slot{width:min(210px,28vw,calc((100vh - 220px) * .714))}
+.packbox .stage{min-height:0}
+@media (min-width:600px) and (max-height:500px){
+  .stage{min-height:0;gap:8px}
+  .pack-stage{padding-top:4px;gap:6px}
+  .pack{width:min(170px,calc((100vh - 110px) * .8))}
+  .pack-hint{margin:0;font-size:12px}
+  .pack-slot{width:min(200px,calc((100vh - 120px) * .714))}
+  .pack-results{gap:10px}
+  .pack-results.multi .pack-slot{width:min(150px,calc((100vh - 140px) * .714))}
+  .packbox{padding:10px 14px;gap:4px;max-height:96vh;width:min(640px,92vw)}
+  .packbox h2{font-size:18px;margin:0}
+  .packbox .result,.stage .result{margin:4px 0 0;font-size:12.5px}
+  .exam-play{padding:8px 14px}
+  .exam-play-head h3{font-size:16px;margin:0}
+  .stamp{transform:translate(-50%,-50%) rotate(-8deg) scale(.7)}
+}
+@media (min-width:600px) and (max-height:500px){
+  .exam-play .stage{grid-template-columns:auto minmax(0,260px);justify-content:center;align-items:center;column-gap:18px}
+  .exam-play .stage .pack-stage{grid-column:1/-1}
+  .exam-play .stage .result{text-align:left;font-size:13px}
+  .exam-play .pack-slot{width:min(190px,calc((100vh - 130px) * .714))}
+  .exam-play-head{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap}
+  .exam-play-head .kicker{margin:0}
+}
+@media (min-width:600px) and (max-height:500px){.exam-play:has(.pack-results){max-width:min(620px,100%) !important;width:100%}}
 </style>
 </head>
 <body>
@@ -3310,11 +3343,11 @@ const SCHEDULE = [
 const DAY_SHORT = ['', 'Ma', 'Di', 'Wo', 'Do', 'Vr', 'Za', 'Zo'];
 const GRADE_TEXT = { A: 'Summa cum laude', B: 'Magna cum laude', C: 'Cum laude', D: 'Geslaagd', F: 'Gebuisd' };
 const EXAM_INFO = {
-  math: { rules: ['60 seconden: tik zo snel mogelijk het juiste antwoord.', 'Juist = +1, fout = −1.'], unit: 'juist', grades: [24, 18, 12, 7] },
-  hoops: { rules: ['Swipe de bal omhoog naar de ring. Lengte = kracht, richting = mikken.', '10 worpen. Vanaf worp 4 beweegt de ring.'], unit: 'raak', grades: [8, 6, 4, 2] },
-  history: { rules: ['Twee gebeurtenissen: tik op wat het EERST gebeurde.', '10 vragen, 8 seconden per vraag.'], unit: 'juist', grades: [9, 7, 5, 3] },
-  darts: { rules: ['Hou ingedrukt om te mikken en laat los om te gooien. Hoe langer je mikt, hoe meer je hand trilt.', '6 pijlen. Bull = 50, binnenring ×3, buitenring ×2.'], unit: 'punten', grades: [170, 125, 85, 45] },
-  launch: { rules: ['Sleep naar achter (zoals een katapult) en laat los. Hoe verder je trekt, hoe harder het schot.', 'Raak de rode emmer. Let op de wind en, vanaf schot 5, de muur. 8 schoten.'], unit: 'raak', grades: [6, 5, 3, 1] },
+  math: { rules: ['60 seconden: tik zo snel mogelijk het juiste antwoord. De sommen worden steeds moeilijker.', 'Juist = +1, fout = −1.'], unit: 'juist', grades: [22, 17, 12, 7] },
+  hoops: { rules: ['Swipe de bal omhoog naar de ring. Lengte = kracht, richting = mikken.', '10 worpen. Vanaf worp 3 beweegt de ring, en steeds sneller.'], unit: 'raak', grades: [8, 6, 4, 2] },
+  history: { rules: ['Twee gebeurtenissen: tik op wat het EERST gebeurde.', '10 vragen, 6 seconden per vraag. De jaartallen komen steeds dichter bij elkaar.'], unit: 'juist', grades: [9, 7, 5, 3] },
+  darts: { rules: ['Hou ingedrukt om te mikken en laat los om te gooien. Hoe langer je mikt, hoe meer je hand trilt.', '6 pijlen. Bull = 50, binnenring ×3, buitenring ×2.'], unit: 'punten', grades: [190, 150, 110, 70] },
+  launch: { rules: ['Sleep naar achter (zoals een katapult) en laat los. Hoe verder je trekt, hoe harder het schot.', 'Raak de rode emmer. Let op de wind en, vanaf schot 4, de muur. 8 schoten.'], unit: 'raak', grades: [6, 5, 3, 1] },
   blackjack: { rules: ['10 handen, je start met 100 chips en zet telkens 10 in. Kom zo dicht mogelijk bij 21 zonder erover te gaan.', 'Hit = extra kaart · Stand = stoppen · Double = dubbele inzet, nog één kaart. De dealer pakt tot 17.'], unit: 'chips', grades: [160, 125, 100, 70] },
   pong: { rules: ['Swipe de bal naar de bekers. Lengte = afstand, richting = mikken.', '10 ballen voor 6 bekers.'], unit: 'bekers', grades: [6, 5, 4, 2] },
   pour: { rules: ['Hou ingedrukt om te tappen en laat los aan de gouden lijn. Het schuim stijgt nog wat na!', '5 pintjes, elk glas tapt sneller. Overlopen = 0.'], unit: 'punten', grades: [440, 380, 300, 200] },
@@ -3343,17 +3376,34 @@ function gameMath(box, rnd) {
     let score = 0, n = 0, end = performance.now() + 60000, q;
     box.innerHTML = `<div class="math-game"><div class="mg-top"><span id="mgScore">0 juist</span><span class="mg-time"><i id="mgBar"></i></span></div>
       <div class="mg-q" id="mgQ"></div><div class="mg-opts" id="mgOpts"></div></div>`;
+    const R = (lo, hi) => lo + Math.floor(rnd() * (hi - lo + 1));
+    // Hoe verder je raakt, hoe zwaarder de sommen
+    const make = () => {
+      const lvl = n <= 4 ? 0 : n <= 10 ? 1 : n <= 18 ? 2 : 3, kind = R(0, 2);
+      if (lvl === 0) { const a = R(23, 89), b = R(14, 68); return kind === 1 && a > b ? [`${a} − ${b}`, a - b] : [`${a} + ${b}`, a + b]; }
+      if (lvl === 1) {
+        if (kind === 0) { const a = R(6, 14), b = R(6, 13); return [`${a} × ${b}`, a * b]; }
+        if (kind === 1) { const a = R(214, 489), b = R(37, 198); return [`${a} − ${b}`, a - b]; }
+        const a = R(128, 476), b = R(57, 389); return [`${a} + ${b}`, a + b];
+      }
+      if (lvl === 2) {
+        if (kind === 0) { const a = R(13, 29), b = R(3, 9); return [`${a} × ${b}`, a * b]; }
+        if (kind === 1) { const b = R(3, 9), q = R(7, 19); return [`${b * q} ÷ ${b}`, q]; }
+        const a = R(4, 12), b = R(4, 12), c = R(3, a * b - 1); return [`${a} × ${b} − ${c}`, a * b - c];
+      }
+      if (kind === 0) { const a = R(12, 25), b = R(12, 19); return [`${a} × ${b}`, a * b]; }
+      if (kind === 1) { const a = R(6, 15), b = R(6, 15), c = R(17, 95); return [`${a} × ${b} + ${c}`, a * b + c]; }
+      const pc = [10, 20, 25, 50, 75][R(0, 4)], base = R(2, 16) * 20; return [`${pc}% van ${base}`, base * pc / 100];
+    };
     const next = () => {
       n++;
-      const lvl = Math.min(4, Math.floor(n / 6));
-      const op = ['+', '−', '×', '+', '×'][Math.floor(rnd() * (lvl < 1 ? 2 : lvl < 2 ? 4 : 5))];
-      let a, b, ans;
-      if (op === '×') { a = 2 + Math.floor(rnd() * (6 + lvl * 2)); b = 2 + Math.floor(rnd() * 9); ans = a * b; }
-      else { a = 5 + Math.floor(rnd() * (20 + lvl * 25)); b = 2 + Math.floor(rnd() * (10 + lvl * 15)); if (op === '−' && b > a) [a, b] = [b, a]; ans = op === '+' ? a + b : a - b; }
+      const [text, ans] = make();
+      // Foute antwoorden liggen dicht bij het juiste (vaak met hetzelfde laatste cijfer)
       const opts = new Set([ans]);
-      while (opts.size < 4) { const d = (1 + Math.floor(rnd() * 6)) * (rnd() < .5 ? -1 : 1) * (op === '×' && rnd() < .5 ? b : 1); if (ans + d >= 0) opts.add(ans + d); }
+      const near = [10, -10, 1, -1, 2, -2, 20, -20, 11, -9, 100, -100].sort(() => rnd() - .5);
+      for (const d of near) { if (opts.size >= 4) break; if (ans + d >= 0) opts.add(ans + d); }
       q = ans;
-      $('#mgQ').textContent = `${a} ${op} ${b}`;
+      $('#mgQ').textContent = text;
       $('#mgOpts').innerHTML = [...opts].sort(() => rnd() - .5).map(v => `<button type="button" data-v="${v}">${v}</button>`).join('');
     };
     $('#mgOpts').onclick = e => {
@@ -3388,13 +3438,32 @@ const HISTORY_EVENTS = [
   ['Google wordt opgericht', 1998], ['De euro in je portemonnee', 2002], ['Facebook gaat online', 2004], ['YouTube gaat online', 2005],
   ['Eerste iPhone', 2007], ['Spotify start', 2008], ['Bitcoin bestaat', 2009], ['Instagram start', 2010], ['Minecraft komt uit', 2011],
   ['Fortnite komt uit', 2017], ['Rode Duivels 3e op het WK', 2018], ['Corona-lockdowns', 2020], ['ChatGPT verschijnt', 2022], ['Eerste Tomorrowland', 2005],
+  ['Twitter gaat online', 2006], ['WhatsApp verschijnt', 2009], ['Snapchat start', 2011], ['TikTok wereldwijd', 2018], ['Netflix begint met streamen', 2007],
+  ['Eerste Call of Duty', 2003], ['GTA V komt uit', 2013], ['Nintendo Switch komt uit', 2017], ['Pokémon GO-rage', 2016], ['Eerste Nokia 3310', 2000],
+  ['Aanslagen van 11 september', 2001], ['Obama wordt president', 2009], ['Brexit-referendum', 2016], ['Notre-Dame staat in brand', 2019], ['Queen Elizabeth overlijdt', 2022],
+  ['Eerste Harry Potter-film', 2001], ['Eerste Avengers-film', 2012], ['Titanic (de film)', 1997], ['Eerste Shrek', 2001], ['Eerste Toy Story', 1995],
+  ['Windows 95', 1995], ['Eerste sms verstuurd', 1992], ['Het World Wide Web', 1991], ['Euro wordt munt op de bankrekening', 1999], ['Belgische frank verdwijnt', 2002],
+  ['Ontdekking van het graf van Toetanchamon', 1922], ['Wall Street Crash', 1929], ['Eerste Tour de France', 1903], ['Eddy Merckx wint zijn eerste Tour', 1969], ['Expo 58 in Brussel', 1958],
+  ['Eerste Coca-Cola', 1886], ['Eerste telefoongesprek', 1876], ['Darwin publiceert over evolutie', 1859], ['Eerste auto van Benz', 1886], ['Eerste film van de gebroeders Lumière', 1895],
+  ['Begin Tweede Wereldoorlog', 1939], ['Koude Oorlog: bouw van de Berlijnse Muur', 1961], ['Moord op Kennedy', 1963], ['Woodstock', 1969], ['Eerste Apple-computer', 1976],
 ];
 const yearLabel = y => (y < 0 ? `${-y} v.C.` : String(y));
 function gameHistory(box, rnd) {
   return new Promise(resolve => {
+    // Paren met jaartallen die steeds dichter bij elkaar liggen
     const ev = HISTORY_EVENTS.slice().sort(() => rnd() - .5);
-    const pairs = [];
-    for (let i = 0; i + 1 < ev.length && pairs.length < 10; i += 2) if (Math.abs(ev[i][1] - ev[i + 1][1]) >= 2) pairs.push([ev[i], ev[i + 1]]);
+    const used = new Set(), pairs = [];
+    for (let k = 0; k < 10; k++) {
+      const gap = k < 3 ? 60 : k < 6 ? 20 : 8;
+      let pair = null;
+      for (const a of ev) {
+        if (used.has(a)) continue;
+        const b = ev.find(e => e !== a && !used.has(e) && Math.abs(e[1] - a[1]) >= 1 && Math.abs(e[1] - a[1]) <= gap);
+        if (b) { pair = rnd() < .5 ? [a, b] : [b, a]; break; }
+      }
+      if (!pair) { const rest = ev.filter(e => !used.has(e)); const a = rest[0], b = rest.find(e => e[1] !== a[1]); pair = [a, b]; }
+      used.add(pair[0]); used.add(pair[1]); pairs.push(pair);
+    }
     let i = 0, score = 0, timer = null;
     box.innerHTML = `<div class="hist-game"><div class="mg-top"><span id="hgScore">0 juist</span><span id="hgN">1/10</span><span class="mg-time"><i id="mgBar"></i></span></div>
       <p class="hg-ask">Wat gebeurde er eerst?</p><div class="hg-opts" id="hgOpts"></div></div>`;
@@ -3406,8 +3475,8 @@ function gameHistory(box, rnd) {
       const t0 = performance.now();
       const run = () => {
         if (!$('#mgBar')) return;
-        const left = 8000 - (performance.now() - t0);
-        $('#mgBar').style.width = `${clamp(left / 80, 0, 100)}%`;
+        const left = 6000 - (performance.now() - t0);
+        $('#mgBar').style.width = `${clamp(left / 60, 0, 100)}%`;
         if (left <= 0) return answer(-1);
         timer = requestAnimationFrame(run);
       };
@@ -3449,11 +3518,11 @@ function gameHoops(box, rnd) {
     const { c, ctx, pos, hud } = gameCanvas(box);
     let shot = 0, made = 0, ball = null, hx = 200, t0 = performance.now(), msg = '', msgT = 0, done = false;
     const RIM_Y = 150, RIM_W = 34;
-    const hoopX = now => (shot < 3 ? 200 : 200 + Math.sin((now - t0) / (shot < 6 ? 900 : 560)) * (shot < 6 ? 70 : 95));
+    const hoopX = now => (shot < 2 ? 200 : 200 + Math.sin((now - t0) / (shot < 5 ? 700 : 480)) * (shot < 5 ? 80 : 110));
     swipeInput(c, pos, (dx, p) => {
       if (ball || done) return;
       // kracht bepaalt of de bal tot aan de ring komt; links/rechts wordt beslist bij aankomst
-      ball = { t: 0, xl: 200 + dx * 1.15, kind: p < 160 ? 'short' : p > 345 ? 'long' : 'ok' };
+      ball = { t: 0, xl: 200 + dx * 1.15, kind: p < 195 ? 'short' : p > 305 ? 'long' : 'ok' };
     });
     const draw = now => {
       if (done) return;
@@ -3479,7 +3548,7 @@ function gameHoops(box, rnd) {
       if (ball) {
         ball.t += 1 / 50;
         const t = Math.min(ball.t, 1), b = ball;
-        if (ball.t >= 1 && b.kind === 'ok') b.kind = Math.abs(b.xl - hx) < RIM_W - 6 ? 'in' : Math.abs(b.xl - hx) < RIM_W + 14 ? 'rim' : 'miss';
+        if (ball.t >= 1 && b.kind === 'ok') b.kind = Math.abs(b.xl - hx) < RIM_W - 12 ? 'in' : Math.abs(b.xl - hx) < RIM_W + 10 ? 'rim' : 'miss';
         const tx = b.xl;
         let x = lerp(200, tx, t), y, r = lerp(26, 15, t);
         const endY = b.kind === 'short' ? 250 : b.kind === 'long' ? 70 : RIM_Y - 8;
@@ -3572,6 +3641,8 @@ function gameDarts(box, rnd) {
     c.addEventListener('pointerup', () => {
       if (!aim) return;
       const p = sway(performance.now());
+      const g = () => (Math.random() + Math.random() + Math.random() - 1.5) * 9;
+      p.x += g(); p.y += g();
       const s = dartScore(p.x - CX, p.y - CY);
       darts.push({ x: p.x, y: p.y }); total += s; msg = s ? (s === 50 ? 'BULLSEYE!' : `+${s}`) : 'Naast';
       msgT = performance.now(); aim = null;
@@ -3579,7 +3650,7 @@ function gameDarts(box, rnd) {
     });
     // Hand trilt meer naarmate je langer mikt
     const sway = now => {
-      const h = (now - holdT) / 1000, amp = 5 + 18 * Math.min(1, h / 2.2);
+      const h = (now - holdT) / 1000, amp = 12 + 22 * Math.min(1, h / 1.8);
       const off = touch ? -70 : 0;
       return { x: aim.x + Math.sin(now / 190) * amp + Math.sin(now / 77) * amp * .35, y: aim.y + off + Math.cos(now / 230) * amp + Math.sin(now / 61) * amp * .3 };
     };
@@ -3677,9 +3748,9 @@ function gameLaunch(box, rnd) {
       const lvl = shot;
       round = {
         bx: 190 + rnd() * 170,
-        bw: lvl < 3 ? 30 : lvl < 6 ? 25 : 21,
-        wind: lvl < 2 ? 0 : Math.round((rnd() * 2 - 1) * (lvl < 5 ? 70 : 120)),
-        wall: lvl >= 4 ? { x: 128 + rnd() * 40, h: 70 + rnd() * 70 } : null,
+        bw: lvl < 3 ? 26 : lvl < 6 ? 21 : 18,
+        wind: lvl < 1 ? 0 : Math.round((rnd() * 2 - 1) * (lvl < 4 ? 80 : 130)),
+        wall: lvl >= 3 ? { x: 128 + rnd() * 40, h: 70 + rnd() * 70 } : null,
       };
     };
     newRound();
