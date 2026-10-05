@@ -1264,6 +1264,88 @@ button.opp-btn:disabled{opacity:.45;cursor:not-allowed}
 }
 @keyframes lunge-u{40%{transform:translateY(-14px) scale(1.04)}}
 @keyframes lunge-d{40%{transform:translateY(14px) scale(1.04)}}
+
+/* =====================================================================
+   FRAT HOUSE (foto) en KAMER (foto)
+   ===================================================================== */
+.facade-wrap,.room-wrap{position:relative;border-radius:18px;overflow:hidden;border:1px solid var(--line2);box-shadow:0 30px 60px -30px rgba(0,0,0,.9);background:#0A1024}
+.facade,.room-scene{position:relative;width:100%;min-width:760px;aspect-ratio:1376/768;overflow:hidden}
+@media (max-width:899px){.facade{min-width:980px}.room-scene{min-width:860px}.facade-wrap,.room-wrap{border-radius:14px}}
+/* Ramen: klikbaar, verlicht als die persoon vandaag speelde */
+.fwin{position:absolute;z-index:2;padding:0;border:0;border-radius:3px;background:transparent;cursor:pointer;outline:none;transition:box-shadow .35s}
+.fwin.lit::before{content:"";position:absolute;inset:6% 8%;border-radius:2px;background:radial-gradient(ellipse at 50% 60%,#FFE9B0,#FFC25C 55%,#E08A2A);mix-blend-mode:screen;opacity:.55}
+.facade-wrap.night .fwin.lit::before,.facade-wrap.dusk .fwin.lit::before{opacity:.95}
+.facade-wrap.night .fwin.lit{box-shadow:0 0 22px 4px rgba(255,190,90,.45)}
+.fwin.vacant{cursor:default}
+.fwin[data-claim]{cursor:pointer}
+.facade[data-hover="0"] [data-win="0"],.facade[data-hover="1"] [data-win="1"],.facade[data-hover="2"] [data-win="2"],.facade[data-hover="3"] [data-win="3"],
+.facade[data-hover="4"] [data-win="4"],.facade[data-hover="5"] [data-win="5"],.facade[data-hover="6"] [data-win="6"],.facade[data-hover="7"] [data-win="7"],
+.facade[data-hover="8"] [data-win="8"],.facade[data-hover="9"] [data-win="9"],.facade[data-hover="10"] [data-win="10"],.facade[data-hover="11"] [data-win="11"],
+.facade[data-hover="12"] [data-win="12"]{box-shadow:0 0 0 2px rgba(255,226,160,.9),0 0 26px 6px rgba(255,214,130,.5),0 0 0 3000px rgba(6,10,24,.5);z-index:3}
+/* Naambordjes onder de ramen */
+.fplate{position:absolute;z-index:4;transform:translate(-50%,0);padding:3px 9px 4px;border-radius:4px;pointer-events:none;white-space:nowrap;
+  background:linear-gradient(180deg,#F1E3C0,#CDB27A);color:#3A2A10;box-shadow:0 3px 8px rgba(0,0,0,.45),inset 0 0 0 1px rgba(90,60,20,.35)}
+.fplate b{font:400 11.5px/1 var(--varsity);letter-spacing:.05em;text-transform:uppercase}
+.fplate.me{background:linear-gradient(180deg,#E0284A,#8C0B21);color:#fff;box-shadow:0 0 0 2px #F6DE9C,0 3px 8px rgba(0,0,0,.5)}
+.fplate.vacant{background:rgba(20,26,48,.75);color:#8790A8;box-shadow:none}
+.fplate.lit::after{content:"";position:absolute;top:-4px;right:-4px;width:9px;height:9px;border-radius:50%;background:#7FD3A0;box-shadow:0 0 0 2px #0C1120}
+.facade[data-hover="0"] [data-plate="0"],.facade[data-hover="1"] [data-plate="1"],.facade[data-hover="2"] [data-plate="2"],.facade[data-hover="3"] [data-plate="3"],
+.facade[data-hover="4"] [data-plate="4"],.facade[data-hover="5"] [data-plate="5"],.facade[data-hover="6"] [data-plate="6"],.facade[data-hover="7"] [data-plate="7"],
+.facade[data-hover="8"] [data-plate="8"],.facade[data-hover="9"] [data-plate="9"],.facade[data-hover="10"] [data-plate="10"],.facade[data-hover="11"] [data-plate="11"],
+.facade[data-hover="12"] [data-plate="12"]{transform:translate(-50%,0) scale(1.15);z-index:5}
+/* Bewoners onder de gevel */
+.res-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:8px;margin-top:14px}
+.res{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:12px;border:1px solid var(--line);background:linear-gradient(180deg,#1A2340,#141B31);color:var(--ink);text-align:left;cursor:pointer;font:inherit;transition:border-color .15s,transform .15s}
+.res:not(:disabled):hover{border-color:var(--red2);transform:translateY(-2px)}
+.res:disabled{cursor:default;opacity:.55}
+.res.me{border-color:var(--gold)}
+.res .friend-av{width:34px;height:34px;flex-shrink:0}
+.res-empty{background:rgba(255,255,255,.06);border:1px dashed var(--line2)}
+.res-txt{display:grid;gap:1px;min-width:0;flex:1}
+.res-txt b{font:400 14px var(--varsity);letter-spacing:.03em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.res-txt b em{font:700 9px var(--body);letter-spacing:.14em;text-transform:uppercase;color:var(--gold);font-style:normal;margin-left:4px}
+.res-txt small{font:500 11.5px var(--body);color:var(--ink-soft)}
+.res-dot{width:9px;height:9px;border-radius:50%;background:rgba(255,255,255,.12);flex-shrink:0}
+.res-dot.on{background:#FFC25C;box-shadow:0 0 10px #FFC25C}
+@media (max-width:899px){.res-list{grid-template-columns:1fr 1fr}}
+
+/* Kamer */
+.rm-head2{margin-bottom:12px}
+.rm-head2 h2{margin:2px 0 4px}
+.rm-head2 .kicker{color:var(--gold)}
+.room-tint{position:absolute;inset:0;pointer-events:none;mix-blend-mode:color;opacity:0;
+}
+.room-tint.a{clip-path:polygon(0 0,81% 0,81% 58.7%,0 58.7%)}
+.room-tint.b{clip-path:polygon(0 62.4%,81% 62.4%,81% 63.5%,72% 63.5%,72% 82%,28% 82%,28% 69%,0 69%)}
+.room-scene.t-crimson .room-tint{background:#9A1028;opacity:.85}
+.room-scene.t-forest .room-tint{background:#1F6A40;opacity:.85}
+.room-scene.t-charcoal .room-tint{background:#777;opacity:1}
+.room-spot{position:absolute;left:28%;top:-10%;width:34%;height:70%;pointer-events:none;background:radial-gradient(50% 50% at 50% 50%,rgba(255,236,190,.14),transparent 70%)}
+.rs-frame{position:absolute;left:35.1%;top:4%;width:18%;display:grid;justify-items:center;gap:6px;z-index:2}
+.rs-frame .rm-slot.frame{width:100%;padding:6%}
+.rs-frame .rm-slot.frame.empty{height:auto;aspect-ratio:5/7}
+.rs-frame .rm-plaque{font-size:9.5px;max-width:100%}
+.rs-pin{position:absolute;width:6.8%;z-index:2}
+.rs-pin .rm-slot{filter:drop-shadow(0 8px 8px rgba(0,0,0,.55))}
+.room-scene .rm-slot.empty{border-color:rgba(244,235,221,.18);background:rgba(0,0,0,.12)}
+.room-scene:not(.editing) .rm-slot.empty{opacity:.5}
+.room-scene .rm-empty{font-size:16px}
+.room-scene.editing .rm-slot{outline:2px dashed var(--gold);outline-offset:3px;cursor:pointer}
+.room-scene .rm-lock{font-size:7px;padding:3px 4px}
+/* Trofeeën op de plank */
+.rs-shelf,.rs-labels{position:absolute;left:8.6%;width:70.4%;display:grid;grid-template-columns:repeat(12,1fr);z-index:2}
+.rs-shelf{top:51.2%;height:7.8%;align-items:end;justify-items:center}
+.rs-trophy{display:grid;place-items:end center;width:72%;max-width:44px;height:100%;padding:0;border:0;background:none;cursor:pointer;color:#5C5A66;opacity:.75}
+.rs-trophy svg{width:100%;height:auto;filter:drop-shadow(0 3px 2px rgba(0,0,0,.6))}
+.rs-trophy.got{color:#F2CC72;opacity:1}
+.rs-trophy.got svg{filter:drop-shadow(0 0 6px rgba(246,210,120,.55)) drop-shadow(0 3px 2px rgba(0,0,0,.6))}
+.rs-trophy:hover{transform:translateY(-3px)}
+.rs-labels{top:63.6%;justify-items:center}
+.rs-labels span{font:600 7.5px/1.15 var(--body);letter-spacing:.02em;text-transform:uppercase;color:#6E6B7C;text-align:center;max-width:100%}
+.rs-labels span.got{color:#E9C978}
+.trophy-caption{margin:10px 2px 0;font:500 13.5px var(--body);color:var(--ink-soft)}
+.trophy-caption b{color:var(--gold2)}
+.trophy-caption .ok{color:var(--green-soft)}.trophy-caption .muted{color:var(--muted)}
 </style>
 </head>
 <body>
@@ -3205,8 +3287,18 @@ async function renderIdeas(view) {
 
 // ---------- Frat House: een kamer per lid ----------
 // Je ziet je eigen kamer en die van je vrienden. Een licht raam = vandaag de Wordle gespeeld.
-const ROOM_THEMES = { navy: 'Navy', crimson: 'Crimson', forest: 'Forest', charcoal: 'Charcoal', cream: 'Cream' };
+const ROOM_THEMES = { navy: 'Navy', crimson: 'Crimson', forest: 'Forest', charcoal: 'Charcoal' };
+const ROOM_PIN_X = [9.2, 17.7, 26.2, 55.2, 63.7, 72.2]; // kolommen van het prikbord op de muur (in %)
 const ROOM_SLOTS = 13; // plek 0 = de grote gouden lijst, 1-12 = de muur
+
+// Ramen van de gevel (img/frathouse-*.webp, 1376×768): x, y, breedte, hoogte in pixels.
+// 5 ramen boven, 4 in het midden (niet het kleine raam boven de deur), 4 beneden = 13 kamers.
+const FACADE_W = 1376, FACADE_H = 768;
+const FACADE_WINDOWS = [
+  ...[390, 514, 664, 813, 937].map(x => [x, 228, 50, 68]),
+  ...[390, 514, 813, 937].map(x => [x, 341, 50, 79]),
+  ...[390, 514, 813, 937].map(x => [x, 476, 50, 82]),
+];
 
 async function renderHouse(view) {
   if (state.room) return renderRoom(view, state.room);
@@ -3221,41 +3313,65 @@ async function renderHouse(view) {
   state.houseOwners = owners;
   const myRoom = persons.find(p => owners[p]?.user_id === uid);
   const residents = persons.filter(p => owners[p]).length;
+  const phase = dayPhase();
+  const pct = (v, total) => `${(v / total * 100).toFixed(2)}%`;
+  const status = o => (o ? (o.played ? 'Played today' : 'Lights off') : 'Not moved in');
 
-  const roomTile = (p, i) => {
-    const o = owners[p];
-    const mine = o?.user_id === uid;
-    const cls = `room-tile${mine ? ' me' : ''}${o?.played ? ' lit' : ''}${o ? '' : ' vacant'}`;
-    const inner = `<span class="rt-window"><span class="rt-glass">${o ? friendAv(o) : '<span class="rt-rent">Not moved in</span>'}</span><span class="rt-curtain l"></span><span class="rt-curtain r"></span></span>
-      <span class="rt-plate"><b>${esc(p)}</b><small>${o ? `${o.cards} cards · ${o.legendaries} legendary` : 'Nog niet geregistreerd'}</small></span>
-      ${mine ? '<span class="rt-tag">Your room</span>' : ''}
-      <span class="rt-status">${o ? (o.played ? 'Played today' : 'Lights off') : myRoom ? 'Vacant' : 'Is dit jouw kamer?'}</span>`;
-    return o
-      ? `<button type="button" class="${cls}" data-room="${o.user_id}" style="--d:${i * 50}ms">${inner}</button>`
-      : `<button type="button" class="${cls}" ${myRoom ? 'disabled' : `data-claim="${esc(p)}"`} style="--d:${i * 50}ms">${inner}</button>`;
+  const windowHtml = (p, i) => {
+    const w = FACADE_WINDOWS[i];
+    if (!w) return '';
+    const o = owners[p], mine = o?.user_id === uid;
+    const act = o ? `data-room="${o.user_id}"` : myRoom ? 'disabled' : `data-claim="${esc(p)}"`;
+    return `<button type="button" class="fwin${o?.played ? ' lit' : ''}${mine ? ' me' : ''}${o ? '' : ' vacant'}" ${act} data-win="${i}"
+        aria-label="${esc(p)}: ${status(o)}" style="left:${pct(w[0], FACADE_W)};top:${pct(w[1], FACADE_H)};width:${pct(w[2], FACADE_W)};height:${pct(w[3], FACADE_H)}"></button>
+      <span class="fplate${mine ? ' me' : ''}${o ? '' : ' vacant'}${o?.played ? ' lit' : ''}" data-plate="${i}"
+        style="left:${pct(w[0] + w[2] / 2, FACADE_W)};top:${pct(w[1] + w[3] - 3, FACADE_H)}"><b>${esc(plateName(p))}</b></span>`;
   };
 
   view.innerHTML = `<section class="col" style="max-width:none">
     ${pageHead('Frat House', 'house')}
-    ${myRoom ? '' : `<div class="battle-box highlight house-claim"><strong>Welke kamer is van jou?</strong> We konden je account niet automatisch aan een kamer koppelen. Tik op je eigen kamer om erin te trekken.<p class="msg" id="claimMsg" role="alert"></p></div>`}
-    <div class="house">
-      <div class="house-roof"><span class="hr-letters">RIZZ</span><span class="hr-name">Rizz Academy House</span><span class="hr-est">Est. MMXXVI · ${residents}/${persons.length} moved in</span></div>
-      <div class="house-body">
-        <div class="rooms-grid">${persons.map(roomTile).join('')}</div>
-        <div class="house-steps"><span class="house-door"></span></div>
+    ${myRoom ? '' : `<div class="battle-box highlight house-claim"><strong>Welke kamer is van jou?</strong> We konden je account niet automatisch aan een kamer koppelen. Tik op het raam van je eigen kamer om erin te trekken.<p class="msg" id="claimMsg" role="alert"></p></div>`}
+    <div class="facade-wrap ${phase}">
+      <div class="campus-scroll" id="houseScroll">
+        <div class="facade">
+          <img class="campus-img" src="img/frathouse-${phase === 'night' ? 'night' : 'day'}.webp" alt="Het Frat House" width="1376" height="768" decoding="async">
+          ${persons.map(windowHtml).join('')}
+        </div>
       </div>
+      <div class="campus-hint">${residents}/${persons.length} moved in · ${persons.filter(p => owners[p]?.played).length} lights on today <span>Tik op een raam.</span></div>
     </div>
+    <div class="res-list">${persons.map(p => {
+      const o = owners[p], mine = o?.user_id === uid;
+      return `<button type="button" class="res${mine ? ' me' : ''}${o ? '' : ' vacant'}" ${o ? `data-room="${o.user_id}"` : myRoom ? 'disabled' : `data-claim="${esc(p)}"`}>
+        ${o ? friendAv(o) : '<span class="friend-av res-empty"></span>'}
+        <span class="res-txt"><b>${esc(p)}${mine ? ' <em>you</em>' : ''}</b><small>${o ? `${o.cards} cards · ${o.legendaries} legendary` : myRoom ? 'Nog niet geregistreerd' : 'Is dit jouw kamer?'}</small></span>
+        <span class="res-dot${o?.played ? ' on' : ''}" title="${status(o)}"></span></button>`;
+    }).join('')}</div>
   </section>`;
 
+  const fac = view.querySelector('.facade');
+  view.querySelectorAll('.fwin').forEach(el => {
+    const on = () => { fac.dataset.hover = el.dataset.win; };
+    const off = () => { if (fac.dataset.hover === el.dataset.win) delete fac.dataset.hover; };
+    el.addEventListener('mouseenter', on); el.addEventListener('mouseleave', off);
+    el.addEventListener('focus', on); el.addEventListener('blur', off);
+  });
+  const sc = $('#houseScroll');
+  sc.scrollLeft = (sc.scrollWidth - sc.clientWidth) / 2;
   view.querySelectorAll('[data-room]').forEach(b => b.onclick = () => { state.room = b.dataset.room; renderHouse(view); scrollTo({ top: 0 }); });
   view.querySelectorAll('[data-claim]').forEach(b => b.onclick = async () => {
     if (!confirm(`Is dit de kamer van ${b.dataset.claim}? Dit kan je maar één keer kiezen.`)) return;
     const { error: e } = await sb.rpc('claim_room', { p_room: b.dataset.claim });
-    if (e) { const m = $('#claimMsg'); if (m) { m.className = 'msg err'; m.textContent = e.message; } return; }
+    if (e) { const m = $('#claimMsg'); if (m) { m.className = 'msg err'; m.textContent = e.message; } else alert(e.message); return; }
     renderHouse(view);
   });
 }
 
+// Kort naambordje: voornaam, of voornaam + initiaal als twee mensen dezelfde voornaam hebben
+function plateName(p) {
+  const [first, ...rest] = p.split(' ');
+  return housePersons().filter(q => q.split(' ')[0] === first).length > 1 && rest.length ? `${first} ${rest[0][0]}.` : first;
+}
 // De 13 kamers: één per persoon van de kaarten
 const housePersons = () => [...new Set(state.cards.filter(c => c.rarity !== 'cat').map(c => c.person))].sort((a, b) => a.localeCompare(b));
 
@@ -3315,8 +3431,8 @@ function trophiesFor(plays, ownedSet, bs) {
   return [
     { icon: 'clock', name: 'Freshman', how: 'Eerste Wordle gespeeld', ok: plays.length > 0 },
     { icon: 'flame', name: 'On Fire', how: '3 dagen op rij gespeeld', ok: best >= 3 },
-    { icon: 'flame', name: 'Unstoppable', how: '7 dagen op rij gespeeld', ok: best >= 7 },
-    { icon: 'target', name: 'Sharpshooter', how: 'Wordle in 2 pogingen of minder', ok: sharp },
+    { icon: 'flame', name: 'Iron Streak', how: '7 dagen op rij gespeeld', ok: best >= 7 },
+    { icon: 'target', name: 'Sniper', how: 'Wordle in 2 pogingen of minder', ok: sharp },
     { icon: 'star', name: 'Legend Hunter', how: 'Een legendary verzameld', ok: legend },
     { icon: 'stack', name: 'Collector', how: '50 verschillende kaarten', ok: unique >= 50 },
     { icon: 'crown', name: 'Full Set', how: 'Alle 9 kaarten van één persoon', ok: fullSet },
@@ -3351,7 +3467,7 @@ async function renderRoom(view, userId) {
   let pins = (saved?.pins || []).map(id => (ownedSet.has(id) ? id : 0));
   if (!pins.some(Boolean)) pins = defaultPins(ownedSet);
   pins = Array.from({ length: ROOM_SLOTS }, (_, i) => pins[i] || 0);
-  let theme = saved?.theme || 'navy';
+  let theme = ROOM_THEMES[saved?.theme] ? saved.theme : 'navy';
   let motto = saved?.motto || '';
   const trophies = trophiesFor(plays, ownedSet, bs.data);
   const wins = bs.data?.wins || 0, losses = bs.data?.losses || 0;
@@ -3383,29 +3499,26 @@ async function renderRoom(view, userId) {
         <label class="reb-motto">Motto<input id="roomMotto" maxlength="60" value="${esc(motto)}" placeholder="bv. Never chase. Collect."></label>
         <span class="reb-hint">Tik op een plek aan de muur om een kaart op te hangen.</span>
       </div>` : ''}
-      <div class="room t-${theme}${editing ? ' editing' : ''}">
-        <div class="rm-wall">
-          <div class="rm-head">
-            <div class="rm-pennant"><span>${esc(name)}</span></div>
-            <div class="rm-title">
-              <span class="kicker">${mine ? 'Your room' : 'Room of'}</span>
-              <h2>${esc(name)}</h2>
-              ${motto ? `<p class="rm-motto">“${esc(motto)}”</p>` : mine ? '<p class="rm-motto muted">Nog geen motto.</p>' : ''}
-            </div>
-            <div class="rm-window ${dayPhase()}" aria-hidden="true"><span></span><span></span><span></span><span></span></div>
-          </div>
-          <div class="rm-main">
-            <div class="rm-framebox">${slotHtml(pins[0], 0)}<span class="rm-plaque">${pins[0] ? esc(cardById(pins[0])?.name || '') : 'The centerpiece'}</span></div>
-            <div class="rm-board">${pins.slice(1).map((id, i) => slotHtml(id, i + 1)).join('')}</div>
-          </div>
-        </div>
-        <div class="rm-shelf">
-          <div class="rm-trophies">${trophies.map(t => `<div class="trophy${t.ok ? ' got' : ''}" title="${esc(t.how)}">
-            <span class="tr-ico"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">${TROPHY_ICON[t.icon]}</svg></span>
-            <b>${t.name}</b><small>${esc(t.how)}</small></div>`).join('')}</div>
-        </div>
-        <div class="rm-floor"></div>
+      <div class="rm-head2">
+        <span class="kicker">${mine ? 'Your room' : 'Room of'}</span>
+        <h2>${esc(name)}</h2>
+        ${motto ? `<p class="rm-motto">“${esc(motto)}”</p>` : mine ? '<p class="rm-motto muted">Nog geen motto.</p>' : ''}
       </div>
+      <div class="room-wrap">
+        <div class="campus-scroll" id="roomScroll">
+          <div class="room-scene t-${theme}${editing ? ' editing' : ''}">
+            <img class="campus-img" src="img/room.webp" alt="" width="1376" height="768" decoding="async">
+            <div class="room-tint a" aria-hidden="true"></div><div class="room-tint b" aria-hidden="true"></div>
+            <div class="room-spot" aria-hidden="true"></div>
+            <div class="rs-frame">${slotHtml(pins[0], 0)}<span class="rm-plaque">${pins[0] ? esc(cardById(pins[0])?.name || '') : 'The centerpiece'}</span></div>
+            ${pins.slice(1).map((id, i) => `<div class="rs-pin" style="left:${ROOM_PIN_X[i % 6]}%;top:${i < 6 ? 7 : 29.5}%">${slotHtml(id, i + 1)}</div>`).join('')}
+            <div class="rs-shelf">${trophies.map((t, i) => `<button type="button" class="rs-trophy${t.ok ? ' got' : ''}" data-trophy="${i}" title="${esc(t.name)}: ${esc(t.how)}">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">${TROPHY_ICON[t.icon]}</svg></button>`).join('')}</div>
+            <div class="rs-labels">${trophies.map(t => `<span class="${t.ok ? 'got' : ''}">${t.name}</span>`).join('')}</div>
+          </div>
+        </div>
+      </div>
+      <p class="trophy-caption" id="trophyCaption">${trophies.filter(t => t.ok).length}/${trophies.length} trofeeën. Tik op een trofee voor meer uitleg.</p>
       <div class="rm-desk">
         <h3>Track record</h3>
         ${statsHtml(plays, `<div class="stat-card"><span class="stat-num">${wins}–${losses}</span><span class="stat-label">Arena (W–L)</span></div>
@@ -3427,6 +3540,12 @@ async function renderRoom(view, userId) {
       showStamp('Room saved', 'k-ok', 'Looking sharp', 900);
     };
     view.querySelectorAll('[data-theme]').forEach(b => b.onclick = () => { theme = b.dataset.theme; motto = $('#roomMotto').value; draw(); });
+    view.querySelectorAll('[data-trophy]').forEach(b => b.onclick = () => {
+      const t = trophies[Number(b.dataset.trophy)];
+      $('#trophyCaption').innerHTML = `<b>${esc(t.name)}</b>: ${esc(t.how)} ${t.ok ? '<span class="ok">✓ behaald</span>' : '<span class="muted">nog niet behaald</span>'}`;
+    });
+    const rsc = $('#roomScroll');
+    if (rsc) rsc.scrollLeft = (rsc.scrollWidth - rsc.clientWidth) * .42;
     view.querySelectorAll('.rm-slot').forEach(slot => slot.onclick = () => {
       const i = Number(slot.dataset.slot);
       if (editing) { motto = $('#roomMotto').value; return pickForSlot(i); }
