@@ -1918,8 +1918,8 @@ div.wf-inner{cursor:default}
 /* =====================================================================
    FRIENDS (The Quad)
    ===================================================================== */
-.shell[data-place="friends"] .place-bg{opacity:1;background-image:linear-gradient(180deg,rgba(8,12,26,.4),rgba(8,12,26,.66) 40%,rgba(8,12,26,.86)),url(img/quad-day.webp),url(img/campus-day.webp)}
-.shell[data-place="friends"][data-phase="night"] .place-bg{background-image:linear-gradient(180deg,rgba(8,12,26,.3),rgba(8,12,26,.6) 40%,rgba(8,12,26,.84)),url(img/quad-night.webp),url(img/campus-night.webp)}
+.shell[data-place="friends"] .place-bg{opacity:1;background-image:linear-gradient(180deg,rgba(8,12,26,.3),rgba(8,12,26,.45) 45%,rgba(8,12,26,.7)),url(img/quad-day.webp)}
+.shell[data-place="friends"][data-phase="night"] .place-bg{background-image:linear-gradient(180deg,rgba(8,12,26,.2),rgba(8,12,26,.35) 45%,rgba(8,12,26,.65)),url(img/quad-night.webp)}
 .fr-grid{display:grid;grid-template-columns:minmax(0,1fr);gap:14px;margin-top:12px}
 .fr-panel{background:rgba(14,19,38,.86);border:1px solid rgba(255,255,255,.1);border-radius:16px;padding:14px;backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);min-width:0}
 .fr-panel h4{margin:14px 0 8px;font:600 11px var(--body);letter-spacing:.2em;text-transform:uppercase;color:var(--brass);display:flex;align-items:center;gap:8px}
@@ -2038,6 +2038,15 @@ div.wf-inner{cursor:default}
   .dock .nav-btn[data-tab="campus"] .ns{display:block !important;color:#1A1408}
   .dock .nav-btn[data-tab="campus"]{padding:6px 2px;min-width:0;margin:0}
 }
+/* Friends: de foto van The Quad moet zichtbaar blijven */
+.fr-panel{background:rgba(12,17,34,.8)}
+@media (min-width:900px), (min-width:600px) and (max-height:500px){
+  .fr-grid{align-items:start}
+  .fr-side,.fr-list,.fr-detail{max-height:100%}
+  .fr-empty{padding:22px 10px}
+}
+.frd-tile b .fcount{font:inherit;color:#FF6B7A}
+.fr-code b{font-size:19px;letter-spacing:.1em}
 </style>
 </head>
 <body>
