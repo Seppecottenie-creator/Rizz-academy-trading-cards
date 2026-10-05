@@ -904,119 +904,46 @@ h3{color:var(--gold)}
 @media (max-width:370px){.dock .nav-btn{font-size:8.5px}}
 
 /* =====================================================================
-   CAMPUS: de kaart (startscherm)
+   CAMPUS: luchtfoto met klikbare gebouwen (startscherm)
    ===================================================================== */
 .campus-page .gazette{margin-bottom:16px}
-.campus{position:relative;border-radius:18px;overflow:hidden;border:1px solid var(--line2);box-shadow:0 30px 60px -30px rgba(0,0,0,.9),inset 0 0 0 1px rgba(0,0,0,.4);background:#0A1024}
+.campus{position:relative;border-radius:18px;overflow:hidden;border:1px solid var(--line2);box-shadow:0 30px 60px -30px rgba(0,0,0,.9);background:#0A1024}
 .campus-scroll{overflow-x:auto;overflow-y:hidden;scrollbar-width:none;-webkit-overflow-scrolling:touch}
 .campus-scroll::-webkit-scrollbar{display:none}
-.campus-svg{display:block;width:100%;min-width:760px;height:auto}
-@media (max-width:899px){.campus-svg{min-width:1000px}}
-.campus-hint{position:absolute;left:14px;bottom:12px;padding:7px 12px;border-radius:999px;background:rgba(10,16,36,.72);color:var(--ink);font:500 12.5px var(--body);pointer-events:none}
+.campus-map{position:relative;width:100%;min-width:760px;aspect-ratio:1376/768;overflow:hidden}
+.campus-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;user-select:none;-webkit-user-drag:none}
+.campus.dusk .campus-tint{position:absolute;inset:0;pointer-events:none;background:linear-gradient(180deg,rgba(40,30,90,.32),rgba(120,60,60,.10) 45%,rgba(15,18,45,.32))}
+.campus-hint{position:absolute;left:14px;bottom:12px;z-index:5;padding:7px 12px;border-radius:999px;background:rgba(10,16,36,.72);color:var(--ink);font:500 12.5px var(--body);pointer-events:none}
 .campus-hint span{color:var(--gold);margin-left:6px}
 @media (min-width:900px){.campus-hint span{display:none}}
 
-/* Materialen: overdag */
-.campus .sky1{stop-color:#6FA6D6}.campus .sky2{stop-color:#CFE3EE}
-.campus .lawn1{stop-color:#5E9A54}.campus .lawn2{stop-color:#3F7A3E}
-.c-hills{fill:#7FA6B8;opacity:.55}.c-treeline{fill:#3E6F45}
-.c-paths path{fill:none;stroke:#D9C9A3;stroke-width:16;stroke-linecap:round;opacity:.9}
-.c-quad{fill:#6DAA60;stroke:#D9C9A3;stroke-width:6}
-.c-basin{fill:#C9BBA0}.c-water{fill:#7FC4E8}.c-jet path{fill:none;stroke:#CDEBFA;stroke-width:3;stroke-linecap:round;opacity:.85;transform-origin:0 -14px;animation:c-jet 1.6s ease-in-out infinite alternate}
-@keyframes c-jet{to{transform:scaleY(.86)}}
-.c-shadow{fill:rgba(0,0,0,.18)}
-.c-trunk{fill:#5A3E2B}.c-leaf{fill:#2F6B3A}.c-leaf2{fill:#28593A}
-.c-post{fill:#2A2F3E}.c-bulb{fill:#FFF3C4}.c-glow{fill:url(#cGlow);opacity:0}
-.m-stone{fill:#EADFC8}.m-stone2{fill:#D8C9AA}.m-column{fill:#F7F0E0}.m-step{fill:#CDBF9F}.m-step2{fill:#BFB08F}
-.m-roof{fill:#1E2A4A}.m-roof2{fill:#2A375C}.m-brick{fill:#9A3340}.m-trim{fill:#F2E8D5}.m-navy{fill:#1C2540}.m-navy2{fill:#2C3A60}
-.m-stand{fill:#3C4770}.m-stand2{fill:#2C365A}.m-field{fill:#3F8A4E}.m-wall{fill:#1F2844}.m-redstripe{fill:#C8102E}
-.m-truck{fill:#232B45}.m-truck2{fill:#1A2138}.m-wheel{fill:#14161C;stroke:#5A6075;stroke-width:3}.m-crate{fill:#A87C4F;stroke:#7A5634;stroke-width:2}
-.m-cork{fill:#B58A5A;stroke:#7A5634;stroke-width:2}
-.c-chalk{fill:none;stroke:rgba(255,255,255,.65);stroke-width:2}
-.c-dark{fill:#1A2033}.c-door{fill:#3A2A22}.c-door-glow{fill:#2A3048}
-.c-win{fill:#2B3F66;stroke:#F2E8D5;stroke-width:2}
-.c-win.arch{rx:7px}
-.c-brickline{stroke:rgba(0,0,0,.14);stroke-width:2}
-.c-rose{fill:#2B3F66;stroke:#F2E8D5;stroke-width:3}
-.c-clock{fill:#FBF6EA;stroke:#B8933F;stroke-width:4}
-.c-hand{stroke:#1C2540;stroke-width:3;stroke-linecap:round}.c-hand.thin{stroke-width:2}
-.c-flag{fill:#C8102E;transform-origin:0 -351px;animation:c-flag 2.4s ease-in-out infinite}
-@keyframes c-flag{50%{transform:skewY(-6deg) scaleX(.94)}}
-.c-banner{fill:#C8102E}
-.c-engrave{font:400 11px var(--varsity);letter-spacing:.2em;fill:#8C7B5C}
-.c-letters{font:400 18px var(--varsity);letter-spacing:.14em;fill:#B8933F}
-.c-wordmark{font:400 20px var(--varsity);letter-spacing:.25em;fill:#F4EBDD}
-.c-wordmark.small{font-size:12px;fill:#D4A84B}
-.c-awning{fill:url(#cAwn)}
-.c-string{fill:none;stroke:#2A2F3E;stroke-width:1.5}
-.c-neon{font:400 14px var(--varsity);letter-spacing:.2em;fill:#FF6B81}
-.c-vault-rim{fill:#B8933F}.c-vault-door{fill:#8D96A8;stroke:#5E6678;stroke-width:3}.c-vault-hub{fill:#D4A84B}
-.c-vault-spoke{stroke:#D4A84B;stroke-width:4;stroke-linecap:round}
-.c-vault-wheel{transform-origin:0 -70px;transition:transform 1.2s cubic-bezier(.2,.8,.2,1)}
-.bld:hover .c-vault-wheel,.bld:focus-visible .c-vault-wheel{transform:rotate(200deg)}
-.c-bell{fill:#D4A84B}
-.c-note{fill:#F4EBDD}.c-note.n2{fill:#F7D7DD}.c-note.n3{fill:#D9E8F4}
-.c-beam{fill:#FFF6D0;opacity:0}
-.c-stars circle{fill:#fff;opacity:0}
-.c-sun circle{fill:#FFE7A0}
-.c-moon{display:none}.c-moon circle{fill:#F4EBDD}.c-moon .c-moon-cut{fill:#14204A}
-.c-cloud{fill:rgba(255,255,255,.75);animation:c-cloud linear infinite}
-@keyframes c-cloud{from{transform:translateX(-260px)}to{transform:translateX(1300px)}}
-.c-walker circle{fill:#C8102E}.c-walker .head{fill:#F1D3B3}
-.c-walker.w2 circle:first-child{fill:#1C2540}.c-walker.w3 circle:first-child{fill:#D4A84B}.c-walker.w4 circle:first-child{fill:#F4EBDD}
+/* Klikbare zone: bij hover wordt de rest van de campus donkerder (spotlight) */
+.hot{position:absolute;z-index:2;padding:0;border:0;border-radius:22px;background:transparent;cursor:pointer;outline:none;
+  box-shadow:0 0 0 0 rgba(6,10,24,0);transition:box-shadow .35s ease}
+.campus-map[data-hover="today"] .hot[data-go="today"],.campus-map[data-hover="battle"] .hot[data-go="battle"],
+.campus-map[data-hover="house"] .hot[data-go="house"],.campus-map[data-hover="book"] .hot[data-go="book"],
+.campus-map[data-hover="trade"] .hot[data-go="trade"],.campus-map[data-hover="shop"] .hot[data-go="shop"],
+.campus-map[data-hover="ideas"] .hot[data-go="ideas"]{
+  box-shadow:0 0 0 2px rgba(255,226,160,.85),0 0 30px 6px rgba(255,214,130,.45),0 0 0 3000px rgba(6,10,24,.5);z-index:3}
 
-/* Avondschemering */
-.campus.dusk .sky1{stop-color:#2D2F62}.campus.dusk .sky2{stop-color:#E8875F}
-.campus.dusk .lawn1{stop-color:#3D6B45}.campus.dusk .lawn2{stop-color:#28492F}
-.campus.dusk .c-hills{fill:#5A4C78}.campus.dusk .c-treeline{fill:#2A4A35}
-.campus.dusk .c-sun circle{fill:#FFB38A}
-.campus.dusk .c-sun{transform:translateY(120px)}
-.campus.dusk .c-cloud{fill:rgba(255,190,170,.55)}
-.campus.dusk .c-win.room.on,.campus.dusk .c-door-glow{fill:#FFC86B}
-.campus.dusk .c-glow{opacity:.6}
-
-/* Nacht */
-.campus.night .sky1{stop-color:#070C1E}.campus.night .sky2{stop-color:#1B2754}
-.campus.night .lawn1{stop-color:#1F3A2A}.campus.night .lawn2{stop-color:#13261B}
-.campus.night .c-hills{fill:#1A2446}.campus.night .c-treeline{fill:#12261C}
-.campus.night .c-paths path{stroke:#5E5848}.campus.night .c-quad{fill:#24452F;stroke:#5E5848}
-.campus.night .c-leaf{fill:#1A3A24}.campus.night .c-leaf2{fill:#15301E}
-.campus.night .m-stone{fill:#9D97A6}.campus.night .m-stone2{fill:#827C8E}.campus.night .m-column{fill:#B4AEBD}
-.campus.night .m-brick{fill:#5E2433}.campus.night .m-trim{fill:#A9A3B2}.campus.night .m-roof{fill:#0F1630}
-.campus.night .m-stand{fill:#262E4E}.campus.night .m-stand2{fill:#1C2340}.campus.night .m-field{fill:#2E7A44}
-.campus.night .c-win{fill:#1C2440;stroke:#7E7A8C}
-.campus.night .c-win:not(.room),.campus.night .c-win.room.on,.campus.night .c-door-glow{fill:#FFCC66}
-.campus.night .c-win.room.on{filter:drop-shadow(0 0 6px #FFC14D)}
-.campus.night .c-rose{fill:#FFCC66}
-.campus.night .c-glow,.campus.night .c-beam{opacity:1}.campus.night .c-beam{opacity:.16}
-.campus.night .c-stars circle{animation:c-twinkle 4s ease-in-out infinite;opacity:.8}
-@keyframes c-twinkle{50%{opacity:.25}}
-.campus.night .c-sun,.campus.dusk .c-stars{display:none}
-.campus.night .c-moon{display:block}
-.campus.night .c-cloud{fill:rgba(160,175,220,.18)}
-.campus.night .c-neon{filter:drop-shadow(0 0 4px #FF2D55)}
-.campus.night .c-bulb.string{animation:c-flicker 3s ease-in-out infinite}
-@keyframes c-flicker{50%{opacity:.55}}
-.campus.night .c-water{fill:#3A6E9A}.campus.night .c-shadow{fill:rgba(0,0,0,.3)}
-.campus.night .c-walker circle{opacity:.85}
-.campus.night .c-clock{fill:#FFF4D6;filter:drop-shadow(0 0 6px #FFD98A)}
-
-/* Gebouwen: aanklikbaar */
-.bld{cursor:pointer;outline:none}
-.bld-art{transition:transform .35s cubic-bezier(.2,.8,.2,1)}
-.bld:hover .bld-art,.bld:focus-visible .bld-art{transform:translateY(-7px)}
-.c-sign{transition:transform .3s cubic-bezier(.2,.8,.2,1)}
-.bld:hover .c-sign,.bld:focus-visible .c-sign{transform:translateY(-4px) scale(1.06)}
-.c-sign-bg{fill:#F4EBDD;stroke:#C8102E;stroke-width:2.5;filter:drop-shadow(0 6px 8px rgba(0,0,0,.35))}
-.bld:hover .c-sign-bg,.bld:focus-visible .c-sign-bg{fill:#C8102E;stroke:#F4EBDD}
-.c-sign-t{font:400 14px var(--varsity);letter-spacing:.08em;fill:#8C0B21;text-anchor:middle}
-.c-sign-s{font:600 10px var(--body);fill:#4A4436;text-anchor:middle;letter-spacing:.02em}
-.bld:hover .c-sign-t,.bld:hover .c-sign-s,.bld:focus-visible .c-sign-t,.bld:focus-visible .c-sign-s{fill:#fff}
-.c-badge circle{fill:#E0284A;stroke:#fff;stroke-width:2.5}
-.c-badge text{font:700 12px var(--body);fill:#fff;text-anchor:middle}
-.c-badge{animation:c-bounce 1.6s ease-in-out infinite}
+/* Bordjes */
+.cpin{position:absolute;z-index:4;transform:translate(-50%,-50%);display:grid;justify-items:center;gap:1px;padding:6px 14px 7px;border-radius:9px;cursor:pointer;
+  background:rgba(244,235,221,.94);border:2px solid #C8102E;color:#8C0B21;box-shadow:0 8px 18px -6px rgba(0,0,0,.6);white-space:nowrap;font:inherit;
+  transition:transform .25s cubic-bezier(.2,.8,.2,1),background .2s,color .2s}
+.cpin b{font:400 14px/1.1 var(--varsity);letter-spacing:.08em;text-transform:uppercase}
+.cpin small{font:600 10.5px var(--body);color:#4A4436;letter-spacing:.02em}
+.campus-map[data-hover="today"] [data-pin="today"],.campus-map[data-hover="battle"] [data-pin="battle"],
+.campus-map[data-hover="house"] [data-pin="house"],.campus-map[data-hover="book"] [data-pin="book"],
+.campus-map[data-hover="trade"] [data-pin="trade"],.campus-map[data-hover="shop"] [data-pin="shop"],
+.campus-map[data-hover="ideas"] [data-pin="ideas"]{transform:translate(-50%,-62%) scale(1.08);background:#C8102E;border-color:#F4EBDD;color:#fff}
+.campus-map[data-hover] .cpin:hover small,.campus-map[data-hover="today"] [data-pin="today"] small,.campus-map[data-hover="battle"] [data-pin="battle"] small,
+.campus-map[data-hover="house"] [data-pin="house"] small,.campus-map[data-hover="book"] [data-pin="book"] small,.campus-map[data-hover="trade"] [data-pin="trade"] small,
+.campus-map[data-hover="shop"] [data-pin="shop"] small,.campus-map[data-hover="ideas"] [data-pin="ideas"] small{color:#FBE3E7}
+.cpin-badge{position:absolute;top:-10px;right:-10px;min-width:22px;height:22px;padding:0 6px;border-radius:999px;background:#E0284A;border:2px solid #fff;color:#fff;font:700 11px/18px var(--body);
+  animation:c-bounce 1.6s ease-in-out infinite}
 @keyframes c-bounce{50%{transform:translateY(-4px)}}
-.c-sign .c-badge{transform-box:fill-box}
+.campus.night .cpin{background:rgba(16,22,44,.9);border-color:#D4A84B;color:#F6DE9C}
+.campus.night .cpin small{color:#BFB6A8}
 
 /* Overzicht onder de kaart */
 .campus-dir{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:10px;margin-top:14px}
@@ -1030,13 +957,13 @@ h3{color:var(--gold)}
 .cdir-badge{position:absolute;top:8px;right:10px;min-width:20px;height:20px;padding:0 6px;border-radius:999px;background:var(--red2);color:#fff;font:700 11px/20px var(--body);text-align:center}
 @media (max-width:899px){
   .campus{border-radius:14px;margin:0 -2px}
+  .campus-map{min-width:1000px}
   .campus-dir{grid-template-columns:1fr 1fr;gap:8px}
   .cdir{padding:10px;gap:9px}
   .cdir-ico{width:32px;height:32px}
   .cdir-txt b{font-size:13px}
 }
-@media (prefers-reduced-motion:reduce){.c-cloud,.c-walker,.c-flag,.c-jet path,.c-badge,.c-stars circle{animation:none!important}}
-.lite .c-walkers,.lite .c-clouds{display:none}
+@media (prefers-reduced-motion:reduce){.cpin-badge{animation:none}}
 
 /* =====================================================================
    FRAT HOUSE en KAMERS
@@ -1397,7 +1324,7 @@ const PARTICLE_COLORS = {
   cat: ['#8FB9A4', '#E9E1D3']
 };
 
-const state = { photos: new Map(), session: null, recovery: IS_RECOVERY_LINK, cards: [], owned: new Map(), playDates: new Set(), play: null, name: '', avatarUrl: null, friendCode: '', wallet: 0, incomingRequests: 0, incomingBattles: 0, incomingTrades: 0, welcomeAvailable: false, isAdmin: false, tab: 'campus', page: 0, room: null, clockTimer: null };
+const state = { photos: new Map(), session: null, recovery: IS_RECOVERY_LINK, cards: [], owned: new Map(), playDates: new Set(), play: null, name: '', avatarUrl: null, friendCode: '', wallet: 0, incomingRequests: 0, incomingBattles: 0, incomingTrades: 0, welcomeAvailable: false, isAdmin: false, tab: 'campus', page: 0, room: null };
 
 // Werkt alle plekken bij die het saldo, de collectie en de streak tonen (scorebord, shop)
 function syncCoinUI() {
@@ -2229,209 +2156,44 @@ function renderView() {
 }
 
 // ---------- Campus: de kaart met alle gebouwen (startscherm) ----------
-// Elk gebouw is een onderdeel van de site. Dag/nacht volgt de Belgische tijd,
-// de klok van de Exam Hall toont het echte uur en meldingen hangen boven het gebouw.
-const brusselsTime = () => {
-  const p = new Intl.DateTimeFormat('en-GB', { timeZone: 'Europe/Brussels', hour: 'numeric', minute: 'numeric', hourCycle: 'h23' }).formatToParts(new Date());
-  return { h: Number(p.find(x => x.type === 'hour').value), m: Number(p.find(x => x.type === 'minute').value) };
-};
+// Achtergrond: een luchtfoto van de campus (img/campus-day.webp en img/campus-night.webp).
+// Daarover liggen per gebouw een klikbare zone en een bordje met de status.
+// 's Avonds en 's nachts (Belgische tijd) wordt de nachtfoto getoond.
+const brusselsHour = () => Number(new Intl.DateTimeFormat('en-GB', { timeZone: 'Europe/Brussels', hour: 'numeric', hourCycle: 'h23' }).format(new Date()));
 function dayPhase() {
-  const { h } = brusselsTime();
-  return h >= 8 && h < 18 ? 'day' : (h >= 18 && h < 21) || (h >= 6 && h < 8) ? 'dusk' : 'night';
-}
-// Kleine bouwstenen van de tekening
-const cWin = (x, y, w = 14, h = 20, cls = '') => `<rect class="c-win${cls}" x="${x}" y="${y}" width="${w}" height="${h}" rx="1.5"/>`;
-const cTree = (x, y, s = 1) => `<g class="c-tree" transform="translate(${x} ${y}) scale(${s})"><ellipse class="c-shadow" cx="4" cy="12" rx="20" ry="5"/><rect class="c-trunk" x="-3" y="-8" width="6" height="20" rx="2"/><circle class="c-leaf2" cx="-11" cy="-14" r="12"/><circle class="c-leaf2" cx="11" cy="-15" r="12"/><circle class="c-leaf" cx="0" cy="-25" r="16"/></g>`;
-const cLamp = (x, y) => `<g transform="translate(${x} ${y})"><circle class="c-glow" cx="0" cy="-34" r="22"/><rect class="c-post" x="-1.5" y="-34" width="3" height="34"/><circle class="c-bulb" cx="0" cy="-36" r="4.5"/></g>`;
-const cSign = (key, label, w, y = 0) => `<g class="c-sign" transform="translate(0 ${y})">
-    <rect class="c-sign-bg" x="${-w / 2}" y="-15" width="${w}" height="36" rx="7"/>
-    <text class="c-sign-t" x="0" y="0">${label}</text>
-    <text class="c-sign-s" x="0" y="14" data-cstatus="${key}"></text>
-    <g transform="translate(${w / 2 - 2} -14)"><g class="c-badge" data-cbadge="${key}" style="display:none"><circle r="11"/><text y="4"></text></g></g>
-  </g>`;
-const cBuilding = (key, label, x, y, art, signW, signY) => `<g class="bld" data-go="${key}" tabindex="0" role="link" aria-label="${label}" transform="translate(${x} ${y})">
-    <g class="bld-art">${art}</g>${cSign(key, label, signW, signY)}</g>`;
-
-function campusSvg() {
-  // Sterren: elke dag op dezelfde plek
-  let seed = wordleNumber() * 9301;
-  const rnd = () => ((seed = (seed * 9301 + 49297) % 233280) / 233280);
-  const stars = Array.from({ length: 70 }, () => `<circle cx="${(rnd() * 1200).toFixed(0)}" cy="${(rnd() * 210).toFixed(0)}" r="${(rnd() * 1.3 + .4).toFixed(1)}" style="animation-delay:${(rnd() * 4).toFixed(1)}s"/>`).join('');
-  const fratWins = [-128, -100, -72, 50, 78, 106].flatMap(x => [cWin(x, -128, 18, 24, ' room'), cWin(x, -80, 18, 24, ' room')]).join('');
-
-  const stadium = `
-    <g class="c-tower"><rect class="c-post" x="-152" y="-98" width="4" height="96"/><rect class="m-navy" x="-166" y="-112" width="32" height="16" rx="2"/><polygon class="c-beam" points="-150,-96 -60,10 20,-6"/><circle class="c-bulb" cx="-158" cy="-104" r="2.5"/><circle class="c-bulb" cx="-150" cy="-104" r="2.5"/><circle class="c-bulb" cx="-142" cy="-104" r="2.5"/></g>
-    <g class="c-tower"><rect class="c-post" x="148" y="-98" width="4" height="96"/><rect class="m-navy" x="134" y="-112" width="32" height="16" rx="2"/><polygon class="c-beam" points="150,-96 60,10 -20,-6"/><circle class="c-bulb" cx="142" cy="-104" r="2.5"/><circle class="c-bulb" cx="150" cy="-104" r="2.5"/><circle class="c-bulb" cx="158" cy="-104" r="2.5"/></g>
-    <ellipse class="c-shadow" cx="8" cy="40" rx="166" ry="30"/>
-    <ellipse class="m-stand" cx="0" cy="0" rx="160" ry="64"/>
-    <ellipse class="m-stand2" cx="0" cy="-2" rx="136" ry="50"/>
-    <ellipse class="m-field" cx="0" cy="-2" rx="104" ry="35"/>
-    <path class="c-chalk" d="M0 -37 V33 M-104 -2 H104"/><ellipse class="c-chalk" cx="0" cy="-2" rx="16" ry="6"/>
-    <path class="m-wall" d="M-160 0 A160 64 0 0 0 160 0 L160 30 A160 64 0 0 1 -160 30 Z"/>
-    <path class="m-redstripe" d="M-160 12 A160 64 0 0 0 160 12 L160 18 A160 64 0 0 1 -160 18 Z"/>
-    <text class="c-wordmark" x="0" y="58" text-anchor="middle">ARENA</text>`;
-
-  const hall = `
-    <ellipse class="c-shadow" cx="10" cy="4" rx="170" ry="16"/>
-    <rect class="m-stone2" x="-38" y="-278" width="76" height="160"/>
-    <rect class="m-stone" x="-30" y="-270" width="60" height="150"/>
-    <path class="m-roof" d="M-40 -278 L0 -322 L40 -278 Z"/>
-    <rect class="c-post" x="-1" y="-360" width="2" height="40"/>
-    <path class="c-flag" d="M1 -358 h26 l-6 7 l6 7 h-26 Z"/>
-    <circle class="c-clock" cx="0" cy="-228" r="20"/>
-    <g id="clockHands"><line class="c-hand" id="clockH" x1="0" y1="-228" x2="0" y2="-239"/><line class="c-hand thin" id="clockM" x1="0" y1="-228" x2="0" y2="-244"/></g>
-    ${cWin(-8, -190, 16, 26)}
-    <rect class="m-stone" x="-150" y="-128" width="300" height="118"/>
-    <rect class="c-dark" x="-132" y="-116" width="264" height="104"/>
-    ${[-100, -60, -20, 20, 60, 100].map(x => `<rect class="c-door-glow" x="${x - 9}" y="-104" width="18" height="34" rx="9"/>`).join('')}
-    ${[-120, -80, -40, 40, 80, 120].map(x => `<rect class="m-column" x="${x - 7}" y="-118" width="14" height="108"/>`).join('')}
-    <rect class="c-door" x="-16" y="-62" width="32" height="52" rx="16"/>
-    <rect class="m-stone2" x="-160" y="-136" width="320" height="12"/>
-    <path class="m-stone2" d="M-160 -136 L0 -186 L160 -136 Z"/>
-    <path class="m-stone" d="M-136 -140 L0 -178 L136 -140 Z"/>
-    <text class="c-engrave" x="0" y="-147" text-anchor="middle">MMXXVI</text>
-    <rect class="m-step" x="-170" y="-10" width="340" height="7"/><rect class="m-step2" x="-180" y="-3" width="360" height="7"/>`;
-
-  const frat = `
-    <ellipse class="c-shadow" cx="10" cy="4" rx="172" ry="15"/>
-    <path class="m-roof" d="M-172 -150 L-124 -214 L124 -214 L172 -150 Z"/>
-    ${[-80, 0, 80].map(x => `<g><rect class="m-roof2" x="${x - 16}" y="-206" width="32" height="30"/><path class="m-roof" d="M${x - 20} -206 L${x} -222 L${x + 20} -206 Z"/>${cWin(x - 8, -200, 16, 20, ' room')}</g>`).join('')}
-    <rect class="m-brick" x="-160" y="-152" width="320" height="152"/>
-    <path class="c-brickline" d="M-160 -120 H160 M-160 -90 H160 M-160 -60 H160 M-160 -30 H160"/>
-    <rect class="m-trim" x="-164" y="-156" width="328" height="8"/>
-    ${fratWins}
-    <rect class="m-trim" x="-62" y="-140" width="124" height="10"/>
-    <path class="m-trim" d="M-66 -140 L0 -176 L66 -140 Z"/>
-    <text class="c-letters" x="0" y="-147" text-anchor="middle">RIZZ</text>
-    <rect class="c-dark" x="-54" y="-130" width="108" height="130"/>
-    ${[-46, -16, 16, 46].map(x => `<rect class="m-column" x="${x - 5}" y="-130" width="10" height="130"/>`).join('')}
-    <rect class="c-door-glow" x="-13" y="-56" width="26" height="56" rx="3"/>
-    <rect class="c-door" x="-11" y="-54" width="22" height="54" rx="2"/>
-    <path class="c-banner" d="M128 -146 h22 v52 l-11 -9 l-11 9 Z"/>
-    <rect class="m-step" x="-62" y="-4" width="124" height="6"/>`;
-
-  const library = `
-    <ellipse class="c-shadow" cx="10" cy="4" rx="135" ry="14"/>
-    <rect class="m-stone2" x="-100" y="-180" width="54" height="60"/>
-    <path class="m-roof" d="M-104 -180 L-73 -222 L-42 -180 Z"/>
-    ${cWin(-80, -170, 14, 20, ' arch')}
-    <rect class="m-stone2" x="-118" y="-136" width="236" height="136"/>
-    <path class="m-roof" d="M-126 -134 L-20 -194 L126 -134 Z"/>
-    <circle class="c-rose" cx="-14" cy="-150" r="12"/>
-    ${[-96, -60, -24, 12, 48, 84].map(x => cWin(x, -112, 16, 40, ' arch')).join('')}
-    ${[-96, -60, 48, 84].map(x => cWin(x, -56, 16, 30, ' arch')).join('')}
-    <rect class="c-door" x="-22" y="-56" width="44" height="56" rx="22"/>
-    <rect class="m-step" x="-128" y="-4" width="256" height="6"/>`;
-
-  const market = `
-    <ellipse class="c-shadow" cx="6" cy="6" rx="118" ry="12"/>
-    <path class="c-string" d="M-110 -122 Q-55 -96 0 -122 Q55 -96 110 -122"/>
-    ${[-92, -70, -46, -22, 22, 46, 70, 92].map((x, i) => `<circle class="c-bulb string" cx="${x}" cy="${-114 + Math.abs(Math.sin((i + 1) * 1.3)) * 10}" r="3.5" style="animation-delay:${i * .3}s"/>`).join('')}
-    <rect class="c-post" x="-111" y="-124" width="3" height="124"/><rect class="c-post" x="108" y="-124" width="3" height="124"/>
-    <rect class="m-truck" x="-86" y="-86" width="150" height="68" rx="10"/>
-    <path class="m-truck2" d="M64 -70 h22 l14 22 v30 h-36 Z"/>
-    ${cWin(70, -64, 16, 16)}
-    <rect class="c-dark" x="-72" y="-74" width="110" height="34" rx="3"/>
-    <rect class="c-door-glow" x="-68" y="-70" width="102" height="28" rx="2"/>
-    <path class="c-awning" d="M-80 -78 h122 v12 q-6 8 -12 0 q-6 8 -12 0 q-6 8 -12 0 q-6 8 -12 0 q-6 8 -12 0 q-6 8 -12 0 q-6 8 -12 0 q-6 8 -12 0 q-6 8 -12 0 q-6 8 -12 0 q-5 8 -10 0 Z"/>
-    <text class="c-neon" x="-12" y="-28" text-anchor="middle">OPEN</text>
-    <circle class="m-wheel" cx="-52" cy="-16" r="12"/><circle class="m-wheel" cx="66" cy="-16" r="12"/>
-    <rect class="m-crate" x="-108" y="-26" width="22" height="22"/><rect class="m-crate" x="-104" y="-46" width="18" height="20"/>`;
-
-  const vault = `
-    <ellipse class="c-shadow" cx="8" cy="4" rx="118" ry="13"/>
-    <rect class="m-navy2" x="-104" y="-136" width="208" height="136"/>
-    <rect class="m-trim" x="-110" y="-142" width="220" height="12"/>
-    <rect class="m-trim" x="-104" y="-12" width="208" height="12"/>
-    ${[-86, 66].map(x => cWin(x, -112, 20, 30)).join('')}
-    ${[-86, 66].map(x => cWin(x, -64, 20, 30)).join('')}
-    <g class="c-vault"><circle class="c-vault-rim" cx="0" cy="-70" r="40"/><circle class="c-vault-door" cx="0" cy="-70" r="31"/>
-      <g class="c-vault-wheel"><circle class="c-vault-hub" cx="0" cy="-70" r="7"/><path class="c-vault-spoke" d="M0 -91 V-49 M-21 -70 H21 M-15 -85 L15 -55 M15 -85 L-15 -55"/></g></g>
-    <text class="c-wordmark small" x="0" y="-119" text-anchor="middle">CAMPUS STORE</text>`;
-
-  const townhall = `
-    <ellipse class="c-shadow" cx="8" cy="4" rx="112" ry="13"/>
-    <rect class="m-brick" x="-70" y="-120" width="140" height="120"/>
-    <path class="m-roof" d="M-80 -118 L0 -160 L80 -118 Z"/>
-    <rect class="m-trim" x="-16" y="-196" width="32" height="40"/>
-    <path class="m-roof" d="M-22 -196 L0 -222 L22 -196 Z"/>
-    <circle class="c-bell" cx="0" cy="-174" r="7"/>
-    ${[-50, -20, 6, 36].map(x => cWin(x, -100, 14, 22)).join('')}
-    <rect class="c-door" x="-13" y="-50" width="26" height="50" rx="13"/>
-    <g transform="translate(-102 -70)"><rect class="c-post" x="2" y="0" width="3" height="70"/><rect class="c-post" x="47" y="0" width="3" height="70"/>
-      <rect class="m-cork" x="-4" y="-8" width="60" height="44" rx="2"/>
-      <rect class="c-note" x="2" y="-3" width="14" height="16" transform="rotate(-6 9 5)"/><rect class="c-note n2" x="20" y="-2" width="14" height="14" transform="rotate(5 27 5)"/>
-      <rect class="c-note n3" x="38" y="0" width="13" height="15"/><rect class="c-note" x="10" y="17" width="16" height="13" transform="rotate(4 18 23)"/><rect class="c-note n3" x="31" y="18" width="16" height="13" transform="rotate(-5 39 24)"/></g>`;
-
-  return `<svg class="campus-svg" viewBox="0 0 1200 760" role="group" aria-label="Campuskaart">
-  <defs>
-    <linearGradient id="cSky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" class="sky1"/><stop offset="1" class="sky2"/></linearGradient>
-    <linearGradient id="cLawn" x1="0" y1="0" x2="0" y2="1"><stop offset="0" class="lawn1"/><stop offset="1" class="lawn2"/></linearGradient>
-    <radialGradient id="cGlow"><stop offset="0" stop-color="#FFD98A" stop-opacity=".55"/><stop offset="1" stop-color="#FFD98A" stop-opacity="0"/></radialGradient>
-    <pattern id="cAwn" width="24" height="10" patternUnits="userSpaceOnUse"><rect width="12" height="10" fill="#C8102E"/><rect x="12" width="12" height="10" fill="#F4EBDD"/></pattern>
-    <path id="walk1" d="M600 380 C 600 450, 560 480, 430 560"/>
-    <path id="walk2" d="M600 560 C 700 580, 760 560, 780 600"/>
-    <path id="walk3" d="M985 345 C 960 430, 760 470, 640 500"/>
-    <path id="walk4" d="M220 360 C 300 440, 480 480, 560 510"/>
-    <path id="walk5" d="M1040 640 C 960 600, 760 560, 660 540"/>
-  </defs>
-  <rect width="1200" height="760" fill="url(#cSky)"/>
-  <g class="c-stars">${stars}</g>
-  <g class="c-sun"><circle cx="1080" cy="78" r="34"/></g>
-  <g class="c-moon"><circle cx="1080" cy="78" r="26"/><circle class="c-moon-cut" cx="1094" cy="68" r="22"/></g>
-  <g class="c-clouds"><g class="c-cloud" style="animation-duration:90s"><ellipse cx="160" cy="90" rx="52" ry="14"/><ellipse cx="190" cy="80" rx="34" ry="16"/></g>
-    <g class="c-cloud" style="animation-duration:120s;animation-delay:-40s"><ellipse cx="640" cy="60" rx="64" ry="15"/><ellipse cx="610" cy="50" rx="34" ry="15"/></g></g>
-  <path class="c-hills" d="M0 250 C 120 200, 220 230, 330 210 S 560 180, 700 214 S 950 190, 1060 220 S 1180 205, 1200 214 V300 H0 Z"/>
-  <path class="c-treeline" d="M0 268 q20 -26 40 0 q18 -30 38 0 q22 -22 40 0 q16 -28 36 0 q22 -30 42 0 q18 -24 40 0 q20 -28 40 0 q18 -22 36 0 q22 -30 44 0 q18 -24 40 0 q20 -30 42 0 q16 -22 36 0 q22 -28 42 0 q18 -24 40 0 q20 -30 40 0 q18 -24 38 0 q22 -28 42 0 q18 -24 40 0 q20 -30 42 0 q16 -22 36 0 q22 -28 42 0 q18 -24 40 0 q20 -28 40 0 q18 -22 38 0 q22 -30 44 0 q20 -26 40 0 q18 -24 40 0 q20 -28 40 0 q20 -26 22 0 V320 H0 Z"/>
-  <rect y="262" width="1200" height="498" fill="url(#cLawn)"/>
-  <g class="c-paths">
-    <path d="M600 330 C 600 420, 600 470, 600 520 M600 520 C 520 560, 470 600, 430 650 M600 520 C 680 560, 740 600, 780 650 M600 520 C 420 470, 300 420, 220 370 M600 520 C 780 470, 900 420, 985 335 M600 520 C 400 560, 260 590, 190 615 M600 520 C 800 560, 960 600, 1040 630"/>
-  </g>
-  <ellipse class="c-quad" cx="600" cy="520" rx="150" ry="58"/>
-  <g class="c-fountain" transform="translate(600 520)"><ellipse class="c-basin" cx="0" cy="0" rx="46" ry="16"/><ellipse class="c-water" cx="0" cy="-3" rx="38" ry="11"/>
-    <rect class="m-stone" x="-5" y="-30" width="10" height="28"/><ellipse class="m-stone" cx="0" cy="-30" rx="14" ry="4"/>
-    <g class="c-jet"><path d="M0 -32 C -8 -60, -22 -50, -26 -14 M0 -32 C 8 -60, 22 -50, 26 -14 M0 -32 V-62"/></g></g>
-  ${cTree(80, 330, 1.1)}${cTree(400, 330, .9)}${cTree(800, 330, .9)}${cTree(1170, 360, 1.1)}${cTree(330, 470, 1)}${cTree(880, 470, 1)}${cTree(40, 560, 1.2)}${cTree(1160, 560, 1.2)}${cTree(320, 700, 1)}${cTree(900, 710, 1)}${cTree(600, 700, .9)}
-  ${cLamp(540, 430)}${cLamp(660, 430)}${cLamp(470, 580)}${cLamp(730, 580)}${cLamp(300, 450)}${cLamp(910, 430)}
-  ${cBuilding('battle', 'THE ARENA', 225, 318, stadium, 150, 96)}
-  ${cBuilding('today', 'EXAM HALL', 600, 330, hall, 150, 30)}
-  ${cBuilding('house', 'FRAT HOUSE', 985, 345, frat, 156, 30)}
-  ${cBuilding('book', 'YEARBOOK', 190, 640, library, 140, 32)}
-  ${cBuilding('trade', 'BLACK MARKET', 430, 665, market, 168, 30)}
-  ${cBuilding('shop', 'THE VAULT', 785, 660, vault, 140, 30)}
-  ${cBuilding('ideas', 'TOWN HALL', 1045, 650, townhall, 144, 30)}
-  <g class="c-walkers">${[1, 2, 3, 4, 5].map(i => `<g class="c-walker w${i}"><circle r="4.5" cy="-6"/><circle class="head" r="3" cy="-13"/>
-    <animateMotion dur="${18 + i * 5}s" repeatCount="indefinite" keyPoints="0;1;0" keyTimes="0;.5;1" calcMode="linear" begin="${-i * 3}s"><mpath href="#walk${i}"/></animateMotion></g>`).join('')}</g>
-</svg>`;
+  const h = brusselsHour();
+  return h >= 8 && h < 18 ? 'day' : (h >= 18 && h < 20) || (h >= 6 && h < 8) ? 'dusk' : 'night';
 }
 
-// Klokwijzers van de Exam Hall op het echte uur zetten
-function setCampusClock() {
-  const h = $('#clockH'), m = $('#clockM');
-  if (!h) return false;
-  const t = brusselsTime();
-  h.setAttribute('transform', `rotate(${(t.h % 12) * 30 + t.m / 2} 0 -228)`);
-  m.setAttribute('transform', `rotate(${t.m * 6} 0 -228)`);
-  return true;
-}
-
+// Plaats van elk gebouw op de foto (in % van breedte/hoogte): zone (x, y, b, h) en bordje (px, py)
 const CAMPUS_PLACES = [
-  { id: 'today', name: 'Exam Hall', what: 'Dagelijkse Wordle' },
-  { id: 'house', name: 'Frat House', what: 'Kamers en vrienden' },
-  { id: 'battle', name: 'The Arena', what: 'Battles' },
-  { id: 'trade', name: 'Black Market', what: 'Ruilen' },
-  { id: 'shop', name: 'The Vault', what: 'Envelopes en credits' },
-  { id: 'book', name: 'Yearbook', what: 'Je volledige collectie' },
-  { id: 'ideas', name: 'Town Hall', what: 'Ideeën en stemmen' },
+  { id: 'today', name: 'Exam Hall', what: 'Dagelijkse Wordle', box: [36.8, 5.5, 26.8, 32.3], pin: [50, 38.5] },
+  { id: 'battle', name: 'The Arena', what: 'Battles', box: [2.6, 15.8, 30.5, 21.4], pin: [21.5, 33] },
+  { id: 'house', name: 'Frat House', what: 'Kamers en vrienden', box: [73, 21.5, 16.2, 19.3], pin: [81, 41.5] },
+  { id: 'book', name: 'Yearbook', what: 'Je volledige collectie', box: [0, 39, 22.7, 39.2], pin: [11.5, 79] },
+  { id: 'trade', name: 'Black Market', what: 'Ruilen', box: [27.5, 67.7, 19, 21.1], pin: [37, 89.5] },
+  { id: 'shop', name: 'The Vault', what: 'Envelopes en credits', box: [55.7, 63.2, 16.6, 26.7], pin: [64, 90.5] },
+  { id: 'ideas', name: 'Town Hall', what: 'Ideeën en stemmen', box: [79.8, 47.1, 16, 29.5], pin: [88, 77.5] },
 ];
 
 async function renderCampus(view) {
   const phase = dayPhase();
+  const img = phase === 'night' ? 'img/campus-night.webp' : 'img/campus-day.webp';
   view.innerHTML = `<section class="col campus-page" style="max-width:none">
     ${gazetteHtml()}
     <div class="campus ${phase}" id="campus">
-      <div class="campus-scroll" id="campusScroll">${campusSvg()}</div>
-      <div class="campus-hint">${phase === 'night' ? 'Lights are on in the Frat House.' : phase === 'dusk' ? 'Sun\'s going down over the quad.' : 'Classes are in session.'} <span>Swipe en tik op een gebouw.</span></div>
+      <div class="campus-scroll" id="campusScroll">
+        <div class="campus-map">
+          <img class="campus-img" src="${img}" alt="Luchtfoto van de campus" width="1376" height="768" decoding="async">
+          <div class="campus-tint" aria-hidden="true"></div>
+          ${CAMPUS_PLACES.map(p => `<button type="button" class="hot" data-go="${p.id}" aria-label="${p.name}"
+            style="left:${p.box[0]}%;top:${p.box[1]}%;width:${p.box[2]}%;height:${p.box[3]}%"></button>`).join('')}
+          ${CAMPUS_PLACES.map(p => `<button type="button" class="cpin" data-go="${p.id}" data-pin="${p.id}" tabindex="-1" style="left:${p.pin[0]}%;top:${p.pin[1]}%">
+            <b>${p.name}</b><small data-cstatus="${p.id}">${p.what}</small>
+            <span class="cpin-badge" data-cbadge="${p.id}" hidden></span></button>`).join('')}
+        </div>
+      </div>
+      <div class="campus-hint">${phase === 'night' ? 'Lights are on in the Frat House.' : phase === 'dusk' ? 'Golden hour on the quad.' : 'Classes are in session.'} <span>Swipe en tik op een gebouw.</span></div>
     </div>
     <div class="campus-dir" id="campusDir">${CAMPUS_PLACES.map(p => `<button type="button" class="cdir" data-go="${p.id}">
       <span class="cdir-ico">${TABS.find(t => t.id === p.id)?.icon || ''}</span>
@@ -2439,24 +2201,23 @@ async function renderCampus(view) {
       <span class="cdir-badge" data-cbadge="${p.id}" hidden></span></button>`).join('')}</div>
   </section>`;
   const go = id => { state.tab = id; renderMain(); scrollTo({ top: 0 }); };
-  view.querySelectorAll('[data-go]').forEach(el => {
-    el.addEventListener('click', () => go(el.dataset.go));
-    el.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); go(el.dataset.go); } });
+  view.querySelectorAll('[data-go]').forEach(el => { el.onclick = () => go(el.dataset.go); });
+  // Zone en bordje lichten samen op
+  const map = view.querySelector('.campus-map');
+  view.querySelectorAll('.campus-map [data-go]').forEach(el => {
+    const on = () => { map.dataset.hover = el.dataset.go; };
+    const off = () => { if (map.dataset.hover === el.dataset.go) delete map.dataset.hover; };
+    el.addEventListener('mouseenter', on); el.addEventListener('mouseleave', off);
+    el.addEventListener('focus', on); el.addEventListener('blur', off);
   });
   // Op de gsm is de kaart breder dan het scherm: begin in het midden
   const sc = $('#campusScroll');
   sc.scrollLeft = (sc.scrollWidth - sc.clientWidth) / 2;
-  setCampusClock();
-  clearInterval(state.clockTimer);
-  state.clockTimer = setInterval(() => { if (!setCampusClock()) clearInterval(state.clockTimer); }, 30000);
 
   // Status per gebouw
   const setStatus = (id, text, badge) => {
     view.querySelectorAll(`[data-cstatus="${id}"]`).forEach(el => { el.textContent = text; });
-    view.querySelectorAll(`[data-cbadge="${id}"]`).forEach(el => {
-      if (el.tagName === 'g') { el.style.display = badge ? '' : 'none'; const t = el.querySelector('text'); if (t) t.textContent = badge || ''; }
-      else { el.hidden = !badge; el.textContent = badge || ''; }
-    });
+    view.querySelectorAll(`[data-cbadge="${id}"]`).forEach(el => { el.hidden = !badge; el.textContent = badge || ''; });
   };
   const played = state.playDates.has(todayBrussels());
   setStatus('today', state.welcomeAvailable ? 'Welcome envelope waiting' : played ? 'Exam passed ✓' : 'Exam open', state.welcomeAvailable || !played ? '!' : '');
@@ -2466,15 +2227,12 @@ async function renderCampus(view) {
   setStatus('trade', state.incomingTrades ? `${state.incomingTrades} offer${state.incomingTrades > 1 ? 's' : ''} waiting` : 'Doors open', state.incomingTrades || '');
   setStatus('ideas', 'Speak up');
   setStatus('house', state.incomingRequests ? `${state.incomingRequests} at the door` : 'Your room', state.incomingRequests || '');
-  // Hoeveel vrienden hebben vandaag gespeeld (licht in hun raam)?
+  // Hoeveel leden van het huis hebben vandaag gespeeld?
   const { data: today } = await sb.rpc('house_today');
   if (!$('#campus')) return;
   const rows = today || [];
   const lit = rows.filter(r => r.played).length + (played ? 1 : 0);
   if (!state.incomingRequests) setStatus('house', `${lit}/${rows.length + 1} played today`);
-  // Ramen van het Frat House: één licht per lid dat vandaag speelde
-  const rooms = [...view.querySelectorAll('.c-win.room')];
-  rooms.forEach((w, i) => w.classList.toggle('on', i < lit));
 }
 
 // ---------- Tab: Today — eigen Wordle, 1 ronde per dag ----------
