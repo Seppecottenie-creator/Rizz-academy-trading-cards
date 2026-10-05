@@ -1632,15 +1632,8 @@ div.wf-inner{cursor:default}
   .exam-intro,.exam-done{padding:16px 20px}
   .exam-play{max-width:calc((100vh - 230px) * .8 + 48px);padding:14px 20px}
 
-  /* Frat House: gevel links, bewoners rechts */
-  .facade-wrap{width:min(100%,calc((100vh - 230px) * 1376 / 768))}
-  .shell[data-place="house"] .col:has(.facade-wrap){display:grid;grid-template-columns:auto minmax(220px,1fr);grid-template-areas:"head head" "fac res";gap:0 16px;align-items:start}
-  .shell[data-place="house"] .col:has(.facade-wrap) > .page-head{grid-area:head}
-  .shell[data-place="house"] .facade-wrap{grid-area:fac}
-  .shell[data-place="house"] .res-list{grid-area:res;margin:0;grid-template-columns:1fr;gap:4px;max-height:calc(100vh - 230px);overflow:auto}
-  .shell[data-place="house"] .res{padding:4px 10px}
-  .shell[data-place="house"] .res-prog{width:28px;height:28px}
-  .shell[data-place="house"] .res-txt small{font-size:10.5px}
+  /* Frat House: volledige gevel, zo groot als het scherm toelaat */
+  .facade-wrap{width:min(100%,calc((100vh - 190px) * 1376 / 768));margin-inline:auto}
   /* Kamer: foto past in de hoogte */
   .room-top{margin-bottom:4px}
   .rm-head2{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;margin-bottom:8px}
@@ -3992,13 +3985,6 @@ async function renderHouse(view) {
       </div>
       <div class="campus-hint">${collectionText()} collected · ${persons.filter(p => owners[p]?.played).length} lights on today <span>Tik op een raam.</span></div>
     </div>
-    <div class="res-list">${rooms.map(p => {
-      const o = owners[p], mine = o?.user_id === uid, n = roomCards(p).length;
-      return `<button type="button" class="res${mine ? ' me' : ''}" data-room="${esc(p)}">
-        <span class="res-prog" style="--p:${have(p) / Math.max(1, n) * 100}%"><b>${have(p)}</b></span>
-        <span class="res-txt"><b>${esc(p)}${mine ? ' <em>you</em>' : ''}</b><small>${have(p)}/${n} in je collectie${o ? (o.fs ? ` · ${o.fs}× F` : '') : ' · nog niet ingetrokken'}</small></span>
-        <span class="res-dot${o?.played ? ' on' : ''}" title="${o?.played ? 'Vandaag gespeeld' : ''}"></span></button>`;
-    }).join('')}</div>
   </section>`;
 
   const fac = view.querySelector('.facade');
