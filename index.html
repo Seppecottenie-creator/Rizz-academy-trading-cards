@@ -2173,6 +2173,30 @@ div.wf-inner{cursor:default}
   .tut-foot .btn{padding:5px 11px;font-size:12px}
 }
 @media (prefers-reduced-motion:reduce){.cpin.tut-focus,.tut-card{animation:none}}
+
+/* Draai-melding staat boven alles, ook boven de rondleiding */
+body.as-app:has(.shell) .rotate-msg{z-index:5000}
+@media (orientation:portrait) and (pointer:coarse) and (max-width:599px){body.as-app .tut{display:none}}
+
+/* =====================================================================
+   ZIJBALK OP LIGGENDE GSM: schild, knoppen en account netjes in één kolom
+   ===================================================================== */
+@media (min-width:600px) and (max-height:500px){
+  .side{display:flex !important;flex-direction:column;align-items:center;gap:0 !important;padding:8px 0 8px env(safe-area-inset-left) !important;overflow:hidden}
+  .side .logo{display:flex !important;justify-content:center;margin:0 0 6px;padding:0}
+  .side .crest{width:28px !important;height:33px !important;font-size:6.5px !important;padding-bottom:4px !important}
+  .nav{flex:1;min-height:0;width:100%;display:flex !important;flex-direction:column;align-items:center;justify-content:space-between;gap:0 !important;padding:2px 0}
+  .nav-btn{width:42px !important;height:clamp(24px,7.4vh,36px);padding:0 !important;margin:0 !important;display:grid !important;place-items:center;border-radius:10px;flex:0 0 auto}
+  .nav-btn .ni{display:grid;place-items:center;width:auto}
+  .nav-btn .ni svg{width:clamp(16px,5vh,20px) !important;height:clamp(16px,5vh,20px) !important}
+  .nav-btn[aria-current="page"]{box-shadow:inset 0 -2px 0 var(--gold)}
+  .nav-btn[data-tab="campus"]{height:clamp(30px,9.5vh,40px);margin-bottom:5px !important;border-radius:11px}
+  .nav-btn[data-tab="campus"][aria-current="page"]{box-shadow:0 0 0 2px #FFF1C6,0 6px 16px -6px rgba(246,222,156,.8)}
+  .nav-btn .tab-badge{top:-3px !important;right:-4px !important}
+  .side-foot{margin-top:6px !important;width:100%;display:flex !important;justify-content:center}
+  .me-btn{width:auto !important;padding:0 !important;border:0 !important;background:none !important;justify-content:center}
+  .me-btn .avbtn{width:clamp(28px,8.5vh,34px) !important;height:clamp(28px,8.5vh,34px) !important;font-size:13px}
+}
 </style>
 </head>
 <body>
@@ -3078,6 +3102,9 @@ function startTutorial() {
     if ($('#tutPrev')) $('#tutPrev').onclick = () => { step--; draw(); };
     $('#tutNext').focus({ preventScroll: true });
   };
+  // Na het draaien van de gsm de bordjes opnieuw zoeken
+  const onResize = () => { if (!box.isConnected) { removeEventListener('resize', onResize); return; } clearTimeout(box._t); box._t = setTimeout(draw, 250); };
+  addEventListener('resize', onResize);
   box.addEventListener('keydown', e => {
     if (e.key === 'Escape') finish(false);
     if (e.key === 'ArrowRight' && step < TUTORIAL.length - 1) { step++; draw(); }
