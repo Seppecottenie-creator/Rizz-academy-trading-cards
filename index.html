@@ -1812,6 +1812,95 @@ div.wf-inner{cursor:default}
   /* Stats */
   .stats-page .st-right{max-height:none}
 }
+
+/* Blackjack */
+.bj{display:grid;gap:12px;padding:16px;border-radius:14px;background:radial-gradient(ellipse at 50% 40%,#1F6A40,#123F27);box-shadow:inset 0 0 0 6px #5A3E2B,inset 0 0 0 8px #B8933F}
+.bj-top{display:flex;justify-content:space-between;font:600 13px var(--body);color:#F4EBDD}
+.bj-top b{font:400 16px var(--varsity);color:var(--gold2);margin-left:4px}
+.bj-row small{display:block;margin-bottom:6px;font:700 11px var(--body);letter-spacing:.14em;text-transform:uppercase;color:#CFE9D8}
+.bj-cards{display:flex;gap:8px;min-height:86px;flex-wrap:wrap}
+.bj-card{width:58px;height:84px;border-radius:7px;background:#FBF6EA;color:#1A1A1A;display:grid;align-content:space-between;padding:5px 7px;box-shadow:0 6px 12px -4px rgba(0,0,0,.6);animation:bj-in .25s ease}
+.bj-card b{font:700 18px/1 var(--display)}.bj-card i{font-style:normal;font-size:24px;justify-self:end;line-height:1}
+.bj-card.red{color:#C8102E}
+.bj-card.back{background:repeating-linear-gradient(45deg,#8C0B21 0 6px,#C8102E 6px 12px);box-shadow:inset 0 0 0 3px #F4EBDD,0 6px 12px -4px rgba(0,0,0,.6)}
+@keyframes bj-in{from{transform:translateY(-10px);opacity:0}}
+.bj-note{min-height:26px;text-align:center;font:400 20px var(--varsity);color:#FFE9A8}
+.bj-btns{display:flex;gap:10px;justify-content:center}
+.bj-btns .btn{min-width:96px}
+
+/* =====================================================================
+   UPDATE 07: credits-icoon, campus als hoofdmenu, grotere foto's
+   ===================================================================== */
+/* Credits rechtsboven */
+.coin-chip{display:inline-flex;align-items:center;gap:7px;padding:5px 12px 5px 6px;border-radius:999px;border:1px solid rgba(212,168,75,.55);cursor:pointer;
+  background:rgba(10,14,28,.82);color:var(--gold2);font:inherit;box-shadow:0 8px 20px -10px rgba(0,0,0,.9)}
+.coin-chip b{font:400 15px var(--varsity);letter-spacing:.03em}
+.cc-coin{width:22px;height:22px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#FFF1C6,#D4A84B 45%,#8F6A1E);box-shadow:inset 0 0 0 2px rgba(90,60,10,.45)}
+.coin-chip:hover{border-color:var(--gold2)}
+.coin-fixed{position:fixed;top:max(12px,env(safe-area-inset-top));right:max(16px,env(safe-area-inset-right));z-index:55}
+.mtop .coin-chip{padding:3px 10px 3px 4px}.mtop .coin-chip b{font-size:13px}.mtop .cc-coin{width:18px;height:18px}
+@media (max-width:899px) and (min-height:501px), (max-width:599px){.coin-fixed{display:none}}
+.arena-hero .hero-over,.duel-head,.battle-top{padding-right:130px}
+@media (max-width:899px) and (min-height:501px), (max-width:599px){.arena-hero .hero-over,.duel-head,.battle-top{padding-right:0}}
+
+/* Campus = hoofdmenu, springt eruit */
+.nav-btn[data-tab="campus"]{margin-bottom:10px;padding:10px 12px;color:#1A1206;font-weight:700;
+  background:linear-gradient(135deg,#F6DE9C,#D4A84B 55%,#B8862F);box-shadow:0 8px 18px -10px rgba(212,168,75,.9),inset 0 0 0 1px rgba(255,255,255,.35)}
+.nav-btn[data-tab="campus"] .nl{display:grid;line-height:1.1}
+.nav-btn[data-tab="campus"] .nl small{font:700 9px var(--body);letter-spacing:.16em;text-transform:uppercase;color:#6B4A12}
+.nav-btn[data-tab="campus"] .ni{opacity:1;color:#1A1206}
+.nav-btn[data-tab="campus"]:hover{background:linear-gradient(135deg,#FFF1C6,#E2B95A 55%,#C8962F)}
+.nav-btn[data-tab="campus"][aria-current="page"]{background:linear-gradient(135deg,#FFF1C6,#E2B95A 55%,#C8962F);color:#1A1206;box-shadow:0 0 0 2px #FFF1C6,0 10px 24px -8px rgba(246,222,156,.8)}
+.dock .nav-btn[data-tab="campus"]{margin:0;padding:6px 0 5px;border-radius:12px}
+.dock .nav-btn[data-tab="campus"] .ns{color:#1A1206}
+.dock .nav-btn[data-tab="campus"][aria-current="page"] .ni{color:#1A1206}
+
+/* Frat House: titel over de foto, duidelijke naambordjes, grotere klikzones */
+.facade-wrap{position:relative}
+.facade{container-type:inline-size}
+.facade-title{position:absolute;left:0;top:0;z-index:6;padding:1.6% 2% 0;pointer-events:none}
+.facade-title .page-head{margin:0}
+.facade-title .info-btn{pointer-events:auto}
+.facade-title h2,.facade-title .joke{text-shadow:0 2px 12px rgba(0,0,0,.9)}
+.facade-title .joke{display:none}
+.fplate{padding:.22cqw .5cqw .28cqw;border-radius:.3cqw;box-shadow:0 .2cqw .5cqw rgba(0,0,0,.5),inset 0 0 0 1px rgba(90,60,20,.35)}
+.fplate b{font-size:clamp(6.5px,.98cqw,13px);letter-spacing:.02em}
+.fplate.lit::after{width:.8cqw;height:.8cqw;min-width:6px;min-height:6px;top:-.35cqw;right:-.35cqw}
+.fwin::after{content:"";position:absolute;inset:-1.2cqw -1.6cqw -2.8cqw}
+.fwin{border-radius:4px}
+
+/* Kamer: groot, met de tekst onderaan over de vloer (nooit over de kaarten) */
+.room-page{position:relative}
+.room-wrap{position:relative}
+.rm-over{position:absolute;left:0;right:0;bottom:0;z-index:6;display:flex;justify-content:space-between;align-items:flex-end;gap:2cqw;
+  padding:4cqw 2cqw 1.6cqw;background:linear-gradient(180deg,transparent,rgba(8,12,26,.55) 35%,rgba(8,12,26,.88))}
+.rmo-left{display:grid;gap:.2cqw;min-width:0}
+.rmo-left .link{justify-self:start;padding:0;font-size:clamp(11px,1.15cqw,15px)}
+.rmo-left .kicker{color:var(--gold);font-size:clamp(8px,.85cqw,11px)}
+.rmo-left h2{margin:0;font-size:clamp(18px,2.9cqw,38px);line-height:1.05;text-shadow:0 2px 12px rgba(0,0,0,.9)}
+.rmo-left .rm-sub{margin:0;font-size:clamp(10px,1.05cqw,14px);color:var(--ink-soft)}
+.rmo-right{display:flex;flex-wrap:wrap;justify-content:flex-end;gap:.7cqw}
+.rmo-right .btn{padding:clamp(4px,.55cqw,8px) clamp(8px,1.1cqw,14px);font-size:clamp(11px,1.05cqw,13px)}
+.room-scene .wf-plate{font-size:clamp(7px,.85cqw,12px)}
+
+/* Computer: foto's zo groot als het scherm toelaat (geen bovenbalk meer) */
+@media (min-width:900px), (min-width:600px) and (max-height:500px){
+  .facade-wrap{width:min(100%,calc((100vh - 36px) * 1376 / 768))}
+  .room-wrap{width:min(100%,calc((100vh - 36px) * 1376 / 768));margin-inline:auto}
+  .main{padding-top:12px}
+}
+@media (min-width:600px) and (max-height:500px){
+  .facade-wrap{width:min(100%,calc((100vh - 16px) * 1376 / 768))}
+  .room-wrap{width:min(100%,calc((100vh - 16px) * 1376 / 768))}
+  .campus{width:min(100%,calc((100vh - 16px) * 1376 / 768))}
+  .main{padding-top:6px}
+  .coin-fixed{top:max(6px,env(safe-area-inset-top));right:max(10px,env(safe-area-inset-right))}
+  .coin-chip{padding:3px 9px 3px 4px}.coin-chip b{font-size:12px}.cc-coin{width:16px;height:16px}
+  .nav-btn[data-tab="campus"]{margin-bottom:6px;padding:8px 0}
+  .nav-btn[data-tab="campus"] .nl{display:none}
+  .facade-title h2{font-size:18px !important}
+  .arena-hero .hero-over,.duel-head,.battle-top{padding-right:96px}
+}
 </style>
 </head>
 <body>
@@ -2316,16 +2405,12 @@ const TABS = [
 ];
 
 const navHtml = () => TABS.map(t => `<button type="button" class="nav-btn" data-tab="${t.id}"${t.id === state.tab ? ' aria-current="page"' : ''}>
-  <span class="ni" aria-hidden="true">${t.icon}</span><span class="nl">${t.label}</span><span class="ns">${t.short}</span>${t.badge ? `<span class="tab-badge" data-${t.badge}-badge hidden></span>` : ''}</button>`).join('');
+  <span class="ni" aria-hidden="true">${t.icon}</span><span class="nl">${t.label}${t.id === 'campus' ? '<small>Main menu</small>' : ''}</span><span class="ns">${t.short}</span>${t.badge ? `<span class="tab-badge" data-${t.badge}-badge hidden></span>` : ''}</button>`).join('');
 const logoHtml = () => `<div class="logo"><span class="crest" aria-hidden="true">RIZZ</span><span class="logo-txt"><b>RIZZ ACADEMY</b><small>EST. MMXXVI</small></span></div>`;
 
 // Statusbalk bovenaan: credits, collectie, streak en de pickup line van de dag
 function scoreboardHtml() {
-  return `<div class="plaques" role="group" aria-label="Jouw stand">
-    <div class="plaque"><span class="pl-label">Credits</span><span class="pl-val" data-coin>${state.wallet}</span></div>
-    <div class="plaque"><span class="pl-label">Collectie</span><span class="pl-val" data-coll>${collectionText()}</span></div>
-    <div class="plaque"><span class="pl-label">Streak</span><span class="pl-val" data-streak>${computeStreak(state.playDates)}</span></div>
-  </div>`;
+  return `<button type="button" class="coin-chip" data-go-shop title="Je credits (The Vault)" aria-label="Credits"><span class="cc-coin" aria-hidden="true"></span><b data-coin>${state.wallet}</b></button>`;
 }
 
 function renderMain() {
@@ -2350,10 +2435,11 @@ function renderMain() {
         ${logoHtml()}
         <div class="mtop-right">
           ${state.isAdmin ? '<span class="pill pill-turn">Admin</span>' : ''}
+          ${scoreboardHtml()}
           <button class="avbtn" id="openAccountM" type="button" aria-label="Account instellingen"${avStyle}>${state.avatarUrl ? '' : initial}</button>
         </div>
       </header>
-      ${scoreboardHtml()}
+      <div class="coin-fixed">${scoreboardHtml()}</div>
       <div id="view"></div>
     </div>
     <nav class="dock" aria-label="Menu">${navHtml()}</nav>
@@ -2363,6 +2449,7 @@ function renderMain() {
   <dialog id="packModal" aria-label="Welkomstpakket"></dialog>
   <dialog id="infoModal" aria-label="Uitleg"></dialog>`;
   $('#openAccount').onclick = () => openAccountModal();
+  app.querySelectorAll('[data-go-shop]').forEach(b => { b.onclick = () => { if (state.tab === 'shop') return; state.tab = 'shop'; renderMain(); scrollTo({ top: 0 }); }; });
   $('#openAccountM').onclick = () => openAccountModal();
   app.querySelectorAll('[data-tab]').forEach(b => {
     b.onclick = () => {
@@ -2396,8 +2483,8 @@ function syncTradeBadge() { setBadge('[data-trade-badge]', state.incomingTrades)
 const INFO = {
   today: ['Het lessenrooster', `
     <p>Elke dag (Belgische tijd) staat er een ander vak op het rooster, met een eigen spel. Je hebt <strong>één poging per dag</strong>.</p>
-    <ul><li><strong>Ma</strong> English: de Wordle · <strong>Di</strong> Math: Speed Math · <strong>Wo</strong> Phys. Ed.: Free Throws · <strong>Do</strong> History: Which Came First? · <strong>Vr</strong> Physics: Darts</li>
-    <li><strong>Za en Zo</strong>: geen school, dus party games: Beer Pong en Pour the Pint.</li>
+    <ul><li><strong>Ma</strong> English: de Wordle · <strong>Di</strong> Math: Speed Math · <strong>Wo</strong> Phys. Ed.: Free Throws · <strong>Do</strong> History: Which Came First? · <strong>Vr</strong> Physics: Cannon Shot</li>
+    <li><strong>Za en Zo</strong>: geen school, dus party games: Darts en Blackjack.</li>
     <li>Je score wordt een cijfer. Hoe beter het cijfer, hoe groter de kans op een zeldzame kaart. Een <strong>F</strong> = gebuisd: geen kaart, en iedereen ziet hoeveel F's je hebt.</li>
     <li>Wie een spel start en het niet afmaakt (pagina herladen of weggaan), krijgt een F.</li></ul>
     <table class="odds-table">
@@ -2442,7 +2529,7 @@ const INFO = {
     <p>Besteed je credits — die verdien je met battles en met dubbele trekkingen.</p>
     <ul><li><strong>Pakjes</strong>: Basic Pack (1 kaart, 60 🪙) of Epic Pack (3 kaarten, de 3e gegarandeerd epic of legendary, 200 🪙).</li>
     <li><strong>Dubbels verkopen</strong>: common 15 · epic 40 · legendary 100 · detention 5 🪙 per extra exemplaar. Je houdt altijd 1 exemplaar.</li>
-    <li><strong>Wordle-hulp</strong> (maandag, tijdens de Wordle in de Exam Hall): een letter onthullen voor 40 🪙 (max 2 per ronde) of een 7e poging voor 60 🪙.</li></ul>`],
+    </ul>`],
   trade: ['Traden', `
     <p>Stel een ruil voor aan een vriend. Je kan enkel <strong>dubbels</strong> aanbieden — je houdt altijd minstens 1 exemplaar van elke kaart over.</p>
     <ul><li>Je vriend kan accepteren, een tegenbod doen of annuleren.</li>
@@ -2811,18 +2898,13 @@ async function renderCampus(view) {
   };
   const played = state.playDates.has(todayBrussels());
   setStatus('today', state.welcomeAvailable ? 'Welcome envelope waiting' : played ? 'Exam passed ✓' : 'Exam open', state.welcomeAvailable || !played ? '!' : '');
-  setStatus('stats', `${collectionText()} collected`);
+  const streak = computeStreak(state.playDates);
+  setStatus('stats', `Streak ${streak} · grades & trophies`);
   setStatus('shop', `${state.wallet} credits`);
   setStatus('battle', state.incomingBattles ? `${state.incomingBattles} waiting on you` : 'Open for matches', state.incomingBattles || '');
   setStatus('trade', state.incomingTrades ? `${state.incomingTrades} offer${state.incomingTrades > 1 ? 's' : ''} waiting` : 'Doors open', state.incomingTrades || '');
   setStatus('ideas', 'Speak up');
-  setStatus('house', state.incomingRequests ? `${state.incomingRequests} at the door` : 'Your room', state.incomingRequests || '');
-  // Hoeveel leden van het huis hebben vandaag gespeeld?
-  const { data: today } = await sb.rpc('house_today');
-  if (!$('#campus')) return;
-  const rows = today || [];
-  const lit = rows.filter(r => r.played).length + (played ? 1 : 0);
-  if (!state.incomingRequests) setStatus('house', `${lit}/${rows.length + 1} played today`);
+  setStatus('house', `${collectionText()} collected`);
 }
 
 // ---------- Lessenrooster: elke dag een ander vak met een eigen minigame ----------
@@ -2833,9 +2915,9 @@ const SCHEDULE = [
   { dow: 2, game: 'math', subject: 'Math', title: 'Speed Math', icon: '➗' },
   { dow: 3, game: 'hoops', subject: 'Phys. Ed.', title: 'Free Throws', icon: '🏀' },
   { dow: 4, game: 'history', subject: 'History', title: 'Which Came First?', icon: '🏛️' },
-  { dow: 5, game: 'darts', subject: 'Physics', title: 'Darts', icon: '🎯' },
-  { dow: 6, game: 'pong', subject: 'Party', title: 'Beer Pong', icon: '🍺' },
-  { dow: 7, game: 'pour', subject: 'Party', title: 'Pour the Pint', icon: '🍻' },
+  { dow: 5, game: 'launch', subject: 'Physics', title: 'Cannon Shot', icon: '🚀' },
+  { dow: 6, game: 'darts', subject: 'Party', title: 'Darts', icon: '🎯' },
+  { dow: 7, game: 'blackjack', subject: 'Party', title: 'Blackjack', icon: '🃏' },
 ];
 const DAY_SHORT = ['', 'Ma', 'Di', 'Wo', 'Do', 'Vr', 'Za', 'Zo'];
 const GRADE_TEXT = { A: 'Summa cum laude', B: 'Magna cum laude', C: 'Cum laude', D: 'Geslaagd', F: 'Gebuisd' };
@@ -2844,6 +2926,8 @@ const EXAM_INFO = {
   hoops: { rules: ['Swipe de bal omhoog naar de ring. Lengte = kracht, richting = mikken.', '10 worpen. Vanaf worp 4 beweegt de ring.'], unit: 'raak', grades: [8, 6, 4, 2] },
   history: { rules: ['Twee gebeurtenissen: tik op wat het EERST gebeurde.', '10 vragen, 8 seconden per vraag.'], unit: 'juist', grades: [9, 7, 5, 3] },
   darts: { rules: ['Hou ingedrukt om te mikken en laat los om te gooien. Hoe langer je mikt, hoe meer je hand trilt.', '6 pijlen. Bull = 50, binnenring ×3, buitenring ×2.'], unit: 'punten', grades: [170, 125, 85, 45] },
+  launch: { rules: ['Sleep naar achter (zoals een katapult) en laat los. Hoe verder je trekt, hoe harder het schot.', 'Raak de rode emmer. Let op de wind en, vanaf schot 5, de muur. 8 schoten.'], unit: 'raak', grades: [6, 5, 3, 1] },
+  blackjack: { rules: ['10 handen, je start met 100 chips en zet telkens 10 in. Kom zo dicht mogelijk bij 21 zonder erover te gaan.', 'Hit = extra kaart · Stand = stoppen · Double = dubbele inzet, nog één kaart. De dealer pakt tot 17.'], unit: 'chips', grades: [160, 125, 100, 70] },
   pong: { rules: ['Swipe de bal naar de bekers. Lengte = afstand, richting = mikken.', '10 ballen voor 6 bekers.'], unit: 'bekers', grades: [6, 5, 4, 2] },
   pour: { rules: ['Hou ingedrukt om te tappen en laat los aan de gouden lijn. Het schuim stijgt nog wat na!', '5 pintjes, elk glas tapt sneller. Overlopen = 0.'], unit: 'punten', grades: [440, 380, 300, 200] },
 };
@@ -3193,7 +3277,151 @@ function gamePour(box, rnd) {
   });
 }
 
-const EXAM_GAMES = { math: gameMath, hoops: gameHoops, history: gameHistory, darts: gameDarts, pong: gamePong, pour: gamePour };
+// ---------- Vr · Physics: Cannon Shot ----------
+// Trek terug (zoals een katapult) en laat los. Kracht + hoek + zwaartekracht + wind = waar de bal landt.
+function gameLaunch(box, rnd) {
+  return new Promise(resolve => {
+    const { c, ctx, pos, hud } = gameCanvas(box);
+    const G = 620, GROUND = 462, CX = 46, CY = 432, SHOTS = 8;
+    let shot = 0, hits = 0, ball = null, drag = null, msg = '', msgT = 0, done = false, last = performance.now();
+    let round = null;
+    const newRound = () => {
+      const lvl = shot;
+      round = {
+        bx: 190 + rnd() * 170,
+        bw: lvl < 3 ? 30 : lvl < 6 ? 25 : 21,
+        wind: lvl < 2 ? 0 : Math.round((rnd() * 2 - 1) * (lvl < 5 ? 70 : 120)),
+        wall: lvl >= 4 ? { x: 128 + rnd() * 40, h: 70 + rnd() * 70 } : null,
+      };
+    };
+    newRound();
+    const velOf = (dx, dy) => { const k = 4.2, max = 760; let vx = -dx * k, vy = -dy * k; const m = Math.hypot(vx, vy); if (m > max) { vx *= max / m; vy *= max / m; } return { vx, vy }; };
+    c.addEventListener('pointerdown', e => { if (ball || done) return; drag = { s: pos(e), p: pos(e) }; c.setPointerCapture(e.pointerId); });
+    c.addEventListener('pointermove', e => { if (drag) drag.p = pos(e); });
+    c.addEventListener('pointerup', () => {
+      if (!drag) return;
+      const { vx, vy } = velOf(drag.p.x - drag.s.x, drag.p.y - drag.s.y);
+      drag = null;
+      if (Math.hypot(vx, vy) < 80) return;
+      ball = { x: CX, y: CY, vx, vy };
+    });
+    const finish = (hit, why) => {
+      if (hit) { hits++; msg = ['Bullseye!', 'Physics!', 'Newton approves', 'Clean shot'][hits % 4]; } else msg = why;
+      msgT = performance.now(); shot++; ball = null;
+      if (shot >= SHOTS) { done = true; setTimeout(() => resolve(hits), 800); } else newRound();
+    };
+    const draw = now => {
+      const dt = Math.min(.033, (now - last) / 1000); last = now;
+      if (ball) {
+        for (let i = 0; i < 4; i++) {
+          const h = dt / 4;
+          ball.vx += round.wind * h; ball.vy += G * h; ball.x += ball.vx * h; ball.y += ball.vy * h;
+          const w = round.wall;
+          if (w && ball.x > w.x - 6 && ball.x < w.x + 18 && ball.y > GROUND - w.h - 6) { finish(false, 'Tegen de muur'); break; }
+          if (ball.y >= GROUND - 4) {
+            const inB = Math.abs(ball.x - round.bx) <= round.bw - 6;
+            finish(inB, ball.x < round.bx ? 'Te kort' : 'Te ver'); break;
+          }
+          if (ball.x > 420 || ball.x < -20) { finish(false, 'Uit het veld'); break; }
+        }
+      }
+      // decor
+      const sky = ctx.createLinearGradient(0, 0, 0, 500); sky.addColorStop(0, '#1A2546'); sky.addColorStop(1, '#2B3A63');
+      ctx.fillStyle = sky; ctx.fillRect(0, 0, 400, 500);
+      ctx.fillStyle = 'rgba(255,255,255,.05)'; for (let x = 0; x < 400; x += 40) ctx.fillRect(x, 0, 1, GROUND);
+      ctx.fillStyle = '#3F7A3E'; ctx.fillRect(0, GROUND, 400, 40);
+      // wind
+      ctx.fillStyle = '#F4EBDD'; ctx.font = '600 13px Inter, Arial'; ctx.textAlign = 'center';
+      if (round.wind) {
+        ctx.fillText(`Wind ${Math.abs(round.wind)}`, 200, 70);
+        const L = Math.abs(round.wind) / 2, dir = Math.sign(round.wind);
+        ctx.strokeStyle = '#7FD3A0'; ctx.lineWidth = 3; ctx.beginPath(); ctx.moveTo(200 - dir * L / 2, 84); ctx.lineTo(200 + dir * L / 2, 84);
+        ctx.lineTo(200 + dir * (L / 2 - 8), 78); ctx.moveTo(200 + dir * L / 2, 84); ctx.lineTo(200 + dir * (L / 2 - 8), 90); ctx.stroke();
+      } else ctx.fillText('Geen wind', 200, 70);
+      // muur
+      if (round.wall) { ctx.fillStyle = '#8C5A3C'; ctx.fillRect(round.wall.x, GROUND - round.wall.h, 12, round.wall.h); ctx.fillStyle = 'rgba(0,0,0,.25)'; for (let y = GROUND - round.wall.h; y < GROUND; y += 12) ctx.fillRect(round.wall.x, y, 12, 1); }
+      // emmer
+      const bx = round.bx, bw = round.bw;
+      ctx.fillStyle = '#C8102E'; ctx.beginPath(); ctx.moveTo(bx - bw, GROUND - 34); ctx.lineTo(bx + bw, GROUND - 34); ctx.lineTo(bx + bw - 6, GROUND); ctx.lineTo(bx - bw + 6, GROUND); ctx.closePath(); ctx.fill();
+      ctx.fillStyle = '#F4EBDD'; ctx.fillRect(bx - bw - 2, GROUND - 37, bw * 2 + 4, 5);
+      // kanon
+      let ang = -Math.PI / 4, pull = 0;
+      if (drag) { const v = velOf(drag.p.x - drag.s.x, drag.p.y - drag.s.y); ang = Math.atan2(v.vy, v.vx); pull = Math.hypot(v.vx, v.vy) / 760; }
+      ctx.save(); ctx.translate(CX, CY); ctx.rotate(ang); ctx.fillStyle = '#2A2F3E'; ctx.fillRect(-6, -9, 44, 18); ctx.fillStyle = '#D4A84B'; ctx.fillRect(34, -10, 6, 20); ctx.restore();
+      ctx.fillStyle = '#5A3E2B'; ctx.beginPath(); ctx.arc(CX - 4, CY + 12, 16, 0, 7); ctx.fill();
+      if (drag) {
+        // kracht en richting (geen volledige baan: je moet zelf inschatten)
+        ctx.fillStyle = 'rgba(255,255,255,.12)'; ctx.fillRect(14, 300, 10, 100);
+        ctx.fillStyle = pull > .85 ? '#E0284A' : '#FFD86B'; ctx.fillRect(14, 400 - pull * 100, 10, pull * 100);
+        ctx.setLineDash([6, 6]); ctx.strokeStyle = 'rgba(255,233,168,.7)'; ctx.lineWidth = 2; ctx.beginPath(); ctx.moveTo(CX, CY); ctx.lineTo(CX + Math.cos(ang) * 90, CY + Math.sin(ang) * 90); ctx.stroke(); ctx.setLineDash([]);
+      }
+      if (ball) { ctx.fillStyle = '#F4EBDD'; ctx.beginPath(); ctx.arc(ball.x, ball.y, 6, 0, 7); ctx.fill(); }
+      if (!ball && !drag && !done && shot === 0) { ctx.fillStyle = 'rgba(244,235,221,.8)'; ctx.font = '600 13px Inter, Arial'; ctx.fillText('Sleep naar achter en laat los', 200, 250); }
+      if (msg && now - msgT < 900) { ctx.fillStyle = '#FFE9A8'; ctx.font = '700 26px Graduate, Georgia, serif'; ctx.textAlign = 'center'; ctx.fillText(msg, 200, 140); }
+      hud(`<span>Raak <b>${hits}</b></span><span>Schot <b>${Math.min(shot + 1, SHOTS)}/${SHOTS}</b></span>`);
+      if (c.isConnected && (!done || now - msgT < 900)) requestAnimationFrame(draw);
+    };
+    requestAnimationFrame(draw);
+  });
+}
+
+// ---------- Zo · Party: Blackjack ----------
+function gameBlackjack(box, rnd) {
+  return new Promise(resolve => {
+    const SUITS = ['♠', '♥', '♦', '♣'], RANKS = ['A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K'];
+    const shoe = [];
+    for (let d = 0; d < 4; d++) for (const s of SUITS) for (const r of RANKS) shoe.push({ r, s });
+    for (let i = shoe.length - 1; i > 0; i--) { const j = Math.floor(rnd() * (i + 1)); [shoe[i], shoe[j]] = [shoe[j], shoe[i]]; }
+    const HANDS = 10, BET = 10;
+    let chips = 100, hand = 0, player = [], dealer = [], bet = BET, phase = 'play', note = '';
+    const val = cards => { let t = 0, a = 0; for (const c of cards) { t += c.r === 'A' ? 11 : 'JQK'.includes(c.r) ? 10 : Number(c.r); if (c.r === 'A') a++; } while (t > 21 && a) { t -= 10; a--; } return t; };
+    const cardHtml = (c, hidden) => hidden ? '<span class="bj-card back"></span>' : `<span class="bj-card${'♥♦'.includes(c.s) ? ' red' : ''}"><b>${c.r}</b><i>${c.s}</i></span>`;
+    const draw = () => {
+      const showD = phase !== 'play';
+      box.innerHTML = `<div class="bj">
+        <div class="bj-top"><span>Chips <b>${chips}</b></span><span>Hand <b>${Math.min(hand + 1, HANDS)}/${HANDS}</b></span><span>Inzet <b>${bet}</b></span></div>
+        <div class="bj-row"><small>Dealer ${showD ? `· ${val(dealer)}` : ''}</small><div class="bj-cards">${dealer.map((c, i) => cardHtml(c, !showD && i === 1)).join('')}</div></div>
+        <div class="bj-note">${note}</div>
+        <div class="bj-row"><small>Jij · ${val(player)}</small><div class="bj-cards">${player.map(c => cardHtml(c)).join('')}</div></div>
+        <div class="bj-btns">${phase === 'play'
+          ? `<button class="btn small" data-bj="hit" type="button">Hit</button><button class="btn small" data-bj="stand" type="button">Stand</button>
+             <button class="btn small ghost" data-bj="double" type="button" ${player.length === 2 && chips >= bet * 2 ? '' : 'disabled'}>Double</button>`
+          : `<button class="btn small" data-bj="next" type="button">${hand + 1 >= HANDS || chips < BET ? 'Resultaat' : 'Volgende hand'}</button>`}</div>
+      </div>`;
+    };
+    const deal = () => {
+      if (hand >= HANDS || chips < BET) return resolve(chips);
+      bet = BET; player = [shoe.pop(), shoe.pop()]; dealer = [shoe.pop(), shoe.pop()]; phase = 'play'; note = '';
+      if (val(player) === 21) return settle();
+      draw();
+    };
+    const settle = () => {
+      const p = val(player);
+      if (p <= 21 && !(p === 21 && player.length === 2)) while (val(dealer) < 17) dealer.push(shoe.pop());
+      const d = val(dealer);
+      let delta;
+      if (p > 21) { delta = -bet; note = 'Bust! −' + bet; }
+      else if (p === 21 && player.length === 2 && !(d === 21 && dealer.length === 2)) { delta = Math.round(bet * 1.5); note = 'Blackjack! +' + delta; }
+      else if (d > 21) { delta = bet; note = 'Dealer bust! +' + bet; }
+      else if (p > d) { delta = bet; note = 'Gewonnen! +' + bet; }
+      else if (p < d) { delta = -bet; note = 'Verloren −' + bet; }
+      else { delta = 0; note = 'Push'; }
+      chips = Math.max(0, chips + delta); phase = 'done'; hand++;
+      draw();
+    };
+    box.onclick = e => {
+      const b = e.target.closest('[data-bj]'); if (!b || b.disabled) return;
+      const a = b.dataset.bj;
+      if (a === 'next') return deal();
+      if (a === 'hit') { player.push(shoe.pop()); if (val(player) >= 21) return settle(); draw(); }
+      else if (a === 'stand') settle();
+      else if (a === 'double') { bet *= 2; player.push(shoe.pop()); settle(); }
+    };
+    deal();
+  });
+}
+
+const EXAM_GAMES = { math: gameMath, hoops: gameHoops, history: gameHistory, launch: gameLaunch, darts: gameDarts, blackjack: gameBlackjack, pong: gamePong, pour: gamePour };
 
 // Banner van de Exam Hall: foto van de examenzaal (dag of avond) met titel en rooster
 const examHero = (dow, done) => `<div class="photo-hero exam-hero">
@@ -3378,7 +3606,7 @@ function drawToday(view) {
         <div class="wboard" id="wboard" style="--rows:${s.max_guesses || 6}">${boardHtml(s)}</div>
         <p class="msg wmsg${isDone(s) ? ' ok' : ''}" id="wmsg" role="alert">${roundSummary(s)}</p>
         ${isDone(s) ? '' : `<div class="wkeys" id="wkeys">${keyboardHtml(s)}</div>
-        <div class="whelp" id="whelp">${helpHtml(s)}</div>`}
+`}
       </div>`
       : `${pageHead('Exam Hall', 'today')}<div class="round-closed">
           <div class="big-lock" aria-hidden="true">🔒</div>
@@ -3396,7 +3624,6 @@ function drawToday(view) {
   // Eén handler op het hele toetsenbord: blijft werken als de toetsen opnieuw getekend worden
   const keys = $('#wkeys');
   if (keys) keys.onclick = e => { const b = e.target.closest('[data-key]'); if (b) wordleKey(b.dataset.key); };
-  bindHelp(s);
 
   // Aftellen tot een ronde opent; op 0 herladen we de rondes
   clearInterval(wordle.timer);
@@ -3417,39 +3644,6 @@ function drawToday(view) {
   }
 }
 
-// Wordle-hulp uit de Shop: onthulde letters + knoppen
-function helpHtml(s) {
-  const hints = s.hints || [];
-  return `${hints.map(h => `<span class="hint-chip">💡 ${esc(h.letter)} op plaats ${h.pos}</span>`).join('')}
-    <button type="button" class="link" data-help="hint" ${hints.length >= 2 ? 'disabled' : ''}>💡 Letter onthullen · ${SHOP.hint} 🪙 (${hints.length}/2)</button>
-    ${(s.max_guesses || 6) < 7 ? `<button type="button" class="link" data-help="extra">➕ 7e poging · ${SHOP.extra} 🪙</button>` : '<span class="hint-chip">➕ 7e poging gekocht</span>'}`;
-}
-function bindHelp(s) {
-  const box = $('#whelp');
-  if (!box) return;
-  box.onclick = async e => {
-    const b = e.target.closest('[data-help]');
-    if (!b || b.disabled || wordle.busy) return;
-    const kind = b.dataset.help;
-    if (!confirm(kind === 'hint' ? `Een letter onthullen voor ${SHOP.hint} credits?` : `Een 7e poging kopen voor ${SHOP.extra} credits?`)) return;
-    wordle.busy = true;
-    const { data, error } = await sb.rpc(kind === 'hint' ? 'wordle_hint' : 'wordle_extra_guess', { p_slot: s.slot });
-    wordle.busy = false;
-    const msg = $('#wmsg');
-    if (error) { msg.className = 'msg wmsg err'; msg.textContent = error.message; return; }
-    setWallet(data.wallet);
-    if (kind === 'hint') {
-      s.hints = [...(s.hints || []), { pos: data.pos, letter: data.letter }];
-      msg.className = 'msg wmsg ok'; msg.textContent = `De letter ${data.letter} staat op plaats ${data.pos}.`;
-    } else {
-      s.max_guesses = data.max_guesses;
-      $('#wboard').style.setProperty('--rows', s.max_guesses);
-      $('#wboard').innerHTML = boardHtml(s);
-      msg.className = 'msg wmsg ok'; msg.textContent = 'Je hebt nu 7 pogingen voor deze ronde.';
-    }
-    box.innerHTML = helpHtml(s);
-  };
-}
 
 function roundTabsHtml() {
   return wordle.data.slots.map(x => `<button type="button" class="round-tab${x.slot === wordle.slot ? ' active' : ''}${isDone(x) ? ' done' : ''}" data-round="${x.slot}">
@@ -3976,8 +4170,6 @@ function renderShop(view) {
           }).join('')}</div>`
           : '<p class="hint">Je hebt geen dubbels om te verkopen.</p>'}
 
-        <h3 style="margin-top:20px">Wordle-hulp</h3>
-        <p class="hint">Op maandag tijdens de Wordle in de <strong>Exam Hall</strong>: 💡 een letter onthullen voor ${SHOP.hint} 🪙 (max 2 per ronde) of ➕ een 7e poging voor ${SHOP.extra} 🪙 (koop die vóór je 6e gok).</p>
 
     </div>
   </section>`;
@@ -4175,8 +4367,8 @@ async function renderHouse(view) {
   };
 
   view.innerHTML = `<section class="col" style="max-width:none">
-    ${pageHead('Frat House', 'house')}
     <div class="facade-wrap ${phase}">
+      <div class="facade-title">${pageHead('Frat House', 'house')}</div>
       <div class="campus-scroll" id="houseScroll">
         <div class="facade">
           <img class="campus-img" src="img/frathouse-${phase === 'night' ? 'night' : 'day'}.webp" alt="Het Frat House" width="1376" height="768" decoding="async">
@@ -4280,11 +4472,11 @@ function trophiesFor(plays, ownedSet, bs) {
 // Plaats van de 9 kaders aan de muur (in % van de kamerfoto), per slot 1-9.
 // Slot 9 (legendary) in het midden, de 2 epics ernaast, de 6 commons links en rechts.
 const ROOM_FRAMES = {
-  1: [9.2, 5.5, 7], 2: [16.9, 5.5, 7], 3: [13.05, 30.5, 7],
-  4: [64.9, 5.5, 7], 5: [72.6, 5.5, 7], 6: [68.75, 30.5, 7],
-  7: [24.4, 10, 10.4], 8: [53.4, 10, 10.4],
-  9: [36.1, 3, 16],
-};
+  1: [8.6, 3, 8.5], 2: [17.6, 3, 8.5], 3: [13.1, 27.5, 8.5],
+  4: [66, 3, 8.5], 5: [75, 3, 8.5], 6: [70.5, 27.5, 8.5],
+  7: [27, 8, 10.5], 8: [54.4, 8, 10.5],
+  9: [38.6, 2, 14.6],
+}
 
 async function renderRoom(view, person) {
   const uid = state.session.user.id;
@@ -4298,23 +4490,7 @@ async function renderRoom(view, person) {
   const prev = rooms[(idx - 1 + rooms.length) % rooms.length], next = rooms[(idx + 1) % rooms.length];
   const myRoom = Object.values(state.houseOwners || {}).some(o => o.user_id === uid);
 
-  view.innerHTML = `<section class="col" style="max-width:none">
-    <div class="room-top">
-      <button class="link" id="roomBack" type="button">← Frat House</button>
-      <div class="room-nav">
-        <button class="btn small ghost" id="roomPrev" type="button">← ${esc(prev === DETENTION ? 'Detention' : plateName(prev))}</button>
-        <button class="btn small ghost" id="roomNext" type="button">${esc(next === DETENTION ? 'Detention' : plateName(next))} →</button>
-      </div>
-    </div>
-    <div class="rm-head2">
-      <span class="kicker">${person === DETENTION ? 'Detention room' : mine ? 'Your room' : 'Room of'}</span>
-      <h2>${esc(person)}</h2>
-      <p class="rm-sub">${have}/${cards.length} in je collectie${person === DETENTION ? '' : owner
-        ? ` · bewoner: <b>${esc(owner.display_name)}</b>${owner.played ? ' · vandaag gespeeld' : ''} · <span class="fcount">${owner.fs || 0}× F</span>`
-        : ' · nog niet ingetrokken'}</p>
-      ${owner && !mine ? `<div class="room-actions"><button class="btn small" id="roomBattle" type="button">Uitdagen in de Arena</button><button class="btn small ghost" id="roomTrade" type="button">Ruilen</button></div>` : ''}
-      ${!owner && person !== DETENTION && !myRoom ? `<div class="room-actions"><button class="btn small ghost" id="roomClaim" type="button">Dit is mijn kamer</button></div>` : ''}
-    </div>
+  view.innerHTML = `<section class="col room-page" style="max-width:none">
     <div class="room-wrap">
       <div class="campus-scroll" id="roomScroll">
         <div class="room-scene${person === DETENTION ? ' det' : ''}" id="roomScene">
@@ -4333,6 +4509,22 @@ async function renderRoom(view, person) {
           <div class="rs-shelf" id="rsShelf"></div>
           <div class="rs-labels" id="rsLabels"></div>
           <div class="tro-pop" id="troPop" hidden></div>
+          <div class="rm-over">
+            <div class="rmo-left">
+              <button class="link" id="roomBack" type="button">← Frat House</button>
+              <span class="kicker">${mine ? 'Your room' : 'Room of'}</span>
+              <h2>${esc(person)}</h2>
+              <p class="rm-sub">${have}/${cards.length} in je collectie${owner
+                ? ` · ${esc(owner.display_name)}${owner.played ? ' · vandaag gespeeld' : ''} · <span class="fcount">${owner.fs || 0}× F</span>`
+                : ' · nog niet ingetrokken'}</p>
+            </div>
+            <div class="rmo-right">
+              ${owner && !mine ? `<button class="btn small" id="roomBattle" type="button">Uitdagen</button><button class="btn small ghost" id="roomTrade" type="button">Ruilen</button>` : ''}
+              ${!owner && !myRoom && !state.isAdmin ? `<button class="btn small ghost" id="roomClaim" type="button">Dit is mijn kamer</button>` : ''}
+              <button class="btn small ghost" id="roomPrev" type="button">← ${esc(plateName(prev))}</button>
+              <button class="btn small ghost" id="roomNext" type="button">${esc(plateName(next))} →</button>
+            </div>
+          </div>
         </div>
       </div>
     </div>
