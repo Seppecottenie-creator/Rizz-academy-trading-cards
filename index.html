@@ -2581,11 +2581,20 @@ function renderAuth(mode) {
         if (error) throw error;
       }
     } catch (err) {
-      msg.textContent = err.message; msg.className = 'msg err';
+      msg.textContent = authErrorText(err.message); msg.className = 'msg err';
     } finally {
       btn.disabled = false;
     }
   };
+}
+
+// Begrijpelijke foutmeldingen bij inloggen en registreren
+function authErrorText(m) {
+  if (/rate limit/i.test(m)) return 'Er zijn net te veel mails verstuurd. Probeer het binnen een uurtje opnieuw, of vraag Seppe om hulp.';
+  if (/not confirmed/i.test(m)) return 'Je e-mailadres is nog niet bevestigd. Vraag Seppe om je account vrij te geven.';
+  if (/invalid login/i.test(m)) return 'Verkeerd e-mailadres of wachtwoord.';
+  if (/already registered/i.test(m)) return 'Er bestaat al een account met dit e-mailadres. Log gewoon in.';
+  return m;
 }
 
 // ---------- Wachtwoord vergeten ----------
