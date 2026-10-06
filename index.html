@@ -2230,6 +2230,17 @@ body.as-app:has(.shell) .rotate-msg{z-index:5000}
   .exam-play-head .kicker{margin:0}
 }
 @media (min-width:600px) and (max-height:500px){.exam-play:has(.pack-results){max-width:min(620px,100%) !important;width:100%}}
+
+/* Meldingen */
+.acc-push{margin-top:16px;padding-top:14px;border-top:1px solid var(--line)}
+.acc-push h4{margin:0 0 4px}
+.push-txt{margin:0 0 8px;font-size:13px}
+.push-btns{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.push-msg{margin:6px 0 0;font-size:12.5px}.push-msg:empty{display:none}
+.push-ask{position:absolute;right:14px;bottom:12px;z-index:7;width:min(330px,calc(100% - 28px));padding:12px 14px;border-radius:14px;
+  background:rgba(14,19,38,.94);border:1px solid rgba(233,201,120,.45);box-shadow:0 14px 34px -10px rgba(0,0,0,.8);animation:tut-in .3s ease}
+.push-ask::before{content:"Herinnering";display:block;font:600 10px var(--body);letter-spacing:.2em;text-transform:uppercase;color:var(--brass);margin-bottom:4px}
+@media (min-width:600px) and (max-height:500px){.push-ask{width:270px;padding:8px 10px;right:8px;bottom:8px}.push-ask .push-txt{font-size:11.5px;margin-bottom:5px}}
 </style>
 </head>
 <body>
@@ -2269,6 +2280,8 @@ const IS_RECOVERY_LINK = URL_HASH.get('type') === 'recovery';
 let authLinkError = URL_HASH.get('error_description') || new URLSearchParams(location.search).get('error_description');
 
 const sb = supabase.createClient(CONFIG.SUPABASE_URL, CONFIG.SUPABASE_ANON_KEY);
+// Geopend via een melding (?tab=today): meteen naar die pagina
+const START_TAB = new URLSearchParams(location.search).get('tab');
 const app = document.getElementById('app');
 const $ = (sel, el = document) => el.querySelector(sel);
 const sleep = ms => new Promise(r => setTimeout(r, ms));
@@ -2282,7 +2295,7 @@ const PARTICLE_COLORS = {
   cat: ['#8FB9A4', '#E9E1D3']
 };
 
-const state = { photos: new Map(), session: null, recovery: IS_RECOVERY_LINK, cards: [], owned: new Map(), playDates: new Set(), play: null, name: '', avatarUrl: null, friendCode: '', wallet: 0, incomingRequests: 0, incomingBattles: 0, incomingTrades: 0, welcomeAvailable: false, isAdmin: false, tab: 'campus', page: 0, room: null };
+const state = { startTab: START_TAB, photos: new Map(), session: null, recovery: IS_RECOVERY_LINK, cards: [], owned: new Map(), playDates: new Set(), play: null, name: '', avatarUrl: null, friendCode: '', wallet: 0, incomingRequests: 0, incomingBattles: 0, incomingTrades: 0, welcomeAvailable: false, isAdmin: false, tab: 'campus', page: 0, room: null };
 
 // Werkt alle plekken bij die het saldo, de collectie en de streak tonen (scorebord, shop)
 function syncCoinUI() {
@@ -2449,6 +2462,7 @@ async function route() {
   try {
     await loadData();
     saveCurrentAccount();
+    if (state.startTab) { state.tab = state.startTab; state.startTab = null; history.replaceState(null, '', location.pathname); }
     renderMain();
     lockLandscape();
     if (!tutorialDone()) startTutorial();
@@ -3156,6 +3170,76 @@ function startTutorial() {
   requestAnimationFrame(() => setTimeout(draw, 60));
 }
 
+// ---------- Pushmeldingen: dagelijkse herinnering voor het examen ----------
+// De server (functie rizz-push in Supabase, zie supabase/update-11-meldingen.sql) stuurt om 19u
+// een melding naar wie zijn examen nog niet speelde. Hier schrijf je je toestel in of uit.
+const pushSupported = () => 'serviceWorker' in navigator && 'PushManager' in window && 'Notification' in window;
+async function pushSubscription() {
+  if (!pushSupported()) return null;
+  const reg = await navigator.serviceWorker.getRegistration();
+  return reg ? reg.pushManager.getSubscription() : null;
+}
+async function pushStatus() {
+  if (!pushSupported()) return 'unsupported';
+  if (Notification.permission === 'denied') return 'denied';
+  return (await pushSubscription()) ? 'on' : 'off';
+}
+const b64ToBytes = s => { const b = atob((s + '='.repeat((4 - s.length % 4) % 4)).replace(/-/g, '+').replace(/_/g, '/')); return Uint8Array.from(b, ch => ch.charCodeAt(0)); };
+async function enablePush() {
+  // Eerst de toestemming vragen: dat moet meteen na de tik (iPhone)
+  const perm = await Notification.requestPermission();
+  if (perm !== 'granted') throw new Error('Je gaf geen toestemming. Zet meldingen voor Rizz Academy aan in de instellingen van je gsm.');
+  const { data, error } = await sb.functions.invoke('rizz-push', { body: { action: 'key' } });
+  if (error || !data?.key) throw new Error('Meldingen zijn nog niet ingesteld op de server.');
+  const reg = await navigator.serviceWorker.ready;
+  let sub = await reg.pushManager.getSubscription();
+  if (!sub) sub = await reg.pushManager.subscribe({ userVisibleOnly: true, applicationServerKey: b64ToBytes(data.key) });
+  const j = sub.toJSON();
+  const { error: e2 } = await sb.rpc('save_push_subscription', { p_endpoint: j.endpoint, p_p256dh: j.keys.p256dh, p_auth: j.keys.auth });
+  if (e2) throw e2;
+  try { localStorage.setItem('rizz-push-asked', '1'); } catch (_) { /* geen opslag */ }
+}
+async function disablePush() {
+  const sub = await pushSubscription();
+  if (!sub) return;
+  await sb.rpc('delete_push_subscription', { p_endpoint: sub.endpoint });
+  await sub.unsubscribe();
+}
+// Blokje "Meldingen" (in Account en op de campus)
+async function drawPushBox(el, { compact = false } = {}) {
+  if (!el) return;
+  const st = await pushStatus();
+  const text = {
+    on: 'Aan. Om 19u krijg je een seintje als je examen nog open staat.',
+    off: 'Krijg om 19u een seintje als je je examen nog niet speelde. Max. één per dag.',
+    denied: 'Geblokkeerd. Zet meldingen voor Rizz Academy aan in de instellingen van je gsm.',
+    unsupported: 'Kan niet op dit toestel. Op een iPhone: zet de site eerst op je beginscherm en open ze van daar.',
+  }[st];
+  el.innerHTML = `${compact ? '' : '<h4>Meldingen</h4>'}<p class="hint push-txt">${text}</p>
+    <div class="push-btns">${st === 'off' ? '<button type="button" class="btn small" data-push="on">Meldingen aanzetten</button>' : ''}
+    ${st === 'on' ? `<button type="button" class="btn small ghost" data-push="test">Testmelding</button>${compact ? '' : '<button type="button" class="link danger" data-push="off">Uitzetten</button>'}` : ''}
+    ${compact ? '<button type="button" class="link" data-push="later">Niet nu</button>' : ''}</div>
+    <p class="msg push-msg" role="status"></p>`;
+  const msg = el.querySelector('.push-msg');
+  el.querySelectorAll('[data-push]').forEach(b => b.onclick = async () => {
+    const what = b.dataset.push;
+    if (what === 'later') { try { localStorage.setItem('rizz-push-asked', '1'); } catch (_) { /* geen opslag */ } el.remove(); return; }
+    b.disabled = true; msg.className = 'msg push-msg'; msg.textContent = 'Bezig…';
+    try {
+      if (what === 'on') await enablePush();
+      if (what === 'off') await disablePush();
+      if (what === 'test') {
+        const { data, error } = await sb.functions.invoke('rizz-push', { body: { action: 'test' } });
+        if (error || data?.error) throw new Error(data?.error || 'De testmelding kon niet verstuurd worden.');
+        msg.className = 'msg ok push-msg'; msg.textContent = data.sent ? 'Verstuurd. Je krijgt ze binnen enkele seconden.' : 'Geen toestel gevonden. Zet meldingen opnieuw aan.';
+        b.disabled = false; return;
+      }
+      if (compact && what === 'on') { el.innerHTML = '<p class="hint push-txt">Meldingen staan aan. Tot 19u.</p>'; setTimeout(() => el.remove(), 2500); return; }
+      drawPushBox(el, { compact });
+    } catch (err) { msg.className = 'msg err push-msg'; msg.textContent = err.message; b.disabled = false; }
+  });
+}
+
 function openAccountModal() {
   const dlg = $('#accModal');
   let pendingPhoto = state.avatarUrl;
@@ -3181,6 +3265,7 @@ function openAccountModal() {
           <button class="btn" type="submit">Opslaan</button>
         </div>
       </form>
+      <div class="acc-push" id="accPush"></div>
       <div class="acc-switch">
         <h4>Accounts op dit toestel</h4>
         ${Object.entries(savedAccounts()).filter(([id]) => id !== state.session.user.id).map(([id, a]) => `
@@ -3207,6 +3292,7 @@ function openAccountModal() {
       }
     };
     $('#accTutorial').onclick = () => { dlg.close(); startTutorial(); };
+    drawPushBox($('#accPush'));
     $('#accLogout').onclick = () => { forgetAccount(state.session.user.id); sb.auth.signOut(); };
     $('#accAdd').onclick = () => addAnotherAccount();
     dlg.querySelectorAll('[data-switch]').forEach(btn => {
@@ -3334,7 +3420,19 @@ async function renderCampus(view) {
   setStatus('trade', state.incomingTrades ? `${state.incomingTrades} offer${state.incomingTrades > 1 ? 's' : ''} waiting` : 'Doors open', state.incomingTrades || '');
   setStatus('ideas', 'Speak up');
   setStatus('house', `${collectionText()} collected`);
+  askPushOnCampus(view);
   setStatus('friends', state.incomingRequests ? `${state.incomingRequests} friend request${state.incomingRequests > 1 ? 's' : ''}` : 'Friends & their stats', state.incomingRequests || '');
+}
+
+// Op de campus één keer voorstellen om meldingen aan te zetten
+async function askPushOnCampus(view) {
+  let asked = false;
+  try { asked = !!localStorage.getItem('rizz-push-asked'); } catch (_) { asked = true; }
+  if (asked || !tutorialDone() || $('#tut') || (await pushStatus()) !== 'off') return;
+  const camp = view.querySelector('#campus');
+  if (!camp || camp.querySelector('.push-ask')) return;
+  camp.insertAdjacentHTML('beforeend', '<div class="push-ask"></div>');
+  drawPushBox(camp.querySelector('.push-ask'), { compact: true });
 }
 
 // ---------- Lessenrooster: elke dag een ander vak met een eigen minigame ----------
