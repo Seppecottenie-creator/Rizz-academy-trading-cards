@@ -2241,6 +2241,118 @@ body.as-app:has(.shell) .rotate-msg{z-index:5000}
   background:rgba(14,19,38,.94);border:1px solid rgba(233,201,120,.45);box-shadow:0 14px 34px -10px rgba(0,0,0,.8);animation:tut-in .3s ease}
 .push-ask::before{content:"Herinnering";display:block;font:600 10px var(--body);letter-spacing:.2em;text-transform:uppercase;color:var(--brass);margin-bottom:4px}
 @media (min-width:600px) and (max-height:500px){.push-ask{width:270px;padding:8px 10px;right:8px;bottom:8px}.push-ask .push-txt{font-size:11.5px;margin-bottom:5px}}
+
+/* =====================================================================
+   ARENA: overzicht met knoppen, alles in pop-ups
+   ===================================================================== */
+.ar-live{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:12px;margin-top:14px}
+.ar-go,.ar-inc{display:grid;gap:2px;justify-items:start;align-content:center;padding:14px 18px;border-radius:16px;text-align:left;font:inherit;color:#fff}
+.ar-go{border:0;cursor:pointer;background:linear-gradient(120deg,#E0284A,#8C0B21);box-shadow:0 14px 32px -12px rgba(224,40,74,.8);animation:go-pulse 2.2s ease-in-out infinite}
+.ar-go.waiting{background:linear-gradient(120deg,#3A4468,#1C2540);box-shadow:none;animation:none;border:1px solid rgba(255,255,255,.14)}
+@keyframes go-pulse{0%,100%{box-shadow:0 14px 32px -12px rgba(224,40,74,.8)}50%{box-shadow:0 0 0 4px rgba(224,40,74,.3),0 14px 32px -12px rgba(224,40,74,.8)}}
+.ar-go b{font:400 26px/1.05 var(--varsity);letter-spacing:.04em;text-transform:uppercase}
+.ar-go small,.ar-inc small{font:500 12.5px var(--body);opacity:.9}
+.ar-go-k{font:700 10px var(--body);letter-spacing:.2em;text-transform:uppercase;opacity:.85}
+.ar-inc{background:rgba(14,19,38,.9);border:1px solid rgba(233,201,120,.5)}
+.ar-inc b{font:600 16px var(--body)}
+.ar-inc .ar-go-k{color:#F2CC72}
+.ar-inc-btns{display:flex;gap:12px;align-items:center;margin-top:6px}
+.ar-live .msg:empty{display:none}
+.ar-hub{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px;margin-top:16px}
+.ar-tile{position:relative;display:flex;align-items:center;gap:14px;min-height:92px;padding:14px 16px;border-radius:16px;border:1px solid rgba(233,201,120,.32);
+  background:rgba(14,19,38,.84);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);color:var(--ink);text-align:left;cursor:pointer;font:inherit;transition:transform .15s,border-color .15s}
+.ar-tile:hover{transform:translateY(-2px);border-color:#F2CC72}
+.ar-tile.off{cursor:default;opacity:.85}
+.ar-tile.t-opp.ready{border-color:#E0284A;box-shadow:0 0 0 1px #E0284A,0 12px 30px -12px rgba(224,40,74,.7)}
+.ar-ico{width:46px;height:46px;flex-shrink:0;border-radius:12px;display:grid;place-items:center;background:rgba(233,201,120,.12);color:#F2CC72}
+.ar-ico svg{width:26px;height:26px}
+.ar-t{min-width:0}
+.ar-t b{display:block;font:400 17px/1.15 var(--varsity);letter-spacing:.05em;text-transform:uppercase}
+.ar-t small{display:block;margin-top:3px;font:500 12.5px var(--body);color:var(--ink-soft)}
+.ar-mini{margin-left:auto;display:flex;gap:4px;flex-shrink:0}
+.ar-mini i{width:32px;height:44px;border-radius:5px;border:1.5px dashed rgba(255,255,255,.25);display:grid;place-items:center;font:600 10px var(--body);font-style:normal;color:var(--ink-soft);overflow:hidden;text-align:center;line-height:1.05;padding:2px;word-break:break-word}
+.ar-mini i.on{border:1.5px solid #F2CC72;background:linear-gradient(180deg,#2B3A63,#1A2340);color:var(--ink);font-size:6.5px}
+.ar-mini i.on.r-epic{border-color:#B57BFF}.ar-mini i.on.r-legendary{border-color:#FFD86B;box-shadow:0 0 8px rgba(255,216,107,.6)}
+/* Pop-ups */
+dialog.ar-pop{position:fixed;inset:0;width:100%;height:100%;max-width:none;max-height:none;margin:0;border:0;display:grid;place-items:center;padding:16px;
+  background:rgba(4,6,14,.74);color:var(--ink);overflow:hidden}
+dialog.ar-pop:not([open]){display:none}
+dialog.ar-pop::backdrop{background:transparent}
+.ar-pop-box{width:min(940px,100%);max-height:calc(100vh - 32px);overflow:auto;padding:0 18px 16px;border-radius:18px;background:linear-gradient(180deg,#1A2340,#121930);
+  border:1px solid rgba(233,201,120,.35);box-shadow:0 30px 80px -20px rgba(0,0,0,.9);animation:tut-in .25s ease}
+.ar-pop-head{position:sticky;top:0;z-index:3;display:flex;align-items:center;justify-content:space-between;gap:10px;padding:14px 0 10px;background:#19223E}
+.ar-pop-head h3{margin:0;font:400 20px var(--varsity);letter-spacing:.05em;text-transform:uppercase;color:#F2CC72}
+.ar-pop-head h3 small{font:500 13px var(--body);color:var(--ink-soft);text-transform:none;letter-spacing:0}
+.ar-x{width:34px;height:34px;flex-shrink:0;border-radius:50%;border:1px solid var(--line2);background:rgba(255,255,255,.06);color:var(--ink);cursor:pointer;font-size:14px}
+.ar-pop .lineup-box,.ar-pop .opp-box,.ar-pop .roster-box,.ar-pop .al-box{display:block !important;background:none !important;border:0 !important;padding:0 !important;margin:0 !important;overflow:visible !important;box-shadow:none !important}
+.ar-pop .battle-pick{display:grid !important;grid-template-columns:repeat(auto-fill,minmax(118px,1fr));gap:12px !important;overflow:visible !important;padding:12px 4px 4px !important}
+.ar-pop .battle-pick .pick{flex:none !important;width:auto !important;height:auto !important;min-width:0 !important;aspect-ratio:auto !important}
+.ar-pop .battle-pick .pick .cw{width:100% !important;height:auto !important}
+.ar-pop .lineup{display:grid !important;grid-template-columns:repeat(3,minmax(0,min(210px,calc((100vh - 230px) * .714)))) !important;justify-content:center;gap:16px !important;margin:8px 0 0 !important}
+.ar-pop .lineup .lu-slot{width:100% !important;height:auto !important;max-width:none !important;max-height:none !important;min-height:0 !important;aspect-ratio:5/7}
+.ar-pop .lb-hint{display:block !important;margin:10px 0 0;text-align:center}
+.ar-pop .opp-btn small{display:block !important}
+.ar-pop .opp-grid{grid-template-columns:repeat(auto-fit,minmax(200px,1fr))}
+.ar-need{margin:0 0 10px;padding:8px 12px;border-radius:10px;background:rgba(224,40,74,.12);color:#FFB3BE}
+.ar-need[hidden]{display:none}
+.ar-pop-foot{display:flex;justify-content:flex-end;align-items:center;gap:10px;flex-wrap:wrap;margin-top:14px}
+.ar-pop-foot .link{margin-right:auto}
+.ar-pop .leaderboard{width:100%}
+@media (max-width:899px) and (min-height:501px), (max-width:599px){.ar-hub{grid-template-columns:1fr 1fr;gap:10px}.ar-tile{min-height:80px;padding:12px;gap:10px}.ar-ico{width:38px;height:38px}.ar-mini{display:none}}
+@media (min-width:600px) and (max-height:500px){
+  .arena-hub .arena-hero .ah-stats{margin-right:84px}
+  .ar-live{margin-top:6px;gap:8px;grid-template-columns:repeat(auto-fit,minmax(200px,1fr))}
+  .ar-go,.ar-inc{padding:8px 12px;border-radius:12px}.ar-go b{font-size:19px}
+  .ar-hub{grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-top:8px}
+  .ar-tile{min-height:0;height:clamp(62px,19vh,84px);padding:8px 10px;gap:9px;border-radius:12px}
+  .ar-ico{width:34px;height:34px;border-radius:9px}.ar-ico svg{width:20px;height:20px}
+  .ar-t b{font-size:13px}.ar-t small{font-size:10.5px}
+  .ar-mini i{width:22px;height:30px;font-size:8px}.ar-mini i.on{font-size:0}
+  .ar-pop{padding:6px}
+  .ar-pop-box{max-height:calc(100vh - 12px);padding:0 12px 10px;border-radius:14px}
+  .ar-pop-head{padding:8px 0 6px}.ar-pop-head h3{font-size:15px}.ar-x{width:28px;height:28px}
+  .ar-pop .lineup{grid-template-columns:repeat(3,minmax(0,calc((100vh - 150px) * .714))) !important;gap:12px !important}
+  .ar-pop .battle-pick{grid-template-columns:repeat(auto-fill,minmax(86px,1fr));gap:8px !important;padding-top:8px !important}
+  .ar-pop .lb-hint{font-size:11px;margin-top:4px}
+  .ar-pop-foot{margin-top:6px}
+  .ar-pop .opp-btn{padding:8px 10px 22px}.ar-pop .opp-btn b{font-size:14px}.ar-pop .opp-btn small{font-size:10.5px}
+}
+
+/* Friends: lijsten in pop-ups, de stats van je vriend krijgen de ruimte */
+.fr-big{display:grid;gap:8px;margin-top:14px}
+.fr-big .ar-tile{min-height:0;padding:12px 14px;justify-content:space-between}
+.fr-count.big{min-width:34px;height:34px;border-radius:50%;font:400 16px var(--varsity);background:rgba(233,201,120,.15);color:#F2CC72}
+.fr-pop{width:min(620px,100%)}
+.fr-grid-list{grid-template-columns:repeat(auto-fill,minmax(250px,1fr)) !important;gap:8px}
+.fr-pop .msg:empty{display:none}
+.fr-empty .btn{justify-self:center;margin-top:8px}
+@media (min-width:900px), (min-width:600px) and (max-height:500px){
+  .fr-grid{grid-template-columns:280px minmax(0,1fr) !important;grid-template-rows:minmax(0,1fr) !important}
+  .fr-side{grid-column:1 !important;grid-row:1 !important;max-height:100% !important;overflow:auto}
+  .fr-detail{grid-column:2 !important;grid-row:1 !important}
+}
+@media (min-width:600px) and (max-height:500px){
+  .fr-grid{grid-template-columns:230px minmax(0,1fr) !important}
+  .fr-big{margin-top:8px;gap:6px}.fr-big .ar-tile{padding:8px 10px}.fr-big .ar-t b{font-size:12.5px}.fr-big .ar-t small{font-size:10px}
+  .fr-count.big{min-width:26px;height:26px;font-size:13px}
+  .fr-grid-list{grid-template-columns:repeat(auto-fill,minmax(220px,1fr)) !important}
+}
+
+/* Arena-overzicht: ruimere knoppen, starting three breed */
+.ar-hub{grid-template-columns:repeat(3,minmax(0,1fr))}
+.ar-tile{min-height:110px}
+.ar-tile.t-team{grid-column:span 2}
+.ar-tile.t-team .ar-mini i{width:54px;height:74px;font-size:8px}
+.ar-tile.t-team .ar-mini i.on{font-size:8px}
+@media (min-width:900px){.arena-hub .arena-hero .hero-over{padding-right:150px !important}}
+@media (max-width:899px) and (min-height:501px), (max-width:599px){.ar-hub{grid-template-columns:1fr 1fr}.ar-tile.t-team{grid-column:1/-1}.ar-tile.t-team .ar-mini{display:flex}.ar-tile.t-team .ar-mini i{width:34px;height:46px}}
+@media (min-width:600px) and (max-height:500px){
+  .ar-hub{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .ar-tile{min-height:0}
+  .ar-tile.t-team{grid-column:span 1}
+  .ar-tile.t-team .ar-mini i{width:20px;height:28px}
+  .ar-tile.t-team .ar-mini i.on{font-size:0}
+}
 </style>
 </head>
 <body>
@@ -4508,26 +4620,39 @@ async function renderFriends(view) {
           <button class="fr-x" data-req="${r.id}" data-action="decline" type="button" aria-label="Weigeren">✕</button>`)).join('')}</ul>` : ''}
         ${outgoing.length ? `<h4>Verstuurd</h4><ul class="fr-rows">${outgoing.map(r => person(r, `
           <span class="fr-wait">Wacht…</span><button class="fr-x" data-req="${r.id}" data-action="cancel" type="button" aria-label="Annuleren">✕</button>`)).join('')}</ul>` : ''}
-        ${others.length ? `<h4>Op de campus</h4><ul class="fr-rows">${others.map(o => person(o, `
-          <button class="fr-plus" data-add="${o.user_id}" type="button" aria-label="${esc(o.display_name)} toevoegen">${plus}</button>`)).join('')}</ul>` : ''}
-      </div>
-      <div class="fr-list fr-panel">
-        <h4>Je vrienden <span class="fr-count">${friends.length}</span></h4>
-        ${friends.length ? `<ul class="fr-rows">${friends.map(f => `<li><button type="button" class="fr-friend${f.id === state.friendSel ? ' on' : ''}" data-open="${f.id}">
-            ${friendAv(f)}<span class="fr-name">${esc(f.display_name)}<small>${f.cards}/${total} kaarten · ${f.fs}× F · ${f.wins}–${f.losses}</small></span>
-            ${f.today ? `<span class="fr-grade g-${f.today}" title="Cijfer vandaag">${f.today}</span>` : '<span class="fr-grade none" title="Vandaag nog niet gespeeld">–</span>'}
-          </button></li>`).join('')}</ul>`
-        : `<p class="hint">Nog geen vrienden. Stuur een verzoek met hun code of tik op + bij "Op de campus".</p>`}
+        <div class="fr-big">
+          <button type="button" class="ar-tile" data-pop-open="list"><span class="ar-t"><b>Je vrienden</b><small>${friends.length ? `${friends.length} vriend${friends.length > 1 ? 'en' : ''} · tik om te kiezen` : 'Nog geen vrienden'}</small></span><span class="fr-count big">${friends.length}</span></button>
+          ${others.length ? `<button type="button" class="ar-tile" data-pop-open="others"><span class="ar-t"><b>Mensen toevoegen</b><small>${others.length} op de campus</small></span><span class="fr-count big">+</span></button>` : ''}
+        </div>
       </div>
       <div class="fr-detail fr-panel" id="frDetail"></div>
     </div>
+    <dialog class="ar-pop" data-pop="list" aria-label="Je vrienden"><div class="ar-pop-box fr-pop">
+      <div class="ar-pop-head"><h3>Je vrienden <small>${friends.length}</small></h3><button type="button" class="ar-x" data-pop-close aria-label="Sluiten">✕</button></div>
+      ${friends.length ? `<ul class="fr-rows fr-grid-list">${friends.map(f => `<li><button type="button" class="fr-friend${f.id === state.friendSel ? ' on' : ''}" data-open="${f.id}">
+          ${friendAv(f)}<span class="fr-name">${esc(f.display_name)}<small>${f.cards}/${total} kaarten · ${f.fs}× F · ${f.wins}–${f.losses}</small></span>
+          ${f.today ? `<span class="fr-grade g-${f.today}" title="Cijfer vandaag">${f.today}</span>` : '<span class="fr-grade none" title="Vandaag nog niet gespeeld">–</span>'}
+        </button></li>`).join('')}</ul>`
+      : `<p class="hint">Nog geen vrienden. Stuur een verzoek met hun code, of kies iemand bij "Mensen toevoegen".</p>`}
+    </div></dialog>
+    <dialog class="ar-pop" data-pop="others" aria-label="Mensen toevoegen"><div class="ar-pop-box fr-pop">
+      <div class="ar-pop-head"><h3>Mensen toevoegen</h3><button type="button" class="ar-x" data-pop-close aria-label="Sluiten">✕</button></div>
+      <ul class="fr-rows fr-grid-list">${others.map(o => person(o, `
+        <button class="fr-plus" data-add="${o.user_id}" type="button" aria-label="${esc(o.display_name)} toevoegen">${plus}</button>`)).join('')}</ul>
+      <p class="msg" id="addOtherMsg" role="status"></p>
+    </div></dialog>
   </section>`;
 
   const detail = $('#frDetail');
+  const openPop = id => { closePops(); view.querySelector(`.ar-pop[data-pop="${id}"]`)?.showModal(); };
+  function closePops() { view.querySelectorAll('.ar-pop[open]').forEach(p => p.close()); }
+  view.querySelectorAll('[data-pop-open]').forEach(b => b.onclick = () => openPop(b.dataset.popOpen));
+  view.querySelectorAll('[data-pop-close]').forEach(b => b.onclick = closePops);
+  view.querySelectorAll('.ar-pop').forEach(p => p.addEventListener('click', e => { if (e.target === p) closePops(); }));
   const showFriend = async id => {
     const f = friends.find(x => x.id === id);
     view.querySelectorAll('.fr-friend').forEach(b => b.classList.toggle('on', b.dataset.open === id));
-    if (!f) { detail.innerHTML = `<div class="fr-empty"><b>The Quad</b><p>Hier zie je de stats van je vrienden: hun collectie, cijfers, F's, Arena-score en trofeeën.</p></div>`; return; }
+    if (!f) { detail.innerHTML = `<div class="fr-empty"><b>The Quad</b><p>Hier zie je de stats van je vrienden: hun collectie, cijfers, F's, Arena-score en trofeeën.</p>${friends.length ? '<button type="button" class="btn small" id="frPick">Kies een vriend</button>' : ''}</div>`; if ($('#frPick')) $('#frPick').onclick = () => openPop('list'); return; }
     state.friendSel = id;
     detail.innerHTML = `<div class="frd-head">${friendAv(f)}<h3>${esc(f.display_name)}</h3></div><p class="hint">Laden…</p>`;
     const { data: rd } = await sb.rpc('member_room', { p_user: id });
@@ -4543,6 +4668,7 @@ async function renderFriends(view) {
       <div class="frd-head">${friendAv(f)}<div><h3>${esc(f.display_name)}</h3>
         <small>${f.today ? `Vandaag een <b class="g-${f.today}">${f.today}</b>` : 'Vandaag nog geen examen'}</small></div>
         <div class="frd-actions">
+          ${friends.length > 1 ? '<button class="btn small ghost" id="frSwitch" type="button">Andere vriend</button>' : ''}
           <button class="btn small" id="frBattle" type="button">Uitdagen</button>
           <button class="btn small ghost" id="frTrade" type="button">Ruilen</button>
         </div></div>
@@ -4559,6 +4685,7 @@ async function renderFriends(view) {
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">${TROPHY_ICON[t.icon]}</svg><small>${esc(t.name)}</small></span>`).join('')}</div></div>
       </div>
       <button class="link danger frd-remove" id="frRemove" type="button">${esc(f.display_name)} verwijderen als vriend</button>`;
+    if ($('#frSwitch')) $('#frSwitch').onclick = () => openPop('list');
     $('#frBattle').onclick = () => { battleState.friend = id; state.tab = 'battle'; renderMain(); scrollTo({ top: 0 }); };
     $('#frTrade').onclick = () => { state.tradeWith = id; state.tab = 'trade'; renderMain(); scrollTo({ top: 0 }); };
     $('#frRemove').onclick = async () => {
@@ -4569,6 +4696,7 @@ async function renderFriends(view) {
     };
   };
   view.querySelectorAll('[data-open]').forEach(b => b.onclick = () => {
+    closePops();
     showFriend(b.dataset.open);
     if (matchMedia('(max-width:899px) and (min-height:501px), (max-width:599px)').matches) detail.scrollIntoView({ behavior: 'smooth', block: 'start' });
   });
@@ -4595,8 +4723,11 @@ async function renderFriends(view) {
   view.querySelectorAll('[data-add]').forEach(b => b.onclick = async () => {
     b.disabled = true;
     const { data: d, error: err } = await sb.rpc('send_friend_request_to', { p_user: b.dataset.add });
-    if (err) { b.disabled = false; if (msg) { msg.className = 'msg err'; msg.textContent = err.message; } else alert(err.message); return; }
-    if (msg) sent(d); else renderFriends(view);
+    const m2 = $('#addOtherMsg');
+    if (err) { b.disabled = false; m2.className = 'msg err'; m2.textContent = err.message; return; }
+    m2.className = 'msg ok'; m2.textContent = d.status === 'accepted' ? `${d.name} had jou al een verzoek gestuurd: jullie zijn nu vrienden!` : `Verzoek verstuurd naar ${d.name}.`;
+    b.closest('li')?.remove();
+    setTimeout(() => { if (state.tab === 'friends') renderFriends(view); }, 1300);
   });
   view.querySelectorAll('[data-req]').forEach(b => b.onclick = async () => {
     if (b.dataset.action === 'decline' && !confirm('Dit vriendschapsverzoek weigeren?')) return;
@@ -5304,7 +5435,16 @@ async function renderBattle(view) {
   const preFriend = friendIds.includes(battleState.friend) ? battleState.friend : '';
   battleState.friend = null;
 
-  view.innerHTML = `<section class="col arena-page" style="max-width:none">
+  const myRank = (board.data || []).findIndex(r => r.user_id === uid) + 1;
+  const goOn = [...myTurn, ...waiting];
+  const ICO = d => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">${d}</svg>`;
+  const pop = (id, title, body) => `<dialog class="ar-pop" data-pop="${id}" aria-label="${esc(title.replace(/<[^>]+>/g, ''))}"><div class="ar-pop-box">
+      <div class="ar-pop-head"><h3>${title}</h3><button type="button" class="ar-x" data-close aria-label="Sluiten">✕</button></div>${body}</div></dialog>`;
+  const tile = (id, icon, title, sub, extra = '') => `<button type="button" class="ar-tile t-${id}" data-open="${id}">
+      <span class="ar-ico">${ICO(icon)}</span><span class="ar-t"><b>${title}</b><small id="sub-${id}">${sub}</small></span>${extra}</button>`;
+  const enough = owned.length >= TEAM_SIZE;
+
+  view.innerHTML = `<section class="col arena-hub" style="max-width:none">
     <div class="photo-hero arena-hero">
       <div class="hero-over">
       <div class="ah-txt">${pageHead('The Arena', 'battle')}</div>
@@ -5316,63 +5456,68 @@ async function renderBattle(view) {
       </div>
     </div>
 
-    ${myTurn.length || incoming.length ? `<div class="battle-box highlight">
-      ${myTurn.map(b => `<div class="battle-row">
-        <span class="battle-row-text"><strong>Jouw zet</strong> tegen ${esc(opponentOf(b))} · ronde ${b.round + 1}</span>
-        <button class="btn small" data-open-battle="${b.id}" type="button">Speel verder</button>
-      </div>`).join('')}
-      ${incoming.map(b => `<div class="battle-row">
-        <span class="battle-row-text"><strong>${esc(nameOf(b.player_a))}</strong> daagt je uit. Kies je drie hieronder en accepteer.</span>
-        <button class="btn small" data-accept-battle="${b.id}" type="button">Accepteren</button>
-        <button class="link danger" data-decline-battle="${b.id}" type="button">Weigeren</button>
-      </div>`).join('')}
+    ${goOn.length || incoming.length ? `<div class="ar-live">
+      ${goOn.map(b => `<button type="button" class="ar-go${(b.moved || {})[mySide(b)] ? ' waiting' : ''}" data-open-battle="${b.id}">
+        <span class="ar-go-k">${(b.moved || {})[mySide(b)] ? 'Wacht op je tegenstander' : 'Jouw zet'}</span>
+        <b>Ga verder</b><small>tegen ${esc(opponentOf(b))} · ronde ${b.round + 1}</small></button>`).join('')}
+      ${incoming.map(b => `<div class="ar-inc">
+        <span class="ar-go-k">Uitdaging</span><b>${esc(nameOf(b.player_a))} daagt je uit</b>
+        <small class="ar-inc-hint">Kies eerst je starting three.</small>
+        <span class="ar-inc-btns"><button class="btn small" data-accept-battle="${b.id}" type="button">Accepteren</button>
+        <button class="link danger" data-decline-battle="${b.id}" type="button">Weigeren</button></span></div>`).join('')}
       <p class="msg tmsg" id="incomingMsg" role="alert"></p>
     </div>` : ''}
 
-    ${owned.length < TEAM_SIZE
-      ? `<p class="hint" style="margin-top:14px">Je hebt minstens ${TEAM_SIZE} verschillende kaarten nodig om te vechten. Je hebt er nu ${owned.length}.</p>`
-      : `<div class="lobby">
-          <div class="lineup-box">
-            <div class="lb-head"><h3><span class="stepnum">1</span>Je starting three</h3><button class="link" id="clearTeam" type="button">Wissen</button></div>
-            <div class="lineup" id="lineup"></div>
-            <p class="hint lb-hint">Tik onderaan op je kaarten. Nummer 1 start het gevecht, 2 en 3 staan op de bank.</p>
-          </div>
-          <div class="opp-box">
-            <h3><span class="stepnum">2</span>Kies je tegenstander</h3>
-            <div class="opp-grid">
-              ${Object.entries(DIFFS).map(([k, d]) => `<button class="opp-btn d-${k}" data-pve="${k}" type="button">
-                <b>${d.label}</b><small>${d.hint}</small><span class="opp-reward">+${d.coins} credits</span></button>`).join('')}
-              <div class="opp-btn friend${friendIds.length ? '' : ' off'}">
-                <b>Rivalry</b>
-                ${friendIds.length ? `<select id="battleFriend" class="tselect">
-                    <option value="">Kies een huisgenoot…</option>
-                    ${friendIds.map(id => `<option value="${id}"${id === preFriend ? ' selected' : ''}>${esc(nameOf(id))}</option>`).join('')}
-                  </select>
-                  <button class="btn small" id="challengeBattle" type="button">Uitdagen</button>`
-                  : '<small>Er woont nog niemand anders in het huis.</small>'}
-                <span class="opp-reward">+25 credits</span>
-              </div>
-            </div>
-            <p class="msg tmsg" id="battleMsg" role="alert"></p>
+    <div class="ar-hub">
+      ${enough ? tile('team', '<rect x="3" y="5" width="5" height="14" rx="1"/><rect x="9.5" y="5" width="5" height="14" rx="1"/><rect x="16" y="5" width="5" height="14" rx="1"/>', 'Je starting three', 'Kies 3 kaarten', '<span class="ar-mini" id="teamMini"></span>')
+        : `<div class="ar-tile off"><span class="ar-t"><b>Nog niet genoeg kaarten</b><small>Je hebt minstens ${TEAM_SIZE} kaarten nodig. Je hebt er nu ${owned.length}.</small></span></div>`}
+      ${tile('cards', '<rect x="6" y="3" width="12" height="15" rx="2"/><path d="M4 7v12a2 2 0 0 0 2 2h10"/>', 'Je kaarten', `${owned.length} kaarten`)}
+      ${enough ? tile('opp', '<path d="M14.5 17.5 3 6V3h3l11.5 11.5M13 19l6-6M16 16l4 4"/><path d="M9.5 17.5 21 6V3h-3L6.5 14.5M11 19l-6-6M8 16l-4 4"/>', 'Kies je tegenstander', 'Computer of een vriend') : ''}
+      ${tile('matches', '<circle cx="12" cy="12" r="8"/><path d="M12 8v4l3 2"/>', 'Wedstrijden', `${waiting.length + sent.length ? `${waiting.length + sent.length} bezig · ` : ''}${done.length} gespeeld`)}
+      ${tile('board', '<path d="M7 4h10v4a5 5 0 0 1-10 0z"/><path d="M7 6H4v1a3 3 0 0 0 3 3M17 6h3v1a3 3 0 0 1-3 3M12 13v4M8 21h8M9 17h6"/>', 'Ranglijst', myRank ? `Jij staat #${myRank}` : 'Wie is de beste?')}
+    </div>
+
+    ${enough ? pop('team', 'Je starting three', `<div class="lineup-box">
+        <div class="lineup" id="lineup"></div>
+        <p class="hint lb-hint">Nummer 1 start het gevecht, 2 en 3 staan op de bank.</p>
+        <div class="ar-pop-foot"><button class="link" id="clearTeam" type="button">Wissen</button>
+          <button class="btn small ghost" type="button" data-open="cards">Kaarten kiezen</button>
+          <button class="btn small" type="button" data-open="opp" id="toOpp">Kies je tegenstander →</button></div>
+      </div>`) : ''}
+    ${pop('cards', `Je kaarten <small id="pickCount"></small>`, `<div class="roster-box">
+        ${enough ? '<p class="hint lb-hint">Tik op 3 kaarten voor je starting three. Nog eens tikken haalt ze eruit.</p>' : ''}
+        <div class="battle-pick">${owned.map(c => `
+          <button class="pick" type="button" data-pick="${c.id}" aria-pressed="false">
+            <span class="pick-num" hidden></span>${renderCard(c)}
+          </button>`).join('')}</div>
+        ${enough ? '<div class="ar-pop-foot"><button class="btn small" type="button" data-open="team" id="pickDone">Klaar</button></div>' : ''}
+      </div>`)}
+    ${enough ? pop('opp', 'Kies je tegenstander', `<div class="opp-box">
+        <p class="hint ar-need" id="needTeam">Kies eerst je starting three. <button class="link" type="button" data-open="cards">Kaarten kiezen</button></p>
+        <div class="opp-grid">
+          ${Object.entries(DIFFS).map(([k, d]) => `<button class="opp-btn d-${k}" data-pve="${k}" type="button">
+            <b>${d.label}</b><small>${d.hint}</small><span class="opp-reward">+${d.coins} credits</span></button>`).join('')}
+          <div class="opp-btn friend${friendIds.length ? '' : ' off'}">
+            <b>Rivalry</b>
+            ${friendIds.length ? `<select id="battleFriend" class="tselect">
+                <option value="">Kies een vriend…</option>
+                ${friendIds.map(id => `<option value="${id}"${id === preFriend ? ' selected' : ''}>${esc(nameOf(id))}</option>`).join('')}
+              </select>
+              <button class="btn small" id="challengeBattle" type="button">Uitdagen</button>`
+              : '<small>Voeg eerst vrienden toe in The Quad.</small>'}
+            <span class="opp-reward">+25 credits</span>
           </div>
         </div>
-        <div class="roster-box">
-          <h3>Je kaarten <small>${owned.length}</small></h3>
-          <div class="battle-pick">${owned.map(c => `
-            <button class="pick" type="button" data-pick="${c.id}" aria-pressed="false">
-              <span class="pick-num" hidden></span>${renderCard(c)}
-            </button>`).join('')}</div>
-        </div>`}
-
-    <div class="arena-lists">
-      <div class="al-box"><h3>Wedstrijden</h3>
+        <p class="msg tmsg" id="battleMsg" role="alert"></p>
+      </div>`) : ''}
+    ${pop('matches', 'Wedstrijden', `<div class="al-box">
         ${waiting.length || sent.length || done.length ? [...waiting.map(b => `<div class="battle-row">
             <span class="result-tag wait">Bezig</span><span class="battle-row-text">${esc(opponentOf(b))} · ronde ${b.round + 1}</span>
             <button class="link" data-open-battle="${b.id}" type="button">Bekijk</button></div>`),
           ...sent.map(b => `<div class="battle-row">
             <span class="result-tag wait">Verstuurd</span><span class="battle-row-text">${esc(nameOf(b.player_b))}</span>
             <button class="link danger" data-cancel-battle="${b.id}" type="button">Annuleren</button></div>`),
-          ...done.slice(0, 6).map(b => {
+          ...done.map(b => {
             const won = b.winner === mySide(b);
             const coins = mySide(b) === 'A' ? b.coins_a : b.coins_b;
             return `<div class="battle-row">
@@ -5380,16 +5525,28 @@ async function renderBattle(view) {
               <span class="battle-row-text">${esc(opponentOf(b))}${coins ? ` · +${coins}` : ''}</span>
               <button class="link" data-open-battle="${b.id}" type="button">Bekijk</button></div>`;
           })].join('') : '<p class="hint">Nog geen wedstrijden gespeeld.</p>'}
-      </div>
-      <div class="al-box"><h3>Ranglijst</h3>
+      </div>`)}
+    ${pop('board', 'Ranglijst', `<div class="al-box">
         ${board.error ? `<p class="msg err">${esc(board.error.message)}</p>` : `<table class="leaderboard">
           <thead><tr><th>#</th><th>Naam</th><th>W</th><th>V</th></tr></thead>
           <tbody>${(board.data || []).map((r, i) => `<tr${r.user_id === uid ? ' class="me"' : ''}>
             <td>${i + 1}</td><td>${esc(r.display_name)}</td><td>${r.wins}</td><td>${r.losses}</td></tr>`).join('')}</tbody>
         </table>`}
-      </div>
-    </div>
+      </div>`)}
   </section>`;
+
+  // Pop-ups openen en sluiten
+  const openPop = id => {
+    view.querySelectorAll('.ar-pop[open]').forEach(p => { if (p.dataset.pop !== id) p.close(); });
+    const d = view.querySelector(`.ar-pop[data-pop="${id}"]`);
+    if (d && !d.open) d.showModal();
+    d?.querySelector('.ar-pop-box')?.scrollTo(0, 0);
+  };
+  const closePops = () => view.querySelectorAll('.ar-pop[open]').forEach(p => p.close());
+  view.querySelectorAll('[data-open]').forEach(b => b.addEventListener('click', () => openPop(b.dataset.open)));
+  view.querySelectorAll('[data-close]').forEach(b => b.onclick = closePops);
+  view.querySelectorAll('.ar-pop').forEach(p => p.addEventListener('click', e => { if (e.target === p) closePops(); }));
+  if (preFriend) openPop(battleState.team.length === TEAM_SIZE ? 'opp' : 'cards');
 
   const teamReady = () => battleState.team.length === TEAM_SIZE;
   const sync = () => {
@@ -5405,8 +5562,15 @@ async function renderBattle(view) {
       const c = cardById(battleState.team[i]);
       return `<div class="lu-slot${c ? ' filled' : ''}"><span class="lu-num">${i + 1}</span>${c ? renderCard(c) : '<span class="lu-empty">Kies kaart</span>'}</div>`;
     }).join('');
-    view.querySelectorAll('[data-pve], #challengeBattle, [data-accept-battle]').forEach(b => { b.disabled = !teamReady(); });
-    view.querySelector('.lobby')?.classList.toggle('ready', teamReady());
+    view.querySelectorAll('[data-pve], #challengeBattle, [data-accept-battle], #toOpp').forEach(b => { b.disabled = !teamReady(); });
+    view.querySelectorAll('.ar-inc-hint').forEach(h => { h.hidden = teamReady(); });
+    if ($('#needTeam')) $('#needTeam').hidden = teamReady();
+    if ($('#pickCount')) $('#pickCount').textContent = `· ${battleState.team.length}/${TEAM_SIZE} gekozen`;
+    if ($('#pickDone')) $('#pickDone').textContent = teamReady() ? 'Klaar' : 'Bekijk je starting three';
+    const mini = $('#teamMini');
+    if (mini) mini.innerHTML = [0, 1, 2].map(i => { const c = cardById(battleState.team[i]); return `<i class="${c ? 'on r-' + c.rarity : ''}">${c ? esc(c.name) : i + 1}</i>`; }).join('');
+    if ($('#sub-team')) $('#sub-team').textContent = teamReady() ? 'Klaar om te vechten' : `${battleState.team.length}/${TEAM_SIZE} gekozen`;
+    view.querySelector('.ar-tile.t-opp')?.classList.toggle('ready', teamReady());
   };
   view.querySelectorAll('[data-pick]').forEach(b => {
     b.onclick = () => {
@@ -5520,6 +5684,8 @@ async function openBattle(view, id, prev = null) {
   const { data: b, error } = await sb.from('tbattles').select('*').eq('id', id).single();
   if (error) { alert(error.message); return renderBattle(view); }
   if (b.status === 'pending') { alert('Deze uitdaging is nog niet geaccepteerd.'); return renderBattle(view); }
+  // Foto's van alle kaarten in dit gevecht (ook die van je tegenstander)
+  await loadPhotos([...(b.state?.A?.cards || []), ...(b.state?.B?.cards || [])]);
   const me = mySide(b), op = otherSide(me);
   let oppName = 'Computer';
   if (b.mode === 'pvp') {
