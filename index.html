@@ -2498,6 +2498,11 @@ dialog.ar-pop::backdrop{background:transparent}
 .trade-builder > div h4{position:sticky;top:0;z-index:2;margin:0 0 6px;padding:4px 0;background:rgba(14,12,16,.94)}
 #tradeSum,#sendTrade{position:relative;z-index:2}
 @media (min-width:600px) and (max-height:500px){.trade-builder > div{max-height:52vh}}
+.adm-bar{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin-top:10px;padding:8px 10px;border-radius:12px;background:rgba(200,16,46,.16);border:1px dashed rgba(224,40,74,.6)}
+.adm-bar span{font:700 10px var(--body);letter-spacing:.16em;text-transform:uppercase;color:#FF8C9E;margin-right:4px}
+.adm-g{padding:5px 9px;border-radius:999px;border:1px solid var(--line2);background:rgba(14,19,38,.85);color:var(--ink);font:600 12px var(--body);cursor:pointer}
+.adm-g.on{background:#F2CC72;color:#1A1408;border-color:#F2CC72}
+@media (min-width:600px) and (max-height:500px){.adm-bar{margin-top:5px;padding:4px 6px;gap:4px}.adm-g{padding:3px 7px;font-size:10.5px}}
 </style>
 </head>
 <body>
@@ -2555,8 +2560,10 @@ const PARTICLE_COLORS = {
 const state = { startTab: START_TAB, photos: new Map(), session: null, recovery: IS_RECOVERY_LINK, cards: [], owned: new Map(), playDates: new Set(), play: null, name: '', avatarUrl: null, friendCode: '', wallet: 0, incomingRequests: 0, incomingBattles: 0, incomingTrades: 0, welcomeAvailable: false, isAdmin: false, tab: 'campus', page: 0, room: null };
 
 // Werkt alle plekken bij die het saldo, de collectie en de streak tonen (scorebord, shop)
+// Admin heeft oneindig geld (supabase/update-17-admin-test.sql)
+const coinText = () => (state.isAdmin ? '∞' : String(state.wallet));
 function syncCoinUI() {
-  document.querySelectorAll('[data-coin]').forEach(el => { el.textContent = state.wallet; });
+  document.querySelectorAll('[data-coin]').forEach(el => { el.textContent = coinText(); });
   document.querySelectorAll('[data-coll]').forEach(el => { el.textContent = collectionText(); });
   document.querySelectorAll('[data-streak]').forEach(el => { el.textContent = computeStreak(state.playDates); });
 }
@@ -3023,7 +3030,7 @@ const logoHtml = () => `<div class="logo"><span class="crest" aria-hidden="true"
 
 // Statusbalk bovenaan: credits, collectie, streak en de pickup line van de dag
 function scoreboardHtml() {
-  return `<button type="button" class="coin-chip" data-go-shop title="Je credits (The Vault)" aria-label="Credits"><span class="cc-coin" aria-hidden="true"></span><b data-coin>${state.wallet}</b></button>`;
+  return `<button type="button" class="coin-chip" data-go-shop title="Je credits (The Vault)" aria-label="Credits"><span class="cc-coin" aria-hidden="true"></span><b data-coin>${coinText()}</b></button>`;
 }
 
 function renderMain() {
@@ -4302,7 +4309,23 @@ const EXAM_GAMES = { math: gameMath, hoops: gameHoops, history: gameHistory, lau
 
 // Banner van de Exam Hall: foto van de examenzaal (dag of avond) met titel en rooster
 const examHero = (dow, done) => `<div class="photo-hero exam-hero">
-  <div class="hero-over">${pageHead('Exam Hall', 'today')}${timetableHtml(dow, done)}</div></div>`;
+  <div class="hero-over">${pageHead('Exam Hall', 'today')}${timetableHtml(dow, done)}${adminExamBar()}</div></div>`;
+
+// Admin: elk spel kiezen en opnieuw spelen (supabase/update-17-admin-test.sql)
+function adminExamBar() {
+  if (!state.isAdmin) return '';
+  const cur = state.exam?.game;
+  return `<div class="adm-bar"><span>Admin · test een spel</span>${SCHEDULE.map(s => `<button type="button" class="adm-g${s.game === cur ? ' on' : ''}" data-admgame="${s.game}" title="${esc(s.subject)}: ${esc(s.title)}">${s.icon} ${esc(s.title)}</button>`).join('')}</div>`;
+}
+document.addEventListener('click', async e => {
+  const b = e.target.closest('[data-admgame]');
+  if (!b || !state.isAdmin) return;
+  document.querySelectorAll('[data-admgame]').forEach(x => { x.disabled = true; });
+  const { error } = await sb.rpc('admin_exam_test', { p_game: b.dataset.admgame });
+  if (error) { alert(error.message); document.querySelectorAll('[data-admgame]').forEach(x => { x.disabled = false; }); return; }
+  state.playDates.delete(todayBrussels());
+  renderToday($('#view'));
+});
 
 // Weekrooster bovenaan de Exam Hall
 function timetableHtml(dow, doneToday) {
@@ -4371,7 +4394,7 @@ async function renderExam(view, info) {
     if (r.coinsEarned) state.wallet += r.coinsEarned;
     syncCoinUI();
     view.innerHTML = `<section class="exam-play"><div class="exam-play-head"><span class="kicker">${s.subject} · ${s.title}</span><h3>Score: ${r.score} ${meta.unit}</h3></div>
-      <div class="stage" id="stage"></div></section>`;
+      <div class="stage" id="stage"></div>${adminExamBar()}</section>`;
     if (r.grade === 'F') {
       await showStamp('F', 'fail', 'Gebuisd');
       $('#stage').innerHTML = '<p class="result">Gebuisd. Geen kaart vandaag. Morgen een nieuwe kans.</p>';
@@ -5205,7 +5228,7 @@ function renderShop(view) {
   view.innerHTML = `<section class="col" style="max-width:none">
     <div class="battle-top">
       ${pageHead('The Vault', 'shop')}
-      <span class="coinpill shop-balance">🪙 <span data-coin>${state.wallet}</span> credits</span>
+      <span class="coinpill shop-balance">🪙 <span data-coin>${coinText()}</span> credits</span>
     </div>
     <p class="msg tmsg" id="shopMsg" role="alert"></p>
     <div class="two-col shop-grid">
@@ -5901,7 +5924,7 @@ async function renderCasino(view) {
   const tile = (id, icon, title, sub) => `<button type="button" class="ar-tile cz-tile" data-open="${id}"><span class="ar-ico">${icon}</span><span class="ar-t"><b>${title}</b><small>${sub}</small></span></button>`;
   const betHtml = `<div class="cz-bet"><span>Inzet</span><button type="button" data-bet="-" aria-label="Minder">−</button><b data-betv>${czState.bet}</b><button type="button" data-bet="+" aria-label="Meer">+</button></div>`;
   const pop = (id, title, body) => `<dialog class="ar-pop cz-pop" data-pop="${id}" aria-label="${title}"><div class="ar-pop-box">
-    <div class="ar-pop-head"><h3>${title}</h3><span class="cz-head-right"><span class="cz-wallet"><span class="cc-coin"></span><b data-coin>${state.wallet}</b></span>
+    <div class="ar-pop-head"><h3>${title}</h3><span class="cz-head-right"><span class="cz-wallet"><span class="cc-coin"></span><b data-coin>${coinText()}</b></span>
     <button type="button" class="ar-x" data-close aria-label="Sluiten">✕</button></span></div>${body}<p class="msg cz-msg" role="status"></p></div></dialog>`;
 
   view.innerHTML = `<section class="col cz-page" style="max-width:none">
