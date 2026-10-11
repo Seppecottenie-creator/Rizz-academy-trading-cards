@@ -2503,6 +2503,7 @@ dialog.ar-pop::backdrop{background:transparent}
 .adm-g{padding:5px 9px;border-radius:999px;border:1px solid var(--line2);background:rgba(14,19,38,.85);color:var(--ink);font:600 12px var(--body);cursor:pointer}
 .adm-g.on{background:#F2CC72;color:#1A1408;border-color:#F2CC72}
 @media (min-width:600px) and (max-height:500px){.adm-bar{margin-top:5px;padding:4px 6px;gap:4px}.adm-g{padding:3px 7px;font-size:10.5px}}
+.bj-wait{font:600 13px var(--body);color:var(--ink-soft);font-style:italic}
 </style>
 </head>
 <body>
@@ -3768,13 +3769,13 @@ const SCHEDULE = [
 const DAY_SHORT = ['', 'Ma', 'Di', 'Wo', 'Do', 'Vr', 'Za', 'Zo'];
 const GRADE_TEXT = { A: 'Summa cum laude', B: 'Magna cum laude', C: 'Cum laude', D: 'Geslaagd', F: 'Gebuisd' };
 const EXAM_INFO = {
-  math: { rules: ['60 seconden: tik zo snel mogelijk het juiste antwoord. De sommen worden steeds moeilijker.', 'Juist = +1, fout = −1.'], unit: 'juist', grades: [22, 17, 12, 7] },
-  hoops: { rules: ['Swipe de bal omhoog naar de ring. Lengte = kracht, richting = mikken.', '10 worpen. Vanaf worp 3 beweegt de ring, en steeds sneller.'], unit: 'raak', grades: [8, 6, 4, 2] },
-  history: { rules: ['Twee gebeurtenissen: tik op wat het EERST gebeurde.', '10 vragen, 6 seconden per vraag. De jaartallen komen steeds dichter bij elkaar.'], unit: 'juist', grades: [9, 7, 5, 3] },
+  math: { rules: ['60 seconden: tik zo snel mogelijk het juiste antwoord. De sommen worden steeds moeilijker.', 'Juist = +1, fout = −1.'], unit: 'juist', grades: [20, 15, 11, 7] },
+  hoops: { rules: ['Tik 1: mik (de lijn zwaait heen en weer), tik als ze naar de ring wijst.', 'Tik 2: kracht, tik als het streepje in het groen staat. 10 worpen, steeds sneller.'], unit: 'raak', grades: [8, 6, 4, 2] },
+  history: { rules: ['Twee gebeurtenissen: tik op wat het EERST gebeurde.', '10 vragen, 5 seconden per vraag. De jaartallen komen steeds dichter bij elkaar.'], unit: 'juist', grades: [9, 8, 6, 4] },
   darts: { rules: ['Hou ingedrukt om te mikken en laat los om te gooien. Hoe langer je mikt, hoe meer je hand trilt.', '6 pijlen. Bull = 50, binnenring ×3, buitenring ×2.'], unit: 'punten', grades: [190, 150, 110, 70] },
-  launch: { rules: ['Sleep naar achter (zoals een katapult) en laat los. Hoe verder je trekt, hoe harder het schot.', 'Raak de rode emmer. Let op de wind en, vanaf schot 4, de muur. 8 schoten.'], unit: 'raak', grades: [6, 5, 3, 1] },
+  launch: { rules: ['Tik 1: kies de hoek van het kanon. Tik 2: schiet als het kruisje op de juiste plek staat.', 'Raak de emmer. Let op de wind (mik wat voor of achter de emmer) en, vanaf schot 4, de muur. 8 schoten.'], unit: 'raak', grades: [7, 5, 4, 2] },
   blackjack: { rules: ['10 handen, je start met 100 chips en zet telkens 10 in. Kom zo dicht mogelijk bij 21 zonder erover te gaan.', 'Hit = extra kaart · Stand = stoppen · Double = dubbele inzet, nog één kaart. De dealer pakt tot 17.'], unit: 'chips', grades: [160, 125, 100, 70] },
-  pong: { rules: ['Swipe de bal naar de bekers. Lengte = afstand, richting = mikken.', '10 ballen voor 6 bekers.'], unit: 'bekers', grades: [6, 5, 4, 2] },
+  pong: { rules: ['Tik 1: mik (de lijn glijdt over de tafel). Tik 2: tik als het vizier op een beker staat.', '10 ballen voor 6 bekers, steeds sneller.'], unit: 'bekers', grades: [6, 5, 4, 2] },
   pour: { rules: ['Hou ingedrukt om te tappen en laat los aan de gouden lijn. Het schuim stijgt nog wat na!', '5 pintjes, elk glas tapt sneller. Overlopen = 0.'], unit: 'punten', grades: [440, 380, 300, 200] },
 };
 const examGameOf = dow => SCHEDULE.find(s => s.dow === dow) || SCHEDULE[0];
@@ -3804,12 +3805,12 @@ function gameMath(box, rnd) {
     const R = (lo, hi) => lo + Math.floor(rnd() * (hi - lo + 1));
     // Hoe verder je raakt, hoe zwaarder de sommen
     const make = () => {
-      const lvl = n <= 4 ? 0 : n <= 10 ? 1 : n <= 18 ? 2 : 3, kind = R(0, 2);
-      if (lvl === 0) { const a = R(23, 89), b = R(14, 68); return kind === 1 && a > b ? [`${a} − ${b}`, a - b] : [`${a} + ${b}`, a + b]; }
+      const lvl = n <= 8 ? 0 : n <= 16 ? 1 : n <= 26 ? 2 : 3, kind = R(0, 2);
+      if (lvl === 0) { const a = R(12, 59), b = R(6, 39); return kind === 1 && a > b ? [`${a} − ${b}`, a - b] : [`${a} + ${b}`, a + b]; }
       if (lvl === 1) {
         if (kind === 0) { const a = R(6, 14), b = R(6, 13); return [`${a} × ${b}`, a * b]; }
-        if (kind === 1) { const a = R(214, 489), b = R(37, 198); return [`${a} − ${b}`, a - b]; }
-        const a = R(128, 476), b = R(57, 389); return [`${a} + ${b}`, a + b];
+        if (kind === 1) { const a = R(110, 299), b = R(21, 99); return [`${a} − ${b}`, a - b]; }
+        const a = R(101, 299), b = R(25, 199); return [`${a} + ${b}`, a + b];
       }
       if (lvl === 2) {
         if (kind === 0) { const a = R(13, 29), b = R(3, 9); return [`${a} × ${b}`, a * b]; }
@@ -3879,7 +3880,7 @@ function gameHistory(box, rnd) {
     const ev = HISTORY_EVENTS.slice().sort(() => rnd() - .5);
     const used = new Set(), pairs = [];
     for (let k = 0; k < 10; k++) {
-      const gap = k < 3 ? 60 : k < 6 ? 20 : 8;
+      const gap = k < 2 ? 40 : k < 5 ? 12 : 5;
       let pair = null;
       for (const a of ev) {
         if (used.has(a)) continue;
@@ -3900,8 +3901,8 @@ function gameHistory(box, rnd) {
       const t0 = performance.now();
       const run = () => {
         if (!$('#mgBar')) return;
-        const left = 6000 - (performance.now() - t0);
-        $('#mgBar').style.width = `${clamp(left / 60, 0, 100)}%`;
+        const left = 5000 - (performance.now() - t0);
+        $('#mgBar').style.width = `${clamp(left / 50, 0, 100)}%`;
         if (left <= 0) return answer(-1);
         timer = requestAnimationFrame(run);
       };
@@ -3937,65 +3938,141 @@ function swipeInput(c, pos, onThrow) {
   });
 }
 
+// ---------- Tik-spelletjes: eerst tikken om te mikken, dan tikken voor de kracht ----------
+// Driehoeksgolf 0 → 1 → 0 met een periode in ms (gelijkmatige snelheid, geen vertraging aan de randen)
+const tri = (t, period) => { const x = (t % period) / period; return x < .5 ? x * 2 : 2 - x * 2; };
+// Tikken op het spel of spatie/enter
+function onTap(c, fn) {
+  c.addEventListener('pointerdown', e => { e.preventDefault(); fn(); });
+  const k = e => {
+    if (!c.isConnected) return removeEventListener('keydown', k);
+    if (e.code === 'Space' || e.key === 'Enter') { e.preventDefault(); fn(); }
+  };
+  addEventListener('keydown', k);
+}
+// Krachtbalk rechts: groene zone en bewegend streepje
+function drawPowerBar(ctx, p, zone, zw, label = 'KRACHT') {
+  const X = 366, Y = 140, H = 240;
+  ctx.fillStyle = 'rgba(8,12,26,.72)'; roundRect(ctx, X - 6, Y - 26, 34, H + 40, 10); ctx.fill();
+  ctx.fillStyle = 'rgba(255,255,255,.12)'; roundRect(ctx, X, Y, 22, H, 6); ctx.fill();
+  if (zone != null) {
+    ctx.fillStyle = '#3FCF7A'; roundRect(ctx, X, Y + H * (1 - zone - zw / 2), 22, H * zw, 4); ctx.fill();
+    ctx.fillStyle = 'rgba(63,207,122,.35)'; roundRect(ctx, X, Y + H * (1 - zone - zw), 22, H * zw * 2, 4); ctx.fill();
+  }
+  const py = Y + H * (1 - p);
+  ctx.fillStyle = '#FFE9A8'; ctx.fillRect(X - 5, py - 2, 32, 4);
+  ctx.beginPath(); ctx.moveTo(X - 9, py - 6); ctx.lineTo(X - 2, py); ctx.lineTo(X - 9, py + 6); ctx.fill();
+  ctx.fillStyle = '#F4EBDD'; ctx.font = '700 8px Inter, Arial'; ctx.textAlign = 'center'; ctx.fillText(label, X + 11, Y - 12);
+}
+function roundRect(ctx, x, y, w, h, r) { ctx.beginPath(); ctx.moveTo(x + r, y); ctx.arcTo(x + w, y, x + w, y + h, r); ctx.arcTo(x + w, y + h, x, y + h, r); ctx.arcTo(x, y + h, x, y, r); ctx.arcTo(x, y, x + w, y, r); ctx.closePath(); }
+function bigMsg(ctx, msg, y = 300) {
+  ctx.font = '700 30px Graduate, Georgia, serif'; ctx.textAlign = 'center';
+  ctx.lineWidth = 6; ctx.strokeStyle = 'rgba(8,12,26,.85)'; ctx.strokeText(msg, 200, y);
+  ctx.fillStyle = '#FFE9A8'; ctx.fillText(msg, 200, y);
+}
+function hintText(ctx, text, y = 488) {
+  ctx.font = '600 13px Inter, Arial'; ctx.textAlign = 'center';
+  const w = ctx.measureText(text).width + 24;
+  ctx.fillStyle = 'rgba(8,12,26,.78)'; roundRect(ctx, 200 - w / 2, y - 16, w, 24, 12); ctx.fill();
+  ctx.fillStyle = '#F4EBDD'; ctx.fillText(text, 200, y);
+}
+
 // ---------- Wo · Free Throws ----------
 function gameHoops(box, rnd) {
   return new Promise(resolve => {
-    const { c, ctx, pos, hud } = gameCanvas(box);
-    let shot = 0, made = 0, ball = null, hx = 200, t0 = performance.now(), msg = '', msgT = 0, done = false;
-    const RIM_Y = 150, RIM_W = 34;
-    const hoopX = now => (shot < 2 ? 200 : 200 + Math.sin((now - t0) / (shot < 5 ? 700 : 480)) * (shot < 5 ? 80 : 110));
-    swipeInput(c, pos, (dx, p) => {
-      if (ball || done) return;
-      // kracht bepaalt of de bal tot aan de ring komt; links/rechts wordt beslist bij aankomst
-      ball = { t: 0, xl: 200 + dx * 1.15, kind: p < 195 ? 'short' : p > 305 ? 'long' : 'ok' };
+    const { c, ctx, hud } = gameCanvas(box);
+    const SHOTS = 10, RIM_Y = 158, FLOOR = 330;
+    let shot = 0, made = 0, phase = 'aim', t0 = performance.now(), aimX = 200, pow = 0, ball = null, msg = '', msgT = 0, done = false, round;
+    const newRound = () => {
+      const k = shot / (SHOTS - 1);
+      round = { hx: 130 + rnd() * 140, aimP: 1800 - 600 * k, powP: 1800 - 500 * k, zone: .5 + rnd() * .3, zw: .14 - .05 * k, tol: 21 - 6 * k };
+      phase = 'aim'; t0 = performance.now();
+    };
+    newRound();
+    onTap(c, () => {
+      if (done || phase === 'fly') return;
+      const now = performance.now();
+      if (phase === 'aim') { aimX = 120 + tri(now - t0, round.aimP) * 160; phase = 'power'; t0 = now; return; }
+      pow = tri(now - t0, round.powP);
+      const dA = Math.abs(aimX - round.hx), dP = pow - round.zone;
+      const kind = Math.abs(dP) > round.zw ? (dP < 0 ? 'short' : 'long') : dA > round.tol + 14 ? 'miss' : Math.abs(dP) <= round.zw / 2 && dA <= round.tol ? 'in' : 'rim';
+      ball = { t: 0, kind, tx: kind === 'miss' ? aimX : aimX * .5 + round.hx * .5 + (aimX - round.hx) * .5 };
+      phase = 'fly';
     });
+    const drawBall = (x, y, r) => {
+      ctx.fillStyle = 'rgba(0,0,0,.25)'; ctx.beginPath(); ctx.ellipse(x, Math.max(y + r, FLOOR + 120), r, r * .35, 0, 0, 7); ctx.fill();
+      const g = ctx.createRadialGradient(x - r * .35, y - r * .35, r * .15, x, y, r); g.addColorStop(0, '#FFB46A'); g.addColorStop(1, '#C4561A');
+      ctx.fillStyle = g; ctx.beginPath(); ctx.arc(x, y, r, 0, 7); ctx.fill();
+      ctx.strokeStyle = 'rgba(50,20,8,.75)'; ctx.lineWidth = Math.max(1, r / 12);
+      ctx.beginPath(); ctx.arc(x, y, r, 0, 7); ctx.moveTo(x - r, y); ctx.quadraticCurveTo(x, y + r * .25, x + r, y);
+      ctx.moveTo(x, y - r); ctx.quadraticCurveTo(x - r * .3, y, x, y + r); ctx.stroke();
+    };
     const draw = now => {
-      if (done) return;
-      hx = hoopX(now);
-      ctx.clearRect(0, 0, 400, 500);
-      // vloer en muur
-      const g = ctx.createLinearGradient(0, 0, 0, 500); g.addColorStop(0, '#1A2340'); g.addColorStop(.62, '#20294A'); g.addColorStop(.62, '#B9824C'); g.addColorStop(1, '#8E5E33');
-      ctx.fillStyle = g; ctx.fillRect(0, 0, 400, 500);
-      ctx.strokeStyle = 'rgba(255,255,255,.35)'; ctx.lineWidth = 2; ctx.beginPath(); ctx.ellipse(200, 470, 120, 30, 0, Math.PI, 0); ctx.stroke();
-      // bord
-      ctx.fillStyle = 'rgba(255,255,255,.92)'; ctx.fillRect(hx - 62, 60, 124, 84);
-      ctx.strokeStyle = '#C8102E'; ctx.lineWidth = 3; ctx.strokeRect(hx - 62, 60, 124, 84); ctx.strokeRect(hx - 22, 100, 44, 34);
-      // net (achter)
-      ctx.strokeStyle = 'rgba(255,255,255,.75)'; ctx.lineWidth = 1.5;
-      for (let k = -3; k <= 3; k++) { ctx.beginPath(); ctx.moveTo(hx + k * 11, RIM_Y); ctx.lineTo(hx + k * 7, RIM_Y + 42); ctx.stroke(); }
+      // zaal
+      const wall = ctx.createLinearGradient(0, 0, 0, FLOOR); wall.addColorStop(0, '#141B33'); wall.addColorStop(1, '#25305A');
+      ctx.fillStyle = wall; ctx.fillRect(0, 0, 400, FLOOR);
+      for (let i = 0; i < 7; i++) { ctx.fillStyle = i % 2 ? 'rgba(200,16,46,.18)' : 'rgba(242,204,114,.12)'; ctx.fillRect(14 + i * 56, 26, 40, 54); }
+      ctx.fillStyle = 'rgba(255,255,255,.06)'; for (let i = 0; i < 6; i++) ctx.fillRect(0, 96 + i * 8, 400, 2);
+      // parket
+      const fl = ctx.createLinearGradient(0, FLOOR, 0, 500); fl.addColorStop(0, '#B07A45'); fl.addColorStop(1, '#D9A066');
+      ctx.fillStyle = fl; ctx.fillRect(0, FLOOR, 400, 170);
+      ctx.strokeStyle = 'rgba(90,50,20,.25)'; ctx.lineWidth = 1;
+      for (let i = -10; i <= 10; i++) { ctx.beginPath(); ctx.moveTo(200 + i * 22, FLOOR); ctx.lineTo(200 + i * 60, 500); ctx.stroke(); }
+      ctx.fillStyle = 'rgba(200,16,46,.55)'; ctx.beginPath(); ctx.moveTo(150, FLOOR); ctx.lineTo(250, FLOOR); ctx.lineTo(300, 455); ctx.lineTo(100, 455); ctx.closePath(); ctx.fill();
+      ctx.strokeStyle = 'rgba(255,255,255,.85)'; ctx.lineWidth = 2.5; ctx.stroke();
+      ctx.beginPath(); ctx.ellipse(200, 455, 100, 22, 0, 0, Math.PI); ctx.stroke();
+      // bord en ring
+      const hx = round.hx;
+      ctx.fillStyle = '#5A6274'; ctx.fillRect(hx - 3, 40, 6, 72);
+      ctx.fillStyle = 'rgba(220,235,255,.88)'; roundRect(ctx, hx - 58, 62, 116, 76, 4); ctx.fill();
+      ctx.strokeStyle = '#E2E8F0'; ctx.lineWidth = 3; ctx.stroke();
+      ctx.strokeStyle = '#C8102E'; ctx.lineWidth = 3; ctx.strokeRect(hx - 20, 104, 40, 30);
+      ctx.strokeStyle = 'rgba(255,255,255,.85)'; ctx.lineWidth = 1.3;
+      for (let k = -4; k <= 4; k++) { ctx.beginPath(); ctx.moveTo(hx + k * 7.5, RIM_Y); ctx.quadraticCurveTo(hx + k * 6, RIM_Y + 22, hx + k * 4.2, RIM_Y + 42); ctx.stroke(); }
+      for (let r = 1; r <= 3; r++) { ctx.beginPath(); ctx.ellipse(hx, RIM_Y + r * 12, 30 - r * 3, 5, 0, 0, Math.PI); ctx.stroke(); }
+      const ringBack = () => { ctx.strokeStyle = '#E8541C'; ctx.lineWidth = 4; ctx.beginPath(); ctx.ellipse(hx, RIM_Y, 30, 7, 0, Math.PI, 0); ctx.stroke(); };
+      const ringFront = () => { ctx.strokeStyle = '#FF6A2A'; ctx.lineWidth = 4.5; ctx.beginPath(); ctx.ellipse(hx, RIM_Y, 30, 7, 0, 0, Math.PI); ctx.stroke(); };
+      ringBack();
       // bal
-      const drawBall = (x, y, r) => {
-        const bg = ctx.createRadialGradient(x - r * .3, y - r * .3, r * .2, x, y, r); bg.addColorStop(0, '#F5A35A'); bg.addColorStop(1, '#C2601E');
-        ctx.fillStyle = bg; ctx.beginPath(); ctx.arc(x, y, r, 0, 7); ctx.fill();
-        ctx.strokeStyle = 'rgba(40,20,10,.7)'; ctx.lineWidth = 1.5; ctx.beginPath(); ctx.arc(x, y, r, 0, 7); ctx.moveTo(x - r, y); ctx.lineTo(x + r, y); ctx.moveTo(x, y - r); ctx.lineTo(x, y + r); ctx.stroke();
-      };
-      let front = null;
+      let front = false;
       if (ball) {
-        ball.t += 1 / 50;
-        const t = Math.min(ball.t, 1), b = ball;
-        if (ball.t >= 1 && b.kind === 'ok') b.kind = Math.abs(b.xl - hx) < RIM_W - 12 ? 'in' : Math.abs(b.xl - hx) < RIM_W + 10 ? 'rim' : 'miss';
-        const tx = b.xl;
-        let x = lerp(200, tx, t), y, r = lerp(26, 15, t);
-        const endY = b.kind === 'short' ? 250 : b.kind === 'long' ? 70 : RIM_Y - 8;
-        y = lerp(430, endY, t) - Math.sin(t * Math.PI) * 170;
-        if (ball.t > 1) {
-          const u = ball.t - 1;
-          if (b.kind === 'in') { x = lerp(tx, hx, Math.min(1, u * 4)); y = RIM_Y - 8 + u * 160; front = true; }
-          else if (b.kind === 'rim') { x = tx + (tx < hx ? -1 : 1) * u * 120; y = RIM_Y - 8 - Math.sin(u * 4) * 30 + u * 160; }
-          else { y = endY + u * 260; }
-          if (u > .7) {
-            if (b.kind === 'in') { made++; msg = ['Swish!', 'Money!', 'Buckets!'][made % 3]; } else msg = { short: 'Te kort', long: 'Te ver', rim: 'Op de ring…', miss: 'Mis' }[b.kind];
+        ball.t += 1 / 55;
+        const b = ball, t = Math.min(b.t, 1);
+        const endY = b.kind === 'short' ? RIM_Y + 60 : b.kind === 'long' ? 92 : RIM_Y - 10;
+        let x = lerp(200, b.tx, t), y = lerp(430, endY, t) - Math.sin(t * Math.PI) * 190, r = lerp(24, 13, t);
+        if (b.t > 1) {
+          const u = b.t - 1;
+          if (b.kind === 'in') { x = lerp(b.tx, hx, Math.min(1, u * 5)); y = RIM_Y - 10 + u * 220; front = u > .08; }
+          else if (b.kind === 'rim') { x = b.tx + (b.tx < hx ? -1 : 1) * u * 150; y = RIM_Y - 10 - Math.sin(u * 5) * 34 + u * 140; }
+          else y = endY + u * 300;
+          r = 13;
+          if (u > .75) {
+            if (b.kind === 'in') { made++; msg = ['SWISH!', 'BUCKETS!', 'MONEY!'][made % 3]; } else msg = { short: 'Te kort', long: 'Te ver', rim: 'Op de ring…', miss: 'Naast' }[b.kind];
             msgT = now; shot++; ball = null;
-            if (shot >= 10) { done = true; setTimeout(() => resolve(made), 700); }
+            if (shot >= SHOTS) { done = true; setTimeout(() => resolve(made), 900); } else newRound();
           }
         }
-        if (ball) drawBall(x, y, r);
-      } else if (shot < 10) drawBall(200, 430, 26);
-      // ring vooraan
-      ctx.strokeStyle = '#E8541C'; ctx.lineWidth = 5; ctx.beginPath(); ctx.ellipse(hx, RIM_Y, RIM_W, 7, 0, 0, Math.PI); ctx.stroke();
-      if (msg && now - msgT < 900) { ctx.fillStyle = '#FFE9A8'; ctx.font = '700 28px Graduate, Georgia, serif'; ctx.textAlign = 'center'; ctx.fillText(msg, 200, 300); }
-      hud(`<span>Raak <b>${made}</b></span><span>Worp <b>${Math.min(shot + 1, 10)}/10</b></span>`);
-      if (!done) requestAnimationFrame(draw);
+        if (ball) { if (front) ringFront(); drawBall(x, y, r); if (!front) ringFront(); }
+        else ringFront();
+      } else {
+        ringFront();
+        if (!done) drawBall(phase === 'power' ? aimX * .3 + 200 * .7 : 200, 430, 24);
+      }
+      // mikken
+      if (phase === 'aim' && !done) {
+        const ax = 120 + tri(now - t0, round.aimP) * 160;
+        ctx.setLineDash([5, 7]); ctx.strokeStyle = 'rgba(255,233,168,.75)'; ctx.lineWidth = 2;
+        ctx.beginPath(); ctx.moveTo(200, 405); ctx.quadraticCurveTo((200 + ax) / 2, 120, ax, RIM_Y - 6); ctx.stroke(); ctx.setLineDash([]);
+        ctx.fillStyle = '#FFE9A8'; ctx.beginPath(); ctx.arc(ax, RIM_Y - 6, 6, 0, 7); ctx.fill();
+        hintText(ctx, 'Tik als de lijn naar de ring wijst');
+      }
+      if (phase === 'power' && !done) {
+        drawPowerBar(ctx, tri(now - t0, round.powP), round.zone, round.zw);
+        hintText(ctx, 'Tik in het groen');
+      }
+      if (msg && now - msgT < 900) bigMsg(ctx, msg, 260);
+      hud(`<span>Raak <b>${made}</b></span><span>Worp <b>${Math.min(shot + 1, SHOTS)}/${SHOTS}</b></span>`);
+      if (c.isConnected && !(done && !ball && now - msgT > 900)) requestAnimationFrame(draw);
     };
     requestAnimationFrame(draw);
   });
@@ -4004,43 +4081,70 @@ function gameHoops(box, rnd) {
 // ---------- Za · Beer Pong ----------
 function gamePong(box, rnd) {
   return new Promise(resolve => {
-    const { c, ctx, pos, hud } = gameCanvas(box);
-    const cups = [[160, 105], [200, 105], [240, 105], [180, 138], [220, 138], [200, 171]].map(([x, y]) => ({ x, y, hit: false }));
-    let balls = 0, hits = 0, ball = null, msg = '', msgT = 0, done = false;
-    swipeInput(c, pos, (dx, p) => {
-      if (ball || done) return;
-      ball = { t: 0, xl: 200 + dx * 1.05, yl: 440 - p * 1.12 };
+    const { c, ctx, hud } = gameCanvas(box);
+    const BALLS = 10;
+    const cups = [[166, 120], [200, 120], [234, 120], [183, 150], [217, 150], [200, 180]].map(([x, y]) => ({ x, y, hit: false }));
+    let balls = 0, hits = 0, phase = 'aim', t0 = performance.now(), aimX = 200, ball = null, msg = '', msgT = 0, done = false, sp;
+    const Y_FAR = 100, Y_NEAR = 205;
+    const newRound = () => { const k = balls / (BALLS - 1); sp = { aimP: 1900 - 700 * k, powP: 1700 - 600 * k }; phase = 'aim'; t0 = performance.now(); };
+    newRound();
+    const yAt = p => lerp(Y_NEAR, Y_FAR, p);
+    onTap(c, () => {
+      if (done || phase === 'fly') return;
+      const now = performance.now();
+      if (phase === 'aim') { aimX = 145 + tri(now - t0, sp.aimP) * 110; phase = 'power'; t0 = now; return; }
+      const yl = yAt(tri(now - t0, sp.powP));
+      ball = { t: 0, x: aimX, y: yl };
+      phase = 'fly';
     });
+    // tafel in perspectief: breedte op hoogte y
+    const half = y => lerp(70, 190, (y - 60) / 440);
+    const drawCup = (x, y, s) => {
+      const w = 15 * s, h = 24 * s;
+      const g = ctx.createLinearGradient(x - w, 0, x + w, 0); g.addColorStop(0, '#8C0B21'); g.addColorStop(.45, '#E0284A'); g.addColorStop(1, '#7A0A1C');
+      ctx.fillStyle = g; ctx.beginPath(); ctx.moveTo(x - w, y); ctx.lineTo(x + w, y); ctx.lineTo(x + w * .72, y + h); ctx.lineTo(x - w * .72, y + h); ctx.closePath(); ctx.fill();
+      ctx.fillStyle = '#F4EBDD'; ctx.beginPath(); ctx.ellipse(x, y, w, 5 * s, 0, 0, 7); ctx.fill();
+      ctx.fillStyle = '#E2A93B'; ctx.beginPath(); ctx.ellipse(x, y + .5, w * .8, 3.6 * s, 0, 0, 7); ctx.fill();
+      ctx.fillStyle = 'rgba(255,255,255,.35)'; ctx.fillRect(x - w * .55, y + 4 * s, 2.5 * s, h * .7);
+    };
+    const drawBall = (x, y, r) => { const g = ctx.createRadialGradient(x - r * .3, y - r * .3, r * .1, x, y, r); g.addColorStop(0, '#FFFFFF'); g.addColorStop(1, '#D8D3C8'); ctx.fillStyle = g; ctx.beginPath(); ctx.arc(x, y, r, 0, 7); ctx.fill(); };
     const draw = now => {
-      if (done) return;
-      ctx.clearRect(0, 0, 400, 500);
-      ctx.fillStyle = '#0C1120'; ctx.fillRect(0, 0, 400, 500);
-      // tafel in perspectief
-      ctx.fillStyle = '#1F5C38'; ctx.beginPath(); ctx.moveTo(110, 60); ctx.lineTo(290, 60); ctx.lineTo(390, 500); ctx.lineTo(10, 500); ctx.closePath(); ctx.fill();
-      ctx.strokeStyle = 'rgba(255,255,255,.6)'; ctx.lineWidth = 2; ctx.beginPath(); ctx.moveTo(200, 60); ctx.lineTo(200, 500); ctx.stroke();
-      // bekers
-      for (const cp of cups) {
-        if (cp.hit) continue;
-        ctx.fillStyle = '#C8102E'; ctx.beginPath(); ctx.moveTo(cp.x - 17, cp.y); ctx.lineTo(cp.x + 17, cp.y); ctx.lineTo(cp.x + 13, cp.y + 26); ctx.lineTo(cp.x - 13, cp.y + 26); ctx.closePath(); ctx.fill();
-        ctx.fillStyle = '#F4EBDD'; ctx.beginPath(); ctx.ellipse(cp.x, cp.y, 17, 6, 0, 0, 7); ctx.fill();
-        ctx.fillStyle = '#D9A441'; ctx.beginPath(); ctx.ellipse(cp.x, cp.y + 1, 13, 4, 0, 0, 7); ctx.fill();
+      const bg = ctx.createLinearGradient(0, 0, 0, 500); bg.addColorStop(0, '#120C14'); bg.addColorStop(1, '#2A1A22');
+      ctx.fillStyle = bg; ctx.fillRect(0, 0, 400, 500);
+      for (let i = 0; i < 9; i++) { ctx.fillStyle = `rgba(255,${190 + i * 6},120,.5)`; ctx.beginPath(); ctx.arc(20 + i * 45, 22 + (i % 2) * 6, 3, 0, 7); ctx.fill(); }
+      ctx.strokeStyle = 'rgba(255,220,150,.25)'; ctx.beginPath(); ctx.moveTo(0, 20); for (let i = 0; i <= 9; i++) ctx.lineTo(20 + i * 45, 22 + (i % 2) * 6); ctx.stroke();
+      // tafel
+      ctx.fillStyle = '#163E2A'; ctx.beginPath(); ctx.moveTo(200 - half(60), 60); ctx.lineTo(200 + half(60), 60); ctx.lineTo(200 + half(500), 500); ctx.lineTo(200 - half(500), 500); ctx.closePath(); ctx.fill();
+      ctx.strokeStyle = '#F4EBDD'; ctx.lineWidth = 3; ctx.stroke();
+      ctx.strokeStyle = 'rgba(244,235,221,.5)'; ctx.lineWidth = 2; ctx.beginPath(); ctx.moveTo(200, 60); ctx.lineTo(200, 500); ctx.stroke();
+      ctx.fillStyle = 'rgba(242,204,114,.9)'; ctx.font = '400 22px Graduate, Georgia, serif'; ctx.textAlign = 'center'; ctx.fillText('RIZZ', 200, 330);
+      for (const cp of cups) if (!cp.hit) drawCup(cp.x, cp.y, .9 + (cp.y - 100) / 400);
+      // mikken
+      if (!done && phase === 'aim') {
+        const ax = 145 + tri(now - t0, sp.aimP) * 110;
+        ctx.setLineDash([6, 6]); ctx.strokeStyle = 'rgba(255,233,168,.85)'; ctx.lineWidth = 2; ctx.beginPath(); ctx.moveTo(ax, Y_NEAR + 20); ctx.lineTo(ax, Y_FAR - 15); ctx.stroke(); ctx.setLineDash([]);
+        hintText(ctx, 'Tik als de lijn door een beker gaat');
       }
-      const drawBall = (x, y, r) => { ctx.fillStyle = '#FFFFFF'; ctx.beginPath(); ctx.arc(x, y, r, 0, 7); ctx.fill(); ctx.strokeStyle = 'rgba(0,0,0,.25)'; ctx.stroke(); };
+      if (!done && phase === 'power') {
+        const yl = yAt(tri(now - t0, sp.powP));
+        ctx.setLineDash([3, 5]); ctx.strokeStyle = 'rgba(255,233,168,.5)'; ctx.lineWidth = 1.5; ctx.beginPath(); ctx.moveTo(aimX, Y_NEAR + 20); ctx.lineTo(aimX, Y_FAR - 15); ctx.stroke(); ctx.setLineDash([]);
+        ctx.strokeStyle = '#FFE9A8'; ctx.lineWidth = 2.5; ctx.beginPath(); ctx.arc(aimX, yl, 10, 0, 7); ctx.moveTo(aimX - 15, yl); ctx.lineTo(aimX + 15, yl); ctx.moveTo(aimX, yl - 15); ctx.lineTo(aimX, yl + 15); ctx.stroke();
+        hintText(ctx, 'Tik als het vizier op een beker staat');
+      }
       if (ball) {
-        ball.t += 1 / 46;
+        ball.t += 1 / 42;
         const t = Math.min(ball.t, 1);
-        const x = lerp(200, ball.xl, t), y = lerp(440, ball.yl, t) - Math.sin(t * Math.PI) * 120, r = lerp(14, 7, t);
-        drawBall(x, y, r);
+        drawBall(lerp(200, ball.x, t), lerp(440, ball.y, t) - Math.sin(t * Math.PI) * 150, lerp(12, 6, t));
         if (ball.t >= 1) {
-          const cp = cups.find(q => !q.hit && Math.hypot(q.x - ball.xl, (q.y - ball.yl) * 1.6) < 15);
-          if (cp) { cp.hit = true; hits++; msg = ['Splash!', 'Drink!', 'Re-rack!'][hits % 3]; } else msg = 'Mis';
+          const cp = cups.find(q => !q.hit && Math.hypot(q.x - ball.x, (q.y - ball.y) * 1.25) < 15);
+          if (cp) { cp.hit = true; hits++; msg = ['SPLASH!', 'DRINK!', 'RE-RACK!'][hits % 3]; } else msg = 'Mis';
           msgT = now; balls++; ball = null;
-          if (hits >= 6 || balls >= 10) { done = true; setTimeout(() => resolve(hits), 700); }
+          if (hits >= 6 || balls >= BALLS) { done = true; setTimeout(() => resolve(hits), 900); } else newRound();
         }
-      } else if (balls < 10) drawBall(200, 440, 14);
-      if (msg && now - msgT < 800) { ctx.fillStyle = '#FFE9A8'; ctx.font = '700 28px Graduate, Georgia, serif'; ctx.textAlign = 'center'; ctx.fillText(msg, 200, 300); }
-      hud(`<span>Bekers <b>${hits}/6</b></span><span>Bal <b>${Math.min(balls + 1, 10)}/10</b></span>`);
-      if (!done) requestAnimationFrame(draw);
+      } else if (!done) drawBall(200, 440, 12);
+      if (msg && now - msgT < 800) bigMsg(ctx, msg, 280);
+      hud(`<span>Bekers <b>${hits}/6</b></span><span>Bal <b>${Math.min(balls + 1, BALLS)}/${BALLS}</b></span>`);
+      if (c.isConnected && !(done && now - msgT > 900)) requestAnimationFrame(draw);
     };
     requestAnimationFrame(draw);
   });
@@ -4162,37 +4266,41 @@ function gamePour(box, rnd) {
 }
 
 // ---------- Vr · Physics: Cannon Shot ----------
-// Trek terug (zoals een katapult) en laat los. Kracht + hoek + zwaartekracht + wind = waar de bal landt.
+// Tik 1: hoek (de loop zwaait op en neer). Tik 2: het doel (een vizier glijdt over de grond).
+// Het kanon schiet precies naar het vizier, maar de wind duwt de kogel weg: mik dus wat voor of achter de emmer.
 function gameLaunch(box, rnd) {
   return new Promise(resolve => {
-    const { c, ctx, pos, hud } = gameCanvas(box);
-    const G = 620, GROUND = 462, CX = 46, CY = 432, SHOTS = 8;
-    let shot = 0, hits = 0, ball = null, drag = null, msg = '', msgT = 0, done = false, last = performance.now();
-    let round = null;
+    const { c, ctx, hud } = gameCanvas(box);
+    const G = 620, GROUND = 452, CX = 48, CY = 420, SHOTS = 8;
+    let shot = 0, hits = 0, phase = 'angle', t0 = performance.now(), ang = 45, ball = null, trail = [], msg = '', msgT = 0, done = false, round, last = performance.now();
     const newRound = () => {
-      const lvl = shot;
+      const k = shot / (SHOTS - 1);
       round = {
-        bx: 190 + rnd() * 170,
-        bw: lvl < 3 ? 26 : lvl < 6 ? 21 : 18,
-        wind: lvl < 1 ? 0 : Math.round((rnd() * 2 - 1) * (lvl < 4 ? 80 : 130)),
-        wall: lvl >= 3 ? { x: 128 + rnd() * 40, h: 70 + rnd() * 70 } : null,
+        bx: 200 + rnd() * 150, bw: 24 - 6 * k,
+        wind: shot < 2 ? 0 : Math.round((rnd() * 2 - 1) * (shot < 5 ? 70 : 110)),
+        wall: shot >= 3 ? { x: 130 + rnd() * 40, h: 60 + rnd() * 60 } : null,
+        angP: 1900 - 500 * k, tgtP: 2300 - 700 * k,
       };
+      phase = 'angle'; t0 = performance.now(); trail = [];
     };
     newRound();
-    const velOf = (dx, dy) => { const k = 4.2, max = 760; let vx = -dx * k, vy = -dy * k; const m = Math.hypot(vx, vy); if (m > max) { vx *= max / m; vy *= max / m; } return { vx, vy }; };
-    c.addEventListener('pointerdown', e => { if (ball || done) return; drag = { s: pos(e), p: pos(e) }; c.setPointerCapture(e.pointerId); });
-    c.addEventListener('pointermove', e => { if (drag) drag.p = pos(e); });
-    c.addEventListener('pointerup', () => {
-      if (!drag) return;
-      const { vx, vy } = velOf(drag.p.x - drag.s.x, drag.p.y - drag.s.y);
-      drag = null;
-      if (Math.hypot(vx, vy) < 80) return;
-      ball = { x: CX, y: CY, vx, vy };
+    const angAt = now => 25 + tri(now - t0, round.angP) * 45;
+    const tgtAt = now => 120 + tri(now - t0, round.tgtP) * 270;
+    // Snelheid om (zonder wind) op afstand D te landen, met de gekozen hoek
+    const velFor = (D, a) => { const r = a * Math.PI / 180, cs = Math.cos(r); const v = Math.sqrt(G * D * D / (2 * cs * cs * ((GROUND - CY) + D * Math.tan(r)))); return { vx: v * cs, vy: -v * Math.sin(r) }; };
+    const arcPts = (D, a, frac) => { const { vx, vy } = velFor(D, a), T = D / vx, pts = []; for (let i = 0; i <= 24 * frac; i++) { const t = T * i / 24; pts.push([CX + vx * t, CY + vy * t + G * t * t / 2]); } return pts; };
+    onTap(c, () => {
+      if (done || phase === 'fly') return;
+      const now = performance.now();
+      if (phase === 'angle') { ang = angAt(now); phase = 'target'; t0 = now; return; }
+      const D = tgtAt(now) - CX, v = velFor(D, ang);
+      ball = { x: CX, y: CY, ...v }; phase = 'fly';
     });
-    const finish = (hit, why) => {
-      if (hit) { hits++; msg = ['Bullseye!', 'Physics!', 'Newton approves', 'Clean shot'][hits % 4]; } else msg = why;
-      msgT = performance.now(); shot++; ball = null;
-      if (shot >= SHOTS) { done = true; setTimeout(() => resolve(hits), 800); } else newRound();
+    const finish = (hit, why, now) => {
+      if (hit) { hits++; msg = ['BULLSEYE!', 'PHYSICS!', 'NEWTON APPROVES', 'CLEAN SHOT'][hits % 4]; } else msg = why;
+      msgT = now; shot++; ball = null;
+      if (shot >= SHOTS) { done = true; setTimeout(() => resolve(hits), 900); } else setTimeout(() => { if (!done) newRound(); }, 700);
+      phase = 'wait';
     };
     const draw = now => {
       const dt = Math.min(.033, (now - last) / 1000); last = now;
@@ -4201,49 +4309,52 @@ function gameLaunch(box, rnd) {
           const h = dt / 4;
           ball.vx += round.wind * h; ball.vy += G * h; ball.x += ball.vx * h; ball.y += ball.vy * h;
           const w = round.wall;
-          if (w && ball.x > w.x - 6 && ball.x < w.x + 18 && ball.y > GROUND - w.h - 6) { finish(false, 'Tegen de muur'); break; }
-          if (ball.y >= GROUND - 4) {
-            const inB = Math.abs(ball.x - round.bx) <= round.bw - 6;
-            finish(inB, ball.x < round.bx ? 'Te kort' : 'Te ver'); break;
-          }
-          if (ball.x > 420 || ball.x < -20) { finish(false, 'Uit het veld'); break; }
+          if (w && ball.x > w.x - 5 && ball.x < w.x + 17 && ball.y > GROUND - w.h - 5) { finish(false, 'Tegen de muur', now); break; }
+          if (ball.y >= GROUND - 26 && Math.abs(ball.x - round.bx) <= round.bw - 4) { finish(true, '', now); break; }
+          if (ball.y >= GROUND - 4) { finish(false, ball.x < round.bx ? 'Te kort' : 'Te ver', now); break; }
+          if (ball.x > 420 || ball.x < -20) { finish(false, 'Uit het veld', now); break; }
         }
+        if (ball) { trail.push([ball.x, ball.y]); if (trail.length > 40) trail.shift(); }
       }
-      // decor
-      const sky = ctx.createLinearGradient(0, 0, 0, 500); sky.addColorStop(0, '#1A2546'); sky.addColorStop(1, '#2B3A63');
+      // lucht en landschap
+      const sky = ctx.createLinearGradient(0, 0, 0, GROUND); sky.addColorStop(0, '#16224A'); sky.addColorStop(.7, '#3B4C86'); sky.addColorStop(1, '#E08A5A');
       ctx.fillStyle = sky; ctx.fillRect(0, 0, 400, 500);
-      ctx.fillStyle = 'rgba(255,255,255,.05)'; for (let x = 0; x < 400; x += 40) ctx.fillRect(x, 0, 1, GROUND);
-      ctx.fillStyle = '#3F7A3E'; ctx.fillRect(0, GROUND, 400, 40);
+      ctx.fillStyle = 'rgba(255,255,255,.7)'; for (let i = 0; i < 18; i++) ctx.fillRect((i * 97) % 400, (i * 53) % 180, 1.5, 1.5);
+      ctx.fillStyle = '#2A3A55'; ctx.beginPath(); ctx.moveTo(0, 380); ctx.quadraticCurveTo(110, 320, 220, 370); ctx.quadraticCurveTo(320, 330, 400, 360); ctx.lineTo(400, GROUND); ctx.lineTo(0, GROUND); ctx.fill();
+      const gr = ctx.createLinearGradient(0, GROUND, 0, 500); gr.addColorStop(0, '#4E8C3E'); gr.addColorStop(1, '#2E5A24');
+      ctx.fillStyle = gr; ctx.fillRect(0, GROUND, 400, 48);
       // wind
-      ctx.fillStyle = '#F4EBDD'; ctx.font = '600 13px Inter, Arial'; ctx.textAlign = 'center';
-      if (round.wind) {
-        ctx.fillText(`Wind ${Math.abs(round.wind)}`, 200, 70);
-        const L = Math.abs(round.wind) / 2, dir = Math.sign(round.wind);
-        ctx.strokeStyle = '#7FD3A0'; ctx.lineWidth = 3; ctx.beginPath(); ctx.moveTo(200 - dir * L / 2, 84); ctx.lineTo(200 + dir * L / 2, 84);
-        ctx.lineTo(200 + dir * (L / 2 - 8), 78); ctx.moveTo(200 + dir * L / 2, 84); ctx.lineTo(200 + dir * (L / 2 - 8), 90); ctx.stroke();
-      } else ctx.fillText('Geen wind', 200, 70);
+      ctx.fillStyle = 'rgba(8,12,26,.6)'; roundRect(ctx, 150, 12, 100, 40, 10); ctx.fill();
+      ctx.fillStyle = '#F4EBDD'; ctx.font = '700 10px Inter, Arial'; ctx.textAlign = 'center'; ctx.fillText(round.wind ? `WIND ${Math.abs(round.wind)}` : 'GEEN WIND', 200, 27);
+      if (round.wind) { const L = Math.min(40, Math.abs(round.wind) / 3), d = Math.sign(round.wind); ctx.strokeStyle = '#7FD3A0'; ctx.lineWidth = 3; ctx.beginPath(); ctx.moveTo(200 - d * L, 40); ctx.lineTo(200 + d * L, 40); ctx.lineTo(200 + d * (L - 7), 35); ctx.moveTo(200 + d * L, 40); ctx.lineTo(200 + d * (L - 7), 45); ctx.stroke(); }
       // muur
-      if (round.wall) { ctx.fillStyle = '#8C5A3C'; ctx.fillRect(round.wall.x, GROUND - round.wall.h, 12, round.wall.h); ctx.fillStyle = 'rgba(0,0,0,.25)'; for (let y = GROUND - round.wall.h; y < GROUND; y += 12) ctx.fillRect(round.wall.x, y, 12, 1); }
+      if (round.wall) { const w = round.wall; ctx.fillStyle = '#8C5A3C'; ctx.fillRect(w.x, GROUND - w.h, 12, w.h); ctx.fillStyle = 'rgba(0,0,0,.25)'; for (let y = GROUND - w.h; y < GROUND; y += 10) ctx.fillRect(w.x, y, 12, 1.5); }
       // emmer
       const bx = round.bx, bw = round.bw;
-      ctx.fillStyle = '#C8102E'; ctx.beginPath(); ctx.moveTo(bx - bw, GROUND - 34); ctx.lineTo(bx + bw, GROUND - 34); ctx.lineTo(bx + bw - 6, GROUND); ctx.lineTo(bx - bw + 6, GROUND); ctx.closePath(); ctx.fill();
-      ctx.fillStyle = '#F4EBDD'; ctx.fillRect(bx - bw - 2, GROUND - 37, bw * 2 + 4, 5);
+      const bg = ctx.createLinearGradient(bx - bw, 0, bx + bw, 0); bg.addColorStop(0, '#8C0B21'); bg.addColorStop(.5, '#E0284A'); bg.addColorStop(1, '#8C0B21');
+      ctx.fillStyle = bg; ctx.beginPath(); ctx.moveTo(bx - bw, GROUND - 28); ctx.lineTo(bx + bw, GROUND - 28); ctx.lineTo(bx + bw - 5, GROUND); ctx.lineTo(bx - bw + 5, GROUND); ctx.closePath(); ctx.fill();
+      ctx.fillStyle = '#F4EBDD'; ctx.beginPath(); ctx.ellipse(bx, GROUND - 28, bw + 1, 4, 0, 0, 7); ctx.fill();
       // kanon
-      let ang = -Math.PI / 4, pull = 0;
-      if (drag) { const v = velOf(drag.p.x - drag.s.x, drag.p.y - drag.s.y); ang = Math.atan2(v.vy, v.vx); pull = Math.hypot(v.vx, v.vy) / 760; }
-      ctx.save(); ctx.translate(CX, CY); ctx.rotate(ang); ctx.fillStyle = '#2A2F3E'; ctx.fillRect(-6, -9, 44, 18); ctx.fillStyle = '#D4A84B'; ctx.fillRect(34, -10, 6, 20); ctx.restore();
-      ctx.fillStyle = '#5A3E2B'; ctx.beginPath(); ctx.arc(CX - 4, CY + 12, 16, 0, 7); ctx.fill();
-      if (drag) {
-        // kracht en richting (geen volledige baan: je moet zelf inschatten)
-        ctx.fillStyle = 'rgba(255,255,255,.12)'; ctx.fillRect(14, 300, 10, 100);
-        ctx.fillStyle = pull > .85 ? '#E0284A' : '#FFD86B'; ctx.fillRect(14, 400 - pull * 100, 10, pull * 100);
-        ctx.setLineDash([6, 6]); ctx.strokeStyle = 'rgba(255,233,168,.7)'; ctx.lineWidth = 2; ctx.beginPath(); ctx.moveTo(CX, CY); ctx.lineTo(CX + Math.cos(ang) * 90, CY + Math.sin(ang) * 90); ctx.stroke(); ctx.setLineDash([]);
+      const a = phase === 'angle' ? angAt(now) : ang, r = -a * Math.PI / 180;
+      ctx.save(); ctx.translate(CX, CY); ctx.rotate(r);
+      const bar = ctx.createLinearGradient(0, -9, 0, 9); bar.addColorStop(0, '#5A6274'); bar.addColorStop(.5, '#2A2F3E'); bar.addColorStop(1, '#14161E');
+      ctx.fillStyle = bar; roundRect(ctx, -8, -9, 50, 18, 6); ctx.fill(); ctx.fillStyle = '#D4A84B'; ctx.fillRect(38, -10, 6, 20); ctx.restore();
+      ctx.fillStyle = '#5A3E2B'; ctx.beginPath(); ctx.arc(CX - 4, CY + 16, 15, 0, 7); ctx.fill(); ctx.strokeStyle = '#2E1E12'; ctx.lineWidth = 3; ctx.stroke();
+      ctx.fillStyle = '#3E2A1C'; ctx.fillRect(CX - 30, GROUND - 4, 60, 6);
+      // hulplijnen
+      if (phase === 'angle' && !done) hintText(ctx, 'Tik om de hoek te kiezen');
+      if (phase === 'target' && !done) {
+        const tx = tgtAt(now), D = tx - CX, k = shot < 3 ? 1 : .45;
+        ctx.setLineDash([4, 6]); ctx.strokeStyle = 'rgba(255,233,168,.7)'; ctx.lineWidth = 2; ctx.beginPath();
+        arcPts(D, ang, k).forEach(([x, y], i) => (i ? ctx.lineTo(x, y) : ctx.moveTo(x, y))); ctx.stroke(); ctx.setLineDash([]);
+        ctx.strokeStyle = '#FFE9A8'; ctx.lineWidth = 2.5; ctx.beginPath(); ctx.moveTo(tx - 9, GROUND - 9); ctx.lineTo(tx + 9, GROUND + 9); ctx.moveTo(tx + 9, GROUND - 9); ctx.lineTo(tx - 9, GROUND + 9); ctx.stroke();
+        hintText(ctx, round.wind ? 'Tik om te schieten. Hou rekening met de wind!' : 'Tik als het kruisje in de emmer staat');
       }
-      if (ball) { ctx.fillStyle = '#F4EBDD'; ctx.beginPath(); ctx.arc(ball.x, ball.y, 6, 0, 7); ctx.fill(); }
-      if (!ball && !drag && !done && shot === 0) { ctx.fillStyle = 'rgba(244,235,221,.8)'; ctx.font = '600 13px Inter, Arial'; ctx.fillText('Sleep naar achter en laat los', 200, 250); }
-      if (msg && now - msgT < 900) { ctx.fillStyle = '#FFE9A8'; ctx.font = '700 26px Graduate, Georgia, serif'; ctx.textAlign = 'center'; ctx.fillText(msg, 200, 140); }
+      if (trail.length) { trail.forEach(([x, y], i) => { ctx.fillStyle = `rgba(255,233,168,${i / trail.length * .5})`; ctx.beginPath(); ctx.arc(x, y, 2, 0, 7); ctx.fill(); }); }
+      if (ball) { ctx.fillStyle = '#1A1A1A'; ctx.beginPath(); ctx.arc(ball.x, ball.y, 6.5, 0, 7); ctx.fill(); ctx.fillStyle = 'rgba(255,255,255,.4)'; ctx.beginPath(); ctx.arc(ball.x - 2, ball.y - 2, 2, 0, 7); ctx.fill(); }
+      if (msg && now - msgT < 900) bigMsg(ctx, msg, 150);
       hud(`<span>Raak <b>${hits}</b></span><span>Schot <b>${Math.min(shot + 1, SHOTS)}/${SHOTS}</b></span>`);
-      if (c.isConnected && (!done || now - msgT < 900)) requestAnimationFrame(draw);
+      if (c.isConnected && !(done && now - msgT > 900)) requestAnimationFrame(draw);
     };
     requestAnimationFrame(draw);
   });
@@ -4257,31 +4368,40 @@ function gameBlackjack(box, rnd) {
     for (let d = 0; d < 4; d++) for (const s of SUITS) for (const r of RANKS) shoe.push({ r, s });
     for (let i = shoe.length - 1; i > 0; i--) { const j = Math.floor(rnd() * (i + 1)); [shoe[i], shoe[j]] = [shoe[j], shoe[i]]; }
     const HANDS = 10, BET = 10;
-    let chips = 100, hand = 0, player = [], dealer = [], bet = BET, phase = 'play', note = '';
+    let chips = 100, hand = 0, player = [], dealer = [], bet = BET, phase = 'play', note = '', busy = false, hideHole = true;
+    const pause = ms => sleep(prefersReduced() ? 60 : ms);
     const val = cards => { let t = 0, a = 0; for (const c of cards) { t += c.r === 'A' ? 11 : 'JQK'.includes(c.r) ? 10 : Number(c.r); if (c.r === 'A') a++; } while (t > 21 && a) { t -= 10; a--; } return t; };
     const cardHtml = (c, hidden) => hidden ? '<span class="bj-card back"></span>' : `<span class="bj-card${'♥♦'.includes(c.s) ? ' red' : ''}"><b>${c.r}</b><i>${c.s}</i></span>`;
     const draw = () => {
-      const showD = phase !== 'play';
+      const showD = !hideHole;
       box.innerHTML = `<div class="bj">
         <div class="bj-top"><span>Chips <b>${chips}</b></span><span>Hand <b>${Math.min(hand + 1, HANDS)}/${HANDS}</b></span><span>Inzet <b>${bet}</b></span></div>
         <div class="bj-row"><small>Dealer ${showD ? `· ${val(dealer)}` : ''}</small><div class="bj-cards">${dealer.map((c, i) => cardHtml(c, !showD && i === 1)).join('')}</div></div>
         <div class="bj-note">${note}</div>
         <div class="bj-row"><small>Jij · ${val(player)}</small><div class="bj-cards">${player.map(c => cardHtml(c)).join('')}</div></div>
-        <div class="bj-btns">${phase === 'play'
+        <div class="bj-btns">${busy ? '<span class="bj-wait">De dealer deelt…</span>' : phase === 'play'
           ? `<button class="btn small" data-bj="hit" type="button">Hit</button><button class="btn small" data-bj="stand" type="button">Stand</button>
              <button class="btn small ghost" data-bj="double" type="button" ${player.length === 2 && chips >= bet * 2 ? '' : 'disabled'}>Double</button>`
           : `<button class="btn small" data-bj="next" type="button">${hand + 1 >= HANDS || chips < BET ? 'Resultaat' : 'Volgende hand'}</button>`}</div>
       </div>`;
     };
-    const deal = () => {
+    // Kaarten één voor één, zoals aan een echte tafel
+    const deal = async () => {
       if (hand >= HANDS || chips < BET) return resolve(chips);
-      bet = BET; player = [shoe.pop(), shoe.pop()]; dealer = [shoe.pop(), shoe.pop()]; phase = 'play'; note = '';
+      bet = BET; player = []; dealer = []; phase = 'play'; note = ''; busy = true; hideHole = true;
+      draw();
+      for (const to of [player, dealer, player, dealer]) { await pause(450); to.push(shoe.pop()); draw(); }
+      busy = false;
       if (val(player) === 21) return settle();
       draw();
     };
-    const settle = () => {
+    const settle = async () => {
+      busy = true; draw();
       const p = val(player);
-      if (p <= 21 && !(p === 21 && player.length === 2)) while (val(dealer) < 17) dealer.push(shoe.pop());
+      await pause(500); hideHole = false; draw();
+      if (p <= 21 && !(p === 21 && player.length === 2)) while (val(dealer) < 17) { await pause(650); dealer.push(shoe.pop()); draw(); }
+      await pause(350);
+      busy = false;
       const d = val(dealer);
       let delta;
       if (p > 21) { delta = -bet; note = 'Bust! −' + bet; }
@@ -4293,13 +4413,13 @@ function gameBlackjack(box, rnd) {
       chips = Math.max(0, chips + delta); phase = 'done'; hand++;
       draw();
     };
-    box.onclick = e => {
-      const b = e.target.closest('[data-bj]'); if (!b || b.disabled) return;
+    box.onclick = async e => {
+      const b = e.target.closest('[data-bj]'); if (!b || b.disabled || busy) return;
       const a = b.dataset.bj;
       if (a === 'next') return deal();
-      if (a === 'hit') { player.push(shoe.pop()); if (val(player) >= 21) return settle(); draw(); }
+      if (a === 'hit') { busy = true; draw(); await pause(350); player.push(shoe.pop()); busy = false; if (val(player) >= 21) return settle(); draw(); }
       else if (a === 'stand') settle();
-      else if (a === 'double') { bet *= 2; player.push(shoe.pop()); settle(); }
+      else if (a === 'double') { bet *= 2; busy = true; draw(); await pause(350); player.push(shoe.pop()); busy = false; settle(); }
     };
     deal();
   });
@@ -4382,7 +4502,7 @@ async function renderExam(view, info) {
     view.innerHTML = `<section class="exam-play"><div class="exam-play-head"><span class="kicker">${s.subject}</span><h3>${s.title}</h3></div>
       <div class="game-box" id="gameBox"></div></section>`;
     $('#gameBox').scrollIntoView({ block: 'center' });
-    const rnd = mulberry32(wordleNumber() * 7919 + (s.game === 'math' || s.game === 'history' ? 0 : data.seed));
+    const rnd = mulberry32(wordleNumber() * 7919 + ((s.game === 'math' || s.game === 'history') && !state.isAdmin ? 0 : data.seed));
     const score = await EXAM_GAMES[s.game]($('#gameBox'), rnd);
     if (state.tab !== 'today') { await sb.rpc('exam_submit', { p_score: score }); return; }
     $('#gameBox').innerHTML = '<p class="loading">Inleveren…</p>';
@@ -6084,9 +6204,29 @@ async function renderCasino(view) {
   async function bjDo(act) {
     $('#bjBtns').querySelectorAll('button').forEach(b => { b.disabled = true; });
     say('bj', '');
+    const prev = act === 'deal' ? null : st.bj;
     const { data: r, error: e } = act === 'deal' ? await sb.rpc('casino_bj_start', { p_bet: czState.bet }) : await sb.rpc('casino_bj_action', { p_action: act });
     if (e) { say('bj', esc(e.message), 'err'); drawBj(act === 'deal' ? null : st.bj); return; }
     st.bj = r.done ? null : r;
+    // Nieuwe kaarten één voor één tonen
+    const pause = ms => sleep(prefersReduced() ? 40 : ms);
+    $('#bjBtns').innerHTML = '<span class="bj-wait">De dealer deelt…</span>';
+    view.querySelector('.cz-bj .cz-bet').hidden = true;
+    const P = $('#bjP'), D = $('#bjD');
+    if (!prev || r.resumed) {
+      P.innerHTML = ''; D.innerHTML = ''; $('#bjPt').textContent = ''; $('#bjDt').textContent = '';
+      const order = [[P, r.player[0]], [D, r.dealer[0]], [P, r.player[1]], [D, r.done ? r.dealer[1] : null]];
+      for (const [el, c] of order) { await pause(420); el.insertAdjacentHTML('beforeend', bjCardHtml(c)); }
+    } else {
+      D.innerHTML = prev.dealer.map(bjCardHtml).join('') + bjCardHtml(null);
+      for (const c of r.player.slice(prev.player.length)) { await pause(380); P.insertAdjacentHTML('beforeend', bjCardHtml(c)); }
+    }
+    if (r.done) {
+      await pause(450);
+      D.innerHTML = r.dealer.slice(0, 2).map(bjCardHtml).join('');
+      for (const c of r.dealer.slice(2)) { await pause(600); D.insertAdjacentHTML('beforeend', bjCardHtml(c)); }
+      await pause(300);
+    }
     drawBj(r);
     if (r.resumed) say('bj', 'Je vorige hand lag nog open. Speel ze eerst uit.');
     if (r.done) {
