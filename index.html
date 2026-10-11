@@ -3078,7 +3078,7 @@ const INFO = {
     <li><strong>Roulette</strong>: rood/zwart, even/oneven, 1–18 of 19–36 = 2× terug. Eén getal = 36× terug. Op 0 wint het huis.</li>
     <li><strong>Slotmachine</strong>: drie gelijke symbolen, of kersen. Drie keer RIZZ = 60×.</li>
     <li><strong>Paardenrace</strong>: kies een van de 5 paarden. Hoe kleiner de kans, hoe hoger de quotering.</li>
-    <li><strong>Daglimiet</strong>: je kan per dag netto hoogstens 100 credits verliezen in het casino. Daarna moet je wachten tot morgen.</li></ul>
+    <li><strong>Geen limiet</strong>: je kan al je credits inzetten, en dus ook alles verliezen. Bovenaan zie je hoeveel je vandaag gewonnen of verloren hebt.</li></ul>
     <p>Het huis wint op termijn een klein beetje, zoals in een echt casino. Speel dus voor de fun.</p>`],
   ideas: ['Ideeënbus', `
     <p>Heb je een idee om de site beter of leuker te maken? Dien het hier in — iedereen kan alle ideeën zien.</p>
@@ -3301,7 +3301,7 @@ const TUTORIAL = [
   { pin: 'house', title: 'Frat House', text: 'Elke gast heeft een kamer. Aan de muur hangen zijn 9 kaarten: wat jij al hebt, zie je; de rest blijft donker. Een verlicht raam betekent dat je al minstens één kaart van hem hebt.' },
   { pin: 'friends', title: 'The Quad', text: 'Voeg je vrienden toe met hun code of met de <b>+</b>. Van je vrienden zie je hun collectie, cijfers, F\'s en trofeeën. Enkel vrienden kan je uitdagen of mee ruilen.' },
   { pin: 'battle', title: 'The Arena', text: 'Kies 3 kaarten en vecht tegen de computer of een vriend. Elke ronde kies je geheim <b>Flex</b>, <b>Roast</b> of <b>Charm</b>: Flex wint van Charm, Charm van Roast, Roast van Flex. Winnen levert credits op.' },
-  { pin: 'casino', title: 'Casino', text: 'Waag je kans met je credits: blackjack, roulette, de slotmachine of de paardenrace. Inzet per 5, en je kan per dag hoogstens 100 credits verliezen.' },
+  { pin: 'casino', title: 'Casino', text: 'Waag je kans met je credits: blackjack, roulette, de slotmachine of de paardenrace. Inzet per 5, en er is geen limiet: je kan alles winnen, of alles verliezen.' },
   { pin: 'trade', title: 'Black Market', text: 'Ruil je dubbele kaarten met je vrienden. Je houdt altijd minstens één exemplaar van elke kaart.' },
   { pin: 'shop', title: 'The Vault', text: 'Geef je credits uit aan envelopes met nieuwe kaarten, of verkoop je dubbels voor credits. Je credits staan altijd rechtsboven.' },
   { pin: 'stats', title: 'The Library', text: 'Je stats: je streak, al je cijfers en je trofeeën.' },
@@ -5723,7 +5723,7 @@ async function renderBattle(view) {
 
 // ---------- Casino ----------
 // Alle uitkomsten komen van de server (supabase/update-13-casino.sql): de website toont enkel het resultaat.
-// Inzet per 5 (5 tot 50); daglimiet: netto max. 100 credits verlies per dag.
+// Inzet per 5 (5 tot 50), geen daglimiet: je kan al je credits vergokken.
 const CZ_SYM = { C: '🍒', L: '🍋', B: '🔔', D: '💎', K: '👑', R: '<b class="cz-rizz">RIZZ</b>' };
 const CZ_HORSES = [
   { n: 1, name: 'Thunder Rizz', x: 2.7, col: '#E0284A' }, { n: 2, name: 'Lucky Legend', x: 3.6, col: '#F2CC72' },
@@ -5748,7 +5748,6 @@ async function renderCasino(view) {
     return;
   }
   let lost = st.lost_today || 0;
-  const LIMIT = st.limit || 100;
   const ICO = d => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">${d}</svg>`;
   const tile = (id, icon, title, sub) => `<button type="button" class="ar-tile cz-tile" data-open="${id}"><span class="ar-ico">${icon}</span><span class="ar-t"><b>${title}</b><small>${sub}</small></span></button>`;
   const betHtml = `<div class="cz-bet"><span>Inzet</span><button type="button" data-bet="-" aria-label="Minder">−</button><b data-betv>${czState.bet}</b><button type="button" data-bet="+" aria-label="Meer">+</button></div>`;
@@ -5758,7 +5757,7 @@ async function renderCasino(view) {
 
   view.innerHTML = `<section class="col cz-page" style="max-width:none">
     ${pageHead('Casino', 'casino')}
-    <div class="cz-limit"><span>Vandaag verloren <b id="czLost">${lost}</b> / ${LIMIT}</span><i><em id="czLostBar" style="width:${Math.min(100, lost / LIMIT * 100)}%"></em></i><small>Inzet per 5, max. 50 per spel</small></div>
+    <div class="cz-limit"><span>Vandaag <b id="czLost" class="${lost > 0 ? 'cz-lose' : lost < 0 ? 'cz-win' : ''}">${lost > 0 ? '−' + lost : lost < 0 ? '+' + -lost : '±0'}</b> credits</span><small>Inzet per 5, max. 50 per spel. Geen limiet: speel met verstand.</small></div>
     ${st.bj ? `<button type="button" class="ar-go cz-go" data-open="bj"><span class="ar-go-k">Je hand ligt nog open</span><b>Ga verder</b><small>Blackjack · inzet ${st.bj.bet}</small></button>` : ''}
     <div class="ar-hub cz-hub">
       ${tile('bj', '<span class="cz-ic">🂡</span>', 'Blackjack', 'Kom dichter bij 21 dan de dealer')}
@@ -5802,7 +5801,8 @@ async function renderCasino(view) {
   const say = (id, text, cls = '') => { const m = msgOf(id); m.className = `msg cz-msg ${cls}`; m.innerHTML = text; };
   const after = r => {
     state.wallet = r.wallet; syncCoinUI();
-    lost = r.lost_today; $('#czLost').textContent = lost; $('#czLostBar').style.width = `${Math.min(100, lost / LIMIT * 100)}%`;
+    lost = r.lost_today; const el = $('#czLost');
+    el.textContent = lost > 0 ? `−${lost}` : lost < 0 ? `+${-lost}` : '±0'; el.className = lost > 0 ? 'cz-lose' : lost < 0 ? 'cz-win' : '';
   };
   const outcome = r => {
     const net = r.payout - r.bet;
