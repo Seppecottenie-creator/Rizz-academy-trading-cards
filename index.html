@@ -927,7 +927,7 @@ h3{color:var(--gold)}
 .campus-map[data-hover="today"] .hot[data-go="today"],.campus-map[data-hover="battle"] .hot[data-go="battle"],
 .campus-map[data-hover="house"] .hot[data-go="house"],.campus-map[data-hover="stats"] .hot[data-go="stats"],
 .campus-map[data-hover="trade"] .hot[data-go="trade"],.campus-map[data-hover="shop"] .hot[data-go="shop"],
-.campus-map[data-hover="ideas"] .hot[data-go="ideas"],.campus-map[data-hover="friends"] .hot[data-go="friends"],.campus-map[data-hover="casino"] .hot[data-go="casino"]{
+.campus-map[data-hover="ideas"] .hot[data-go="ideas"],.campus-map[data-hover="friends"] .hot[data-go="friends"],.campus-map[data-hover="casino"] .hot[data-go="casino"],.campus-map[data-hover="bar"] .hot[data-go="bar"]{
   box-shadow:0 0 0 2px rgba(255,226,160,.85),0 0 30px 6px rgba(255,214,130,.45),0 0 0 3000px rgba(6,10,24,.5);z-index:3}
 
 /* Bordjes */
@@ -939,10 +939,10 @@ h3{color:var(--gold)}
 .campus-map[data-hover="today"] [data-pin="today"],.campus-map[data-hover="battle"] [data-pin="battle"],
 .campus-map[data-hover="house"] [data-pin="house"],.campus-map[data-hover="stats"] [data-pin="stats"],
 .campus-map[data-hover="trade"] [data-pin="trade"],.campus-map[data-hover="shop"] [data-pin="shop"],
-.campus-map[data-hover="ideas"] [data-pin="ideas"],.campus-map[data-hover="friends"] [data-pin="friends"],.campus-map[data-hover="casino"] [data-pin="casino"]{transform:translate(-50%,-62%) scale(1.08);background:#C8102E;border-color:#F4EBDD;color:#fff}
+.campus-map[data-hover="ideas"] [data-pin="ideas"],.campus-map[data-hover="friends"] [data-pin="friends"],.campus-map[data-hover="casino"] [data-pin="casino"],.campus-map[data-hover="bar"] [data-pin="bar"]{transform:translate(-50%,-62%) scale(1.08);background:#C8102E;border-color:#F4EBDD;color:#fff}
 .campus-map[data-hover] .cpin:hover small,.campus-map[data-hover="today"] [data-pin="today"] small,.campus-map[data-hover="battle"] [data-pin="battle"] small,
 .campus-map[data-hover="house"] [data-pin="house"] small,.campus-map[data-hover="stats"] [data-pin="stats"] small,.campus-map[data-hover="trade"] [data-pin="trade"] small,
-.campus-map[data-hover="shop"] [data-pin="shop"] small,.campus-map[data-hover="ideas"] [data-pin="ideas"] small,.campus-map[data-hover="friends"] [data-pin="friends"] small,.campus-map[data-hover="casino"] [data-pin="casino"] small{color:#FBE3E7}
+.campus-map[data-hover="shop"] [data-pin="shop"] small,.campus-map[data-hover="ideas"] [data-pin="ideas"] small,.campus-map[data-hover="friends"] [data-pin="friends"] small,.campus-map[data-hover="casino"] [data-pin="casino"] small,.campus-map[data-hover="bar"] [data-pin="bar"] small{color:#FBE3E7}
 .cpin-badge{position:absolute;top:-10px;right:-10px;min-width:22px;height:22px;padding:0 6px;border-radius:999px;background:#E0284A;border:2px solid #fff;color:#fff;font:700 11px/18px var(--body);
   animation:c-bounce 1.6s ease-in-out infinite}
 @keyframes c-bounce{50%{transform:translateY(-4px)}}
@@ -2530,6 +2530,186 @@ body.drunk .place-bg,body.drunk .campus-map{animation:drunk-double 2.4s ease-in-
 .bj-cards{position:relative;z-index:2}
 @media (min-width:600px) and (max-height:500px){.bj-deck{width:32px;height:46px;top:34px}}
 .bj > .bj-deck{top:auto;bottom:calc(50% - 10px);right:18px}
+
+/* Food Truck */
+.shell[data-place="bar"] .place-bg{opacity:1;background-image:linear-gradient(180deg,rgba(10,8,14,.35),rgba(10,8,14,.55) 45%,rgba(10,8,14,.82)),url(img/quad-night.webp)}
+.bar-stage{display:flex;align-items:center;justify-content:center;gap:40px;flex-wrap:wrap;margin-top:24px;padding:28px;border-radius:20px;background:rgba(14,19,38,.8);border:1px solid rgba(246,194,67,.35);max-width:760px}
+.bar-glass{position:relative;width:120px;height:180px;border:5px solid rgba(255,255,255,.85);border-top:0;border-radius:0 0 18px 18px;overflow:hidden;background:rgba(255,255,255,.08);box-shadow:0 20px 40px -12px #000}
+.bar-beer{position:absolute;left:0;right:0;bottom:0;height:80%;background:linear-gradient(180deg,#F8C84A,#D78A16)}
+.bar-beer i,.chug-beer i{position:absolute;bottom:-10px;width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.6);animation:bubble 2.4s linear infinite}
+.bar-beer i:nth-child(1){left:20%}.bar-beer i:nth-child(2){left:45%;animation-delay:.6s}.bar-beer i:nth-child(3){left:70%;animation-delay:1.2s}.bar-beer i:nth-child(4){left:85%;animation-delay:1.8s}
+@keyframes bubble{to{transform:translateY(-200px);opacity:0}}
+.bar-foam{position:absolute;left:-4px;right:-4px;top:14%;height:12%;border-radius:12px;background:#FFF8E6}
+.bar-handle{position:absolute;right:-34px;top:30%;width:30px;height:70px;border:6px solid rgba(255,255,255,.85);border-left:0;border-radius:0 24px 24px 0}
+.bar-glass{overflow:visible}.bar-beer,.bar-foam{clip-path:inset(0 0 0 0)}
+.bar-side{display:grid;gap:8px;max-width:300px}
+.bar-side strong{font:400 26px var(--varsity);color:#F8C84A}
+.bar-side small{color:var(--ink-soft);font-size:14px}
+.bar-side .btn{justify-self:start;margin-top:6px}
+/* Volledig scherm: pint leegdrinken */
+.chug{position:fixed;inset:0;z-index:6000;pointer-events:none;overflow:hidden;animation:chug-in .25s ease both}
+.chug.out{animation:chug-out .35s ease both}
+.chug-beer{position:absolute;left:0;right:0;bottom:0;height:100%;background:linear-gradient(180deg,rgba(248,200,74,.94),rgba(215,138,22,.96));animation:chug-down 1.9s cubic-bezier(.5,0,.7,1) .15s both}
+.chug-beer i{bottom:0;width:10px;height:10px;animation-duration:1.4s}
+.chug-beer i:nth-child(odd){width:6px;height:6px}
+.chug-beer i:nth-child(1){left:11%;animation-delay:0.00s}.chug-beer i:nth-child(2){left:48%;animation-delay:0.17s}.chug-beer i:nth-child(3){left:85%;animation-delay:0.34s}.chug-beer i:nth-child(4){left:26%;animation-delay:0.51s}.chug-beer i:nth-child(5){left:63%;animation-delay:0.68s}.chug-beer i:nth-child(6){left:4%;animation-delay:0.85s}.chug-beer i:nth-child(7){left:41%;animation-delay:1.02s}.chug-beer i:nth-child(8){left:78%;animation-delay:1.19s}.chug-beer i:nth-child(9){left:19%;animation-delay:1.36s}.chug-beer i:nth-child(10){left:56%;animation-delay:0.13s}.chug-beer i:nth-child(11){left:93%;animation-delay:0.30s}.chug-beer i:nth-child(12){left:34%;animation-delay:0.47s}.chug-beer i:nth-child(13){left:71%;animation-delay:0.64s}.chug-beer i:nth-child(14){left:12%;animation-delay:0.81s}
+.chug-foam{position:absolute;left:-5%;right:-5%;top:-2%;height:12%;border-radius:0 0 40% 40%;background:#FFF8E6;filter:drop-shadow(0 6px 10px rgba(0,0,0,.2));animation:chug-foam 1.9s cubic-bezier(.5,0,.7,1) .15s both}
+.chug-txt{position:absolute;left:50%;top:42%;transform:translate(-50%,-50%) rotate(-6deg);font:400 clamp(40px,9vw,96px) var(--varsity);color:#fff;text-shadow:0 4px 0 #8C5A10,0 10px 30px rgba(0,0,0,.4);animation:chug-pop .5s cubic-bezier(.2,1.4,.4,1) .1s both}
+@keyframes chug-in{from{opacity:0}}@keyframes chug-out{to{opacity:0}}
+@keyframes chug-down{to{height:0}}
+@keyframes chug-foam{to{top:100%;opacity:.4}}
+@keyframes chug-pop{from{transform:translate(-50%,-50%) scale(.3) rotate(-6deg);opacity:0}}
+
+/* =====================================================================
+   CASINO 2.0: groter, aangekleed en met animatie
+   ===================================================================== */
+.cz-pop .ar-pop-box{width:min(1120px,100%);min-height:min(640px,calc(100vh - 32px));background:radial-gradient(ellipse at 50% 0%,#2A1622,#120A10 70%);border-color:rgba(242,204,114,.55)}
+.cz-pop .ar-pop-head{background:transparent}
+.cz-pop .ar-pop-head h3{font-size:24px;text-shadow:0 0 18px rgba(242,204,114,.6)}
+.cz-hub{grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.cz-tile{min-height:150px;position:relative;overflow:hidden;background:linear-gradient(135deg,rgba(40,14,24,.92),rgba(14,19,38,.92));border:1px solid rgba(242,204,114,.45)}
+.cz-tile::after{content:"";position:absolute;inset:-40%;background:conic-gradient(from 0deg,transparent 0 70%,rgba(242,204,114,.18) 80%,transparent 90%);animation:tile-sweep 6s linear infinite;pointer-events:none}
+@keyframes tile-sweep{to{transform:rotate(360deg)}}
+.cz-tile .ar-ico{width:64px;height:64px;font-size:38px;background:radial-gradient(circle,rgba(242,204,114,.25),rgba(242,204,114,.05))}
+.cz-tile .ar-t b{font-size:22px;color:#F2CC72}
+.cz-tile:hover .ar-ico{animation:ico-bounce .6s ease}
+@keyframes ico-bounce{40%{transform:scale(1.18) rotate(-8deg)}}
+.cz-ctrl .btn{min-width:150px;font-size:16px;padding:12px 24px;box-shadow:0 0 0 2px #F2CC72,0 10px 26px -8px rgba(224,40,74,.9)}
+/* muntenregen */
+.coin-rain{position:fixed;inset:0;z-index:5000;pointer-events:none;overflow:hidden}
+.coin-rain i{position:absolute;top:-40px;width:26px;height:26px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#FFF3BF,#F2CC72 45%,#B8862E);box-shadow:inset 0 0 0 3px rgba(140,90,20,.5);animation:coin-fall linear both}
+@keyframes coin-fall{to{transform:translateY(110vh) rotate(720deg)}}
+/* --- slotmachine --- */
+.cz-slots{display:flex;justify-content:center;align-items:center;gap:6px;padding:6px 0}
+.slot-cab{position:relative;display:grid;gap:12px;justify-items:center;padding:18px 26px 16px;border-radius:26px 26px 18px 18px;background:linear-gradient(180deg,#8C0B21,#4A0612);box-shadow:inset 0 0 0 4px #F2CC72,inset 0 0 0 9px #6A0A1A,0 30px 60px -20px #000}
+.slot-marquee{padding:6px 26px;border-radius:14px;background:linear-gradient(180deg,#1A0A10,#2A0E18);box-shadow:inset 0 0 0 2px #F2CC72}
+.slot-title{font:400 30px var(--varsity);letter-spacing:.1em;color:#FFE9A8;text-shadow:0 0 10px #F2CC72,0 0 26px #E0284A}
+.slot-title em{font-style:normal;color:#FF6B7A}
+.slot-bulbs{position:absolute;inset:4px;pointer-events:none;border-radius:24px}
+.slot-bulbs i{position:absolute;width:9px;height:9px;border-radius:50%;background:#FFE9A8;box-shadow:0 0 8px #FFD86B;animation:bulb 1.2s steps(1) infinite}
+.slot-cab.spinning .slot-bulbs i{animation-duration:.3s}
+.slot-cab.win .slot-bulbs i{animation-duration:.18s;background:#7FD3A0;box-shadow:0 0 12px #7FD3A0}
+@keyframes bulb{50%{opacity:.25}}
+.slot-window{position:relative;display:flex;gap:10px;padding:12px;border-radius:16px;background:#14090D;box-shadow:inset 0 8px 20px rgba(0,0,0,.8),0 0 0 3px #B8914A}
+.cz-reel{position:relative;width:clamp(90px,14vw,140px);aspect-ratio:3/4;overflow:hidden;border-radius:10px;background:linear-gradient(180deg,#CFC4AE,#FFFFFF 30%,#FFFFFF 70%,#CFC4AE);box-shadow:inset 0 10px 14px -6px rgba(0,0,0,.5),inset 0 -10px 14px -6px rgba(0,0,0,.5)}
+.reel-strip{position:absolute;inset:0;will-change:transform}
+.reel-cell{height:100%;display:grid;place-items:center;font-size:clamp(46px,7vw,70px)}
+.reel-cell .cz-rizz{font-size:clamp(20px,3.2vw,30px)}
+.cz-reel.stop{animation:reel-stop .3s ease}
+@keyframes reel-stop{40%{transform:translateY(6px)}}
+.slot-cab.win .cz-reel{box-shadow:0 0 0 3px #7FD3A0,0 0 26px #7FD3A0}
+.slot-cab.big .slot-title{animation:title-flash .25s steps(2) 8}
+@keyframes title-flash{50%{color:#7FD3A0}}
+.slot-line{position:absolute;left:6px;right:6px;top:50%;height:3px;background:rgba(224,40,74,.65);box-shadow:0 0 8px #E0284A;pointer-events:none}
+.slot-cab .cz-pay{margin:0;color:#F4EBDD}
+.slot-lever{position:relative;width:40px;height:200px;border:0;background:none;cursor:pointer;transform-origin:50% 100%}
+.slot-lever::before{content:"";position:absolute;left:16px;bottom:0;width:8px;height:170px;border-radius:4px;background:linear-gradient(90deg,#9CA3AF,#E5E7EB,#6B7280)}
+.slot-lever i{position:absolute;left:2px;top:0;width:36px;height:36px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#FF8C9E,#C8102E 60%,#6A0A1A);box-shadow:0 6px 12px -4px #000}
+.slot-lever.pull{animation:lever .5s ease}
+@keyframes lever{40%{transform:scaleY(-.6)}}
+.slot-lever:disabled{opacity:.7;cursor:default}
+/* --- roulette --- */
+.cz-roul{grid-template-columns:auto minmax(0,1fr);gap:30px}
+.cz-wheel-wrap{width:clamp(220px,34vw,340px);margin:10px 0}
+.cz-wheel-rim{position:absolute;inset:-14px;border-radius:50%;background:radial-gradient(circle,#3A2412 62%,#6B4A22 63%,#2A1A0C 72%);box-shadow:0 0 0 4px #B8914A,0 20px 40px -10px #000}
+.cz-wheel{transition:none}
+.cz-wheel i{font-size:clamp(8px,1.3vw,11px)}
+.cz-wheel-hub{position:absolute;inset:36%;z-index:2;border-radius:50%;background:radial-gradient(circle at 40% 35%,#F2CC72,#8C6A2A 55%,#3A2A10);box-shadow:0 0 0 4px #2A1A0C}
+.cz-balltrack{position:absolute;inset:0;z-index:3;pointer-events:none}
+.cz-ballx{position:absolute;left:50%;top:-2%;width:14px;height:14px;margin-left:-7px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#fff,#C9CED6);box-shadow:0 2px 4px rgba(0,0,0,.6)}
+.cz-ballx.drop{animation:ball-in 4.4s cubic-bezier(.4,0,.6,1) both}
+@keyframes ball-in{0%{top:-2%}75%{top:-2%}100%{top:7%}}
+.cz-pointer{z-index:4}
+.cz-result{position:absolute;inset:38%;z-index:4;border-radius:50%;display:grid;place-items:center;font:400 clamp(24px,4vw,40px) var(--varsity);color:#1A1408;opacity:0;transform:scale(.4);transition:opacity .25s,transform .35s cubic-bezier(.2,1.5,.4,1)}
+.cz-result.show{opacity:1;transform:scale(1)}
+.cz-result.c-red{background:#B3122E;color:#fff}.cz-result.c-black{background:#141821;color:#fff}.cz-result.c-green{background:#1E7A46;color:#fff}
+.cz-board{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;padding:12px;border-radius:16px;background:radial-gradient(ellipse at 50% 30%,#1F6A40,#123F27);box-shadow:inset 0 0 0 3px #B8914A}
+.cz-board .cz-kind{position:relative;display:flex;justify-content:space-between;align-items:center;padding:12px 14px;border:1.5px solid rgba(244,235,221,.6);border-radius:10px;background:rgba(0,0,0,.18);color:#F4EBDD;font:600 15px var(--body)}
+.cz-board .cz-kind small{color:#F2CC72;font-weight:700}
+.cz-board .k-red{background:rgba(179,18,46,.75)}.cz-board .k-black{background:rgba(20,24,33,.85)}
+.cz-board .k-number{grid-column:1/-1}
+.cz-board .cz-kind.on{border-color:#F2CC72;box-shadow:0 0 0 2px #F2CC72,0 0 18px rgba(242,204,114,.5);color:#fff}
+.cz-board .chip{position:absolute;right:-8px;top:-10px;width:26px;height:26px;border-radius:50%;background:radial-gradient(circle,#fff 30%,#C8102E 32% 58%,#fff 60% 66%,#C8102E 68%);box-shadow:0 4px 8px -2px #000;opacity:0;transform:translateY(-20px) scale(.6);transition:all .3s cubic-bezier(.2,1.5,.4,1)}
+.cz-board .cz-kind.on .chip{opacity:1;transform:none}
+.cz-board .cz-kind.won{animation:won-pulse .4s ease 4}
+@keyframes won-pulse{50%{box-shadow:0 0 0 3px #7FD3A0,0 0 30px #7FD3A0}}
+.cz-num{gap:10px;font-weight:600}
+.cz-nb{width:34px;height:34px;border-radius:50%;border:1px solid var(--line2);background:rgba(255,255,255,.06);color:var(--ink);font-size:18px;cursor:pointer}
+/* --- paardenrace --- */
+.cz-track{position:relative;overflow:hidden;padding:44px 18px 12px;border-radius:16px;gap:6px;
+  background:repeating-linear-gradient(90deg,rgba(255,255,255,.05) 0 40px,transparent 40px 80px),linear-gradient(180deg,#8A6236,#6B4A28);box-shadow:inset 0 0 0 4px #F4EBDD55,inset 0 12px 30px rgba(0,0,0,.4)}
+.cz-track.running{animation:track-move .4s linear infinite}
+@keyframes track-move{to{background-position:-80px 0,0 0}}
+.cz-crowd{position:absolute;left:0;right:0;top:0;height:36px;background:repeating-linear-gradient(90deg,#2A3A6B 0 6px,#C8102E 6px 10px,#F2CC72 10px 14px,#1A2340 14px 20px);opacity:.8;mask-image:radial-gradient(circle at 50% 120%,#000 6px,transparent 7px);-webkit-mask-image:radial-gradient(circle,#000 4px,transparent 5px);-webkit-mask-size:10px 10px;mask-size:10px 10px}
+.cz-track.running .cz-crowd{animation:crowd .3s steps(2) infinite}
+@keyframes crowd{50%{transform:translateY(-2px)}}
+.cz-lane{height:clamp(34px,7vh,52px);border-bottom:2px dashed rgba(255,255,255,.3)}
+.cz-horse{display:flex;align-items:center;transform:none;margin-left:24px}
+.cz-horse b{display:inline-block;font-size:clamp(28px,6vh,44px);transform:scaleX(-1);filter:drop-shadow(0 3px 2px rgba(0,0,0,.5))}
+.cz-horse::after{content:"";position:absolute;left:12px;top:46%;width:14px;height:10px;border-radius:3px;background:var(--c);box-shadow:0 0 0 2px #fff}
+.cz-track.running .cz-horse:not(.done) b{animation:gallop .28s ease-in-out infinite}
+@keyframes gallop{50%{transform:scaleX(-1) translateY(-5px) rotate(4deg)}}
+.cz-dust{position:absolute;right:100%;bottom:4px;width:0;height:10px;border-radius:50%;background:radial-gradient(ellipse,rgba(230,200,150,.7),transparent 70%)}
+.cz-track.running .cz-horse:not(.done) .cz-dust{width:36px;animation:dust .3s linear infinite}
+@keyframes dust{50%{opacity:.4;transform:scaleX(1.3)}}
+.cz-horse.mine b{filter:drop-shadow(0 0 6px #F2CC72) drop-shadow(0 3px 2px rgba(0,0,0,.5))}
+.cz-horse.first b{animation:winner .5s ease 3;filter:drop-shadow(0 0 14px #FFE9A8)}
+@keyframes winner{50%{transform:scaleX(-1) scale(1.35)}}
+.cz-finish{right:26px;width:10px;background:repeating-linear-gradient(0deg,#fff 0 8px,#111 8px 16px);box-shadow:0 0 10px rgba(255,255,255,.4)}
+.cz-count{position:absolute;inset:0;z-index:6;display:grid;place-items:center;pointer-events:none;font:400 clamp(50px,10vw,90px) var(--varsity);color:#FFE9A8;text-shadow:0 6px 0 #8C0B21,0 0 30px rgba(0,0,0,.6)}
+.cz-count.pop{animation:count-pop .6s ease both}
+@keyframes count-pop{from{transform:scale(2.2);opacity:0}30%{opacity:1;transform:scale(1)}to{opacity:.0;transform:scale(.8)}}
+.cz-flash{position:absolute;inset:0;z-index:7;pointer-events:none;background:#fff;opacity:0}
+.cz-flash.go{animation:flash .6s ease}
+@keyframes flash{10%{opacity:.9}}
+.cz-picks .cz-pick{padding:10px 8px;transition:transform .15s}
+.cz-picks .cz-pick.on{transform:translateY(-3px);box-shadow:0 0 0 2px var(--c),0 10px 20px -8px var(--c)}
+/* --- blackjack-tafel --- */
+.cz-felt{padding:16px 18px;border-radius:26px;background:radial-gradient(ellipse at 50% 0%,#23774A,#124A2C 70%);box-shadow:inset 0 0 0 6px #5A3E2B,inset 0 0 0 9px #B8933F,0 20px 40px -14px #000}
+.felt-arc{text-align:center;font:700 11px var(--body);letter-spacing:.24em;color:rgba(244,235,221,.75);padding:2px 0 6px}
+.cz-felt .cz-bj-row{position:relative;background:transparent;min-height:118px}
+.cz-felt .cz-bj-row + .cz-bj-row{border-top:1px dashed rgba(244,235,221,.25)}
+.cz-felt .bj-card{width:68px;height:98px}.cz-felt .bj-card b{font-size:22px}.cz-felt .bj-card i{font-size:28px}
+.chip-stack{position:absolute;right:16px;bottom:12px;width:44px;height:80px}
+.chip-stack i{position:absolute;left:0;bottom:calc(var(--i) * 5px);width:44px;height:14px;border-radius:50%;background:repeating-linear-gradient(90deg,#C8102E 0 8px,#fff 8px 12px);box-shadow:inset 0 -3px 0 rgba(0,0,0,.25),0 2px 3px rgba(0,0,0,.4)}
+.chip-stack b{position:absolute;left:50%;bottom:-20px;transform:translateX(-50%);font:400 14px var(--varsity);color:#F2CC72}
+@media (max-width:899px) and (min-height:501px), (max-width:599px){.cz-roul{grid-template-columns:1fr}.slot-lever{display:none}}
+@media (min-width:600px) and (max-height:500px){
+  .cz-pop .ar-pop-box{min-height:0}
+  .cz-hub{gap:8px}.cz-tile{min-height:0;height:clamp(64px,20vh,90px)}.cz-tile .ar-ico{width:42px;height:42px;font-size:24px}.cz-tile .ar-t b{font-size:15px}
+  .slot-cab{padding:10px 14px 10px;gap:6px}.slot-title{font-size:18px}.slot-marquee{padding:2px 14px}
+  .cz-reel{width:clamp(64px,19vh,96px)}.reel-cell{font-size:clamp(34px,10vh,50px)}
+  .slot-window{padding:7px;gap:7px}.slot-cab .cz-pay{display:none}.slot-lever{height:140px}.slot-lever::before{height:118px}
+  .cz-wheel-wrap{width:min(240px,calc(100vh - 140px))}
+  .cz-board{gap:5px;padding:8px}.cz-board .cz-kind{padding:6px 10px;font-size:13px}
+  .cz-track{padding:30px 12px 8px}.cz-crowd{height:24px}
+  .cz-felt{padding:8px 12px}.cz-felt .cz-bj-row{min-height:0}.cz-felt .bj-card{width:46px;height:66px}.cz-felt .bj-card b{font-size:15px}.cz-felt .bj-card i{font-size:19px}
+  .felt-arc{font-size:9px;padding:0}
+  .chip-stack{transform:scale(.7);transform-origin:right bottom}
+  .cz-ctrl .btn{min-width:110px;padding:8px 16px;font-size:14px}
+}
+.slot-bulbs i:nth-child(1){left:calc(6.0% - 4px);top:calc(0% - 4px);animation-delay:0.0s}
+.slot-bulbs i:nth-child(2){left:calc(18.5% - 4px);top:calc(0% - 4px);animation-delay:0.6s}
+.slot-bulbs i:nth-child(3){left:calc(31.0% - 4px);top:calc(0% - 4px);animation-delay:0.0s}
+.slot-bulbs i:nth-child(4){left:calc(43.5% - 4px);top:calc(0% - 4px);animation-delay:0.6s}
+.slot-bulbs i:nth-child(5){left:calc(56.0% - 4px);top:calc(0% - 4px);animation-delay:0.0s}
+.slot-bulbs i:nth-child(6){left:calc(68.5% - 4px);top:calc(0% - 4px);animation-delay:0.6s}
+.slot-bulbs i:nth-child(7){left:calc(81.0% - 4px);top:calc(0% - 4px);animation-delay:0.0s}
+.slot-bulbs i:nth-child(8){left:calc(93.5% - 4px);top:calc(0% - 4px);animation-delay:0.6s}
+.slot-bulbs i:nth-child(9){left:calc(100% - 4px);top:calc(25% - 4px);animation-delay:0.0s}
+.slot-bulbs i:nth-child(10){left:calc(100% - 4px);top:calc(50% - 4px);animation-delay:0.6s}
+.slot-bulbs i:nth-child(11){left:calc(100% - 4px);top:calc(75% - 4px);animation-delay:0.0s}
+.slot-bulbs i:nth-child(12){left:calc(100.0% - 4px);top:calc(100% - 4px);animation-delay:0.6s}
+.slot-bulbs i:nth-child(13){left:calc(87.5% - 4px);top:calc(100% - 4px);animation-delay:0.0s}
+.slot-bulbs i:nth-child(14){left:calc(75.0% - 4px);top:calc(100% - 4px);animation-delay:0.6s}
+.slot-bulbs i:nth-child(15){left:calc(62.5% - 4px);top:calc(100% - 4px);animation-delay:0.0s}
+.slot-bulbs i:nth-child(16){left:calc(50.0% - 4px);top:calc(100% - 4px);animation-delay:0.6s}
+.slot-bulbs i:nth-child(17){left:calc(37.5% - 4px);top:calc(100% - 4px);animation-delay:0.0s}
+.slot-bulbs i:nth-child(18){left:calc(25.0% - 4px);top:calc(100% - 4px);animation-delay:0.6s}
+.slot-bulbs i:nth-child(19){left:calc(12.5% - 4px);top:calc(100% - 4px);animation-delay:0.0s}
+.slot-bulbs i:nth-child(20){left:calc(0% - 4px);top:calc(75% - 4px);animation-delay:0.6s}
+.slot-bulbs i:nth-child(21){left:calc(0% - 4px);top:calc(50% - 4px);animation-delay:0.0s}
+.slot-bulbs i:nth-child(22){left:calc(0% - 4px);top:calc(25% - 4px);animation-delay:0.6s}
 </style>
 </head>
 <body>
@@ -2600,7 +2780,7 @@ function goDrunk(ms) {
   const tick = () => {
     const left = Math.ceil((until - Date.now()) / 1000);
     if (left <= 0) { clearInterval(drunkTimer); document.body.classList.remove('drunk'); badge.remove(); try { localStorage.removeItem('rizz-drunk-until'); } catch (_) { /* */ } return; }
-    badge.textContent = `🍺 Zat · nog ${left}s`;
+    badge.textContent = 'Je bent sterrezat 🍺';
   };
   tick(); drunkTimer = setInterval(tick, 1000);
 }
@@ -3063,6 +3243,7 @@ const TABS = [
   { id: 'friends', label: 'Friends', short: 'Friends', icon: ICON('<circle cx="9" cy="8" r="3.5"/><path d="M2.5 20a6.5 6.5 0 0 1 13 0"/><circle cx="17" cy="9" r="2.6"/><path d="M15.5 14.2A5 5 0 0 1 21.5 19"/>'), badge: 'friend' },
   { id: 'battle', label: 'The Arena', short: 'Arena', icon: ICON('<path d="M14.5 17.5 3 6V3h3l11.5 11.5M13 19l6-6M16 16l4 4M19 21l2-2"/><path d="M9.5 17.5 21 6V3h-3L6.5 14.5M11 19l-6-6M8 16l-4 4M5 21l-2-2"/>'), badge: 'battle' },
   { id: 'casino', label: 'Casino', short: 'Casino', icon: ICON('<rect x="3" y="3" width="18" height="18" rx="4"/><circle cx="8" cy="8" r="1.3" fill="currentColor"/><circle cx="16" cy="16" r="1.3" fill="currentColor"/><circle cx="12" cy="12" r="1.3" fill="currentColor"/><circle cx="16" cy="8" r="1.3" fill="currentColor"/><circle cx="8" cy="16" r="1.3" fill="currentColor"/>') },
+  { id: 'bar', label: 'Food Truck', short: 'Truck', icon: ICON('<path d="M6 4h9l-1 16H7z"/><path d="M15 8h2.5a2.5 2.5 0 0 1 0 5H15"/><path d="M6.4 9h8.2"/>') },
   { id: 'trade', label: 'Black Market', short: 'Market', icon: ICON('<path d="M4 8h14l-4-4M20 16H6l4 4"/>'), badge: 'trade' },
   { id: 'shop', label: 'The Vault', short: 'Vault', icon: ICON('<rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="12" cy="12" r="3.5"/><path d="M12 8.5V7M15.5 12H17M12 15.5V17M8.5 12H7"/>') },
   { id: 'stats', label: 'Stats', short: 'Stats', icon: ICON('<path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/>') },
@@ -3186,6 +3367,10 @@ const INFO = {
     <li>Enkel vrienden kan je uitdagen in The Arena of een ruil voorstellen in de Black Market.</li>
     <li>Iemand verwijderen kan altijd; die persoon krijgt daar geen melding van.</li>
     <li>Groen bolletje = online, oranje = AFK (app open maar niets aan het doen), grijs = offline.</li></ul>`],
+  bar: ['De foodtruck', `
+    <p>Een pintje kost 1 credit. Na een paar pintjes ben je <strong>sterrezat</strong>: een minuut lang ziet alles er wazig uit en zwiert het scherm.</p>
+    <ul><li>Hoeveel pintjes het duurt, is elke keer anders (1 tot 5). Je weet het pas als het zover is.</li>
+    <li>Zolang je zat bent, krijg je geen nieuw pintje.</li></ul>`],
   casino: ['Het casino', `
     <p>Zet je credits in, telkens per 5 (minstens 5, hoogstens 50 per spel). Alle uitkomsten worden op de server getrokken.</p>
     <ul><li><strong>Blackjack</strong>: kom dichter bij 21 dan de dealer. Winst = 2× terug, blackjack = 2,5×, gelijk = inzet terug.</li>
@@ -3203,7 +3388,6 @@ const INFO = {
     <p>Besteed je credits — die verdien je met battles en met dubbele trekkingen.</p>
     <ul><li><strong>Pakjes</strong>: Basic Pack (1 kaart, 60 🪙) of Epic Pack (3 kaarten, de 3e gegarandeerd epic of legendary, 200 🪙).</li>
     <li><strong>Dubbels verkopen</strong>: common 15 · epic 40 · legendary 100 · detention 5 🪙 per extra exemplaar. Je houdt altijd 1 exemplaar.</li>
-    <li><strong>Een pintje</strong>: 1 credit. Drink er 5 en je bent een minuut zat: wazig scherm, alles zwiert.</li>
     </ul>`],
   trade: ['Traden', `
     <p>Stel een ruil voor aan een vriend. Je kiest zelf wat je aanbiedt en wat je vraagt, bijvoorbeeld <strong>2 commons voor 1 epic</strong>. Ook kaarten waarvan je er maar één hebt, kan je ruilen.</p>
@@ -3213,12 +3397,13 @@ const INFO = {
 };
 const infoBtn = key => `<button class="info-btn" type="button" data-info="${key}" aria-label="Uitleg">i</button>`;
 const KICKERS = { today: () => `Exam Hall · ${dateLabel()}`, house: () => 'Members only', campus: () => dateLabel(), book: () => 'Class of MMXXVI', stats: () => 'The numbers don\'t lie',
-  battle: () => 'Winner takes the credits', casino: () => 'The house always wins. Mostly.', friends: () => 'Ride or die', trade: () => 'No receipts. No refunds.',
+  battle: () => 'Winner takes the credits', bar: () => 'Open till late', casino: () => 'The house always wins. Mostly.', friends: () => 'Ride or die', trade: () => 'No receipts. No refunds.',
   shop: () => 'Credits only · no credit', ideas: () => 'Speak up or shut up' };
 const JOKES = {
   house: ['Doors lock at midnight. Nobody has a key.', 'What happens in the house stays on the wall.', 'Your room says more about you than your Wordle streak.'],
   today: ['One word. Six shots. Don\'t waste them.', 'Attendance is mandatory. Excuses are not accepted.', 'The envelope doesn\'t open itself.'],
   book: ['Nine cards per man. Most of them should be illegal.', 'Every page a legend. Some of them just don\'t know it yet.', 'Photos were taken without consent. Regrets were not accepted.'],
+  bar: ['One more never hurt anyone. Probably.', 'Hydrate. Or don\'t.', 'The truck closes when the last one falls.'],
   casino: ['Know when to walk away.', 'Fortune favours the bold. The bank favours the house.', 'Five credits at a time. That is how it starts.'],
   battle: ['Cards do the talking. Losers do the paying.', 'There\'s no participation trophy here.', 'Pick your three. Live with it.'],
   trade: ['Every deal is final. Read it twice.', 'Duplicates are currency. Spend them wisely.', 'Nobody trades a legendary. Prove us wrong.'],
@@ -3417,6 +3602,7 @@ const TUTORIAL = [
   { pin: 'house', title: 'Frat House', text: 'Elke gast heeft een kamer. Aan de muur hangen zijn 9 kaarten: wat jij al hebt, zie je; de rest blijft donker. Een verlicht raam betekent dat je al minstens één kaart van hem hebt.' },
   { pin: 'friends', title: 'The Quad', text: 'Voeg je vrienden toe met hun code of met de <b>+</b>. Van je vrienden zie je hun collectie, cijfers, F\'s en trofeeën. Enkel vrienden kan je uitdagen of mee ruilen.' },
   { pin: 'battle', title: 'The Arena', text: 'Kies 3 kaarten en vecht tegen de computer of een vriend. Elke ronde kies je geheim <b>Flex</b>, <b>Roast</b> of <b>Charm</b>: Flex wint van Charm, Charm van Roast, Roast van Flex. Winnen levert credits op.' },
+  { pin: 'bar', title: 'Food Truck', text: 'Een pintje voor 1 credit. Hoeveel je er aankan, is elke keer een verrassing.' },
   { pin: 'casino', title: 'Casino', text: 'Waag je kans met je credits: blackjack, roulette, de slotmachine of de paardenrace. Inzet per 5, en er is geen limiet: je kan alles winnen, of alles verliezen.' },
   { pin: 'trade', title: 'Black Market', text: 'Ruil kaarten met je vrienden. Je kiest zelf wat je biedt en vraagt, bijvoorbeeld 2 commons voor 1 epic.' },
   { pin: 'shop', title: 'The Vault', text: 'Geef je credits uit aan envelopes met nieuwe kaarten, of verkoop je dubbels voor credits. Je credits staan altijd rechtsboven.' },
@@ -3670,6 +3856,7 @@ function renderView() {
   else if (state.tab === 'stats') renderStats(view);
   else if (state.tab === 'friends') renderFriends(view);
   else if (state.tab === 'casino') renderCasino(view);
+  else if (state.tab === 'bar') renderBar(view);
   else if (state.tab === 'battle') renderBattle(view);
   else if (state.tab === 'trade') renderTrade(view);
   else if (state.tab === 'shop') renderShop(view);
@@ -3692,6 +3879,7 @@ const CAMPUS_PLACES = [
   { id: 'battle', name: 'The Arena', what: 'Battles', box: [3, 15, 31, 22], pin: [19, 35] },
   { id: 'house', name: 'Frat House', what: 'Kamers en vrienden', box: [70, 21.5, 14.5, 18.5], pin: [77, 42] },
   { id: 'casino', name: 'Casino', what: 'Blackjack, roulette en meer', box: [86.3, 25, 12.5, 17], pin: [92, 45.5] },
+  { id: 'bar', name: 'Food Truck', what: 'Een pintje voor 1 credit', box: [57, 45, 11, 10], pin: [63, 55] },
   { id: 'friends', name: 'The Quad', what: 'Friends', box: [45.5, 46.5, 9, 7], pin: [50, 57] },
   { id: 'stats', name: 'The Library', what: 'Stats', box: [0, 39, 22.7, 40], pin: [11.5, 80] },
   { id: 'trade', name: 'Black Market', what: 'Ruilen', box: [27.5, 69, 19.5, 20], pin: [37, 90.5] },
@@ -3746,6 +3934,7 @@ async function renderCampus(view) {
   setStatus('trade', state.incomingTrades ? `${state.incomingTrades} offer${state.incomingTrades > 1 ? 's' : ''} waiting` : 'Doors open', state.incomingTrades || '');
   setStatus('ideas', 'Speak up');
   setStatus('casino', 'Place your bets');
+  setStatus('bar', 'Pintjes · 1 credit');
   setStatus('house', `${collectionText()} collected`);
   if (!askPhotoOnCampus(view)) askPushOnCampus(view);
   // Trofeeën waarvan je de beloning nog kan ophalen
@@ -5443,12 +5632,6 @@ function renderShop(view) {
             <div class="shop-pack-info"><strong>${p.name}</strong><small>${p.desc}</small>
               <button class="btn small" data-buy-pack="${k}" type="button" ${state.wallet < p.price ? 'disabled' : ''}>Kopen · ${p.price} 🪙</button></div>
           </div>`).join('')}</div>
-        <div class="beer-box">
-          <div class="beer-glass" id="beerGlass" aria-hidden="true"><i></i><span></span></div>
-          <div class="beer-info"><strong>Een pintje</strong><small id="beerTxt">1 credit. Na 5 pintjes ben je een minuut zat.</small>
-            <span class="beer-count" id="beerCount">${[0, 1, 2, 3, 4].map(() => '<i></i>').join('')}</span>
-            <button class="btn small" id="buyBeer" type="button">Drink een pintje · 1 🪙</button></div>
-        </div>
       </div>
       <div>
         <h3>Dubbels verkopen</h3>
@@ -5489,25 +5672,6 @@ function renderShop(view) {
   });
 
 
-  // Pintje
-  const beerUi = n => {
-    $('#beerCount')?.querySelectorAll('i').forEach((el, i) => el.classList.toggle('on', i < n));
-    const t = $('#beerTxt'); if (t) t.textContent = n >= 5 ? 'Zat! Een minuut lang ziet alles er raar uit.' : n ? `${n}/5 op. ${5 - n === 1 ? 'Nog één en je bent zat.' : `Nog ${5 - n} tot je zat bent.`}` : '1 credit. Na 5 pintjes ben je een minuut zat.';
-  };
-  sb.from('beer_state').select('pints').eq('user_id', state.session.user.id).maybeSingle().then(({ data }) => beerUi(data?.pints || 0), () => {});
-  $('#buyBeer').onclick = async () => {
-    const b = $('#buyBeer'); b.disabled = true;
-    const { data, error } = await sb.rpc('buy_beer');
-    if (error) { msg(error.message); b.disabled = false; return; }
-    setWallet(data.wallet);
-    const g = $('#beerGlass'); g.classList.remove('drink'); void g.offsetWidth; g.classList.add('drink');
-    await sleep(prefersReduced() ? 50 : 900);
-    if (data.drunk_ms > 0) { beerUi(5); msg('Proost! Je bent zat…', true); goDrunk(data.drunk_ms); setTimeout(() => beerUi(0), 1500); }
-    else { beerUi(data.pints); msg(['Proost!', 'Santé!', 'Ad fundum!', 'Cheers!'][data.pints % 4], true); }
-    setTimeout(() => g.classList.remove('drink'), 700);
-    b.disabled = false;
-  };
-
   view.querySelectorAll('[data-sell]').forEach(b => b.onclick = async () => {
     const c = cardById(b.dataset.sell), n = Number(b.dataset.count);
     if (n > 1 && !confirm(`${n} exemplaren van "${c.name}" verkopen voor ${n * SHOP.sell[c.rarity]} credits?`)) return;
@@ -5518,6 +5682,43 @@ function renderShop(view) {
     state.owned.set(c.id, state.owned.get(c.id) - data.sold);
     renderShop(view);
     msg(`Verkocht: ${data.sold}× "${c.name}" voor ${data.earned} credits.`, true);
+  });
+}
+
+// ---------- Food Truck: een pintje (supabase/update-21-pintje-random.sql) ----------
+function renderBar(view) {
+  view.innerHTML = `<section class="col bar-page" style="max-width:none">
+    ${pageHead('Food Truck', 'bar')}
+    <div class="bar-stage">
+      <div class="bar-glass" aria-hidden="true"><div class="bar-beer"><i></i><i></i><i></i><i></i></div><div class="bar-foam"></div><span class="bar-handle"></span></div>
+      <div class="bar-side">
+        <strong>Een vers pintje</strong>
+        <small>1 credit. Hoeveel je er aankan voor je sterrezat bent? Dat zie je wel.</small>
+        <button class="btn" id="buyBeer" type="button">Drink een pintje · 1 🪙</button>
+        <p class="msg" id="barMsg" role="status"></p>
+      </div>
+    </div>
+  </section>`;
+  const btn = $('#buyBeer'), m = $('#barMsg');
+  if (document.body.classList.contains('drunk')) { m.textContent = 'Je bent sterrezat. Even wachten…'; }
+  btn.onclick = async () => {
+    btn.disabled = true; m.className = 'msg'; m.textContent = '';
+    const { data, error } = await sb.rpc('buy_beer');
+    if (error) { m.className = 'msg err'; m.textContent = error.message; btn.disabled = false; return; }
+    setWallet(data.wallet);
+    await chugScreen();
+    if (data.drunk_ms > 0) { m.className = 'msg'; m.textContent = 'Je bent sterrezat.'; goDrunk(data.drunk_ms); }
+    else { m.className = 'msg ok'; m.textContent = ['Proost!', 'Santé!', 'Ad fundum!', 'Cheers!', 'Gezondheid!'][data.total % 5]; }
+    btn.disabled = false;
+  };
+}
+// Volledig scherm: een pint die leegloopt
+function chugScreen() {
+  if (prefersReduced()) return Promise.resolve();
+  return new Promise(res => {
+    document.body.insertAdjacentHTML('beforeend', `<div class="chug" aria-hidden="true"><div class="chug-beer">${'<i></i>'.repeat(14)}</div><div class="chug-foam"></div><b class="chug-txt">${['PROOST!', 'AD FUNDUM!', 'SANTÉ!', 'CHEERS!'][Math.floor(Math.random() * 4)]}</b></div>`);
+    const el = document.body.lastElementChild;
+    setTimeout(() => { el.classList.add('out'); setTimeout(() => { el.remove(); res(); }, 350); }, 1900);
   });
 }
 
@@ -6166,26 +6367,35 @@ async function renderCasino(view) {
       ${tile('horses', '<span class="cz-ic">🏇</span>', 'Paardenrace', 'Kies je paard, tot 10× je inzet')}
     </div>
 
-    ${pop('bj', 'Blackjack', `<div class="cz-bj"><div class="bj-deck" id="czDeck" aria-hidden="true"><span></span><span></span><span></span></div>
+    ${pop('bj', 'Blackjack', `<div class="cz-bj cz-felt"><div class="bj-deck" id="czDeck" aria-hidden="true"><span></span><span></span><span></span></div>
+      <div class="felt-arc">BLACKJACK PAYS 3 TO 2 · DEALER STANDS ON 17</div>
       <div class="cz-bj-row"><span class="cz-lbl">Dealer <b id="bjDt"></b></span><div class="bj-cards" id="bjD"></div></div>
-      <div class="cz-bj-row"><span class="cz-lbl">Jij <b id="bjPt"></b></span><div class="bj-cards" id="bjP"></div></div>
+      <div class="cz-bj-row"><span class="cz-lbl">Jij <b id="bjPt"></b></span><div class="bj-cards" id="bjP"></div><div class="chip-stack" id="bjChips"></div></div>
       <div class="cz-ctrl">${betHtml}<span class="cz-btns" id="bjBtns"></span></div></div>`)}
     ${pop('roul', 'Roulette', `<div class="cz-roul">
-      <div class="cz-wheel-wrap"><div class="cz-pointer"></div><div class="cz-wheel" id="czWheel"></div><div class="cz-ball" id="czBall">?</div></div>
+      <div class="cz-wheel-wrap"><div class="cz-wheel-rim"></div><div class="cz-wheel" id="czWheel"></div><div class="cz-wheel-hub"></div>
+        <div class="cz-balltrack" id="czBallTrack"><i class="cz-ballx" id="czBallX"></i></div><div class="cz-pointer"></div>
+        <div class="cz-result" id="czBall"></div></div>
       <div class="cz-rbets">
-        <div class="cz-kinds">${[['red', 'Rood'], ['black', 'Zwart'], ['even', 'Even'], ['odd', 'Oneven'], ['low', '1 – 18'], ['high', '19 – 36'], ['number', 'Getal']].map(([k, l]) => `<button type="button" class="cz-kind k-${k}${czState.rkind === k ? ' on' : ''}" data-kind="${k}">${l}</button>`).join('')}</div>
-        <label class="cz-num" ${czState.rkind === 'number' ? '' : 'hidden'}>Getal (0 – 36) <input type="number" min="0" max="36" id="czNum" value="${czState.rnum}"></label>
-        <small class="hint">Rood, zwart, even, oneven, 1–18, 19–36: 2× terug. Eén getal: 36× terug. Valt de bal op 0, dan wint het huis.</small>
-        <div class="cz-ctrl">${betHtml}<button type="button" class="btn small" id="czSpin">Draaien</button></div>
+        <div class="cz-board">${[['red', 'Rood', '2×'], ['black', 'Zwart', '2×'], ['even', 'Even', '2×'], ['odd', 'Oneven', '2×'], ['low', '1 – 18', '2×'], ['high', '19 – 36', '2×'], ['number', 'Eén getal', '36×']].map(([k, l, x]) => `<button type="button" class="cz-kind k-${k}${czState.rkind === k ? ' on' : ''}" data-kind="${k}"><span>${l}</span><small>${x}</small><i class="chip"></i></button>`).join('')}</div>
+        <label class="cz-num" ${czState.rkind === 'number' ? '' : 'hidden'}>Jouw getal <button type="button" class="cz-nb" data-nd="-1">−</button><input type="number" min="0" max="36" id="czNum" value="${czState.rnum}"><button type="button" class="cz-nb" data-nd="1">+</button></label>
+        <small class="hint">Valt de bal op de groene 0, dan wint het huis.</small>
+        <div class="cz-ctrl">${betHtml}<button type="button" class="btn" id="czSpin">Draaien</button></div>
       </div></div>`)}
     ${pop('slots', 'Slotmachine', `<div class="cz-slots">
-      <div class="cz-reels">${[0, 1, 2].map(i => `<div class="cz-reel" id="czR${i}">${CZ_SYM.R}</div>`).join('')}</div>
-      <div class="cz-pay"><span>${CZ_SYM.R}×3 <b>60×</b></span><span>👑×3 <b>25×</b></span><span>💎×3 <b>15×</b></span><span>🔔×3 <b>10×</b></span><span>🍋×3 <b>6×</b></span><span>🍒×3 <b>5×</b></span><span>🍒🍒 <b>2×</b></span><span>🍒 <b>0,4×</b></span></div>
-      <div class="cz-ctrl">${betHtml}<button type="button" class="btn small" id="czPull">Trekken</button></div></div>`)}
+      <div class="slot-cab">
+        <div class="slot-marquee"><span class="slot-title">RIZZ <em>JACKPOT</em></span></div>
+        <div class="slot-bulbs" aria-hidden="true">${'<i></i>'.repeat(22)}</div>
+        <div class="slot-window">${[0, 1, 2].map(i => `<div class="cz-reel" id="czR${i}"><div class="reel-strip"><div class="reel-cell">${CZ_SYM.R}</div></div></div>`).join('')}<i class="slot-line"></i></div>
+        <div class="cz-pay"><span>${CZ_SYM.R}${CZ_SYM.R}${CZ_SYM.R} <b>60×</b></span><span>👑👑👑 <b>25×</b></span><span>💎💎💎 <b>15×</b></span><span>🔔🔔🔔 <b>10×</b></span><span>🍋🍋🍋 <b>6×</b></span><span>🍒🍒🍒 <b>5×</b></span><span>🍒🍒 <b>2×</b></span></div>
+        <div class="cz-ctrl">${betHtml}<button type="button" class="btn" id="czPull">Spin</button></div>
+      </div>
+      <button type="button" class="slot-lever" id="czLever" aria-label="Hendel"><i></i></button>
+    </div>`)}
     ${pop('horses', 'Paardenrace', `<div class="cz-race">
-      <div class="cz-track" id="czTrack">${CZ_HORSES.map(h => `<div class="cz-lane"><span class="cz-hn" style="--c:${h.col}">${h.n}</span><span class="cz-horse" data-h="${h.n}">🏇</span></div>`).join('')}<i class="cz-finish"></i></div>
+      <div class="cz-track" id="czTrack"><div class="cz-crowd" aria-hidden="true"></div>${CZ_HORSES.map(h => `<div class="cz-lane"><span class="cz-hn" style="--c:${h.col}">${h.n}</span><span class="cz-horse" data-h="${h.n}" style="--c:${h.col}"><b>🏇</b><i class="cz-dust"></i></span></div>`).join('')}<i class="cz-finish"></i><div class="cz-count" id="czCount"></div><div class="cz-flash" id="czFlash"></div></div>
       <div class="cz-picks">${CZ_HORSES.map(h => `<button type="button" class="cz-pick${czState.horse === h.n ? ' on' : ''}" data-horse="${h.n}" style="--c:${h.col}"><b>${h.n}. ${h.name}</b><small>${String(h.x).replace('.', ',')}×</small></button>`).join('')}</div>
-      <div class="cz-ctrl">${betHtml}<button type="button" class="btn small" id="czRace">Start de race</button></div></div>`)}
+      <div class="cz-ctrl">${betHtml}<button type="button" class="btn" id="czRace">Start de race</button></div></div>`)}
   </section>`;
 
   // Pop-ups
@@ -6210,84 +6420,124 @@ async function renderCasino(view) {
   };
   const busy = (on, ...btns) => btns.forEach(b => { if (b) b.disabled = on; });
 
-  // --- Slotmachine ---
-  $('#czPull').onclick = async () => {
-    const btn = $('#czPull'); busy(true, btn); say('slots', '');
-    const reels = [0, 1, 2].map(i => $(`#czR${i}`));
-    const keys = Object.keys(CZ_SYM);
-    reels.forEach(r => r.classList.add('spin'));
-    const spin = setInterval(() => reels.forEach(r => { if (r.classList.contains('spin')) r.innerHTML = CZ_SYM[keys[Math.floor(Math.random() * keys.length)]]; }), 70);
-    const { data: r, error: e } = await sb.rpc('casino_slots', { p_bet: czState.bet });
-    if (e) { clearInterval(spin); reels.forEach(x => x.classList.remove('spin')); say('slots', esc(e.message), 'err'); busy(false, btn); return; }
-    for (let i = 0; i < 3; i++) { await sleep(450 + i * 250); reels[i].classList.remove('spin'); reels[i].innerHTML = CZ_SYM[r.reels[i]]; }
-    clearInterval(spin);
-    after(r);
-    say('slots', r.payout ? `${r.mult >= 5 ? 'JACKPOT! ' : ''}${outcome(r)}` : `Niets. ${outcome(r)}`, r.payout > r.bet ? 'ok' : '');
-    if (r.mult >= 10) window.celebrate?.('legendary'); else if (r.mult >= 5) window.celebrate?.('epic');
-    busy(false, btn);
+  // Munten die over het scherm regenen bij winst
+  const coinRain = (n = 30) => {
+    if (prefersReduced()) return;
+    const box = document.createElement('div'); box.className = 'coin-rain';
+    box.innerHTML = Array.from({ length: n }, () => `<i style="left:${Math.random() * 100}%;animation-delay:${Math.random() * .7}s;animation-duration:${1.4 + Math.random()}s"></i>`).join('');
+    document.body.appendChild(box); setTimeout(() => box.remove(), 2800);
   };
 
-  // --- Roulette ---
+  // --- Slotmachine: echte rollen die draaien en één voor één stoppen ---
+  const SYMK = Object.keys(CZ_SYM);
+  const pull = async () => {
+    const btn = $('#czPull'), lever = $('#czLever');
+    if (btn.disabled) return;
+    busy(true, btn, lever); say('slots', '');
+    lever.classList.remove('pull'); void lever.offsetWidth; lever.classList.add('pull');
+    const cab = view.querySelector('.slot-cab'); cab.classList.remove('win', 'big'); cab.classList.add('spinning');
+    const { data: r, error: e } = await sb.rpc('casino_slots', { p_bet: czState.bet });
+    if (e) { cab.classList.remove('spinning'); say('slots', esc(e.message), 'err'); busy(false, btn, lever); return; }
+    const N = 26;
+    await Promise.all([0, 1, 2].map(i => new Promise(res => {
+      const strip = $(`#czR${i} .reel-strip`);
+      const cur = strip.lastElementChild.innerHTML;
+      const cells = [cur, ...Array.from({ length: N - 2 }, () => CZ_SYM[SYMK[Math.floor(Math.random() * SYMK.length)]]), CZ_SYM[r.reels[i]]];
+      strip.innerHTML = cells.map(c => `<div class="reel-cell">${c}</div>`).join('');
+      strip.style.transition = 'none'; strip.style.transform = 'translateY(0)'; strip.getBoundingClientRect();
+      const dur = prefersReduced() ? .05 : 1.3 + i * .55;
+      strip.style.transition = `transform ${dur}s cubic-bezier(.15,.6,.25,1.04)`;
+      strip.style.transform = `translateY(-${(N - 1) / N * 100}%)`;
+      setTimeout(() => { $(`#czR${i}`).classList.add('stop'); setTimeout(() => $(`#czR${i}`)?.classList.remove('stop'), 300); res(); }, dur * 1000);
+    })));
+    // terug naar één cel zodat het volgende spel er vanaf start
+    [0, 1, 2].forEach(i => { const strip = $(`#czR${i} .reel-strip`); strip.style.transition = 'none'; strip.style.transform = 'none'; strip.innerHTML = `<div class="reel-cell">${CZ_SYM[r.reels[i]]}</div>`; });
+    cab.classList.remove('spinning');
+    after(r);
+    if (r.payout > r.bet) { cab.classList.add('win'); if (r.mult >= 5) cab.classList.add('big'); coinRain(r.mult >= 10 ? 60 : 25); }
+    say('slots', r.payout ? `${r.mult >= 5 ? 'JACKPOT! ' : ''}${outcome(r)}` : `Niets. ${outcome(r)}`, r.payout > r.bet ? 'ok' : '');
+    if (r.mult >= 10) window.celebrate?.('legendary'); else if (r.mult >= 5) window.celebrate?.('epic');
+    busy(false, btn, lever);
+  };
+  $('#czPull').onclick = pull; $('#czLever').onclick = pull;
+
+  // --- Roulette: wiel en bal draaien in tegengestelde richting ---
   const wheel = $('#czWheel'), seg = 360 / 37;
   wheel.style.background = `conic-gradient(${CZ_WHEEL.map((n, i) => `${n === 0 ? '#1E7A46' : CZ_RED.has(n) ? '#B3122E' : '#141821'} ${i * seg}deg ${(i + 1) * seg}deg`).join(',')})`;
   wheel.innerHTML = CZ_WHEEL.map((n, i) => `<span style="transform:rotate(${(i + .5) * seg}deg)"><i>${n}</i></span>`).join('');
-  let rot = 0;
+  let rot = 0, brot = 0;
   view.querySelectorAll('[data-kind]').forEach(b => b.onclick = () => {
     czState.rkind = b.dataset.kind;
     view.querySelectorAll('[data-kind]').forEach(x => x.classList.toggle('on', x === b));
     view.querySelector('.cz-num').hidden = czState.rkind !== 'number';
   });
+  view.querySelectorAll('[data-nd]').forEach(b => b.onclick = () => { const n = $('#czNum'); n.value = clamp((Number(n.value) || 0) + Number(b.dataset.nd), 0, 36); });
   $('#czSpin').onclick = async () => {
     const btn = $('#czSpin'); busy(true, btn); say('roul', '');
     const num = clamp(Math.round(Number($('#czNum').value) || 0), 0, 36); czState.rnum = num; $('#czNum').value = num;
     const { data: r, error: e } = await sb.rpc('casino_roulette', { p_bet: czState.bet, p_kind: czState.rkind, p_number: czState.rkind === 'number' ? num : null });
     if (e) { say('roul', esc(e.message), 'err'); busy(false, btn); return; }
     const idx = CZ_WHEEL.indexOf(r.number);
-    rot = rot - (rot % 360) + 360 * 5 + (360 - (idx + .5) * seg);
-    const ball = $('#czBall'); ball.textContent = '…'; ball.className = 'cz-ball';
-    wheel.style.transform = `rotate(${rot}deg)`;
-    await sleep(prefersReduced() ? 50 : 3600);
-    ball.textContent = r.number; ball.className = `cz-ball c-${r.color}`;
+    rot = rot - (rot % 360) + 360 * 4 + (360 - (idx + .5) * seg);
+    brot = brot - (brot % 360) - 360 * 7;
+    const res = $('#czBall'); res.className = 'cz-result'; res.textContent = '';
+    const track = $('#czBallTrack'), bx = $('#czBallX');
+    bx.classList.remove('drop'); void bx.offsetWidth; bx.classList.add('drop');
+    const T = prefersReduced() ? .05 : 4.4;
+    wheel.style.transition = `transform ${T}s cubic-bezier(.12,.62,.2,1)`; wheel.style.transform = `rotate(${rot}deg)`;
+    track.style.transition = `transform ${T}s cubic-bezier(.2,.55,.3,1)`; track.style.transform = `rotate(${brot}deg)`;
+    await sleep(T * 1000 + 150);
+    res.textContent = r.number; res.className = `cz-result show c-${r.color}`;
     after(r);
+    view.querySelector('.cz-board .on')?.classList.toggle('won', !!r.win);
+    setTimeout(() => view.querySelector('.cz-board .won')?.classList.remove('won'), 1800);
     say('roul', `${r.number} ${r.color === 'red' ? 'rood' : r.color === 'black' ? 'zwart' : 'groen'}. ${outcome(r)}`, r.win ? 'ok' : '');
+    if (r.win) coinRain(r.kind === 'number' ? 70 : 25);
     if (r.win && r.kind === 'number') window.celebrate?.('legendary');
     busy(false, btn);
   };
 
-  // --- Paardenrace ---
+  // --- Paardenrace: aftellen, galop, stof en een fotofinish ---
   view.querySelectorAll('[data-horse]').forEach(b => b.onclick = () => {
     czState.horse = Number(b.dataset.horse);
     view.querySelectorAll('[data-horse]').forEach(x => x.classList.toggle('on', x === b));
   });
   $('#czRace').onclick = async () => {
     const btn = $('#czRace'); busy(true, btn, ...view.querySelectorAll('[data-horse]')); say('horses', '');
-    const horses = [...view.querySelectorAll('.cz-horse')];
-    horses.forEach(h => { h.style.left = '0%'; h.classList.remove('first'); });
+    const track = $('#czTrack'), horses = [...view.querySelectorAll('.cz-horse')];
+    horses.forEach(h => { h.style.left = '0%'; h.classList.remove('first', 'mine'); });
+    view.querySelector(`.cz-horse[data-h="${czState.horse}"]`)?.classList.add('mine');
     const { data: r, error: e } = await sb.rpc('casino_horses', { p_bet: czState.bet, p_horse: czState.horse });
     if (e) { say('horses', esc(e.message), 'err'); busy(false, btn, ...view.querySelectorAll('[data-horse]')); return; }
-    // Finishtijden volgens de volgorde van de server; onderweg wat spannend heen en weer
-    const T = prefersReduced() ? 300 : 5200;
-    const finish = {}; r.order.forEach((n, i) => { finish[n] = T * (1 + i * .055 + Math.random() * .02); });
-    const wob = Object.fromEntries(CZ_HORSES.map(h => [h.n, [Math.random() * 6, 1.5 + Math.random() * 2]]));
+    const cnt = $('#czCount');
+    if (!prefersReduced()) for (const t of ['3', '2', '1', 'GO!']) { cnt.textContent = t; cnt.classList.remove('pop'); void cnt.offsetWidth; cnt.classList.add('pop'); await sleep(t === 'GO!' ? 450 : 650); }
+    cnt.textContent = '';
+    track.classList.add('running');
+    const T = prefersReduced() ? 300 : 6200;
+    const finish = {}; r.order.forEach((n, i) => { finish[n] = T * (1 + i * .05 + Math.random() * .02); });
+    const wob = Object.fromEntries(CZ_HORSES.map(h => [h.n, [Math.random() * 6, 1.5 + Math.random() * 2.5]]));
     const t0 = performance.now();
     await new Promise(res => {
       const step = now => {
         const t = now - t0; let all = true;
         for (const h of horses) {
           const n = Number(h.dataset.h), f = finish[n], p = Math.min(1, t / f);
-          const w = Math.sin(p * Math.PI * wob[n][1] + wob[n][0]) * 4 * (1 - p) * p * 4;
-          h.style.left = `${Math.max(0, Math.min(100, p * 100 + w)) * .88}%`;
+          const w = Math.sin(p * Math.PI * wob[n][1] + wob[n][0]) * 5 * (1 - p) * p * 4;
+          h.style.left = `${Math.max(0, Math.min(100, p * 100 + w)) * .86}%`;
+          h.classList.toggle('done', p >= 1);
           if (p < 1) all = false;
         }
         if (!all && $('#czTrack')) requestAnimationFrame(step); else res();
       };
       requestAnimationFrame(step);
     });
+    track.classList.remove('running');
+    const fl = $('#czFlash'); fl.classList.remove('go'); void fl.offsetWidth; fl.classList.add('go');
     view.querySelector(`.cz-horse[data-h="${r.winner}"]`)?.classList.add('first');
     after(r);
     const w = CZ_HORSES.find(h => h.n === r.winner);
-    say('horses', `${w.n}. ${esc(w.name)} wint! ${outcome(r)}`, r.payout ? 'ok' : '');
-    if (r.payout) window.celebrate?.('epic');
+    say('horses', `📸 Fotofinish: ${w.n}. ${esc(w.name)} wint! ${outcome(r)}`, r.payout ? 'ok' : '');
+    if (r.payout) { coinRain(40); window.celebrate?.('epic'); }
     busy(false, btn, ...view.querySelectorAll('[data-horse]'));
   };
 
@@ -6312,6 +6562,7 @@ async function renderCasino(view) {
       btns.innerHTML = h.done ? '<button type="button" class="btn small" data-bj="deal">Nieuwe hand</button>'
         : `<button type="button" class="btn small" data-bj="hit">Hit</button><button type="button" class="btn small ghost" data-bj="stand">Stand</button>${h.can_double ? '<button type="button" class="btn small ghost" data-bj="double">Double</button>' : ''}`;
     }
+    const cs = $('#bjChips'); if (cs) { const n = Math.round((h?.bet || czState.bet) / 5); cs.innerHTML = Array.from({ length: Math.min(n, 12) }, (_, i) => `<i style="--i:${i}"></i>`).join('') + `<b>${h?.bet || czState.bet}</b>`; }
     btns.querySelectorAll('[data-bj]').forEach(b => b.onclick = () => bjDo(b.dataset.bj));
   }
   async function bjDo(act) {
@@ -6340,6 +6591,7 @@ async function renderCasino(view) {
       for (const c of r.dealer.slice(2)) { dealCardInto(D, bjCardHtml(c), deck); await pause(560); }
     }
     drawBj(r, false);
+    if (r.done && r.payout > r.bet) coinRain(r.outcome === 'blackjack' ? 50 : 20);
     if (r.resumed) say('bj', 'Je vorige hand lag nog open. Speel ze eerst uit.');
     if (r.done) {
       after(r);
