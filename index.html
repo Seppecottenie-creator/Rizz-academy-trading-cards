@@ -2504,6 +2504,23 @@ dialog.ar-pop::backdrop{background:transparent}
 .adm-g.on{background:#F2CC72;color:#1A1408;border-color:#F2CC72}
 @media (min-width:600px) and (max-height:500px){.adm-bar{margin-top:5px;padding:4px 6px;gap:4px}.adm-g{padding:3px 7px;font-size:10.5px}}
 .bj-wait{font:600 13px var(--body);color:var(--ink-soft);font-style:italic}
+/* Pintje */
+.beer-box{display:flex;align-items:center;gap:14px;margin-top:12px;padding:12px 14px;border-radius:14px;background:rgba(14,19,38,.84);border:1px solid rgba(233,201,120,.3)}
+.beer-glass{position:relative;width:40px;height:58px;flex-shrink:0;border:3px solid rgba(255,255,255,.75);border-top:0;border-radius:0 0 8px 8px;overflow:hidden;background:rgba(255,255,255,.08)}
+.beer-glass i{position:absolute;left:0;right:0;bottom:0;height:78%;background:linear-gradient(180deg,#F6C243,#D98E1A)}
+.beer-glass span{position:absolute;left:-2px;right:-2px;top:16%;height:14%;background:#FFF8E6;border-radius:6px}
+.beer-glass.drink i{animation:beer-down .9s ease-in both}.beer-glass.drink span{animation:foam-down .9s ease-in both}
+@keyframes beer-down{to{height:0}}@keyframes foam-down{to{top:96%;opacity:0}}
+.beer-info{display:grid;gap:4px;min-width:0}.beer-info small{color:var(--ink-soft)}
+.beer-info .btn{justify-self:start}
+.beer-count{display:flex;gap:4px}.beer-count i{width:14px;height:18px;border-radius:2px 2px 4px 4px;border:1.5px solid rgba(255,255,255,.35)}
+.beer-count i.on{background:linear-gradient(180deg,#FFF8E6 0 25%,#F6C243 25%);border-color:#F6C243}
+body.drunk .shell{animation:drunk-sway 3.2s ease-in-out infinite;filter:blur(1.6px) saturate(1.6) hue-rotate(-12deg)}
+body.drunk .place-bg,body.drunk .campus-map{animation:drunk-double 2.4s ease-in-out infinite}
+@keyframes drunk-sway{0%,100%{transform:rotate(0) translate(0,0)}25%{transform:rotate(1.2deg) translate(6px,3px)}50%{transform:rotate(-.6deg) translate(-4px,5px)}75%{transform:rotate(-1.3deg) translate(-7px,-2px)}}
+@keyframes drunk-double{0%,100%{box-shadow:none;filter:none}50%{filter:drop-shadow(14px 6px 0 rgba(255,255,255,.18)) drop-shadow(-10px -4px 0 rgba(255,120,160,.15))}}
+.drunk-badge{position:fixed;left:50%;bottom:14px;transform:translateX(-50%);z-index:4000;padding:6px 14px;border-radius:999px;background:rgba(246,194,67,.95);color:#2A1A05;font:700 13px var(--body);box-shadow:0 8px 20px -6px #000}
+@media (prefers-reduced-motion:reduce){body.drunk .shell,body.drunk .place-bg,body.drunk .campus-map{animation:none}}
 </style>
 </head>
 <body>
@@ -2562,6 +2579,24 @@ const state = { startTab: START_TAB, photos: new Map(), session: null, recovery:
 
 // Werkt alle plekken bij die het saldo, de collectie en de streak tonen (scorebord, shop)
 // Admin heeft oneindig geld (supabase/update-17-admin-test.sql)
+// Zat: scherm wazig en zwierig, 1 minuut (ook na herladen, via localStorage)
+let drunkTimer = null;
+function goDrunk(ms) {
+  const until = Date.now() + ms;
+  try { localStorage.setItem('rizz-drunk-until', String(until)); } catch (_) { /* geen opslag */ }
+  document.body.classList.add('drunk');
+  let badge = document.getElementById('drunkBadge');
+  if (!badge) { document.body.insertAdjacentHTML('beforeend', '<div class="drunk-badge" id="drunkBadge"></div>'); badge = document.getElementById('drunkBadge'); }
+  clearInterval(drunkTimer);
+  const tick = () => {
+    const left = Math.ceil((until - Date.now()) / 1000);
+    if (left <= 0) { clearInterval(drunkTimer); document.body.classList.remove('drunk'); badge.remove(); try { localStorage.removeItem('rizz-drunk-until'); } catch (_) { /* */ } return; }
+    badge.textContent = `🍺 Zat · nog ${left}s`;
+  };
+  tick(); drunkTimer = setInterval(tick, 1000);
+}
+try { const u = Number(localStorage.getItem('rizz-drunk-until')); if (u > Date.now()) { if (document.readyState === 'loading') addEventListener('DOMContentLoaded', () => goDrunk(u - Date.now())); else setTimeout(() => goDrunk(u - Date.now()), 0); } } catch (_) { /* */ }
+
 const coinText = () => (state.isAdmin ? '∞' : String(state.wallet));
 function syncCoinUI() {
   document.querySelectorAll('[data-coin]').forEach(el => { el.textContent = coinText(); });
@@ -3159,6 +3194,7 @@ const INFO = {
     <p>Besteed je credits — die verdien je met battles en met dubbele trekkingen.</p>
     <ul><li><strong>Pakjes</strong>: Basic Pack (1 kaart, 60 🪙) of Epic Pack (3 kaarten, de 3e gegarandeerd epic of legendary, 200 🪙).</li>
     <li><strong>Dubbels verkopen</strong>: common 15 · epic 40 · legendary 100 · detention 5 🪙 per extra exemplaar. Je houdt altijd 1 exemplaar.</li>
+    <li><strong>Een pintje</strong>: 1 credit. Drink er 5 en je bent een minuut zat: wazig scherm, alles zwiert.</li>
     </ul>`],
   trade: ['Traden', `
     <p>Stel een ruil voor aan een vriend. Je kiest zelf wat je aanbiedt en wat je vraagt, bijvoorbeeld <strong>2 commons voor 1 epic</strong>. Ook kaarten waarvan je er maar één hebt, kan je ruilen.</p>
@@ -5360,6 +5396,12 @@ function renderShop(view) {
             <div class="shop-pack-info"><strong>${p.name}</strong><small>${p.desc}</small>
               <button class="btn small" data-buy-pack="${k}" type="button" ${state.wallet < p.price ? 'disabled' : ''}>Kopen · ${p.price} 🪙</button></div>
           </div>`).join('')}</div>
+        <div class="beer-box">
+          <div class="beer-glass" id="beerGlass" aria-hidden="true"><i></i><span></span></div>
+          <div class="beer-info"><strong>Een pintje</strong><small id="beerTxt">1 credit. Na 5 pintjes ben je een minuut zat.</small>
+            <span class="beer-count" id="beerCount">${[0, 1, 2, 3, 4].map(() => '<i></i>').join('')}</span>
+            <button class="btn small" id="buyBeer" type="button">Drink een pintje · 1 🪙</button></div>
+        </div>
       </div>
       <div>
         <h3>Dubbels verkopen</h3>
@@ -5399,6 +5441,25 @@ function renderShop(view) {
     $('#packClose').onclick = () => { dlg.close(); renderShop(view); };
   });
 
+
+  // Pintje
+  const beerUi = n => {
+    $('#beerCount')?.querySelectorAll('i').forEach((el, i) => el.classList.toggle('on', i < n));
+    const t = $('#beerTxt'); if (t) t.textContent = n >= 5 ? 'Zat! Een minuut lang ziet alles er raar uit.' : n ? `${n}/5 op. ${5 - n === 1 ? 'Nog één en je bent zat.' : `Nog ${5 - n} tot je zat bent.`}` : '1 credit. Na 5 pintjes ben je een minuut zat.';
+  };
+  sb.from('beer_state').select('pints').eq('user_id', state.session.user.id).maybeSingle().then(({ data }) => beerUi(data?.pints || 0), () => {});
+  $('#buyBeer').onclick = async () => {
+    const b = $('#buyBeer'); b.disabled = true;
+    const { data, error } = await sb.rpc('buy_beer');
+    if (error) { msg(error.message); b.disabled = false; return; }
+    setWallet(data.wallet);
+    const g = $('#beerGlass'); g.classList.remove('drink'); void g.offsetWidth; g.classList.add('drink');
+    await sleep(prefersReduced() ? 50 : 900);
+    if (data.drunk_ms > 0) { beerUi(5); msg('Proost! Je bent zat…', true); goDrunk(data.drunk_ms); setTimeout(() => beerUi(0), 1500); }
+    else { beerUi(data.pints); msg(['Proost!', 'Santé!', 'Ad fundum!', 'Cheers!'][data.pints % 4], true); }
+    setTimeout(() => g.classList.remove('drink'), 700);
+    b.disabled = false;
+  };
 
   view.querySelectorAll('[data-sell]').forEach(b => b.onclick = async () => {
     const c = cardById(b.dataset.sell), n = Number(b.dataset.count);
