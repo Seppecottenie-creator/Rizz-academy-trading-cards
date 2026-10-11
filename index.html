@@ -3104,7 +3104,7 @@ const INFO = {
   today: ['Het lessenrooster', `
     <p>Elke dag (Belgische tijd) staat er een ander vak op het rooster, met een eigen spel. Je hebt <strong>één poging per dag</strong>.</p>
     <ul><li><strong>Ma</strong> English: de Wordle · <strong>Di</strong> Math: Speed Math · <strong>Wo</strong> Phys. Ed.: Free Throws · <strong>Do</strong> History: Which Came First? · <strong>Vr</strong> Physics: Cannon Shot</li>
-    <li><strong>Za en Zo</strong>: geen school, dus party games: Darts en Blackjack.</li>
+    <li><strong>Za en Zo</strong>: geen school, dus party games: Beer Pong en Blackjack.</li>
     <li>Je score wordt een cijfer. Hoe beter het cijfer, hoe groter de kans op een zeldzame kaart. Een <strong>F</strong> = gebuisd: geen kaart, en iedereen ziet hoeveel F's je hebt.</li>
     <li>Wie een spel start en het niet afmaakt (pagina herladen of weggaan), krijgt een F.</li></ul>
     <table class="odds-table">
@@ -3367,7 +3367,7 @@ function resizeImageToDataUrl(file, maxSize = 200) {
 // Bijgehouden in de gebruikersgegevens van Supabase (en op het toestel), opnieuw te bekijken via Account.
 const TUTORIAL = [
   { pin: null, title: 'Welkom op Rizz Academy', text: 'Verzamel de kaarten van de 13 gasten van de groep: 117 kaarten, van common tot legendary. Deze campuskaart is je hoofdmenu: tik op een gebouw om erheen te gaan. Met de gouden <b>Campus</b>-knop kom je altijd terug.' },
-  { pin: 'today', title: 'Exam Hall', text: 'Elke dag één examen, elke dag een ander spel: Wordle, Speed Math, Free Throws, History, Cannon Shot, en in het weekend Darts en Blackjack. Je score wordt een cijfer van <b>A</b> tot <b>F</b>. Hoe beter je cijfer, hoe groter de kans op een zeldzame kaart. Een F = geen kaart. Eén poging per dag.' },
+  { pin: 'today', title: 'Exam Hall', text: 'Elke dag één examen, elke dag een ander spel: Wordle, Speed Math, Free Throws, History, Cannon Shot, en in het weekend Beer Pong en Blackjack. Je score wordt een cijfer van <b>A</b> tot <b>F</b>. Hoe beter je cijfer, hoe groter de kans op een zeldzame kaart. Een F = geen kaart. Eén poging per dag.' },
   { pin: 'house', title: 'Frat House', text: 'Elke gast heeft een kamer. Aan de muur hangen zijn 9 kaarten: wat jij al hebt, zie je; de rest blijft donker. Een verlicht raam betekent dat je al minstens één kaart van hem hebt.' },
   { pin: 'friends', title: 'The Quad', text: 'Voeg je vrienden toe met hun code of met de <b>+</b>. Van je vrienden zie je hun collectie, cijfers, F\'s en trofeeën. Enkel vrienden kan je uitdagen of mee ruilen.' },
   { pin: 'battle', title: 'The Arena', text: 'Kies 3 kaarten en vecht tegen de computer of een vriend. Elke ronde kies je geheim <b>Flex</b>, <b>Roast</b> of <b>Charm</b>: Flex wint van Charm, Charm van Roast, Roast van Flex. Winnen levert credits op.' },
@@ -3762,7 +3762,7 @@ const SCHEDULE = [
   { dow: 3, game: 'hoops', subject: 'Phys. Ed.', title: 'Free Throws', icon: '🏀' },
   { dow: 4, game: 'history', subject: 'History', title: 'Which Came First?', icon: '🏛️' },
   { dow: 5, game: 'launch', subject: 'Physics', title: 'Cannon Shot', icon: '🚀' },
-  { dow: 6, game: 'darts', subject: 'Party', title: 'Darts', icon: '🎯' },
+  { dow: 6, game: 'pong', subject: 'Party', title: 'Beer Pong', icon: '🍺' },
   { dow: 7, game: 'blackjack', subject: 'Party', title: 'Blackjack', icon: '🃏' },
 ];
 const DAY_SHORT = ['', 'Ma', 'Di', 'Wo', 'Do', 'Vr', 'Za', 'Zo'];
