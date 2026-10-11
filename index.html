@@ -2438,6 +2438,59 @@ dialog.ar-pop::backdrop{background:transparent}
   .cz-msg{margin-top:6px;font-size:12.5px}
 }
 .cz-wheel-wrap{margin:16px 0 4px}
+
+/* =====================================================================
+   IDEEËN UIT DE GROEP: emotes, trofee-beloningen, profielfoto, AFK, inruilen
+   ===================================================================== */
+/* online / AFK */
+.pres{display:inline-flex;align-items:center;gap:4px;font:600 10.5px var(--body);letter-spacing:.02em;vertical-align:middle;color:var(--ink-soft);white-space:nowrap}
+.pres i{width:8px;height:8px;border-radius:50%;background:#6B7280}
+.pres.p-on{color:#7FD3A0}.pres.p-on i{background:#3FCF7A;box-shadow:0 0 6px #3FCF7A}
+.pres.p-afk{color:#F0B860}.pres.p-afk i{background:#F0A030}
+.frd-head h3 .pres{font-size:12px;margin-left:6px;letter-spacing:0}
+.dh-title h2 .pres{font:600 11px var(--body);margin-left:6px}
+.dh-title h2 .friend-av{width:30px;height:30px;font-size:12px;display:inline-grid;vertical-align:middle;margin-right:8px}
+/* profielfoto */
+.fr-me{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.fr-me .friend-av{width:42px;height:42px;font-size:16px;box-shadow:0 0 0 2px var(--brass)}
+.fr-me span{display:grid;gap:1px}.fr-me b{font:600 15px var(--body)}.fr-me .link{justify-self:start;font-size:12px;padding:0}
+.lb-name{display:inline-flex;align-items:center;gap:8px}.lb-name .friend-av{width:24px;height:24px;font-size:10px}
+.photo-ask::before{content:"Profielfoto"}
+/* trofee-beloningen */
+.tg{position:relative}
+.tg-rew{font:700 10px var(--body);color:var(--ink-soft);letter-spacing:.04em}
+.tg-rew.done{color:#7FD3A0}
+.tg.ready{opacity:1;border-color:#F2CC72;box-shadow:0 0 0 1px #F2CC72,0 0 18px -4px rgba(242,204,114,.7)}
+.tg-claim{margin-top:2px;padding:4px 8px;border-radius:999px;border:0;background:linear-gradient(180deg,#F6DE9C,#D9A441);color:#1A1408;font:700 10.5px var(--body);cursor:pointer;animation:go-pulse 2s ease-in-out infinite}
+/* emotes */
+.emote-wrap{position:relative;display:inline-flex}
+.emote-btn{width:36px;height:36px;border-radius:50%;border:1px solid var(--line2);background:rgba(14,19,38,.85);font-size:18px;cursor:pointer}
+.emote-bar{position:absolute;right:0;top:calc(100% + 6px);z-index:30;display:flex;gap:4px;padding:6px;border-radius:14px;background:rgba(14,19,38,.96);border:1px solid rgba(233,201,120,.4);box-shadow:0 12px 30px -10px #000}
+.emote-bar[hidden]{display:none}
+.emote-bar button{width:38px;height:38px;border-radius:10px;border:0;background:rgba(255,255,255,.06);font-size:22px;cursor:pointer}
+.emote-bar button:hover{background:rgba(242,204,114,.2)}
+.emote-bubble{position:absolute;top:4%;left:50%;z-index:9;transform:translateX(-50%);display:grid;justify-items:center;gap:0;padding:6px 12px 7px;border-radius:16px;background:#F4EBDD;color:#1A1408;
+  box-shadow:0 10px 24px -8px rgba(0,0,0,.8);animation:emote-pop 2.6s ease both;pointer-events:none}
+.emote-bubble b{font-size:34px;line-height:1}.emote-bubble span{font:700 11px var(--body);letter-spacing:.06em;text-transform:uppercase}
+.emote-bubble::after{content:"";position:absolute;bottom:-6px;left:50%;width:12px;height:12px;margin-left:-6px;background:#F4EBDD;transform:rotate(45deg)}
+@keyframes emote-pop{0%{opacity:0;transform:translateX(-50%) scale(.4)}10%{opacity:1;transform:translateX(-50%) scale(1.12)}18%{transform:translateX(-50%) scale(1)}85%{opacity:1}100%{opacity:0;transform:translateX(-50%) translateY(-10px)}}
+/* inruilen */
+.tu-block{grid-column:1/-1}
+.tu-opts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.tu-opt{min-height:0;padding:10px 14px}
+.tu-box{max-width:620px;text-align:left;justify-items:stretch}
+.tu-list{display:flex;flex-wrap:wrap;gap:6px;max-height:40vh;overflow:auto;padding:4px 0}
+.tu-chip{cursor:pointer;border:1px solid var(--line2)}.tu-chip small{opacity:.75;margin-left:4px}
+.tu-chip.on{background:#F2CC72;color:#1A1408;border-color:#F2CC72}
+.tu-chip:disabled{opacity:.4;cursor:default}
+.tu-person{display:flex;align-items:center;gap:8px;font-size:13px}
+@media (min-width:600px) and (max-height:500px){
+  .dh-title h2 .friend-av{width:22px;height:22px;margin-right:5px}
+  .emote-btn{width:30px;height:30px;font-size:15px}
+  .emote-bubble b{font-size:24px}.emote-bubble{padding:4px 9px 5px}
+  .tu-opt{padding:6px 10px}.tu-opt .ar-t b{font-size:12px}.tu-opt .ar-t small{font-size:10px}
+  .tu-list{max-height:34vh}
+}
 </style>
 </head>
 <body>
@@ -2663,6 +2716,7 @@ async function route() {
     renderMain();
     lockLandscape();
     if (!tutorialDone()) startTutorial();
+    startPresence();
   } catch (e) {
     app.innerHTML = `<main class="wrap"><p role="alert" class="err">${esc(e.message)}</p><button class="btn" id="out">Uitloggen</button></main>`;
     $('#out').onclick = () => sb.auth.signOut();
@@ -3071,7 +3125,8 @@ const INFO = {
     <p>Voeg vrienden toe met hun code, of rechtstreeks uit de lijst "Op de campus". Zodra ze accepteren, zijn jullie vrienden.</p>
     <ul><li>Van je vrienden zie je hun collectie, cijfers, F's, Arena-score en trofeeën. Tik op een vriend.</li>
     <li>Enkel vrienden kan je uitdagen in The Arena of een ruil voorstellen in de Black Market.</li>
-    <li>Iemand verwijderen kan altijd; die persoon krijgt daar geen melding van.</li></ul>`],
+    <li>Iemand verwijderen kan altijd; die persoon krijgt daar geen melding van.</li>
+    <li>Groen bolletje = online, oranje = AFK (app open maar niets aan het doen), grijs = offline.</li></ul>`],
   casino: ['Het casino', `
     <p>Zet je credits in, telkens per 5 (minstens 5, hoogstens 50 per spel). Alle uitkomsten worden op de server getrokken.</p>
     <ul><li><strong>Blackjack</strong>: kom dichter bij 21 dan de dealer. Winst = 2× terug, blackjack = 2,5×, gelijk = inzet terug.</li>
@@ -3631,8 +3686,45 @@ async function renderCampus(view) {
   setStatus('ideas', 'Speak up');
   setStatus('casino', 'Place your bets');
   setStatus('house', `${collectionText()} collected`);
-  askPushOnCampus(view);
+  if (!askPhotoOnCampus(view)) askPushOnCampus(view);
+  // Trofeeën waarvan je de beloning nog kan ophalen
+  sb.rpc('trophy_status').then(({ data }) => {
+    const n = (data || []).filter(t => t.done && !t.claimed).length;
+    if (n && view.isConnected && state.tab === 'campus') setStatus('stats', `${n} reward${n > 1 ? 's' : ''} to claim`, n);
+  }, () => {});
   setStatus('friends', state.incomingRequests ? `${state.incomingRequests} friend request${state.incomingRequests > 1 ? 's' : ''}` : 'Friends & their stats', state.incomingRequests || '');
+}
+
+// Profielfoto kiezen (van overal): verkleind en bewaard in je profiel
+function pickProfilePhoto(done) {
+  const inp = document.createElement('input');
+  inp.type = 'file'; inp.accept = 'image/*';
+  inp.onchange = async () => {
+    const file = inp.files[0]; if (!file) return;
+    try {
+      const url = await resizeImageToDataUrl(file);
+      const { error } = await sb.from('profiles').update({ avatar_url: url }).eq('id', state.session.user.id);
+      if (error) throw error;
+      state.avatarUrl = url;
+      try { localStorage.setItem('rizz-photo-asked', '1'); } catch (_) { /* geen opslag */ }
+      done?.();
+      renderMain();
+    } catch (err) { alert(err.message); }
+  };
+  inp.click();
+}
+// Op de campus één keer voorstellen om een profielfoto te kiezen
+function askPhotoOnCampus(view) {
+  let asked = false;
+  try { asked = !!localStorage.getItem('rizz-photo-asked'); } catch (_) { asked = true; }
+  if (asked || state.avatarUrl || !tutorialDone() || $('#tut')) return false;
+  const camp = view.querySelector('#campus');
+  if (!camp || camp.querySelector('.push-ask')) return true;
+  camp.insertAdjacentHTML('beforeend', `<div class="push-ask photo-ask"><p class="hint push-txt">Kies een profielfoto. Je vrienden zien ze in hun lijst, bij battles en in de ranglijst.</p>
+    <div class="push-btns"><button type="button" class="btn small" id="photoAskGo">Foto kiezen</button><button type="button" class="link" id="photoAskLater">Niet nu</button></div></div>`);
+  $('#photoAskGo').onclick = () => pickProfilePhoto();
+  $('#photoAskLater').onclick = () => { try { localStorage.setItem('rizz-photo-asked', '1'); } catch (_) { /* geen opslag */ } camp.querySelector('.photo-ask')?.remove(); };
+  return true;
 }
 
 // Op de campus één keer voorstellen om meldingen aan te zetten
@@ -4685,6 +4777,25 @@ function statsHtml(plays, extraCards = '') {
     </div></div></div>`;
 }
 
+// Online / AFK / offline op basis van last_seen (app open) en last_active (iets gedaan)
+const agoText = t => { const m = Math.round((Date.now() - t) / 60000); return m < 60 ? `${Math.max(1, m)} min geleden` : m < 1440 ? `${Math.round(m / 60)} u geleden` : `${Math.round(m / 1440)} d geleden`; };
+function presenceOf(p) {
+  const now = Date.now(), seen = p?.last_seen ? Date.parse(p.last_seen) : 0, act = p?.last_active ? Date.parse(p.last_active) : 0;
+  if (seen && now - seen < 150000) return now - act < 180000 ? { k: 'on', t: 'Online' } : { k: 'afk', t: 'AFK' };
+  return { k: 'off', t: seen ? `Offline · ${agoText(seen)}` : 'Offline' };
+}
+const presHtml = p => { const x = presenceOf(p); return `<span class="pres p-${x.k}"><i></i>${x.t}</span>`; };
+// Hartslag: elke minuut laten weten dat de app open is, en of je iets deed
+const presence = { started: false, lastAct: Date.now() };
+function startPresence() {
+  if (presence.started) return;
+  presence.started = true;
+  ['pointerdown', 'keydown'].forEach(ev => addEventListener(ev, () => { presence.lastAct = Date.now(); }, { passive: true }));
+  const beat = () => { if (!state.session || document.visibilityState !== 'visible') return; sb.rpc('touch_presence', { p_active: Date.now() - presence.lastAct < 120000 }).then(() => {}, () => {}); };
+  beat(); setInterval(beat, 60000);
+  document.addEventListener('visibilitychange', beat);
+}
+
 const friendAv = p => `<span class="friend-av" style="${p.avatar_url ? `background-image:url('${esc(p.avatar_url)}')` : ''}">${p.avatar_url ? '' : esc((p.display_name || '?').charAt(0).toUpperCase())}</span>`;
 
 // ---------- Tab: Friends (The Quad) ----------
@@ -4708,6 +4819,7 @@ async function renderFriends(view) {
     <div class="fr-grid">
       <div class="fr-side fr-panel">
         ${state.isAdmin ? `<p class="hint" style="margin:0">Je admin-account is onzichtbaar en kan geen vrienden hebben.</p>` : `
+        <div class="fr-me">${friendAv({ display_name: state.name, avatar_url: state.avatarUrl })}<span><b>${esc(state.name)}</b><button type="button" class="link" id="frPhoto">${state.avatarUrl ? 'Foto wijzigen' : 'Profielfoto kiezen'}</button></span></div>
         <div class="fr-code"><span>Jouw code</span><b>${esc(state.friendCode)}</b><button class="link" id="copyCode" type="button">Kopiëren</button></div>
         <form id="addFriendForm" class="fr-add">
           <input id="friendCodeInput" maxlength="6" autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="Code van een vriend" aria-label="Vriendencode">
@@ -4729,7 +4841,7 @@ async function renderFriends(view) {
     <dialog class="ar-pop" data-pop="list" aria-label="Je vrienden"><div class="ar-pop-box fr-pop">
       <div class="ar-pop-head"><h3>Je vrienden <small>${friends.length}</small></h3><button type="button" class="ar-x" data-pop-close aria-label="Sluiten">✕</button></div>
       ${friends.length ? `<ul class="fr-rows fr-grid-list">${friends.map(f => `<li><button type="button" class="fr-friend${f.id === state.friendSel ? ' on' : ''}" data-open="${f.id}">
-          ${friendAv(f)}<span class="fr-name">${esc(f.display_name)}<small>${f.cards}/${total} kaarten · ${f.fs}× F · ${f.wins}–${f.losses}</small></span>
+          ${friendAv(f)}<span class="fr-name">${esc(f.display_name)} ${presHtml(f)}<small>${f.cards}/${total} kaarten · ${f.fs}× F · ${f.wins}–${f.losses}</small></span>
           ${f.today ? `<span class="fr-grade g-${f.today}" title="Cijfer vandaag">${f.today}</span>` : '<span class="fr-grade none" title="Vandaag nog niet gespeeld">–</span>'}
         </button></li>`).join('')}</ul>`
       : `<p class="hint">Nog geen vrienden. Stuur een verzoek met hun code, of kies iemand bij "Mensen toevoegen".</p>`}
@@ -4764,7 +4876,7 @@ async function renderFriends(view) {
     const maxD = Math.max(1, ...Object.values(dist));
     const tile = (num, label) => `<div class="frd-tile"><b>${num}</b><span>${label}</span></div>`;
     detail.innerHTML = `
-      <div class="frd-head">${friendAv(f)}<div><h3>${esc(f.display_name)}</h3>
+      <div class="frd-head">${friendAv(f)}<div><h3>${esc(f.display_name)} ${presHtml(f)}</h3>
         <small>${f.today ? `Vandaag een <b class="g-${f.today}">${f.today}</b>` : 'Vandaag nog geen examen'}</small></div>
         <div class="frd-actions">
           ${friends.length > 1 ? '<button class="btn small ghost" id="frSwitch" type="button">Andere vriend</button>' : ''}
@@ -4807,6 +4919,7 @@ async function renderFriends(view) {
     msg.textContent = d.status === 'accepted' ? `${d.name} had jou al een verzoek gestuurd: jullie zijn nu vrienden!` : `Verzoek verstuurd naar ${d.name}.`;
     setTimeout(() => { if (state.tab === 'friends') renderFriends(view); }, 1100);
   };
+  if ($('#frPhoto')) $('#frPhoto').onclick = () => pickProfilePhoto();
   if ($('#copyCode')) $('#copyCode').onclick = async () => {
     try { await navigator.clipboard.writeText(state.friendCode); $('#copyCode').textContent = 'Gekopieerd!'; } catch (_) { /* clipboard niet beschikbaar */ }
   };
@@ -5083,6 +5196,14 @@ function renderShop(view) {
           </div>`).join('')}</div>
 
       </div>
+      <div class="tu-block">
+        <h3>Inruilen</h3>
+        <p class="hint" style="margin:0 0 8px">Ruil dubbele commons in voor een epic. Je houdt altijd minstens één exemplaar.</p>
+        <div class="tu-opts">
+          <button type="button" class="ar-tile tu-opt" data-tu="2"><span class="ar-t"><b>2 → 1 epic</b><small>2 dubbele commons voor een willekeurige epic</small></span></button>
+          <button type="button" class="ar-tile tu-opt" data-tu="3"><span class="ar-t"><b>3 → epic naar keuze</b><small>3 dubbele commons voor een epic van wie jij kiest</small></span></button>
+        </div>
+      </div>
       <div>
         <h3>Dubbels verkopen</h3>
         ${dupes.length ? `<p class="hint" style="margin-bottom:6px">Je houdt altijd 1 exemplaar. Alles verkopen levert ${dupeTotal} 🪙 op.</p>
@@ -5121,6 +5242,8 @@ function renderShop(view) {
     $('#packClose').onclick = () => { dlg.close(); renderShop(view); };
   });
 
+  view.querySelectorAll('[data-tu]').forEach(b => b.onclick = () => openTradeUp(view, Number(b.dataset.tu)));
+
   view.querySelectorAll('[data-sell]').forEach(b => b.onclick = async () => {
     const c = cardById(b.dataset.sell), n = Number(b.dataset.count);
     if (n > 1 && !confirm(`${n} exemplaren van "${c.name}" verkopen voor ${n * SHOP.sell[c.rarity]} credits?`)) return;
@@ -5132,6 +5255,51 @@ function renderShop(view) {
     renderShop(view);
     msg(`Verkocht: ${data.sold}× "${c.name}" voor ${data.earned} credits.`, true);
   });
+}
+
+// Inruilen: dubbele commons voor een epic (supabase/update-15-ideeen.sql)
+function openTradeUp(view, need) {
+  const commons = state.cards.filter(c => c.rarity === 'common' && (state.owned.get(c.id) || 0) > 1);
+  const persons = [...new Set(state.cards.filter(c => c.rarity === 'epic').map(c => c.person))].sort((a, b) => a.localeCompare(b));
+  const pick = [];
+  const dlg = $('#packModal');
+  const draw = () => {
+    const extraLeft = c => state.owned.get(c.id) - 1 - pick.filter(x => x === c.id).length;
+    dlg.innerHTML = `<div class="packbox tu-box">
+      <h2>${need === 2 ? '2 commons → 1 epic' : '3 commons → epic naar keuze'}</h2>
+      ${commons.reduce((n, c) => n + state.owned.get(c.id) - 1, 0) < need
+        ? `<p class="hint">Je hebt nog niet genoeg dubbele commons (nodig: ${need}).</p>`
+        : `<p class="hint" style="margin:0">Tik op ${need} dubbels. Gekozen: <b>${pick.length}/${need}</b></p>
+        <div class="tu-list">${commons.map(c => `<button type="button" class="trade-chip r-common tu-chip${pick.includes(c.id) ? ' on' : ''}" data-tc="${c.id}" ${extraLeft(c) <= 0 && !pick.includes(c.id) ? 'disabled' : ''}>
+          ${esc(c.name)} <small>${pick.filter(x => x === c.id).length ? `${pick.filter(x => x === c.id).length}× gekozen · ` : ''}${state.owned.get(c.id) - 1} extra</small></button>`).join('')}</div>
+        ${need === 3 ? `<label class="tu-person">Epic van <select id="tuPerson" class="tselect">${persons.map(p => `<option>${esc(p)}</option>`).join('')}</select></label>` : ''}`}
+      <p class="msg" id="tuMsg" role="alert"></p>
+      <div class="rowbtns"><button type="button" class="link" id="tuCancel">Annuleren</button>
+        <button type="button" class="btn small" id="tuGo" ${pick.length === need ? '' : 'disabled'}>Inruilen</button></div>
+    </div>`;
+    dlg.querySelectorAll('[data-tc]').forEach(b => b.onclick = () => {
+      const id = Number(b.dataset.tc), i = pick.indexOf(id);
+      if (extraLeft(cardById(id)) > 0 && pick.length < need) pick.push(id); else if (i >= 0) pick.splice(i, 1);
+      const person = $('#tuPerson')?.value; draw(); if (person && $('#tuPerson')) $('#tuPerson').value = person;
+    });
+    $('#tuCancel').onclick = () => dlg.close();
+    if ($('#tuGo')) $('#tuGo').onclick = async () => {
+      $('#tuGo').disabled = true;
+      const { data, error } = await sb.rpc('vault_tradeup', { p_cards: pick, p_person: need === 3 ? $('#tuPerson').value : null });
+      if (error) { $('#tuMsg').className = 'msg err'; $('#tuMsg').textContent = error.message; $('#tuGo').disabled = false; return; }
+      for (const id of pick) state.owned.set(id, state.owned.get(id) - 1);
+      const card = cardById(data.card_id);
+      const wasNew = !state.owned.get(card.id);
+      state.owned.set(card.id, (state.owned.get(card.id) || 0) + 1);
+      dlg.innerHTML = `<div class="packbox"><h2>Ingeruild</h2><div class="stage" id="packStage"></div><div id="packDone"></div></div>`;
+      await openPack($('#packStage'), [card]);
+      $('#packDone').innerHTML = `<p class="result">${wasNew ? 'Een nieuwe epic voor je collectie!' : 'Je had deze epic al: een dubbel om te ruilen.'}</p>
+        <button class="btn small" id="packClose" type="button">Verder</button>`;
+      $('#packClose').onclick = () => { dlg.close(); renderShop(view); };
+    };
+  };
+  draw();
+  if (!dlg.open) dlg.showModal();
 }
 
 // ---------- Tab: Ideas — ideeënbus met upvotes (supabase/setup.sql) ----------
@@ -5350,18 +5518,18 @@ function trophiesFor(plays, ownedSet, bs) {
   const sharp = plays.some(p => p.grade === 'A');
   const flunk = plays.some(p => p.grade === 'F');
   return [
-    { icon: 'clock', name: 'Freshman', how: 'Eerste examen afgelegd', ok: plays.length > 0 },
-    { icon: 'flame', name: 'On Fire', how: '3 dagen op rij een examen', ok: best >= 3 },
-    { icon: 'flame', name: 'Iron Streak', how: '7 dagen op rij een examen', ok: best >= 7 },
-    { icon: 'target', name: 'Straight A', how: 'Een A gehaald op een examen', ok: sharp },
-    { icon: 'star', name: 'Legend Hunter', how: 'Een legendary verzameld', ok: legend },
-    { icon: 'stack', name: 'Collector', how: '50 verschillende kaarten', ok: unique >= 50 },
-    { icon: 'crown', name: 'Full Set', how: 'Alle 9 kaarten van één persoon', ok: fullSet },
-    { icon: 'swords', name: 'Rookie', how: 'Eerste battle gewonnen', ok: (bs?.wins || 0) >= 1 },
-    { icon: 'swords', name: 'Gladiator', how: '10 battles gewonnen', ok: (bs?.wins || 0) >= 10 },
-    { icon: 'cup', name: 'Champion', how: 'Gewonnen op Championship', ok: (bs?.hard_wins || 0) >= 1 },
-    { icon: 'cup', name: 'Rival', how: 'Een vriend verslagen', ok: (bs?.pvp_wins || 0) >= 1 },
-    { icon: 'clock', name: 'Flunked', how: 'Een F gehaald', ok: flunk },
+    { icon: 'clock', key: 'freshman', name: 'Freshman', how: 'Eerste examen afgelegd', ok: plays.length > 0 },
+    { icon: 'flame', key: 'on_fire', name: 'On Fire', how: '3 dagen op rij een examen', ok: best >= 3 },
+    { icon: 'flame', key: 'iron_streak', name: 'Iron Streak', how: '7 dagen op rij een examen', ok: best >= 7 },
+    { icon: 'target', key: 'straight_a', name: 'Straight A', how: 'Een A gehaald op een examen', ok: sharp },
+    { icon: 'star', key: 'legend_hunter', name: 'Legend Hunter', how: 'Een legendary verzameld', ok: legend },
+    { icon: 'stack', key: 'collector', name: 'Collector', how: '50 verschillende kaarten', ok: unique >= 50 },
+    { icon: 'crown', key: 'full_set', name: 'Full Set', how: 'Alle 9 kaarten van één persoon', ok: fullSet },
+    { icon: 'swords', key: 'rookie', name: 'Rookie', how: 'Eerste battle gewonnen', ok: (bs?.wins || 0) >= 1 },
+    { icon: 'swords', key: 'gladiator', name: 'Gladiator', how: '10 battles gewonnen', ok: (bs?.wins || 0) >= 10 },
+    { icon: 'cup', key: 'champion', name: 'Champion', how: 'Gewonnen op Championship', ok: (bs?.hard_wins || 0) >= 1 },
+    { icon: 'cup', key: 'rival', name: 'Rival', how: 'Een vriend verslagen', ok: (bs?.pvp_wins || 0) >= 1 },
+    { icon: 'clock', key: 'flunked', name: 'Flunked', how: 'Een F gehaald', ok: flunk },
   ];
 }
 
@@ -5438,6 +5606,9 @@ async function renderStats(view) {
   const plays = rd.data.plays || [];
   const bs = rd.data.battle || {};
   const trophies = trophiesFor(plays, new Set(state.owned.keys()), bs);
+  const { data: tst } = await sb.rpc('trophy_status');
+  if (state.tab !== 'stats') return;
+  const rew = Object.fromEntries((tst || []).map(t => [t.key, t]));
   const rows = (members.data || []).slice().sort((a, b) => (b.cards - a.cards) || (b.legendaries - a.legendaries));
   view.innerHTML = `<section class="col" style="max-width:none">
     ${pageHead('Stats', 'stats')}
@@ -5445,15 +5616,25 @@ async function renderStats(view) {
     ${statsHtml(plays, `<div class="stat-card"><span class="stat-num">${bs.wins || 0}–${bs.losses || 0}</span><span class="stat-label">Arena (W–L)</span></div>
       <div class="stat-card"><span class="stat-num">${collectionText()}</span><span class="stat-label">Collectie</span></div>`)}
     <h3 style="margin-top:26px">Trofeeën · ${trophies.filter(t => t.ok).length}/${trophies.length}</h3>
-    <div class="trophy-grid">${trophies.map(t => `<div class="tg${t.ok ? ' got' : ''}">
+    <div class="trophy-grid">${trophies.map(t => { const r = rew[t.key]; const ready = r && r.done && !r.claimed; return `<div class="tg${t.ok ? ' got' : ''}${ready ? ' ready' : ''}">
       <span class="tg-ico"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">${TROPHY_ICON[t.icon]}</svg></span>
-      <b>${t.name}</b><small>${esc(t.how)}</small></div>`).join('')}</div>
+      <b>${t.name}</b><small>${esc(t.how)}</small>
+      ${r ? (ready ? `<button type="button" class="tg-claim" data-claim="${t.key}">+${r.reward} ophalen</button>` : `<span class="tg-rew${r.claimed ? ' done' : ''}">${r.claimed ? '✓ ' : ''}+${r.reward}</span>`) : ''}</div>`; }).join('')}</div>
     </div><div class="st-right">
     <h3 style="margin-top:26px">Het huis</h3>
     <table class="leaderboard house-table"><thead><tr><th>#</th><th>Naam</th><th>Kaarten</th><th>Legendary</th><th>F's</th><th>Vandaag</th></tr></thead>
-      <tbody>${rows.map((m, i) => `<tr${m.user_id === uid ? ' class="me"' : ''}><td>${i + 1}</td><td>${esc(m.display_name)}</td><td>${m.cards}</td><td>${m.legendaries}</td><td class="fcount">${m.fs || 0}</td><td>${m.played ? '✓' : '–'}</td></tr>`).join('')}</tbody>
+      <tbody>${rows.map((m, i) => `<tr${m.user_id === uid ? ' class="me"' : ''}><td>${i + 1}</td><td><span class="lb-name">${friendAv(m)}${esc(m.display_name)}</span></td><td>${m.cards}</td><td>${m.legendaries}</td><td class="fcount">${m.fs || 0}</td><td>${m.played ? '✓' : '–'}</td></tr>`).join('')}</tbody>
     </table></div></div>
   </section>`;
+  view.querySelectorAll('[data-claim]').forEach(b => b.onclick = async () => {
+    b.disabled = true;
+    const { data, error } = await sb.rpc('claim_trophy', { p_key: b.dataset.claim });
+    if (error) { alert(error.message); b.disabled = false; return; }
+    setWallet(data.wallet);
+    window.celebrate?.('epic');
+    showStamp(`+${data.reward}`, 'grade', 'Trofee-beloning');
+    renderStats(view);
+  });
 }
 
 // ---------- Tab: The Arena (battles, ronde per ronde) ----------
@@ -5930,6 +6111,55 @@ async function renderCasino(view) {
   }
 }
 
+// ---------- Emotes tijdens een gevecht ----------
+const EMOTES = { lol: ['😂', 'Haha'], cool: ['😎', 'Too easy'], mad: ['😡', 'Grr'], gg: ['🤝', 'GG'], cry: ['😭', 'Nooo'], fire: ['🔥', "Let's go"] };
+const emoteState = { battle: null, last: 0, timer: null };
+function showEmote(side, key) {
+  const el = $(side === 'me' ? '#side-me' : '#side-op');
+  if (!el || !EMOTES[key]) return;
+  el.querySelector('.emote-bubble')?.remove();
+  const [e, t] = EMOTES[key];
+  el.insertAdjacentHTML('beforeend', `<div class="emote-bubble ${side}"><b>${e}</b><span>${esc(t)}</span></div>`);
+  const bub = el.querySelector('.emote-bubble');
+  setTimeout(() => bub?.remove(), 2600);
+}
+function setupEmotes(b, oppId) {
+  const host = $('.duel-head .dh-right');
+  if (!host) return;
+  host.insertAdjacentHTML('afterbegin', `<span class="emote-wrap"><button type="button" class="emote-btn" id="emoteBtn" aria-label="Emote sturen">😀</button>
+    <span class="emote-bar" id="emoteBar" hidden>${Object.entries(EMOTES).map(([k, [e, t]]) => `<button type="button" data-emote="${k}" title="${esc(t)}">${e}</button>`).join('')}</span></span>`);
+  const bar = $('#emoteBar');
+  $('#emoteBtn').onclick = () => { bar.hidden = !bar.hidden; };
+  bar.querySelectorAll('[data-emote]').forEach(x => x.onclick = () => {
+    const k = x.dataset.emote; bar.hidden = true;
+    showEmote('me', k);
+    if (oppId) sb.rpc('tb_emote', { p_id: b.id, p_emote: k }).then(() => {}, () => {});
+    else if (Math.random() < .6) { // de computer reageert soms
+      const back = { lol: ['mad', 'lol'], cool: ['lol', 'mad'], mad: ['lol', 'cool'], gg: ['gg'], cry: ['lol', 'cool'], fire: ['fire', 'cool'] }[k];
+      setTimeout(() => showEmote('op', back[Math.floor(Math.random() * back.length)]), 900 + Math.random() * 900);
+    }
+  });
+  if (!oppId) return;
+  // Tegen een vriend: emotes en AFK-status van de tegenstander ophalen
+  const fresh = emoteState.battle !== b.id;
+  emoteState.battle = b.id;
+  clearInterval(emoteState.timer);
+  let tick = 0;
+  const poll = async () => {
+    if (!$('#side-op') || emoteState.battle !== b.id) { clearInterval(emoteState.timer); return; }
+    const { data } = await sb.from('tb_emotes').select('id, user_id, emote').eq('battle_id', b.id).gt('id', emoteState.last).order('id');
+    for (const r of data || []) { emoteState.last = r.id; if (r.user_id === oppId) showEmote('op', r.emote); }
+    if (++tick % 8 === 0) {
+      const { data: p } = await sb.from('profiles').select('last_seen, last_active').eq('id', oppId).maybeSingle();
+      if (p && $('#oppPres')) $('#oppPres').innerHTML = presHtml(p);
+    }
+  };
+  (async () => {
+    if (fresh) { const { data } = await sb.from('tb_emotes').select('id').eq('battle_id', b.id).order('id', { ascending: false }).limit(1); emoteState.last = data?.[0]?.id || 0; }
+    emoteState.timer = setInterval(poll, 2500);
+  })();
+}
+
 // ---------- Speelscherm ----------
 function eventText(e, b, names) {
   const me = mySide(b);
@@ -5995,10 +6225,10 @@ async function openBattle(view, id, prev = null) {
   // Foto's van alle kaarten in dit gevecht (ook die van je tegenstander)
   await loadPhotos([...(b.state?.A?.cards || []), ...(b.state?.B?.cards || [])]);
   const me = mySide(b), op = otherSide(me);
-  let oppName = 'Computer';
+  let oppName = 'Computer', oppProf = null;
   if (b.mode === 'pvp') {
-    const { data: p } = await sb.from('profiles').select('display_name').eq('id', me === 'A' ? b.player_b : b.player_a).maybeSingle();
-    oppName = p?.display_name || 'Tegenstander';
+    const { data: p } = await sb.from('profiles').select('display_name, avatar_url, last_seen, last_active').eq('id', me === 'A' ? b.player_b : b.player_a).maybeSingle();
+    oppName = p?.display_name || 'Tegenstander'; oppProf = p;
   }
   if (state.tab !== 'battle') return;
   const names = { opp: oppName };
@@ -6017,7 +6247,7 @@ async function openBattle(view, id, prev = null) {
     <div class="duel-head">
       <button class="link" id="btBack" type="button">← Arena</button>
       <div class="dh-title"><span class="kicker">${b.mode === 'pve' ? `${DIFFS[b.difficulty]?.label || ''} · +${DIFFS[b.difficulty]?.coins || 0} credits` : 'Rivalry · +25 credits'}</span>
-        <h2>Jij <span>vs</span> ${esc(oppName)}</h2></div>
+        <h2>${friendAv({ display_name: state.name, avatar_url: state.avatarUrl })}Jij <span>vs</span> ${oppProf ? friendAv(oppProf) : ''}${esc(oppName)}${oppProf ? ` <span id="oppPres">${presHtml(oppProf)}</span>` : ''}</h2></div>
       <div class="dh-right"><span class="pill" id="btRound">Ronde ${b.round + (b.status === 'active' ? 1 : 0)}</span>
       ${b.status === 'active' ? '<button class="link danger forfeit" id="btForfeit" type="button">Opgeven</button>' : ''}</div>
     </div>
@@ -6035,6 +6265,7 @@ async function openBattle(view, id, prev = null) {
     <div class="duel-log"><h3>Verslag</h3><ol class="battle-log" id="battleLog"></ol></div>
   </section>`;
   $('#btBack').onclick = () => { stopBattlePoll(); renderBattle(view); };
+  setupEmotes(b, oppProf ? (me === 'A' ? b.player_b : b.player_a) : null);
   const sideEl = s => $(s === me ? '#side-me' : '#side-op');
   let shownRound = b.round + (replay || b.status !== 'active' ? 0 : 1);
   const drawJumbo = () => { const j = $('#jumbo'); if (j) j.innerHTML = jumboHtml(b, disp, me, op, Math.max(1, shownRound)); };
