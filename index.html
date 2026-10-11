@@ -2475,7 +2475,7 @@ dialog.ar-pop::backdrop{background:transparent}
 .emote-bubble::after{content:"";position:absolute;bottom:-6px;left:50%;width:12px;height:12px;margin-left:-6px;background:#F4EBDD;transform:rotate(45deg)}
 @keyframes emote-pop{0%{opacity:0;transform:translateX(-50%) scale(.4)}10%{opacity:1;transform:translateX(-50%) scale(1.12)}18%{transform:translateX(-50%) scale(1)}85%{opacity:1}100%{opacity:0;transform:translateX(-50%) translateY(-10px)}}
 /* inruilen */
-.tu-block{grid-column:1/-1}
+.tu-block{grid-column:auto}
 .tu-opts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
 .tu-opt{min-height:0;padding:10px 14px}
 .tu-box{max-width:620px;text-align:left;justify-items:stretch}
@@ -5194,15 +5194,14 @@ function renderShop(view) {
             <div class="shop-pack-info"><strong>${p.name}</strong><small>${p.desc}</small>
               <button class="btn small" data-buy-pack="${k}" type="button" ${state.wallet < p.price ? 'disabled' : ''}>Kopen · ${p.price} 🪙</button></div>
           </div>`).join('')}</div>
-
-      </div>
-      <div class="tu-block">
+      <div class="tu-block" style="margin-top:14px">
         <h3>Inruilen</h3>
         <p class="hint" style="margin:0 0 8px">Ruil dubbele commons in voor een epic. Je houdt altijd minstens één exemplaar.</p>
         <div class="tu-opts">
           <button type="button" class="ar-tile tu-opt" data-tu="2"><span class="ar-t"><b>2 → 1 epic</b><small>2 dubbele commons voor een willekeurige epic</small></span></button>
           <button type="button" class="ar-tile tu-opt" data-tu="3"><span class="ar-t"><b>3 → epic naar keuze</b><small>3 dubbele commons voor een epic van wie jij kiest</small></span></button>
         </div>
+      </div>
       </div>
       <div>
         <h3>Dubbels verkopen</h3>
