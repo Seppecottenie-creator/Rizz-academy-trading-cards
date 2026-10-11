@@ -919,6 +919,27 @@ h3{color:var(--gold)}
 .campus.dusk .campus-tint{position:absolute;inset:0;pointer-events:none;background:linear-gradient(180deg,rgba(40,30,90,.32),rgba(120,60,60,.10) 45%,rgba(15,18,45,.32))}
 .campus-hint{position:absolute;left:14px;bottom:12px;z-index:5;padding:7px 12px;border-radius:999px;background:rgba(10,16,36,.72);color:var(--ink);font:500 12.5px var(--body);pointer-events:none}
 .campus-hint span{color:var(--gold);margin-left:6px}
+.campus-news{position:absolute;left:14px;top:12px;z-index:5;display:flex;align-items:center;gap:6px;padding:7px 14px;border-radius:999px;border:1px solid rgba(242,204,114,.6);
+  background:rgba(10,16,36,.82);color:#F6DE9C;font:400 14px var(--varsity);letter-spacing:.08em;text-transform:uppercase;cursor:pointer;box-shadow:0 6px 16px -6px rgba(0,0,0,.7)}
+.campus-news:hover{background:#C8102E;color:#fff;border-color:#F4EBDD}
+.upd-dot{position:absolute;top:-4px;right:-4px;width:12px;height:12px;border-radius:50%;background:#E0284A;border:2px solid #fff;animation:upd-pulse 1.6s ease-in-out infinite}
+@keyframes upd-pulse{50%{transform:scale(1.25)}}
+@media (prefers-reduced-motion:reduce){.upd-dot{animation:none}}
+.upd-pop .ar-pop-box{width:min(640px,100%)}
+@media (max-width:599px){.upd-pop .ar-pop-head h3 small{display:none}}
+.upd-day{padding:12px 0 6px;border-top:1px solid var(--line)}
+.upd-day:first-of-type{border-top:0}
+.upd-day h4{display:flex;align-items:center;flex-wrap:wrap;gap:8px;margin:0 0 8px;font:400 17px var(--varsity);letter-spacing:.06em;text-transform:uppercase;color:#F2CC72}
+.upd-date::first-letter{text-transform:uppercase}
+.upd-rel,.upd-new{font:700 10.5px var(--body);letter-spacing:.12em;text-transform:uppercase;padding:3px 8px;border-radius:999px}
+.upd-rel{background:rgba(242,204,114,.16);color:#F6DE9C}
+.upd-new{background:#C8102E;color:#fff}
+.upd-day ul{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+.upd-day li{display:grid;grid-template-columns:28px 1fr;gap:10px;align-items:start;padding:9px 12px;border-radius:12px;background:rgba(255,255,255,.04);font:500 13.5px/1.45 var(--body);color:var(--ink-soft)}
+.upd-day.fresh li{background:rgba(242,204,114,.07)}
+.upd-day li b{display:block;color:var(--ink);font-weight:700;margin-bottom:1px}
+.upd-ic{font-size:20px;line-height:1.2;text-align:center}
+@media (min-width:600px) and (max-height:500px){.campus-news{top:8px;left:10px;padding:4px 10px;font-size:12px}}
 @media (min-width:900px), (min-width:600px) and (max-height:500px){.campus-hint span{display:none}}
 
 /* Klikbare zone: bij hover wordt de rest van de campus donkerder (spotlight) */
@@ -3894,6 +3915,61 @@ const CAMPUS_PLACES = [
   { id: 'ideas', name: 'Town Hall', what: 'Ideeën en stemmen', box: [80, 48, 16, 29], pin: [88, 80] },
 ];
 
+// ---------- Updates: wat is er nieuw (nieuwste dag bovenaan) ----------
+// Bij elke nieuwe update: bovenaan een dag toevoegen (of de bestaande dag van vandaag aanvullen).
+const UPDATES = [
+  { date: '2026-10-11', items: [
+    ['🎰', 'Casino', 'Nieuw gebouw op de campus: blackjack, roulette, de slotmachine en een paardenrace. Inzet per 5 credits, zonder limiet.'],
+    ['🃏', 'Blackjack: splitsen', 'Twee kaarten met dezelfde waarde? Splits ze in twee handen. Werkt in het casino en in het examen.'],
+    ['🍺', 'Food Truck', 'Een pintje voor 1 credit, midden op het plein. Na een verrassend aantal pintjes ben je een minuut sterrezat.'],
+    ['😂', 'Emotes', 'Stuur emotes naar je tegenstander tijdens een gevecht in The Arena.'],
+    ['🏆', 'Trofeeën geven credits', 'Haal je beloning op bij je trofeeën in Stats.'],
+    ['🟢', 'Online en AFK', 'Bij je vrienden zie je wie online, AFK of offline is.'],
+    ['📸', 'Profielfoto', 'Kies een profielfoto via je account. Je vrienden zien ze overal.'],
+    ['🤝', 'Vrij ruilen', 'In de Black Market ruil je wat je wil, ook je laatste exemplaar. Bijvoorbeeld 2 commons voor 1 epic.'],
+    ['🏀', 'Examens vernieuwd', 'Basketbal, Cannon Shot en Beer Pong (nu op zaterdag) speel je met tikken. Math is makkelijker, History moeilijker, en blackjack deelt kaart per kaart.'],
+    ['📰', 'Updates', 'Deze knop: hier lees je voortaan alles wat er nieuw is.'],
+  ] },
+  { date: '2026-10-06', items: [
+    ['🔔', 'Meldingen', 'Zet meldingen aan en je krijgt om 19u een herinnering als je examen nog niet gespeeld is.'],
+    ['⚔️', 'The Arena vernieuwd', 'Een overzicht met knoppen, en je ziet nu de foto\'s op de kaarten van je tegenstander.'],
+    ['🔑', 'Inloggen', 'Duidelijkere foutmeldingen als inloggen niet lukt.'],
+  ] },
+  { date: '2026-10-05', items: [
+    ['🗺️', 'Campuskaart', 'De campus is je hoofdmenu, overdag en \'s avonds. Tik op een gebouw om erheen te gaan.'],
+    ['🏠', 'Frat House', 'Elke gast heeft een kamer met zijn kaarten aan de muur.'],
+    ['📚', 'Lessenrooster', 'Elke dag een ander examenspel, met een cijfer van A tot F. Hoe beter je cijfer, hoe zeldzamer je kaart.'],
+    ['👥', 'The Quad', 'Voeg vrienden toe met hun code. Enkel vrienden kan je uitdagen of mee ruilen.'],
+    ['📱', 'Als app', 'Installeer Rizz Academy op je beginscherm en speel liggend op je gsm.'],
+  ] },
+  { date: '2026-10-04', items: [
+    ['🚀', 'Rizz Academy opent', 'Verzamel de 117 kaarten van de 13 gasten van de groep.'],
+  ] },
+];
+const UPD_KEY = 'rizz-updates-seen';
+const updSeen = () => { try { return localStorage.getItem(UPD_KEY) || ''; } catch (_) { return UPDATES[0].date; } };
+const updDay = d => new Date(d + 'T12:00:00').toLocaleDateString('nl-BE', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+function openUpdates() {
+  const seen = updSeen();
+  document.querySelector('#updPop')?.remove();
+  const today = todayBrussels();
+  const rel = d => d === today ? 'Vandaag' : '';
+  document.body.insertAdjacentHTML('beforeend', `<dialog class="ar-pop upd-pop" id="updPop" aria-label="Updates"><div class="ar-pop-box">
+    <div class="ar-pop-head"><h3>Updates <small>wat is er nieuw op Rizz Academy</small></h3><button type="button" class="ar-x" data-close aria-label="Sluiten">✕</button></div>
+    ${UPDATES.map(u => `<section class="upd-day${u.date > seen ? ' fresh' : ''}">
+      <h4><span class="upd-date">${updDay(u.date)}</span>${rel(u.date) ? `<span class="upd-rel">${rel(u.date)}</span>` : ''}${u.date > seen ? '<span class="upd-new">Nieuw</span>' : ''}</h4>
+      <ul>${u.items.map(([i, t, x]) => `<li><span class="upd-ic" aria-hidden="true">${i}</span><span><b>${esc(t)}</b>${esc(x)}</span></li>`).join('')}</ul>
+    </section>`).join('')}
+  </div></dialog>`);
+  const pop = $('#updPop');
+  pop.querySelector('[data-close]').onclick = () => pop.close();
+  pop.addEventListener('click', e => { if (e.target === pop) pop.close(); });
+  pop.addEventListener('close', () => pop.remove());
+  pop.showModal();
+  try { localStorage.setItem(UPD_KEY, UPDATES[0].date); } catch (_) { /* */ }
+  document.querySelectorAll('.upd-dot').forEach(d => d.remove());
+}
+
 async function renderCampus(view) {
   const phase = dayPhase();
   const img = phase === 'night' ? 'img/campus-night.webp' : 'img/campus-day.webp';
@@ -3910,10 +3986,12 @@ async function renderCampus(view) {
             <span class="cpin-badge" data-cbadge="${p.id}" hidden></span></button>`).join('')}
         </div>
       </div>
+      <button type="button" class="campus-news" id="openUpdates"><span aria-hidden="true">📰</span> Updates${updSeen() < UPDATES[0].date ? '<i class="upd-dot" aria-label="nieuw"></i>' : ''}</button>
       <div class="campus-hint">${phase === 'night' ? 'Lights are on in the Frat House.' : phase === 'dusk' ? 'Golden hour on the quad.' : 'Classes are in session.'} <span>Swipe en tik op een gebouw.</span></div>
     </div>
   </section>`;
   const go = id => { state.tab = id; renderMain(); scrollTo({ top: 0 }); };
+  $('#openUpdates').onclick = openUpdates;
   view.querySelectorAll('[data-go]').forEach(el => { el.onclick = () => go(el.dataset.go); });
   // Zone en bordje lichten samen op
   const map = view.querySelector('.campus-map');
