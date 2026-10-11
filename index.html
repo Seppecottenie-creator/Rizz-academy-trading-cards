@@ -1846,7 +1846,7 @@ div.wf-inner{cursor:default}
 .bj-card.back{background:repeating-linear-gradient(45deg,#8C0B21 0 6px,#C8102E 6px 12px);box-shadow:inset 0 0 0 3px #F4EBDD,0 6px 12px -4px rgba(0,0,0,.6)}
 @keyframes bj-in{from{opacity:1}}
 .bj-note{min-height:26px;text-align:center;font:400 20px var(--varsity);color:#FFE9A8}
-.bj-btns{display:flex;gap:10px;justify-content:center}
+.bj-btns{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
 .bj-btns .btn{min-width:96px}
 
 /* =====================================================================
@@ -4719,7 +4719,7 @@ function gameBlackjack(box, rnd) {
       box.querySelector('#xbjBtns').innerHTML = busy ? '<span class="bj-wait">De dealer deelt…</span>' : phase === 'play'
         ? `<button class="btn small" data-bj="hit" type="button">Hit</button><button class="btn small" data-bj="stand" type="button">Stand</button>
            <button class="btn small ghost" data-bj="double" type="button" ${canDouble ? '' : 'disabled'}>Double</button>
-           ${canSplit ? '<button class="btn small ghost" data-bj="split" type="button">Split</button>' : ''}`
+           <button class="btn small ghost" data-bj="split" type="button" ${canSplit ? '' : 'disabled'} title="Splitsen kan met twee kaarten van dezelfde waarde">Split</button>`
         : `<button class="btn small" data-bj="next" type="button">${hand + 1 >= HANDS || chips < BET ? 'Resultaat' : 'Volgende hand'}</button>`;
     };
     const give = async (to, row, hidden = false) => { const c = shoe.pop(); to.push(c); dealCardInto(row, cardHtml(c, hidden), deck); info(); await pause(520); };
@@ -6686,7 +6686,7 @@ async function renderCasino(view) {
     }
     if (h) {
       btns.innerHTML = h.done ? '<button type="button" class="btn small" data-bj="deal">Nieuwe hand</button>'
-        : `<button type="button" class="btn small" data-bj="hit">Hit</button><button type="button" class="btn small ghost" data-bj="stand">Stand</button>${h.can_double ? '<button type="button" class="btn small ghost" data-bj="double">Double</button>' : ''}${h.can_split ? '<button type="button" class="btn small ghost" data-bj="split">Split</button>' : ''}`;
+        : `<button type="button" class="btn small" data-bj="hit">Hit</button><button type="button" class="btn small ghost" data-bj="stand">Stand</button><button type="button" class="btn small ghost" data-bj="double" ${h.can_double ? '' : 'disabled'}>Double</button><button type="button" class="btn small ghost" data-bj="split" ${h.can_split ? '' : 'disabled'} title="Splitsen kan met twee kaarten van dezelfde waarde">Split</button>`;
     }
     const cs = $('#bjChips'); if (cs) { const n = Math.round((h?.bet || czState.bet) / 5); cs.innerHTML = Array.from({ length: Math.min(n, 12) }, (_, i) => `<i style="--i:${i}"></i>`).join('') + `<b>${h?.bet || czState.bet}</b>`; }
     btns.querySelectorAll('[data-bj]').forEach(b => b.onclick = () => bjDo(b.dataset.bj));
