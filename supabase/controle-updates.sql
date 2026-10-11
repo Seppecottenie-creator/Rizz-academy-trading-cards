@@ -50,6 +50,9 @@ union all
 select 'update-21-pintje-random.sql',
        exists (select 1 from information_schema.columns where table_schema = 'public' and table_name = 'beer_state' and column_name = 'limit_n')
 union all
+select 'update-22-blackjack-split.sql',
+       to_regprocedure('public._bj_next(public.casino_bj)') is not null
+union all
 select 'Edge Function rizz-push (werkt zodra iemand meldingen aanzette)',
        case when to_regclass('public.push_config') is null then false
             else (xpath('/row/c/text()', query_to_xml('select count(*) as c from public.push_config', false, true, '')))[1]::text <> '0' end;

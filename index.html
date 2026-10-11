@@ -2671,6 +2671,13 @@ body.drunk .place-bg,body.drunk .campus-map{animation:drunk-double 2.4s ease-in-
 .cz-felt .cz-bj-row + .cz-bj-row{border-top:1px dashed rgba(244,235,221,.25)}
 .cz-felt .bj-card{width:68px;height:98px}.cz-felt .bj-card b{font-size:22px}.cz-felt .bj-card i{font-size:28px}
 .chip-stack{position:absolute;right:16px;bottom:12px;width:44px;height:80px}
+.bj-hands{display:flex;gap:14px;flex-wrap:wrap;align-items:flex-start}
+.bj-hands.split .bj-cards{gap:0;padding:5px;border-radius:10px;box-shadow:0 0 0 2px rgba(244,235,221,.18);transition:box-shadow .2s,background .2s}
+.bj-hands.split .bj-card + .bj-card{margin-left:-26px}
+.bj-hands.split .bj-cards.on{background:rgba(242,204,114,.12);box-shadow:0 0 0 2px #F2CC72,0 0 18px -4px #F2CC72}
+@media (max-width:599px){.bj-hands{gap:10px}.bj-hands.split .bj-card + .bj-card{margin-left:-40px}
+  .cz-felt{padding:12px}.felt-arc{font-size:9px;letter-spacing:.1em}
+  .cz-btns{flex-wrap:wrap;justify-content:center;width:100%}.cz-ctrl .cz-btns .btn{min-width:0;flex:1 1 calc(50% - 8px);padding:10px 12px;font-size:15px}}
 .chip-stack i{position:absolute;left:0;bottom:calc(var(--i) * 5px);width:44px;height:14px;border-radius:50%;background:repeating-linear-gradient(90deg,#C8102E 0 8px,#fff 8px 12px);box-shadow:inset 0 -3px 0 rgba(0,0,0,.25),0 2px 3px rgba(0,0,0,.4)}
 .chip-stack b{position:absolute;left:50%;bottom:-20px;transform:translateX(-50%);font:400 14px var(--varsity);color:#F2CC72}
 @media (max-width:899px) and (min-height:501px), (max-width:599px){.cz-roul{grid-template-columns:1fr}.slot-lever{display:none}}
@@ -3373,7 +3380,7 @@ const INFO = {
     <li>Zolang je zat bent, krijg je geen nieuw pintje.</li></ul>`],
   casino: ['Het casino', `
     <p>Zet je credits in, telkens per 5 (minstens 5, hoogstens 50 per spel). Alle uitkomsten worden op de server getrokken.</p>
-    <ul><li><strong>Blackjack</strong>: kom dichter bij 21 dan de dealer. Winst = 2× terug, blackjack = 2,5×, gelijk = inzet terug.</li>
+    <ul><li><strong>Blackjack</strong>: kom dichter bij 21 dan de dealer. Winst = 2× terug, blackjack = 2,5×, gelijk = inzet terug. Twee kaarten met dezelfde waarde? Dan kan je <strong>splitsen</strong> in twee handen (nog eens dezelfde inzet).</li>
     <li><strong>Roulette</strong>: rood/zwart, even/oneven, 1–18 of 19–36 = 2× terug. Eén getal = 36× terug. Op 0 wint het huis.</li>
     <li><strong>Slotmachine</strong>: drie gelijke symbolen, of kersen. Drie keer RIZZ = 60×.</li>
     <li><strong>Paardenrace</strong>: kies een van de 5 paarden. Hoe kleiner de kans, hoe hoger de quotering.</li>
@@ -4008,7 +4015,7 @@ const EXAM_INFO = {
   history: { rules: ['Twee gebeurtenissen: tik op wat het EERST gebeurde.', '10 vragen, 5 seconden per vraag. De jaartallen komen steeds dichter bij elkaar.'], unit: 'juist', grades: [9, 8, 6, 4] },
   darts: { rules: ['Hou ingedrukt om te mikken en laat los om te gooien. Hoe langer je mikt, hoe meer je hand trilt.', '6 pijlen. Bull = 50, binnenring ×3, buitenring ×2.'], unit: 'punten', grades: [190, 150, 110, 70] },
   launch: { rules: ['Tik 1: kies de hoek van het kanon. Tik 2: schiet als het kruisje op de juiste plek staat.', 'Raak de emmer. Let op de wind (mik wat voor of achter de emmer) en, vanaf schot 4, de muur. 8 schoten.'], unit: 'raak', grades: [7, 5, 4, 2] },
-  blackjack: { rules: ['10 handen, je start met 100 chips en zet telkens 10 in. Kom zo dicht mogelijk bij 21 zonder erover te gaan.', 'Hit = extra kaart · Stand = stoppen · Double = dubbele inzet, nog één kaart. De dealer pakt tot 17.'], unit: 'chips', grades: [160, 125, 100, 70] },
+  blackjack: { rules: ['10 handen, je start met 100 chips en zet telkens 10 in. Kom zo dicht mogelijk bij 21 zonder erover te gaan.', 'Hit = extra kaart · Stand = stoppen · Double = dubbele inzet, nog één kaart · Split = twee gelijke kaarten splitsen in twee handen. De dealer pakt tot 17.'], unit: 'chips', grades: [160, 125, 100, 70] },
   pong: { rules: ['Tik 1: mik (de lijn glijdt over de tafel). Tik 2: tik als het vizier op een beker staat.', '10 ballen voor 6 bekers, steeds sneller.'], unit: 'bekers', grades: [6, 5, 4, 2] },
   pour: { rules: ['Hou ingedrukt om te tappen en laat los aan de gouden lijn. Het schuim stijgt nog wat na!', '5 pintjes, elk glas tapt sneller. Overlopen = 0.'], unit: 'punten', grades: [440, 380, 300, 200] },
 };
@@ -4602,9 +4609,11 @@ function gameBlackjack(box, rnd) {
     for (let d = 0; d < 4; d++) for (const s of SUITS) for (const r of RANKS) shoe.push({ r, s });
     for (let i = shoe.length - 1; i > 0; i--) { const j = Math.floor(rnd() * (i + 1)); [shoe[i], shoe[j]] = [shoe[j], shoe[i]]; }
     const HANDS = 10, BET = 10;
-    let chips = 100, hand = 0, player = [], dealer = [], bet = BET, phase = 'play', note = '', busy = false, hideHole = true;
+    // hands: je handen (twee na een split), cur: de hand die aan de beurt is
+    let chips = 100, hand = 0, hands = [], cur = 0, dealer = [], phase = 'play', note = '', busy = false, hideHole = true;
     const pause = ms => sleep(prefersReduced() ? 60 : ms);
     const val = cards => { let t = 0, a = 0; for (const c of cards) { t += c.r === 'A' ? 11 : 'JQK'.includes(c.r) ? 10 : Number(c.r); if (c.r === 'A') a++; } while (t > 21 && a) { t -= 10; a--; } return t; };
+    const cval = c => c.r === 'A' ? 11 : 'JQK'.includes(c.r) ? 10 : Number(c.r);
     const cardHtml = (c, hidden) => hidden ? '<span class="bj-card back"></span>' : `<span class="bj-card${'♥♦'.includes(c.s) ? ' red' : ''}"><b>${c.r}</b><i>${c.s}</i></span>`;
     // Vast speelveld: enkel de kaarten komen erbij, de rest wordt bijgewerkt zonder alles opnieuw te tekenen
     box.innerHTML = `<div class="bj">
@@ -4612,58 +4621,88 @@ function gameBlackjack(box, rnd) {
       <div class="bj-deck" id="xbjDeck" aria-hidden="true"><span></span><span></span><span></span></div>
       <div class="bj-row"><small>Dealer <span id="xbjDt"></span></small><div class="bj-cards" id="xbjD"></div></div>
       <div class="bj-note" id="xbjNote"></div>
-      <div class="bj-row"><small>Jij <span id="xbjPt"></span></small><div class="bj-cards" id="xbjP"></div></div>
+      <div class="bj-row"><small>Jij <span id="xbjPt"></span></small><div class="bj-hands" id="xbjHands"><div class="bj-cards" id="xbjP"></div><div class="bj-cards" id="xbjP2" hidden></div></div></div>
       <div class="bj-btns" id="xbjBtns"></div>
     </div>`;
-    const D = box.querySelector('#xbjD'), P = box.querySelector('#xbjP'), deck = box.querySelector('#xbjDeck');
+    const D = box.querySelector('#xbjD'), P = box.querySelector('#xbjP'), P2 = box.querySelector('#xbjP2'), deck = box.querySelector('#xbjDeck');
+    const totalBet = () => hands.reduce((t, h) => t + h.bet, 0);
     const info = () => {
+      const split = hands.length > 1, h = hands[cur];
       box.querySelector('#xbjChips').textContent = chips;
       box.querySelector('#xbjHand').textContent = `${Math.min(hand + 1, HANDS)}/${HANDS}`;
-      box.querySelector('#xbjBet').textContent = bet;
+      box.querySelector('#xbjBet').textContent = totalBet() || BET;
       box.querySelector('#xbjDt').textContent = dealer.length ? `· ${hideHole ? val(dealer.slice(0, 1)) : val(dealer)}` : '';
-      box.querySelector('#xbjPt').textContent = player.length ? `· ${val(player)}` : '';
+      box.querySelector('#xbjPt').textContent = hands[0]?.cards.length ? `· ${hands.map(x => val(x.cards)).join(' · ')}` : '';
       box.querySelector('#xbjNote').textContent = note;
+      box.querySelector('#xbjHands').classList.toggle('split', split); P2.hidden = !split;
+      P.classList.toggle('on', split && phase === 'play' && cur === 0); P2.classList.toggle('on', split && phase === 'play' && cur === 1);
+      const canDouble = h && h.cards.length === 2 && chips >= totalBet() + h.bet;
+      const canSplit = h && !split && h.cards.length === 2 && cval(h.cards[0]) === cval(h.cards[1]) && chips >= totalBet() * 2;
       box.querySelector('#xbjBtns').innerHTML = busy ? '<span class="bj-wait">De dealer deelt…</span>' : phase === 'play'
         ? `<button class="btn small" data-bj="hit" type="button">Hit</button><button class="btn small" data-bj="stand" type="button">Stand</button>
-           <button class="btn small ghost" data-bj="double" type="button" ${player.length === 2 && chips >= bet * 2 ? '' : 'disabled'}>Double</button>`
+           <button class="btn small ghost" data-bj="double" type="button" ${canDouble ? '' : 'disabled'}>Double</button>
+           ${canSplit ? '<button class="btn small ghost" data-bj="split" type="button">Split</button>' : ''}`
         : `<button class="btn small" data-bj="next" type="button">${hand + 1 >= HANDS || chips < BET ? 'Resultaat' : 'Volgende hand'}</button>`;
     };
     const give = async (to, row, hidden = false) => { const c = shoe.pop(); to.push(c); dealCardInto(row, cardHtml(c, hidden), deck); info(); await pause(520); };
     const deal = async () => {
       if (hand >= HANDS || chips < BET) return resolve(chips);
-      bet = BET; player = []; dealer = []; phase = 'play'; note = ''; busy = true; hideHole = true;
-      D.innerHTML = ''; P.innerHTML = ''; info();
+      hands = [{ cards: [], bet: BET }]; cur = 0; dealer = []; phase = 'play'; note = ''; busy = true; hideHole = true;
+      D.innerHTML = ''; P.innerHTML = ''; P2.innerHTML = ''; info();
       await pause(300);
-      await give(player, P); await give(dealer, D); await give(player, P); await give(dealer, D, true);
+      await give(hands[0].cards, P); await give(dealer, D); await give(hands[0].cards, P); await give(dealer, D, true);
       busy = false;
-      if (val(player) === 21) return settle();
+      if (val(hands[0].cards) === 21) return settle();
       info();
+    };
+    // Deze hand is klaar: naar de tweede hand, of de dealer is aan de beurt
+    const nextHand = () => {
+      if (cur === 0 && hands.length > 1) { cur = 1; if (val(hands[1].cards) >= 21) return nextHand(); return info(); }
+      settle();
     };
     const settle = async () => {
       busy = true; info();
-      const p = val(player);
+      const split = hands.length > 1;
+      const natural = !split && val(hands[0].cards) === 21 && hands[0].cards.length === 2;
       await pause(350);
       hideHole = false; flipCard(D.lastElementChild, cardHtml(dealer[1])); info(); await pause(520);
-      if (p <= 21 && !(p === 21 && player.length === 2)) while (val(dealer) < 17) await give(dealer, D);
+      if (!natural && hands.some(h => val(h.cards) <= 21)) while (val(dealer) < 17) await give(dealer, D);
       busy = false;
       const d = val(dealer);
-      let delta;
-      if (p > 21) { delta = -bet; note = 'Bust! −' + bet; }
-      else if (p === 21 && player.length === 2 && !(d === 21 && dealer.length === 2)) { delta = Math.round(bet * 1.5); note = 'Blackjack! +' + delta; }
-      else if (d > 21) { delta = bet; note = 'Dealer bust! +' + bet; }
-      else if (p > d) { delta = bet; note = 'Gewonnen! +' + bet; }
-      else if (p < d) { delta = -bet; note = 'Verloren −' + bet; }
-      else { delta = 0; note = 'Push'; }
-      chips = Math.max(0, chips + delta); phase = 'done'; hand++;
+      const notes = [];
+      let total = 0;
+      hands.forEach((h, i) => {
+        const p = val(h.cards), bet = h.bet;
+        let delta, t;
+        if (p > 21) { delta = -bet; t = 'Bust! −' + bet; }
+        else if (!split && p === 21 && h.cards.length === 2 && !(d === 21 && dealer.length === 2)) { delta = Math.round(bet * 1.5); t = 'Blackjack! +' + delta; }
+        else if (d > 21) { delta = bet; t = 'Dealer bust! +' + bet; }
+        else if (p > d) { delta = bet; t = 'Gewonnen! +' + bet; }
+        else if (p < d) { delta = -bet; t = 'Verloren −' + bet; }
+        else { delta = 0; t = 'Push'; }
+        total += delta; notes.push(split ? `Hand ${i + 1}: ${t}` : t);
+      });
+      note = notes.join(' · ');
+      chips = Math.max(0, chips + total); phase = 'done'; hand++;
       info();
     };
     box.onclick = async e => {
       const b = e.target.closest('[data-bj]'); if (!b || b.disabled || busy) return;
-      const a = b.dataset.bj;
+      const a = b.dataset.bj, h = hands[cur], row = cur === 1 ? P2 : P;
       if (a === 'next') return deal();
-      if (a === 'hit') { busy = true; info(); await give(player, P); busy = false; if (val(player) >= 21) return settle(); info(); }
-      else if (a === 'stand') settle();
-      else if (a === 'double') { bet *= 2; busy = true; info(); await give(player, P); busy = false; settle(); }
+      if (a === 'hit') { busy = true; info(); await give(h.cards, row); busy = false; if (val(h.cards) >= 21) return nextHand(); info(); }
+      else if (a === 'stand') nextHand();
+      else if (a === 'double') { h.bet *= 2; busy = true; info(); await give(h.cards, row); busy = false; nextHand(); }
+      else if (a === 'split') {
+        hands = [{ cards: [h.cards[0]], bet: h.bet }, { cards: [h.cards[1]], bet: h.bet }];
+        busy = true; info();
+        P2.append(P.lastElementChild); await pause(350);
+        await give(hands[0].cards, P); await give(hands[1].cards, P2);
+        busy = false;
+        if (hands[0].cards[0].r === 'A') return settle(); // twee azen: elk één kaart
+        if (val(hands[0].cards) === 21) return nextHand();
+        info();
+      }
     };
     deal();
   });
@@ -6370,7 +6409,7 @@ async function renderCasino(view) {
     ${pop('bj', 'Blackjack', `<div class="cz-bj cz-felt"><div class="bj-deck" id="czDeck" aria-hidden="true"><span></span><span></span><span></span></div>
       <div class="felt-arc">BLACKJACK PAYS 3 TO 2 · DEALER STANDS ON 17</div>
       <div class="cz-bj-row"><span class="cz-lbl">Dealer <b id="bjDt"></b></span><div class="bj-cards" id="bjD"></div></div>
-      <div class="cz-bj-row"><span class="cz-lbl">Jij <b id="bjPt"></b></span><div class="bj-cards" id="bjP"></div><div class="chip-stack" id="bjChips"></div></div>
+      <div class="cz-bj-row"><span class="cz-lbl">Jij <b id="bjPt"></b></span><div class="bj-hands" id="bjHands"><div class="bj-cards" id="bjP"></div><div class="bj-cards" id="bjP2" hidden></div></div><div class="chip-stack" id="bjChips"></div></div>
       <div class="cz-ctrl">${betHtml}<span class="cz-btns" id="bjBtns"></span></div></div>`)}
     ${pop('roul', 'Roulette', `<div class="cz-roul">
       <div class="cz-wheel-wrap"><div class="cz-wheel-rim"></div><div class="cz-wheel" id="czWheel"></div><div class="cz-wheel-hub"></div>
@@ -6542,25 +6581,34 @@ async function renderCasino(view) {
   };
 
   // --- Blackjack ---
+  // Twee handen na een split: de hand die aan de beurt is, licht op
+  const bjHands = h => {
+    const split = !!h?.player2;
+    $('#bjHands').classList.toggle('split', split); $('#bjP2').hidden = !split;
+    $('#bjP').classList.toggle('on', split && !h.done && h.active !== 2);
+    $('#bjP2').classList.toggle('on', split && !h.done && h.active === 2);
+    $('#bjPt').textContent = !h || h.player_total === '' ? '' : split ? `${h.player_total} · ${h.player2_total}` : h.player_total;
+  };
   function drawBj(h, cards = true) {
     const btns = $('#bjBtns');
     if (!cards) {
-      $('#bjDt').textContent = h.dealer_total; $('#bjPt').textContent = h.player_total;
+      $('#bjDt').textContent = h.dealer_total; bjHands(h);
       view.querySelector('.cz-bj .cz-bet').hidden = !h.done;
     } else if (!h) {
-      $('#bjD').innerHTML = '<span class="bj-card back"></span><span class="bj-card back"></span>'; $('#bjP').innerHTML = '';
-      $('#bjDt').textContent = ''; $('#bjPt').textContent = '';
+      $('#bjD').innerHTML = '<span class="bj-card back"></span><span class="bj-card back"></span>'; $('#bjP').innerHTML = ''; $('#bjP2').innerHTML = '';
+      $('#bjDt').textContent = ''; bjHands(null);
       btns.innerHTML = '<button type="button" class="btn small" data-bj="deal">Delen</button>';
       view.querySelector('.cz-bj .cz-bet').hidden = false;
     } else {
       $('#bjD').innerHTML = h.dealer.map(bjCardHtml).join('') + (h.done ? '' : bjCardHtml(null));
       $('#bjP').innerHTML = h.player.map(bjCardHtml).join('');
-      $('#bjDt').textContent = h.dealer_total; $('#bjPt').textContent = h.player_total;
+      $('#bjP2').innerHTML = (h.player2 || []).map(bjCardHtml).join('');
+      $('#bjDt').textContent = h.dealer_total; bjHands(h);
       view.querySelector('.cz-bj .cz-bet').hidden = !h.done;
     }
     if (h) {
       btns.innerHTML = h.done ? '<button type="button" class="btn small" data-bj="deal">Nieuwe hand</button>'
-        : `<button type="button" class="btn small" data-bj="hit">Hit</button><button type="button" class="btn small ghost" data-bj="stand">Stand</button>${h.can_double ? '<button type="button" class="btn small ghost" data-bj="double">Double</button>' : ''}`;
+        : `<button type="button" class="btn small" data-bj="hit">Hit</button><button type="button" class="btn small ghost" data-bj="stand">Stand</button>${h.can_double ? '<button type="button" class="btn small ghost" data-bj="double">Double</button>' : ''}${h.can_split ? '<button type="button" class="btn small ghost" data-bj="split">Split</button>' : ''}`;
     }
     const cs = $('#bjChips'); if (cs) { const n = Math.round((h?.bet || czState.bet) / 5); cs.innerHTML = Array.from({ length: Math.min(n, 12) }, (_, i) => `<i style="--i:${i}"></i>`).join('') + `<b>${h?.bet || czState.bet}</b>`; }
     btns.querySelectorAll('[data-bj]').forEach(b => b.onclick = () => bjDo(b.dataset.bj));
@@ -6576,14 +6624,23 @@ async function renderCasino(view) {
     const pause = ms => sleep(prefersReduced() ? 40 : ms);
     $('#bjBtns').innerHTML = '<span class="bj-wait">De dealer deelt…</span>';
     view.querySelector('.cz-bj .cz-bet').hidden = true;
-    const P = $('#bjP'), D = $('#bjD'), deck = $('#czDeck');
+    const P = $('#bjP'), P2 = $('#bjP2'), D = $('#bjD'), deck = $('#czDeck');
     if (!prev || r.resumed) {
-      P.innerHTML = ''; D.innerHTML = ''; $('#bjPt').textContent = ''; $('#bjDt').textContent = '';
+      P.innerHTML = ''; P2.innerHTML = ''; D.innerHTML = ''; $('#bjDt').textContent = '';
+      bjHands(r.player2 ? { ...r, player_total: '', player2_total: '', done: true } : null);
       await pause(250);
-      const order = [[P, r.player[0]], [D, r.dealer[0]], [P, r.player[1]], [D, null]];
+      const order = [[P, r.player[0]], [D, r.dealer[0]], [P, r.player[1]], [D, null], ...r.player.slice(2).map(c => [P, c]), ...(r.player2 || []).map(c => [P2, c])];
       for (const [el, c] of order) { dealCardInto(el, bjCardHtml(c), deck); await pause(520); }
     } else {
-      for (const c of r.player.slice(prev.player.length)) { dealCardInto(P, bjCardHtml(c), deck); await pause(520); }
+      let had1 = prev.player.length, had2 = prev.player2?.length || 0;
+      if (act === 'split') {
+        // tweede kaart schuift naar de nieuwe hand
+        bjHands({ ...r, player_total: '', player2_total: '', done: true });
+        P2.innerHTML = ''; P2.append(P.lastElementChild); had1 = 1; had2 = 1;
+        await pause(350);
+      }
+      for (const c of r.player.slice(had1)) { dealCardInto(P, bjCardHtml(c), deck); await pause(520); }
+      for (const c of (r.player2 || []).slice(had2)) { dealCardInto(P2, bjCardHtml(c), deck); await pause(520); }
     }
     if (r.done) {
       await pause(300);
@@ -6596,12 +6653,13 @@ async function renderCasino(view) {
     if (r.done) {
       after(r);
       view.querySelector('.cz-go')?.remove();
-      const txt = { blackjack: 'Blackjack!', win: 'Gewonnen!', push: 'Gelijk.', lose: 'De dealer wint.', bust: 'Over 21.' }[r.outcome];
+      const TXT = { blackjack: 'Blackjack!', win: 'Gewonnen!', push: 'Gelijk.', lose: 'De dealer wint.', bust: 'Over 21.' };
+      const txt = r.player2 ? `Hand 1: ${TXT[r.outcome]} Hand 2: ${TXT[r.outcome2]}` : TXT[r.outcome];
       say('bj', `${txt} ${outcome(r)}`, r.payout > r.bet ? 'ok' : '');
       if (r.outcome === 'blackjack') window.celebrate?.('epic');
     } else if (!r.resumed) {
       // inzet is al afgeschreven
-      state.wallet = Math.max(0, state.wallet - (act === 'double' ? r.bet / 2 : act === 'deal' ? r.bet : 0)); syncCoinUI();
+      state.wallet = Math.max(0, state.wallet - (r.bet - (prev?.bet || 0))); syncCoinUI();
     }
   }
 }
