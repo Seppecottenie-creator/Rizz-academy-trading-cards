@@ -1823,7 +1823,7 @@ div.wf-inner{cursor:default}
 .bj-card b{font:700 18px/1 var(--display)}.bj-card i{font-style:normal;font-size:24px;justify-self:end;line-height:1}
 .bj-card.red{color:#C8102E}
 .bj-card.back{background:repeating-linear-gradient(45deg,#8C0B21 0 6px,#C8102E 6px 12px);box-shadow:inset 0 0 0 3px #F4EBDD,0 6px 12px -4px rgba(0,0,0,.6)}
-@keyframes bj-in{from{transform:translateY(-10px);opacity:0}}
+@keyframes bj-in{from{opacity:1}}
 .bj-note{min-height:26px;text-align:center;font:400 20px var(--varsity);color:#FFE9A8}
 .bj-btns{display:flex;gap:10px;justify-content:center}
 .bj-btns .btn{min-width:96px}
@@ -2521,6 +2521,15 @@ body.drunk .place-bg,body.drunk .campus-map{animation:drunk-double 2.4s ease-in-
 @keyframes drunk-double{0%,100%{box-shadow:none;filter:none}50%{filter:drop-shadow(14px 6px 0 rgba(255,255,255,.18)) drop-shadow(-10px -4px 0 rgba(255,120,160,.15))}}
 .drunk-badge{position:fixed;left:50%;bottom:14px;transform:translateX(-50%);z-index:4000;padding:6px 14px;border-radius:999px;background:rgba(246,194,67,.95);color:#2A1A05;font:700 13px var(--body);box-shadow:0 8px 20px -6px #000}
 @media (prefers-reduced-motion:reduce){body.drunk .shell,body.drunk .place-bg,body.drunk .campus-map{animation:none}}
+.bj,.cz-bj{position:relative}
+.bj-card{animation:none !important;will-change:transform}
+.bj-deck{position:absolute;right:16px;top:44px;width:44px;height:62px;z-index:1}
+.cz-bj .bj-deck{top:8px;right:12px}
+.bj-deck span{position:absolute;inset:0;border-radius:7px;background:repeating-linear-gradient(45deg,#8C0B21 0 6px,#C8102E 6px 12px);box-shadow:inset 0 0 0 3px #F4EBDD,0 4px 8px -2px rgba(0,0,0,.6)}
+.bj-deck span:nth-child(2){transform:translate(-2px,-2px)}.bj-deck span:nth-child(3){transform:translate(-4px,-4px)}
+.bj-cards{position:relative;z-index:2}
+@media (min-width:600px) and (max-height:500px){.bj-deck{width:32px;height:46px;top:34px}}
+.bj > .bj-deck{top:auto;bottom:calc(50% - 10px);right:18px}
 </style>
 </head>
 <body>
@@ -4122,7 +4131,7 @@ function gamePong(box, rnd) {
     const cups = [[166, 120], [200, 120], [234, 120], [183, 150], [217, 150], [200, 180]].map(([x, y]) => ({ x, y, hit: false }));
     let balls = 0, hits = 0, phase = 'aim', t0 = performance.now(), aimX = 200, ball = null, msg = '', msgT = 0, done = false, sp;
     const Y_FAR = 100, Y_NEAR = 205;
-    const newRound = () => { const k = balls / (BALLS - 1); sp = { aimP: 1900 - 700 * k, powP: 1700 - 600 * k }; phase = 'aim'; t0 = performance.now(); };
+    const newRound = () => { const k = balls / (BALLS - 1); sp = { aimP: 1500 - 600 * k, powP: 1300 - 500 * k }; phase = 'aim'; t0 = performance.now(); };
     newRound();
     const yAt = p => lerp(Y_NEAR, Y_FAR, p);
     onTap(c, () => {
@@ -4172,7 +4181,7 @@ function gamePong(box, rnd) {
         const t = Math.min(ball.t, 1);
         drawBall(lerp(200, ball.x, t), lerp(440, ball.y, t) - Math.sin(t * Math.PI) * 150, lerp(12, 6, t));
         if (ball.t >= 1) {
-          const cp = cups.find(q => !q.hit && Math.hypot(q.x - ball.x, (q.y - ball.y) * 1.25) < 15);
+          const cp = cups.find(q => !q.hit && Math.hypot(q.x - ball.x, (q.y - ball.y) * 1.4) < 11);
           if (cp) { cp.hit = true; hits++; msg = ['SPLASH!', 'DRINK!', 'RE-RACK!'][hits % 3]; } else msg = 'Mis';
           msgT = now; balls++; ball = null;
           if (hits >= 6 || balls >= BALLS) { done = true; setTimeout(() => resolve(hits), 900); } else newRound();
@@ -4408,35 +4417,45 @@ function gameBlackjack(box, rnd) {
     const pause = ms => sleep(prefersReduced() ? 60 : ms);
     const val = cards => { let t = 0, a = 0; for (const c of cards) { t += c.r === 'A' ? 11 : 'JQK'.includes(c.r) ? 10 : Number(c.r); if (c.r === 'A') a++; } while (t > 21 && a) { t -= 10; a--; } return t; };
     const cardHtml = (c, hidden) => hidden ? '<span class="bj-card back"></span>' : `<span class="bj-card${'♥♦'.includes(c.s) ? ' red' : ''}"><b>${c.r}</b><i>${c.s}</i></span>`;
-    const draw = () => {
-      const showD = !hideHole;
-      box.innerHTML = `<div class="bj">
-        <div class="bj-top"><span>Chips <b>${chips}</b></span><span>Hand <b>${Math.min(hand + 1, HANDS)}/${HANDS}</b></span><span>Inzet <b>${bet}</b></span></div>
-        <div class="bj-row"><small>Dealer ${showD ? `· ${val(dealer)}` : ''}</small><div class="bj-cards">${dealer.map((c, i) => cardHtml(c, !showD && i === 1)).join('')}</div></div>
-        <div class="bj-note">${note}</div>
-        <div class="bj-row"><small>Jij · ${val(player)}</small><div class="bj-cards">${player.map(c => cardHtml(c)).join('')}</div></div>
-        <div class="bj-btns">${busy ? '<span class="bj-wait">De dealer deelt…</span>' : phase === 'play'
-          ? `<button class="btn small" data-bj="hit" type="button">Hit</button><button class="btn small" data-bj="stand" type="button">Stand</button>
-             <button class="btn small ghost" data-bj="double" type="button" ${player.length === 2 && chips >= bet * 2 ? '' : 'disabled'}>Double</button>`
-          : `<button class="btn small" data-bj="next" type="button">${hand + 1 >= HANDS || chips < BET ? 'Resultaat' : 'Volgende hand'}</button>`}</div>
-      </div>`;
+    // Vast speelveld: enkel de kaarten komen erbij, de rest wordt bijgewerkt zonder alles opnieuw te tekenen
+    box.innerHTML = `<div class="bj">
+      <div class="bj-top"><span>Chips <b id="xbjChips"></b></span><span>Hand <b id="xbjHand"></b></span><span>Inzet <b id="xbjBet"></b></span></div>
+      <div class="bj-deck" id="xbjDeck" aria-hidden="true"><span></span><span></span><span></span></div>
+      <div class="bj-row"><small>Dealer <span id="xbjDt"></span></small><div class="bj-cards" id="xbjD"></div></div>
+      <div class="bj-note" id="xbjNote"></div>
+      <div class="bj-row"><small>Jij <span id="xbjPt"></span></small><div class="bj-cards" id="xbjP"></div></div>
+      <div class="bj-btns" id="xbjBtns"></div>
+    </div>`;
+    const D = box.querySelector('#xbjD'), P = box.querySelector('#xbjP'), deck = box.querySelector('#xbjDeck');
+    const info = () => {
+      box.querySelector('#xbjChips').textContent = chips;
+      box.querySelector('#xbjHand').textContent = `${Math.min(hand + 1, HANDS)}/${HANDS}`;
+      box.querySelector('#xbjBet').textContent = bet;
+      box.querySelector('#xbjDt').textContent = dealer.length ? `· ${hideHole ? val(dealer.slice(0, 1)) : val(dealer)}` : '';
+      box.querySelector('#xbjPt').textContent = player.length ? `· ${val(player)}` : '';
+      box.querySelector('#xbjNote').textContent = note;
+      box.querySelector('#xbjBtns').innerHTML = busy ? '<span class="bj-wait">De dealer deelt…</span>' : phase === 'play'
+        ? `<button class="btn small" data-bj="hit" type="button">Hit</button><button class="btn small" data-bj="stand" type="button">Stand</button>
+           <button class="btn small ghost" data-bj="double" type="button" ${player.length === 2 && chips >= bet * 2 ? '' : 'disabled'}>Double</button>`
+        : `<button class="btn small" data-bj="next" type="button">${hand + 1 >= HANDS || chips < BET ? 'Resultaat' : 'Volgende hand'}</button>`;
     };
-    // Kaarten één voor één, zoals aan een echte tafel
+    const give = async (to, row, hidden = false) => { const c = shoe.pop(); to.push(c); dealCardInto(row, cardHtml(c, hidden), deck); info(); await pause(520); };
     const deal = async () => {
       if (hand >= HANDS || chips < BET) return resolve(chips);
       bet = BET; player = []; dealer = []; phase = 'play'; note = ''; busy = true; hideHole = true;
-      draw();
-      for (const to of [player, dealer, player, dealer]) { await pause(450); to.push(shoe.pop()); draw(); }
+      D.innerHTML = ''; P.innerHTML = ''; info();
+      await pause(300);
+      await give(player, P); await give(dealer, D); await give(player, P); await give(dealer, D, true);
       busy = false;
       if (val(player) === 21) return settle();
-      draw();
+      info();
     };
     const settle = async () => {
-      busy = true; draw();
+      busy = true; info();
       const p = val(player);
-      await pause(500); hideHole = false; draw();
-      if (p <= 21 && !(p === 21 && player.length === 2)) while (val(dealer) < 17) { await pause(650); dealer.push(shoe.pop()); draw(); }
       await pause(350);
+      hideHole = false; flipCard(D.lastElementChild, cardHtml(dealer[1])); info(); await pause(520);
+      if (p <= 21 && !(p === 21 && player.length === 2)) while (val(dealer) < 17) await give(dealer, D);
       busy = false;
       const d = val(dealer);
       let delta;
@@ -4447,18 +4466,46 @@ function gameBlackjack(box, rnd) {
       else if (p < d) { delta = -bet; note = 'Verloren −' + bet; }
       else { delta = 0; note = 'Push'; }
       chips = Math.max(0, chips + delta); phase = 'done'; hand++;
-      draw();
+      info();
     };
     box.onclick = async e => {
       const b = e.target.closest('[data-bj]'); if (!b || b.disabled || busy) return;
       const a = b.dataset.bj;
       if (a === 'next') return deal();
-      if (a === 'hit') { busy = true; draw(); await pause(350); player.push(shoe.pop()); busy = false; if (val(player) >= 21) return settle(); draw(); }
+      if (a === 'hit') { busy = true; info(); await give(player, P); busy = false; if (val(player) >= 21) return settle(); info(); }
       else if (a === 'stand') settle();
-      else if (a === 'double') { bet *= 2; busy = true; draw(); await pause(350); player.push(shoe.pop()); busy = false; settle(); }
+      else if (a === 'double') { bet *= 2; busy = true; info(); await give(player, P); busy = false; settle(); }
     };
     deal();
   });
+}
+
+// Een kaart glijdt van de stapel naar haar plaats op tafel
+function dealCardInto(row, html, deck) {
+  row.insertAdjacentHTML('beforeend', html);
+  const el = row.lastElementChild;
+  if (!deck || prefersReduced()) return el;
+  const a = deck.getBoundingClientRect(), b = el.getBoundingClientRect();
+  el.style.transition = 'none';
+  el.style.transform = `translate(${a.left + a.width / 2 - b.left - b.width / 2}px, ${a.top + a.height / 2 - b.top - b.height / 2}px) rotate(-14deg)`;
+  el.style.zIndex = 5;
+  el.getBoundingClientRect();
+  el.style.transition = 'transform .5s cubic-bezier(.2,.75,.25,1)';
+  el.style.transform = 'none';
+  setTimeout(() => { el.style.zIndex = ''; }, 520);
+  return el;
+}
+// Verborgen kaart omdraaien
+function flipCard(el, html) {
+  if (!el) return;
+  if (prefersReduced()) { el.outerHTML = html; return; }
+  el.style.transition = 'transform .16s ease-in'; el.style.transform = 'rotateY(90deg)';
+  setTimeout(() => {
+    el.insertAdjacentHTML('afterend', html);
+    const n = el.nextElementSibling; el.remove();
+    n.style.transform = 'rotateY(90deg)'; n.getBoundingClientRect();
+    n.style.transition = 'transform .16s ease-out'; n.style.transform = 'none';
+  }, 160);
 }
 
 const EXAM_GAMES = { math: gameMath, hoops: gameHoops, history: gameHistory, launch: gameLaunch, darts: gameDarts, blackjack: gameBlackjack, pong: gamePong, pour: gamePour };
@@ -6119,7 +6166,7 @@ async function renderCasino(view) {
       ${tile('horses', '<span class="cz-ic">🏇</span>', 'Paardenrace', 'Kies je paard, tot 10× je inzet')}
     </div>
 
-    ${pop('bj', 'Blackjack', `<div class="cz-bj">
+    ${pop('bj', 'Blackjack', `<div class="cz-bj"><div class="bj-deck" id="czDeck" aria-hidden="true"><span></span><span></span><span></span></div>
       <div class="cz-bj-row"><span class="cz-lbl">Dealer <b id="bjDt"></b></span><div class="bj-cards" id="bjD"></div></div>
       <div class="cz-bj-row"><span class="cz-lbl">Jij <b id="bjPt"></b></span><div class="bj-cards" id="bjP"></div></div>
       <div class="cz-ctrl">${betHtml}<span class="cz-btns" id="bjBtns"></span></div></div>`)}
@@ -6245,9 +6292,12 @@ async function renderCasino(view) {
   };
 
   // --- Blackjack ---
-  function drawBj(h) {
+  function drawBj(h, cards = true) {
     const btns = $('#bjBtns');
-    if (!h) {
+    if (!cards) {
+      $('#bjDt').textContent = h.dealer_total; $('#bjPt').textContent = h.player_total;
+      view.querySelector('.cz-bj .cz-bet').hidden = !h.done;
+    } else if (!h) {
       $('#bjD').innerHTML = '<span class="bj-card back"></span><span class="bj-card back"></span>'; $('#bjP').innerHTML = '';
       $('#bjDt').textContent = ''; $('#bjPt').textContent = '';
       btns.innerHTML = '<button type="button" class="btn small" data-bj="deal">Delen</button>';
@@ -6257,6 +6307,8 @@ async function renderCasino(view) {
       $('#bjP').innerHTML = h.player.map(bjCardHtml).join('');
       $('#bjDt').textContent = h.dealer_total; $('#bjPt').textContent = h.player_total;
       view.querySelector('.cz-bj .cz-bet').hidden = !h.done;
+    }
+    if (h) {
       btns.innerHTML = h.done ? '<button type="button" class="btn small" data-bj="deal">Nieuwe hand</button>'
         : `<button type="button" class="btn small" data-bj="hit">Hit</button><button type="button" class="btn small ghost" data-bj="stand">Stand</button>${h.can_double ? '<button type="button" class="btn small ghost" data-bj="double">Double</button>' : ''}`;
     }
@@ -6273,22 +6325,21 @@ async function renderCasino(view) {
     const pause = ms => sleep(prefersReduced() ? 40 : ms);
     $('#bjBtns').innerHTML = '<span class="bj-wait">De dealer deelt…</span>';
     view.querySelector('.cz-bj .cz-bet').hidden = true;
-    const P = $('#bjP'), D = $('#bjD');
+    const P = $('#bjP'), D = $('#bjD'), deck = $('#czDeck');
     if (!prev || r.resumed) {
       P.innerHTML = ''; D.innerHTML = ''; $('#bjPt').textContent = ''; $('#bjDt').textContent = '';
-      const order = [[P, r.player[0]], [D, r.dealer[0]], [P, r.player[1]], [D, r.done ? r.dealer[1] : null]];
-      for (const [el, c] of order) { await pause(420); el.insertAdjacentHTML('beforeend', bjCardHtml(c)); }
+      await pause(250);
+      const order = [[P, r.player[0]], [D, r.dealer[0]], [P, r.player[1]], [D, null]];
+      for (const [el, c] of order) { dealCardInto(el, bjCardHtml(c), deck); await pause(520); }
     } else {
-      D.innerHTML = prev.dealer.map(bjCardHtml).join('') + bjCardHtml(null);
-      for (const c of r.player.slice(prev.player.length)) { await pause(380); P.insertAdjacentHTML('beforeend', bjCardHtml(c)); }
+      for (const c of r.player.slice(prev.player.length)) { dealCardInto(P, bjCardHtml(c), deck); await pause(520); }
     }
     if (r.done) {
-      await pause(450);
-      D.innerHTML = r.dealer.slice(0, 2).map(bjCardHtml).join('');
-      for (const c of r.dealer.slice(2)) { await pause(600); D.insertAdjacentHTML('beforeend', bjCardHtml(c)); }
       await pause(300);
+      flipCard(D.querySelector('.bj-card.back'), bjCardHtml(r.dealer[1])); await pause(520);
+      for (const c of r.dealer.slice(2)) { dealCardInto(D, bjCardHtml(c), deck); await pause(560); }
     }
-    drawBj(r);
+    drawBj(r, false);
     if (r.resumed) say('bj', 'Je vorige hand lag nog open. Speel ze eerst uit.');
     if (r.done) {
       after(r);
