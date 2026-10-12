@@ -51,7 +51,8 @@ select 'update-21-pintje-random.sql',
        exists (select 1 from information_schema.columns where table_schema = 'public' and table_name = 'beer_state' and column_name = 'limit_n')
 union all
 select 'update-22-blackjack-split.sql',
-       to_regprocedure('public._bj_next(public.casino_bj)') is not null
+       coalesce((select prosrc like '%split%' from pg_proc where oid = to_regprocedure('public.casino_bj_action(text)')), false)
+       and coalesce((select prosrc like '%can_split%' from pg_proc where oid = to_regprocedure('public._bj_view(public.casino_bj,boolean)')), false)
 union all
 select 'Edge Function rizz-push (werkt zodra iemand meldingen aanzette)',
        case when to_regclass('public.push_config') is null then false
