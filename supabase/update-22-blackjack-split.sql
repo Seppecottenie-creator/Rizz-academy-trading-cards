@@ -4,7 +4,7 @@
 -- Heb je twee kaarten met dezelfde waarde (bv. 8 + 8, of heer + 10)? Dan kan je splitsen:
 -- je zet nog eens dezelfde inzet in en speelt twee aparte handen tegen de dealer.
 -- - Je speelt eerst hand 1, daarna hand 2 (hit, stand of double per hand).
--- - Twee azen splitsen: elke aas krijgt nog één kaart, daarna is het de beurt aan de dealer.
+-- - (Azen: zie update 23 — ook daar mag je na een split gewoon verder hitten.)
 -- - 21 na een split telt als gewone winst (2×), niet als blackjack.
 -- - Eén keer splitsen per hand.
 --
@@ -137,7 +137,6 @@ begin
     h.deck := h.deck[3:];
     h.active := 1;
     update public.casino_bj set bet2 = h.bet2, player = h.player, hand2 = h.hand2, deck = h.deck, active = 1 where user_id = h.user_id;
-    if h.player[1] % 13 = 0 then return public._bj_finish(h, true); end if; -- twee azen: elk één kaart
     if public._bj_value(h.player) = 21 then return public._bj_next(h); end if;
     return public._bj_view(h, false);
   end if;

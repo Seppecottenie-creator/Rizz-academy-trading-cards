@@ -54,6 +54,9 @@ select 'update-22-blackjack-split.sql',
        coalesce((select prosrc like '%split%' from pg_proc where oid = to_regprocedure('public.casino_bj_action(text)')), false)
        and coalesce((select prosrc like '%can_split%' from pg_proc where oid = to_regprocedure('public._bj_view(public.casino_bj,boolean)')), false)
 union all
+select 'update-23-split-azen.sql',
+       coalesce((select prosrc like '%split%' and prosrc not like '%twee azen%' from pg_proc where oid = to_regprocedure('public.casino_bj_action(text)')), false)
+union all
 select 'Edge Function rizz-push (werkt zodra iemand meldingen aanzette)',
        case when to_regclass('public.push_config') is null then false
             else (xpath('/row/c/text()', query_to_xml('select count(*) as c from public.push_config', false, true, '')))[1]::text <> '0' end;

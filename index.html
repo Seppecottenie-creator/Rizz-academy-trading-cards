@@ -3918,6 +3918,9 @@ const CAMPUS_PLACES = [
 // ---------- Updates: wat is er nieuw (nieuwste dag bovenaan) ----------
 // Bij elke nieuwe update: bovenaan een dag toevoegen (of de bestaande dag van vandaag aanvullen).
 const UPDATES = [
+  { date: '2026-10-14', items: [
+    ['🃏', 'Blackjack: splitsen verbeterd', 'Na een split speel je elke hand gewoon verder: hitten zo vaak je wil, ook als je twee azen splitst. De knoppen Split en Double staan altijd in beeld en lichten op als ze kunnen.'],
+  ] },
   { date: '2026-10-11', items: [
     ['🎰', 'Casino', 'Nieuw gebouw op de campus: blackjack, roulette, de slotmachine en een paardenrace. Inzet per 5 credits, zonder limiet.'],
     ['🃏', 'Blackjack: splitsen', 'Twee kaarten met dezelfde waarde? Splits ze in twee handen. Werkt in het casino en in het examen.'],
@@ -4777,7 +4780,6 @@ function gameBlackjack(box, rnd) {
         P2.append(P.lastElementChild); await pause(350);
         await give(hands[0].cards, P); await give(hands[1].cards, P2);
         busy = false;
-        if (hands[0].cards[0].r === 'A') return settle(); // twee azen: elk één kaart
         if (val(hands[0].cards) === 21) return nextHand();
         info();
       }
