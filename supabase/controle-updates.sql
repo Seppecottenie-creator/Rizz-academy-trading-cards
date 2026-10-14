@@ -57,6 +57,9 @@ union all
 select 'update-23-split-azen.sql',
        coalesce((select prosrc like '%split%' and prosrc not like '%twee azen%' from pg_proc where oid = to_regprocedure('public.casino_bj_action(text)')), false)
 union all
+select 'update-24-opgeven.sql',
+       coalesce((select prosrc not like '%r < 3 then v_ca := 0%' from pg_proc where oid = to_regprocedure('public._tb_resolve(bigint)')), false)
+union all
 select 'Edge Function rizz-push (werkt zodra iemand meldingen aanzette)',
        case when to_regclass('public.push_config') is null then false
             else (xpath('/row/c/text()', query_to_xml('select count(*) as c from public.push_config', false, true, '')))[1]::text <> '0' end;
