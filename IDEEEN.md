@@ -41,6 +41,13 @@ Lijst van ideeën die nog niet gebouwd zijn. Nieuwste bovenaan.
 **Na afloop**
 - Een uitslagenscherm: verslagen of niet, totale schade, ranking van iedereen, wie de laatste klap gaf.
 
+### Achtergrondmuziek en geluidseffecten
+- Rustige achtergrondmuziek per plek (campus, casino, The Arena, Food Truck), dag en nacht anders.
+- Geluidseffecten: envelope openen, zeldzame kaart (extra groot bij legendary), kaarten delen bij blackjack,
+  slotmachine, roulettebal, paardenrace, munten bij winst, pintje leegdrinken, klappen in The Arena.
+- Een knop om muziek en geluid apart aan/uit te zetten (standaard muziek uit, geluid aan); onthouden per toestel.
+- Opgelet: browsers spelen pas geluid af na de eerste tik op de pagina; bestanden klein houden voor de gsm.
+
 ### Rizz quiz
 - Vragen over de groep zelf ("Wie zei ooit…", "Wie heeft de meeste…"), of over elkaars kaarten.
 - Eventueel als dagelijkse quiz of als duel tegen een vriend.
