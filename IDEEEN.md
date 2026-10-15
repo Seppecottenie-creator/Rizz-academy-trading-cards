@@ -41,6 +41,17 @@ Lijst van ideeën die nog niet gebouwd zijn. Nieuwste bovenaan.
 **Na afloop**
 - Een uitslagenscherm: verslagen of niet, totale schade, ranking van iedereen, wie de laatste klap gaf.
 
+### Inzetten op echte voetbalwedstrijden (casino)
+- In het casino een "Sportsbook": de komende wedstrijden (bv. Jupiler Pro League, Champions League, Rode Duivels).
+- Inzetten met credits op 1 / X / 2 (thuis wint, gelijk, uit wint); later eventueel exacte score of "beide teams scoren".
+- Quoteringen: vast per wedstrijd bij het openen (bv. uit een gratis voetbal-API, of eenvoudig zelf berekend),
+  met een kleine marge voor het casino zoals bij de andere spelletjes.
+- Inzetten sluiten bij de aftrap. Na de wedstrijd haalt de server automatisch de uitslag op en betaalt uit.
+- Technisch: een gratis voetbal-API (bv. football-data.org) via een Supabase Edge Function + een uurlijkse taak
+  (pg_cron, zoals de meldingen). De API-sleutel blijft in Supabase, nooit in de site.
+- Extra: een klassement "beste voorspeller" van de week, en een pushmelding als je inzet gewonnen is.
+- Enkel met credits uit het spel, nooit met echt geld.
+
 ### Achtergrondmuziek en geluidseffecten
 - Rustige achtergrondmuziek per plek (campus, casino, The Arena, Food Truck), dag en nacht anders.
 - Geluidseffecten: envelope openen, zeldzame kaart (extra groot bij legendary), kaarten delen bij blackjack,
