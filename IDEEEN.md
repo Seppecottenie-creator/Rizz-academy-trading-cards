@@ -41,24 +41,6 @@ Lijst van ideeën die nog niet gebouwd zijn. Nieuwste bovenaan.
 **Na afloop**
 - Een uitslagenscherm: verslagen of niet, totale schade, ranking van iedereen, wie de laatste klap gaf.
 
-### Inzetten op echte voetbalwedstrijden (casino)
-- In het casino een "Sportsbook": de komende wedstrijden (bv. Jupiler Pro League, Champions League, Rode Duivels).
-- Inzetten met credits op 1 / X / 2 (thuis wint, gelijk, uit wint); later eventueel exacte score of "beide teams scoren".
-- Quoteringen: vast per wedstrijd bij het openen (bv. uit een gratis voetbal-API, of eenvoudig zelf berekend),
-  met een kleine marge voor het casino zoals bij de andere spelletjes.
-- Inzetten sluiten bij de aftrap. Na de wedstrijd haalt de server automatisch de uitslag op en betaalt uit.
-- Technisch: een gratis voetbal-API (bv. football-data.org) via een Supabase Edge Function + een uurlijkse taak
-  (pg_cron, zoals de meldingen). De API-sleutel blijft in Supabase, nooit in de site.
-- Extra: een klassement "beste voorspeller" van de week, en een pushmelding als je inzet gewonnen is.
-- Enkel met credits uit het spel, nooit met echt geld.
-
-### Achtergrondmuziek en geluidseffecten
-- Rustige achtergrondmuziek per plek (campus, casino, The Arena, Food Truck), dag en nacht anders.
-- Geluidseffecten: envelope openen, zeldzame kaart (extra groot bij legendary), kaarten delen bij blackjack,
-  slotmachine, roulettebal, paardenrace, munten bij winst, pintje leegdrinken, klappen in The Arena.
-- Een knop om muziek en geluid apart aan/uit te zetten (standaard muziek uit, geluid aan); onthouden per toestel.
-- Opgelet: browsers spelen pas geluid af na de eerste tik op de pagina; bestanden klein houden voor de gsm.
-
 ### Rizz quiz
 - Vragen over de groep zelf ("Wie zei ooit…", "Wie heeft de meeste…"), of over elkaars kaarten.
 - Eventueel als dagelijkse quiz of als duel tegen een vriend.
@@ -70,12 +52,5 @@ Lijst van ideeën die nog niet gebouwd zijn. Nieuwste bovenaan.
 - Beloningen: credits, envelopes, en cosmetica: kaartranden, profielkaders, titels onder je naam,
   kamerthema's voor het Frat House, emotes, een andere kaartachterkant.
 
-### Geheime achievements
-- Trofeeën die je pas ziet als je ze haalt (bv. "3 keer na elkaar bust", "om 3u 's nachts een examen spelen",
-  "10 pintjes op één dag", "verliezen met een legendary").
-- In de lijst enkel een "???"-vakje, zodat mensen gaan zoeken.
-
-### Meer in de Food Truck
-- Naast pintjes: shotjes, kapsalon, en andere (fictieve) middelen.
-- Elk met een eigen effect en animatie; combinaties kunnen zeldzame dingen unlocken
-  (geheime achievement, speciale kaartrand, een verborgen kaart…).
+## Gebouwd
+- 16 oktober 2026: Sportsbook (voetbal), Food Truck-kaart, geheime trofeeën, muziek en geluid.

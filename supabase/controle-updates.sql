@@ -60,6 +60,19 @@ union all
 select 'update-24-opgeven.sql',
        coalesce((select prosrc not like '%r < 3 then v_ca := 0%' from pg_proc where oid = to_regprocedure('public._tb_resolve(bigint)')), false)
 union all
+select 'update-25-foodtruck.sql',
+       to_regprocedure('public.buy_food(text)') is not null
+union all
+select 'update-26-voetbal.sql',
+       to_regprocedure('public.fb_overview()') is not null
+union all
+select 'update-27-geheime-trofeeen.sql',
+       to_regprocedure('public._secret_trophies()') is not null
+union all
+select 'Functie rizz-voetbal (haalt elk uur wedstrijden op; werkt zodra de sleutel ingesteld is)',
+       case when to_regclass('public.fb_config') is null then false
+            else (xpath('/row/c/text()', query_to_xml('select count(*) as c from public.fb_config where last_sync is not null', false, true, '')))[1]::text <> '0' end
+union all
 select 'Edge Function rizz-push (werkt zodra iemand meldingen aanzette)',
        case when to_regclass('public.push_config') is null then false
             else (xpath('/row/c/text()', query_to_xml('select count(*) as c from public.push_config', false, true, '')))[1]::text <> '0' end;
