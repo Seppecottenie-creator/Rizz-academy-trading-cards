@@ -2567,6 +2567,47 @@ body.drunk .place-bg,body.drunk .campus-map{animation:drunk-double 2.4s ease-in-
 .bar-side strong{font:400 26px var(--varsity);color:#F8C84A}
 .bar-side small{color:var(--ink-soft);font-size:14px}
 .bar-side .btn{justify-self:start;margin-top:6px}
+/* Food Truck: de kaart */
+.bar-menu{margin-top:20px;max-width:860px;padding:22px;border-radius:20px;background:linear-gradient(180deg,rgba(28,22,14,.9),rgba(14,19,38,.9));border:1px solid rgba(246,194,67,.4);box-shadow:0 30px 60px -30px #000}
+.bar-board-head{display:flex;align-items:baseline;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-bottom:14px}
+.bar-board-head b{font:400 26px var(--varsity);color:#F8C84A;letter-spacing:.06em;text-transform:uppercase}
+.bar-board-head small{color:var(--ink-soft);font-size:13px}
+.bar-items{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px}
+.bar-item{display:grid;grid-template-columns:auto 1fr;grid-template-rows:auto auto;gap:4px 12px;align-items:center;text-align:left;padding:14px;border-radius:14px;border:1px solid rgba(246,194,67,.28);background:rgba(255,255,255,.04);color:var(--ink);cursor:pointer;transition:transform .15s,border-color .15s,background .15s}
+.bar-item:hover:not(:disabled){transform:translateY(-2px);border-color:#F8C84A;background:rgba(248,200,74,.09)}
+.bar-item:disabled{opacity:.55;cursor:wait}
+.bi-ico{grid-row:1/3;width:54px;height:54px;display:grid;place-items:center;font-size:32px;border-radius:14px;background:radial-gradient(circle at 40% 35%,rgba(248,200,74,.28),rgba(248,200,74,.05))}
+.bi-txt b{display:block;font:400 18px var(--varsity);letter-spacing:.04em;color:#F6DE9C}
+.bi-txt small{display:block;font:500 12.5px/1.4 var(--body);color:var(--ink-soft)}
+.bi-price{justify-self:start;padding:3px 10px;border-radius:999px;background:#F8C84A;color:#2A1A05;font:700 12.5px var(--body)}
+.bi-poeder{border-color:rgba(197,139,255,.5)}.bi-poeder .bi-ico{background:radial-gradient(circle at 40% 35%,rgba(197,139,255,.4),rgba(197,139,255,.05))}
+.bar-menu .msg{margin-top:12px}
+@media (min-width:600px) and (max-height:500px){.bar-menu{margin-top:6px;padding:12px}.bar-items{grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}.bi-txt small{display:none}.bi-ico{width:40px;height:40px;font-size:24px}.bar-board-head{margin-bottom:8px}.bar-board-head b{font-size:18px}}
+/* animaties per item */
+.chug-beer.shot{background:linear-gradient(180deg,rgba(196,110,40,.95),rgba(120,50,12,.97));animation-duration:1s}
+.fs-redbull{background:radial-gradient(circle,rgba(60,120,255,.85),rgba(10,20,80,.95))}
+.fs-bolt{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);font-size:min(60vw,320px);animation:fs-bolt .5s steps(2) infinite}
+.fs-flash{position:absolute;inset:0;background:#fff;opacity:0;animation:fs-flash 1.9s ease}
+@keyframes fs-bolt{50%{transform:translate(-48%,-52%) rotate(6deg)}}
+@keyframes fs-flash{5%{opacity:.85}15%{opacity:0}40%{opacity:.6}50%{opacity:0}}
+.fs-kapsalon{background:radial-gradient(circle,rgba(255,214,120,.92),rgba(150,80,20,.96))}
+.fs-kap{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);font-size:min(55vw,300px);animation:fs-eat 1.9s ease both}
+@keyframes fs-eat{0%{transform:translate(-50%,-50%) scale(.3)}25%{transform:translate(-50%,-50%) scale(1.05)}45%{clip-path:inset(0 0 0 0)}60%{clip-path:inset(0 0 0 35%)}75%{clip-path:inset(0 0 0 65%)}100%{clip-path:inset(0 0 0 100%);transform:translate(-50%,-50%) scale(1)}}
+.fs-poeder{background:#120018}
+.fs-trip{position:absolute;inset:-50%;background:conic-gradient(#ff3b6b,#ffb03b,#f9f871,#3bff8f,#3bd7ff,#9b5bff,#ff3b6b);animation:fs-spin 1.9s linear;opacity:.85;filter:blur(30px)}
+@keyframes fs-spin{to{transform:rotate(360deg) scale(1.4)}}
+.fs-sparkle i{position:absolute;width:8px;height:8px;border-radius:50%;background:#fff;box-shadow:0 0 12px #fff;animation:fs-spark 1.2s ease-in-out infinite}
+.fs-sparkle i:nth-child(4n){left:12%;top:20%}.fs-sparkle i:nth-child(4n+1){left:78%;top:30%;animation-delay:.3s}.fs-sparkle i:nth-child(4n+2){left:30%;top:75%;animation-delay:.6s}.fs-sparkle i:nth-child(4n+3){left:65%;top:65%;animation-delay:.9s}
+.fs-sparkle i:nth-child(n+5){margin-left:8%;margin-top:6%}.fs-sparkle i:nth-child(n+9){margin-left:-6%;margin-top:-9%}.fs-sparkle i:nth-child(n+13){margin-left:14%;margin-top:-4%}.fs-sparkle i:nth-child(n+17){margin-left:-12%;margin-top:10%}.fs-sparkle i:nth-child(n+21){margin-left:3%;margin-top:-14%}
+@keyframes fs-spark{50%{transform:scale(2.2);opacity:.3}}
+/* effecten na afloop */
+body.fx-wired .shell{animation:wired-jitter .12s steps(2) infinite;filter:saturate(1.5) contrast(1.08)}
+@keyframes wired-jitter{50%{transform:translate(1px,-1px)}}
+body.fx-trip .shell{animation:trip-hue 6s linear infinite}
+@keyframes trip-hue{to{filter:hue-rotate(360deg) saturate(1.8)}}
+.fx-badge{background:rgba(120,170,255,.95);color:#06112e}
+.fxb-wired{bottom:50px}.fxb-trip{bottom:86px;background:rgba(197,139,255,.95);color:#1c0630}
+@media (prefers-reduced-motion:reduce){body.fx-wired .shell,body.fx-trip .shell{animation:none}}
 /* Volledig scherm: pint leegdrinken */
 .chug{position:fixed;inset:0;z-index:6000;pointer-events:none;overflow:hidden;animation:chug-in .25s ease both}
 .chug.out{animation:chug-out .35s ease both}
@@ -2813,6 +2854,29 @@ function goDrunk(ms) {
   tick(); drunkTimer = setInterval(tick, 1000);
 }
 try { const u = Number(localStorage.getItem('rizz-drunk-until')); if (u > Date.now()) { if (document.readyState === 'loading') addEventListener('DOMContentLoaded', () => goDrunk(u - Date.now())); else setTimeout(() => goDrunk(u - Date.now()), 0); } } catch (_) { /* */ }
+// Kapsalon: meteen nuchter
+function soberUp() {
+  clearInterval(drunkTimer); document.body.classList.remove('drunk'); document.getElementById('drunkBadge')?.remove();
+  try { localStorage.removeItem('rizz-drunk-until'); } catch (_) { /* */ }
+}
+// Andere effecten uit de Food Truck: 'wired' (Red Bull) en 'trip' (Rizz-poeder), ook na herladen
+const FX_BADGE = { wired: 'Je vliegt ⚡', trip: 'Alles is zo mooi ✨' };
+const fxTimers = {};
+function goEffect(name, ms) {
+  const until = Date.now() + ms;
+  try { localStorage.setItem('rizz-fx-' + name, String(until)); } catch (_) { /* */ }
+  document.body.classList.add('fx-' + name);
+  let badge = document.getElementById('fxBadge-' + name);
+  if (!badge) { document.body.insertAdjacentHTML('beforeend', `<div class="drunk-badge fx-badge fxb-${name}" id="fxBadge-${name}">${FX_BADGE[name]}</div>`); badge = document.getElementById('fxBadge-' + name); }
+  clearTimeout(fxTimers[name]);
+  fxTimers[name] = setTimeout(() => {
+    document.body.classList.remove('fx-' + name); badge.remove();
+    try { localStorage.removeItem('rizz-fx-' + name); } catch (_) { /* */ }
+  }, ms);
+}
+for (const n of ['wired', 'trip']) {
+  try { const u = Number(localStorage.getItem('rizz-fx-' + n)); if (u > Date.now()) { if (document.readyState === 'loading') addEventListener('DOMContentLoaded', () => goEffect(n, u - Date.now())); else setTimeout(() => goEffect(n, u - Date.now()), 0); } } catch (_) { /* */ }
+}
 
 const coinText = () => (state.isAdmin ? '∞' : String(state.wallet));
 function syncCoinUI() {
@@ -3396,9 +3460,11 @@ const INFO = {
     <li>Iemand verwijderen kan altijd; die persoon krijgt daar geen melding van.</li>
     <li>Groen bolletje = online, oranje = AFK (app open maar niets aan het doen), grijs = offline.</li></ul>`],
   bar: ['De foodtruck', `
-    <p>Een pintje kost 1 credit. Na een paar pintjes ben je <strong>sterrezat</strong>: een minuut lang ziet alles er wazig uit en zwiert het scherm.</p>
-    <ul><li>Hoeveel pintjes het duurt, is elke keer anders (1 tot 5). Je weet het pas als het zover is.</li>
-    <li>Zolang je zat bent, krijg je geen nieuw pintje.</li></ul>`],
+    <p>Alles wordt betaald met credits. Na een paar glazen ben je <strong>sterrezat</strong>: een minuut lang ziet alles er wazig uit en zwiert het scherm.</p>
+    <ul><li><strong>Pintje</strong> (1) telt 1, <strong>shotje</strong> (2) telt dubbel. Hoeveel het duurt voor je zat bent, is elke keer anders.</li>
+    <li><strong>Red Bull</strong> (2): 30 seconden hyper. <strong>Kapsalon</strong> (4): je bent meteen nuchter en de teller begint opnieuw.</li>
+    <li><strong>Rizz-poeder</strong> (8): een minuut trippen, en soms vind je er een gratis kaart in. Max. 3 per dag.</li>
+    <li>Zolang je zat bent, krijg je geen alcohol. En wie weet zit er achter sommige combinaties iets geheims…</li></ul>`],
   casino: ['Het casino', `
     <p>Zet je credits in, telkens per 5 (minstens 5, hoogstens 50 per spel). Alle uitkomsten worden op de server getrokken.</p>
     <ul><li><strong>Blackjack</strong>: kom dichter bij 21 dan de dealer. Winst = 2× terug, blackjack = 2,5×, gelijk = inzet terug. Twee kaarten met dezelfde waarde? Dan kan je <strong>splitsen</strong> in twee handen (nog eens dezelfde inzet).</li>
@@ -3630,7 +3696,7 @@ const TUTORIAL = [
   { pin: 'house', title: 'Frat House', text: 'Elke gast heeft een kamer. Aan de muur hangen zijn 9 kaarten: wat jij al hebt, zie je; de rest blijft donker. Een verlicht raam betekent dat je al minstens één kaart van hem hebt.' },
   { pin: 'friends', title: 'The Quad', text: 'Voeg je vrienden toe met hun code of met de <b>+</b>. Van je vrienden zie je hun collectie, cijfers, F\'s en trofeeën. Enkel vrienden kan je uitdagen of mee ruilen.' },
   { pin: 'battle', title: 'The Arena', text: 'Kies 3 kaarten en vecht tegen de computer of een vriend. Elke ronde kies je geheim <b>Flex</b>, <b>Roast</b> of <b>Charm</b>: Flex wint van Charm, Charm van Roast, Roast van Flex. Winnen levert credits op.' },
-  { pin: 'bar', title: 'Food Truck', text: 'Een pintje voor 1 credit. Hoeveel je er aankan, is elke keer een verrassing.' },
+  { pin: 'bar', title: 'Food Truck', text: 'Pintjes, shotjes, Red Bull, een kapsalon of het mysterieuze Rizz-poeder. Hoeveel je aankan voor je sterrezat bent, is elke keer een verrassing.' },
   { pin: 'casino', title: 'Casino', text: 'Waag je kans met je credits: blackjack, roulette, de slotmachine of de paardenrace. Inzet per 5, en er is geen limiet: je kan alles winnen, of alles verliezen.' },
   { pin: 'trade', title: 'Black Market', text: 'Ruil kaarten met je vrienden. Je kiest zelf wat je biedt en vraagt, bijvoorbeeld 2 commons voor 1 epic.' },
   { pin: 'shop', title: 'The Vault', text: 'Geef je credits uit aan envelopes met nieuwe kaarten, of verkoop je dubbels voor credits. Je credits staan altijd rechtsboven.' },
@@ -3907,7 +3973,7 @@ const CAMPUS_PLACES = [
   { id: 'battle', name: 'The Arena', what: 'Battles', box: [3, 15, 31, 22], pin: [19, 35] },
   { id: 'house', name: 'Frat House', what: 'Kamers en vrienden', box: [70, 21.5, 14.5, 18.5], pin: [77, 42] },
   { id: 'casino', name: 'Casino', what: 'Blackjack, roulette en meer', box: [86.3, 25, 12.5, 17], pin: [92, 45.5] },
-  { id: 'bar', name: 'Food Truck', what: 'Een pintje voor 1 credit', box: [62.5, 44.5, 7, 10], pin: [65.8, 57] },
+  { id: 'bar', name: 'Food Truck', what: 'Drinken en eten', box: [62.5, 44.5, 7, 10], pin: [65.8, 57] },
   { id: 'friends', name: 'The Quad', what: 'Friends', box: [45.5, 46.5, 9, 7], pin: [50, 57] },
   { id: 'stats', name: 'The Library', what: 'Stats', box: [0, 39, 22.7, 40], pin: [11.5, 80] },
   { id: 'trade', name: 'Black Market', what: 'Ruilen', box: [27.5, 69, 19.5, 20], pin: [37, 90.5] },
@@ -4023,7 +4089,7 @@ async function renderCampus(view) {
   setStatus('trade', state.incomingTrades ? `${state.incomingTrades} offer${state.incomingTrades > 1 ? 's' : ''} waiting` : 'Doors open', state.incomingTrades || '');
   setStatus('ideas', 'Speak up');
   setStatus('casino', 'Place your bets');
-  setStatus('bar', 'Pintjes · 1 credit');
+  setStatus('bar', 'Drinks & kapsalon');
   setStatus('house', `${collectionText()} collected`);
   if (!askPhotoOnCampus(view)) askPushOnCampus(view);
   // Trofeeën waarvan je de beloning nog kan ophalen
@@ -5805,42 +5871,75 @@ function renderShop(view) {
   });
 }
 
-// ---------- Food Truck: een pintje (supabase/update-21-pintje-random.sql) ----------
+// ---------- Food Truck: de kaart (supabase/update-25-foodtruck.sql) ----------
+const FOOD = [
+  { id: 'pintje', icon: '🍺', name: 'Pintje', price: 1, desc: 'Een vers getapt pintje. Hoeveel je er aankan voor je sterrezat bent? Dat zie je wel.' },
+  { id: 'shotje', icon: '🥃', name: 'Shotje', price: 2, desc: 'Telt dubbel. Sneller sterrezat, maar wel stijlvol.' },
+  { id: 'redbull', icon: '⚡', name: 'Red Bull', price: 2, desc: 'Geen alcohol, wel vleugels: 30 seconden hyper.' },
+  { id: 'kapsalon', icon: '🍟', name: 'Kapsalon', price: 4, desc: 'Friet, shoarma, kaas, saus. Je bent meteen weer nuchter.' },
+  { id: 'poeder', icon: '✨', name: 'Rizz-poeder', price: 8, desc: 'Niemand weet wat erin zit. Eén minuut trippen, en wie weet vind je iets zeldzaams. Max. 3 per dag.' },
+];
+const FOOD_SAY = {
+  pintje: ['PROOST!', 'AD FUNDUM!', 'SANTÉ!', 'CHEERS!'], shotje: ['SHOT!', 'IN ÉÉN KEER!', 'SKOL!'],
+  redbull: ['WIIINGS!', 'ZZZAP!', 'ENERGIE!'], kapsalon: ['NOM NOM!', 'MMMM…', 'BOEM, NUCHTER!'], poeder: ['WHOAAA…', 'RIZZ!', 'KLEUREN!'],
+};
 function renderBar(view) {
   view.innerHTML = `<section class="col bar-page" style="max-width:none">
     ${pageHead('Food Truck', 'bar')}
-    <div class="bar-stage">
-      <div class="bar-glass" aria-hidden="true"><div class="bar-beer"><i></i><i></i><i></i><i></i></div><div class="bar-foam"></div><span class="bar-handle"></span></div>
-      <div class="bar-side">
-        <strong>Een vers pintje</strong>
-        <small>1 credit. Hoeveel je er aankan voor je sterrezat bent? Dat zie je wel.</small>
-        <button class="btn" id="buyBeer" type="button">Drink een pintje · 1 🪙</button>
-        <p class="msg" id="barMsg" role="status"></p>
-      </div>
+    <div class="bar-menu">
+      <div class="bar-board-head"><b>Op de kaart</b><small>Vers van de truck, midden op het plein</small></div>
+      <div class="bar-items">${FOOD.map(f => `<button type="button" class="bar-item bi-${f.id}" data-food="${f.id}">
+        <span class="bi-ico" aria-hidden="true">${f.icon}</span>
+        <span class="bi-txt"><b>${f.name}</b><small>${f.desc}</small></span>
+        <span class="bi-price">${f.price} 🪙</span></button>`).join('')}</div>
+      <p class="msg" id="barMsg" role="status"></p>
     </div>
   </section>`;
-  const btn = $('#buyBeer'), m = $('#barMsg');
-  if (document.body.classList.contains('drunk')) { m.textContent = 'Je bent sterrezat. Even wachten…'; }
-  btn.onclick = async () => {
-    btn.disabled = true; m.className = 'msg'; m.textContent = '';
-    const { data, error } = await sb.rpc('buy_beer');
-    if (error) { m.className = 'msg err'; m.textContent = error.message; btn.disabled = false; return; }
+  const m = $('#barMsg');
+  if (document.body.classList.contains('drunk')) m.textContent = 'Je bent sterrezat. Even wachten, of eet een kapsalon.';
+  view.querySelectorAll('[data-food]').forEach(btn => btn.onclick = async () => {
+    const item = btn.dataset.food;
+    view.querySelectorAll('[data-food]').forEach(b => { b.disabled = true; });
+    m.className = 'msg'; m.textContent = '';
+    const { data, error } = await sb.rpc('buy_food', { p_item: item });
+    if (error) { m.className = 'msg err'; m.textContent = error.message; view.querySelectorAll('[data-food]').forEach(b => { b.disabled = false; }); return; }
     setWallet(data.wallet);
-    await chugScreen();
-    if (data.drunk_ms > 0) { m.className = 'msg'; m.textContent = 'Je bent sterrezat.'; goDrunk(data.drunk_ms); }
-    else { m.className = 'msg ok'; m.textContent = ['Proost!', 'Santé!', 'Ad fundum!', 'Cheers!', 'Gezondheid!'][data.total % 5]; }
-    btn.disabled = false;
-  };
-}
-// Volledig scherm: een pint die leegloopt
-function chugScreen() {
-  if (prefersReduced()) return Promise.resolve();
-  return new Promise(res => {
-    document.body.insertAdjacentHTML('beforeend', `<div class="chug" aria-hidden="true"><div class="chug-beer">${'<i></i>'.repeat(14)}</div><div class="chug-foam"></div><b class="chug-txt">${['PROOST!', 'AD FUNDUM!', 'SANTÉ!', 'CHEERS!'][Math.floor(Math.random() * 4)]}</b></div>`);
-    const el = document.body.lastElementChild;
-    setTimeout(() => { el.classList.add('out'); setTimeout(() => { el.remove(); res(); }, 350); }, 1900);
+    await foodScreen(item);
+    if (item === 'kapsalon') { soberUp(); m.className = 'msg ok'; m.textContent = data.sober ? 'Je bent weer helemaal nuchter.' : 'Lekker. Nu kan je er weer tegen.'; }
+    else if (item === 'redbull') { goEffect('wired', 30000); m.className = 'msg ok'; m.textContent = 'Je vliegt.'; }
+    else if (item === 'poeder') { goEffect('trip', 60000); m.className = 'msg ok'; m.textContent = 'Alles is zo… mooi.'; }
+    else if (data.drunk_ms > 0) { m.className = 'msg'; m.textContent = 'Je bent sterrezat.'; goDrunk(data.drunk_ms); }
+    else { m.className = 'msg ok'; m.textContent = ['Proost!', 'Santé!', 'Ad fundum!', 'Cheers!', 'Gezondheid!'][Math.floor(Math.random() * 5)]; }
+    if (data.find) {
+      const card = cardById(data.find);
+      state.owned.set(data.find, (state.owned.get(data.find) || 0) + 1);
+      await loadPhotos([data.find]).catch(() => {});
+      window.celebrate?.(card?.rarity === 'legendary' ? 'legendary' : 'epic');
+      await showStamp('VONDST!', 'grade', `In het poeder zat een ${RARITY_LABEL[card?.rarity] || ''}-kaart`);
+      if (card) openZoom(card);
+      m.className = 'msg ok'; m.textContent = `Zeldzame vondst: ${card ? card.name : 'een kaart'}!`;
+    }
+    view.querySelectorAll('[data-food]').forEach(b => { b.disabled = false; });
   });
 }
+// Volledig scherm: per item een eigen animatie
+function foodScreen(item) {
+  if (prefersReduced()) return Promise.resolve();
+  const say = FOOD_SAY[item][Math.floor(Math.random() * FOOD_SAY[item].length)];
+  const body = {
+    pintje: `<div class="chug-beer">${'<i></i>'.repeat(14)}</div><div class="chug-foam"></div>`,
+    shotje: `<div class="chug-beer shot">${'<i></i>'.repeat(14)}</div>`,
+    redbull: `<div class="fs-bolt">⚡</div><div class="fs-flash"></div>`,
+    kapsalon: `<div class="fs-kap">🍟</div>`,
+    poeder: `<div class="fs-trip"></div><div class="fs-sparkle">${'<i></i>'.repeat(24)}</div>`,
+  }[item];
+  return new Promise(res => {
+    document.body.insertAdjacentHTML('beforeend', `<div class="chug fs-${item}" aria-hidden="true">${body}<b class="chug-txt">${say}</b></div>`);
+    const el = document.body.lastElementChild;
+    setTimeout(() => { el.classList.add('out'); setTimeout(() => { el.remove(); res(); }, 350); }, item === 'shotje' ? 1200 : 1900);
+  });
+}
+function chugScreen() { return foodScreen('pintje'); }
 
 // ---------- Tab: Ideas — ideeënbus met upvotes (supabase/setup.sql) ----------
 const IDEA_STATUS = {
