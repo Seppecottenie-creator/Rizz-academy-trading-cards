@@ -1411,6 +1411,11 @@ div.wf-inner{cursor:default}
 .res-prog b{position:relative;font:400 14px var(--varsity);color:var(--ink)}
 .fplate.det{background:linear-gradient(180deg,#3F6B57,#1F3A2E);color:#E9E1D3}
 /* Stats */
+.tg.secret .tg-secret{font:700 9.5px var(--body);letter-spacing:.14em;text-transform:uppercase;color:#C58BFF}
+.tg-locked-row{display:flex;flex-wrap:wrap;align-items:center;gap:5px;margin-top:10px}
+.tg-locked-row span{width:24px;height:24px;display:grid;place-items:center;border-radius:50%;border:1px solid rgba(197,139,255,.45);background:rgba(197,139,255,.08);color:#C58BFF;font:400 13px var(--varsity)}
+.tg-locked-row small{margin-left:6px;color:var(--ink-soft);font:500 12px var(--body)}
+.tg.secret.got{box-shadow:inset 0 0 0 1px rgba(197,139,255,.55)}
 .trophy-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px}
 .tg{display:grid;justify-items:center;gap:4px;padding:14px 10px;border-radius:12px;border:1px solid var(--line);background:linear-gradient(180deg,#1A2340,#141B31);text-align:center;opacity:.5}
 .tg.got{opacity:1;border-color:rgba(212,168,75,.5)}
@@ -6285,17 +6290,24 @@ async function renderStats(view) {
   const { data: tst } = await sb.rpc('trophy_status');
   if (state.tab !== 'stats') return;
   const rew = Object.fromEntries((tst || []).map(t => [t.key, t]));
+  const secrets = (tst || []).filter(t => t.secret);
   const rows = (members.data || []).slice().sort((a, b) => (b.cards - a.cards) || (b.legendaries - a.legendaries));
   view.innerHTML = `<section class="col" style="max-width:none">
     ${pageHead('Stats', 'stats')}
     <div class="stats-page"><div class="st-left">
     ${statsHtml(plays, `<div class="stat-card"><span class="stat-num">${bs.wins || 0}–${bs.losses || 0}</span><span class="stat-label">Arena (W–L)</span></div>
       <div class="stat-card"><span class="stat-num">${collectionText()}</span><span class="stat-label">Collectie</span></div>`)}
-    <h3 style="margin-top:26px">Trofeeën · ${trophies.filter(t => t.ok).length}/${trophies.length}</h3>
+    <h3 style="margin-top:26px">Trofeeën · ${trophies.filter(t => t.ok).length + secrets.filter(t => t.done).length}/${trophies.length + secrets.length}</h3>
     <div class="trophy-grid">${trophies.map(t => { const r = rew[t.key]; const ready = r && r.done && !r.claimed; return `<div class="tg${t.ok ? ' got' : ''}${ready ? ' ready' : ''}">
       <span class="tg-ico"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">${TROPHY_ICON[t.icon]}</svg></span>
       <b>${t.name}</b><small>${esc(t.how)}</small>
-      ${r ? (ready ? `<button type="button" class="tg-claim" data-claim="${t.key}">+${r.reward} ophalen</button>` : `<span class="tg-rew${r.claimed ? ' done' : ''}">${r.claimed ? '✓ ' : ''}+${r.reward}</span>`) : ''}</div>`; }).join('')}</div>
+      ${r ? (ready ? `<button type="button" class="tg-claim" data-claim="${t.key}">+${r.reward} ophalen</button>` : `<span class="tg-rew${r.claimed ? ' done' : ''}">${r.claimed ? '✓ ' : ''}+${r.reward}</span>`) : ''}</div>`; }).join('')}${secrets.map(t => t.done ? `<div class="tg got secret${t.claimed ? '' : ' ready'}">
+      <span class="tg-ico"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">${TROPHY_ICON[t.icon] || TROPHY_ICON.star}</svg></span>
+      <b>${esc(t.name)}</b><small>${esc(t.how)}</small><span class="tg-secret">Geheim</span>
+      ${t.claimed ? `<span class="tg-rew done">✓ +${t.reward}</span>` : `<button type="button" class="tg-claim" data-claim="${esc(t.key)}">+${t.reward} ophalen</button>`}</div>`
+    : '').join('')}</div>
+    ${secrets.some(t => !t.done) ? `<div class="tg-locked-row" title="Geheime trofeeën: ontdek zelf hoe je ze haalt">${secrets.filter(t => !t.done).map(() => '<span>?</span>').join('')}
+      <small>${secrets.filter(t => !t.done).length} geheime trofeeën te ontdekken</small></div>` : ''}
     </div><div class="st-right">
     <h3 style="margin-top:26px">Het huis</h3>
     <table class="leaderboard house-table"><thead><tr><th>#</th><th>Naam</th><th>Kaarten</th><th>Legendary</th><th>F's</th><th>Vandaag</th></tr></thead>
