@@ -3057,7 +3057,7 @@ function soberUp() {
   try { localStorage.removeItem('rizz-drunk-until'); } catch (_) { /* */ }
 }
 // Andere effecten uit de Food Truck: 'wired' (Red Bull) en 'trip' (Rizz-poeder), ook na herladen
-const FX_BADGE = { wired: 'Je vliegt ⚡', trip: 'Alles is zo mooi ✨' };
+const FX_BADGE = { wired: 'Flying ⚡', trip: 'Tripping ✨' };
 const fxTimers = {};
 function goEffect(name, ms) {
   const until = Date.now() + ms;
@@ -6109,8 +6109,8 @@ const FOOD = [
   { id: 'poeder', icon: '✨', name: 'Rizz-poeder', price: 8, desc: 'Niemand weet wat erin zit. Eén minuut trippen, en wie weet vind je iets zeldzaams. Max. 3 per dag.' },
 ];
 const FOOD_SAY = {
-  pintje: ['PROOST!', 'AD FUNDUM!', 'SCHOL!', 'GEZONDHEID!'], shotje: ['IN ÉÉN KEER!', 'HOP, BINNEN!', 'DAAR GAAT IE!'],
-  redbull: ['VLEUGELS!', 'ZOEF!', 'VOLLE ENERGIE!'], kapsalon: ['SMAKELIJK!', 'MMMM…', 'BOEM, NUCHTER!'], poeder: ['WAUW…', 'RIZZ!', 'KLEUREN!'],
+  pintje: ['CHEERS!', 'BOTTOMS UP!', 'DOWN IT!', 'ONE MORE!'], shotje: ['SHOTS!', 'IN ONE GO!', 'HERE WE GO!'],
+  redbull: ['WIIINGS!', 'ZZZAP!', 'FULL POWER!'], kapsalon: ['NOM NOM!', 'SO GOOD…', 'SOBER AGAIN!'], poeder: ['WHOAAA…', 'RIZZ!', 'SO MANY COLOURS!'],
 };
 function renderBar(view) {
   if (!feat('foodmenu')) return renderBarClassic(view);
@@ -6135,11 +6135,11 @@ function renderBar(view) {
     if (error) { m.className = 'msg err'; m.textContent = error.message; view.querySelectorAll('[data-food]').forEach(b => { b.disabled = false; }); return; }
     setWallet(data.wallet);
     await foodScreen(item);
-    if (item === 'kapsalon') { soberUp(); m.className = 'msg ok'; m.textContent = data.sober ? 'Je bent weer helemaal nuchter.' : 'Lekker. Nu kan je er weer tegen.'; }
-    else if (item === 'redbull') { goEffect('wired', 30000); m.className = 'msg ok'; m.textContent = 'Je vliegt.'; }
-    else if (item === 'poeder') { goEffect('trip', 60000); m.className = 'msg ok'; m.textContent = 'Alles is zo… mooi.'; }
+    if (item === 'kapsalon') { soberUp(); m.className = 'msg ok'; m.textContent = data.sober ? 'Sober again!' : 'Tasty. Ready for another round.'; }
+    else if (item === 'redbull') { goEffect('wired', 30000); m.className = 'msg ok'; m.textContent = 'You can fly.'; }
+    else if (item === 'poeder') { goEffect('trip', 60000); m.className = 'msg ok'; m.textContent = 'Everything is so… beautiful.'; }
     else if (data.drunk_ms > 0) { m.className = 'msg'; m.textContent = 'Je bent sterrezat.'; goDrunk(data.drunk_ms); }
-    else { m.className = 'msg ok'; m.textContent = ['Proost!', 'Schol!', 'Ad fundum!', 'Op ons!', 'Gezondheid!'][Math.floor(Math.random() * 5)]; }
+    else { m.className = 'msg ok'; m.textContent = ['Cheers!', 'Bottoms up!', 'Down it!', 'One more?', 'Good stuff!'][Math.floor(Math.random() * 5)]; }
     if (data.find) {
       const card = cardById(data.find);
       state.owned.set(data.find, (state.owned.get(data.find) || 0) + 1);
