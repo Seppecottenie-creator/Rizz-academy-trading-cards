@@ -4173,7 +4173,8 @@ insert into public.feature_flags (key, note) values
   ('foodmenu', 'Food Truck: shotje, Red Bull, kapsalon, Rizz-poeder'),
   ('sportsbook', 'Casino: inzetten op voetbal'),
   ('secrets', 'Geheime trofeeën'),
-  ('sound', 'Muziek en geluidseffecten')
+  ('sound', 'Muziek en geluidseffecten'),
+  ('smallbets', 'Casino: inzetten van 1 en 2 credits')
 on conflict (key) do nothing;
 
 create or replace function public._feature_on(p_key text, p_user uuid default auth.uid()) returns boolean
@@ -4273,8 +4274,9 @@ language plpgsql volatile security definer set search_path = public as $$
 declare v_coins int;
 begin
   if auth.uid() is null then raise exception 'Niet ingelogd.'; end if;
-  if p_bet is null or p_bet < 1 or p_bet > 50 or (p_bet > 2 and p_bet % 5 <> 0) then
-    raise exception 'Inzet: 1, 2, of 5 tot 50 credits per 5.';
+  if p_bet is null or p_bet < 1 or p_bet > 50 or (p_bet > 2 and p_bet % 5 <> 0)
+     or (p_bet < 5 and not public._feature_on('smallbets')) then
+    raise exception '%', case when public._feature_on('smallbets') then 'Inzet: 1, 2, of 5 tot 50 credits per 5.' else 'Inzet: 5 tot 50 credits, per 5.' end;
   end if;
   select polycoins into v_coins from public.user_wallet where user_id = auth.uid() for update;
   if coalesce(v_coins, 0) < p_bet then raise exception 'Niet genoeg credits.'; end if;

@@ -3644,21 +3644,25 @@ const INFO = {
     <li>Iemand verwijderen kan altijd; die persoon krijgt daar geen melding van.</li>
     <li>Groen bolletje = online, oranje = AFK (app open maar niets aan het doen), grijs = offline.</li></ul>`],
   bar: ['De foodtruck', `
-    <p>Alles wordt betaald met credits. Na een paar glazen ben je <strong>sterrezat</strong>: een minuut lang ziet alles er wazig uit en zwiert het scherm.</p>
+    <div data-nofeat="foodmenu"><p>Een pintje kost 1 credit. Na een paar pintjes ben je <strong>sterrezat</strong>: een minuut lang ziet alles er wazig uit en zwiert het scherm.</p>
+    <ul><li>Hoeveel pintjes het duurt, is elke keer anders (1 tot 5). Je weet het pas als het zover is.</li>
+    <li>Zolang je zat bent, krijg je geen nieuw pintje.</li></ul></div>
+    <div data-feat="foodmenu"><p>Alles wordt betaald met credits. Na een paar glazen ben je <strong>sterrezat</strong>: een minuut lang ziet alles er wazig uit en zwiert het scherm.</p>
     <ul><li><strong>Pintje</strong> (1 credit). Hoeveel het duurt voor je zat bent, is elke keer anders.</li>
     <li data-feat="foodmenu"><strong>Shotje</strong> (2) telt dubbel.</li>
     <li data-feat="foodmenu"><strong>Red Bull</strong> (2): 30 seconden hyper. <strong>Kapsalon</strong> (4): je bent meteen nuchter en de teller begint opnieuw.</li>
     <li data-feat="foodmenu"><strong>Rizz-poeder</strong> (8): een minuut trippen, en soms vind je er een gratis kaart in. Max. 3 per dag.</li>
-    <li data-feat="foodmenu">Zolang je zat bent, krijg je geen alcohol. En wie weet zit er achter sommige combinaties iets geheims…</li></ul>`],
+    <li data-feat="foodmenu">Zolang je zat bent, krijg je geen alcohol. En wie weet zit er achter sommige combinaties iets geheims…</li></ul></div>`],
   casino: ['Het casino', `
-    <p>Zet 1, 2, 5, 10, … tot 50 credits in per spel. Alle uitkomsten worden op de server getrokken.</p>
+    <p data-feat="smallbets">Zet 1, 2, 5, 10, … tot 50 credits in per spel. Alle uitkomsten worden op de server getrokken.</p>
+    <p data-nofeat="smallbets">Zet je credits in, telkens per 5 (minstens 5, hoogstens 50 per spel). Alle uitkomsten worden op de server getrokken.</p>
     <ul><li><strong>Blackjack</strong>: kom dichter bij 21 dan de dealer. Winst = 2× terug, blackjack = 2,5×, gelijk = inzet terug. Twee kaarten met dezelfde waarde? Dan kan je <strong>splitsen</strong> in twee handen (nog eens dezelfde inzet).</li>
     <li><strong>Roulette</strong>: rood/zwart, even/oneven, 1–18 of 19–36 = 2× terug. Eén getal = 36× terug. Op 0 wint het huis.</li>
     <li><strong>Slotmachine</strong>: drie gelijke symbolen, of kersen. Drie keer RIZZ = 60×.</li>
     <li><strong>Paardenrace</strong>: kies een van de 5 paarden. Hoe kleiner de kans, hoe hoger de quotering.</li>
     <li><strong>Geen limiet</strong>: je kan al je credits inzetten, en dus ook alles verliezen. Bovenaan zie je hoeveel je vandaag gewonnen of verloren hebt.</li>
     <li data-feat="sportsbook"><strong>Sportsbook</strong>: zet in op echte voetbalwedstrijden (1 = thuis wint, X = gelijk, 2 = uit wint). De quoteringen zijn het gemiddelde van echte bookmakers wereldwijd. Je quotering ligt vast op het moment dat je inzet. Na de wedstrijd wordt automatisch uitbetaald.</li>
-    <li>Bij 1 of 2 credits wordt een stukje credit eerlijk afgerond: 2,7× op 1 credit geeft 7 op 10 keer 3 credits en anders 2. Gemiddeld krijg je dus precies de quotering.</li></ul>
+    <li data-feat="smallbets">Bij 1 of 2 credits wordt een stukje credit eerlijk afgerond: 2,7× op 1 credit geeft 7 op 10 keer 3 credits en anders 2. Gemiddeld krijg je dus precies de quotering.</li></ul>
     <p>Het huis wint op termijn een klein beetje, zoals in een echt casino. Speel dus voor de fun.</p>`],
   ideas: ['Ideeënbus', `
     <p>Heb je een idee om de site beter of leuker te maken? Dien het hier in — iedereen kan alle ideeën zien.</p>
@@ -3701,6 +3705,7 @@ function openInfo(key) {
   const [title, html] = INFO[key];
   dlg.innerHTML = `<div class="infobox"><h2>${title}</h2>${html}<button type="button" class="link" id="infoClose">Sluiten</button></div>`;
   dlg.querySelectorAll('[data-feat]').forEach(el => { if (!feat(el.dataset.feat)) el.remove(); });
+  dlg.querySelectorAll('[data-nofeat]').forEach(el => { if (feat(el.dataset.nofeat)) el.remove(); });
   $('#infoClose').onclick = () => dlg.close();
   dlg.showModal();
 }
@@ -3886,8 +3891,8 @@ const TUTORIAL = [
   { pin: 'house', title: 'Frat House', text: 'Elke gast heeft een kamer. Aan de muur hangen zijn 9 kaarten: wat jij al hebt, zie je; de rest blijft donker. Een verlicht raam betekent dat je al minstens één kaart van hem hebt.' },
   { pin: 'friends', title: 'The Quad', text: 'Voeg je vrienden toe met hun code of met de <b>+</b>. Van je vrienden zie je hun collectie, cijfers, F\'s en trofeeën. Enkel vrienden kan je uitdagen of mee ruilen.' },
   { pin: 'battle', title: 'The Arena', text: 'Kies 3 kaarten en vecht tegen de computer of een vriend. Elke ronde kies je geheim <b>Flex</b>, <b>Roast</b> of <b>Charm</b>: Flex wint van Charm, Charm van Roast, Roast van Flex. Winnen levert credits op.' },
-  { pin: 'bar', title: 'Food Truck', text: 'Drinken en eten voor een paar credits. Hoeveel pintjes je aankan voor je sterrezat bent, is elke keer een verrassing.' },
-  { pin: 'casino', title: 'Casino', text: 'Waag je kans met je credits: blackjack, roulette, de slotmachine of de paardenrace. Inzet vanaf 1 credit, en er is geen limiet: je kan alles winnen, of alles verliezen.' },
+  { pin: 'bar', title: 'Food Truck', get text() { return feat('foodmenu') ? 'Drinken en eten voor een paar credits. Hoeveel pintjes je aankan voor je sterrezat bent, is elke keer een verrassing.' : 'Een pintje voor 1 credit. Hoeveel je er aankan, is elke keer een verrassing.'; } },
+  { pin: 'casino', title: 'Casino', get text() { return `Waag je kans met je credits: blackjack, roulette, de slotmachine of de paardenrace. ${feat('smallbets') ? 'Inzet vanaf 1 credit' : 'Inzet per 5'}, en er is geen limiet: je kan alles winnen, of alles verliezen.`; } },
   { pin: 'trade', title: 'Black Market', text: 'Ruil kaarten met je vrienden. Je kiest zelf wat je biedt en vraagt, bijvoorbeeld 2 commons voor 1 epic.' },
   { pin: 'shop', title: 'The Vault', text: 'Geef je credits uit aan envelopes met nieuwe kaarten, of verkoop je dubbels voor credits. Je credits staan altijd rechtsboven.' },
   { pin: 'stats', title: 'The Library', text: 'Je stats: je streak, al je cijfers en je trofeeën.' },
@@ -4165,7 +4170,7 @@ const CAMPUS_PLACES = [
   { id: 'battle', name: 'The Arena', what: 'Battles', box: [3, 15, 31, 22], pin: [19, 35] },
   { id: 'house', name: 'Frat House', what: 'Kamers en vrienden', box: [70, 21.5, 14.5, 18.5], pin: [77, 42] },
   { id: 'casino', name: 'Casino', what: 'Blackjack, roulette en meer', box: [86.3, 25, 12.5, 17], pin: [92, 45.5] },
-  { id: 'bar', name: 'Food Truck', what: 'Drinken en eten', box: [62.5, 44.5, 7, 10], pin: [65.8, 57] },
+  { id: 'bar', name: 'Food Truck', what: 'Een pintje voor 1 credit', box: [62.5, 44.5, 7, 10], pin: [65.8, 57] },
   { id: 'friends', name: 'The Quad', what: 'Friends', box: [45.5, 46.5, 9, 7], pin: [50, 57] },
   { id: 'stats', name: 'The Library', what: 'Stats', box: [0, 39, 22.7, 40], pin: [11.5, 80] },
   { id: 'trade', name: 'Black Market', what: 'Ruilen', box: [27.5, 69, 19.5, 20], pin: [37, 90.5] },
@@ -4181,7 +4186,7 @@ const UPDATES = [
     ['🍟', 'Food Truck: volledige kaart', 'Naast pintjes nu ook shotjes, Red Bull, een kapsalon (meteen nuchter) en het mysterieuze Rizz-poeder, waarin je soms een gratis kaart vindt.', 'foodmenu'],
     ['🤫', 'Geheime trofeeën', '14 trofeeën die je pas ziet als je ze haalt. Kijk in Stats hoeveel er nog te ontdekken zijn.', 'secrets'],
     ['🎵', 'Muziek en geluid', 'Elke plek heeft zijn eigen muziek, en bijna alles maakt geluid. Zet muziek en geluid aan of uit met de knoppen op de campus of in je account.', 'sound'],
-    ['🪙', 'Inzetten vanaf 1 credit', 'In het casino kan je nu ook 1 of 2 credits inzetten. Handig als je bijna blut bent.'],
+    ['🪙', 'Inzetten vanaf 1 credit', 'In het casino kan je nu ook 1 of 2 credits inzetten. Handig als je bijna blut bent.', 'smallbets'],
   ] },
   { date: '2026-10-14', items: [
     ['🏳️', 'Opgeven in The Arena', 'Geeft je vriend op tijdens een gevecht? Dan krijg jij gewoon je 25 credits voor de overwinning.'],
@@ -4294,7 +4299,7 @@ async function renderCampus(view) {
   setStatus('trade', state.incomingTrades ? `${state.incomingTrades} offer${state.incomingTrades > 1 ? 's' : ''} waiting` : 'Doors open', state.incomingTrades || '');
   setStatus('ideas', 'Speak up');
   setStatus('casino', 'Place your bets');
-  setStatus('bar', feat('foodmenu') ? 'Drinks & kapsalon' : 'Cold beer');
+  setStatus('bar', feat('foodmenu') ? 'Drinks & kapsalon' : 'Pintjes · 1 credit');
   setStatus('house', `${collectionText()} collected`);
   if (!askPhotoOnCampus(view)) askPushOnCampus(view);
   // Trofeeën waarvan je de beloning nog kan ophalen
@@ -6091,6 +6096,7 @@ const FOOD_SAY = {
   redbull: ['WIIINGS!', 'ZZZAP!', 'ENERGIE!'], kapsalon: ['NOM NOM!', 'MMMM…', 'BOEM, NUCHTER!'], poeder: ['WHOAAA…', 'RIZZ!', 'KLEUREN!'],
 };
 function renderBar(view) {
+  if (!feat('foodmenu')) return renderBarClassic(view);
   view.innerHTML = `<section class="col bar-page" style="max-width:none">
     ${pageHead('Food Truck', 'bar')}
     <div class="bar-menu">
@@ -6148,6 +6154,33 @@ function foodScreen(item) {
   });
 }
 function chugScreen() { return foodScreen('pintje'); }
+// De Food Truck zoals vroeger (enkel een pintje), zolang de volledige kaart nog in testfase is
+function renderBarClassic(view) {
+  view.innerHTML = `<section class="col bar-page" style="max-width:none">
+    ${pageHead('Food Truck', 'bar')}
+    <div class="bar-stage">
+      <div class="bar-glass" aria-hidden="true"><div class="bar-beer"><i></i><i></i><i></i><i></i></div><div class="bar-foam"></div><span class="bar-handle"></span></div>
+      <div class="bar-side">
+        <strong>Een vers pintje</strong>
+        <small>1 credit. Hoeveel je er aankan voor je sterrezat bent? Dat zie je wel.</small>
+        <button class="btn" id="buyBeer" type="button">Drink een pintje · 1 🪙</button>
+        <p class="msg" id="barMsg" role="status"></p>
+      </div>
+    </div>
+  </section>`;
+  const btn = $('#buyBeer'), m = $('#barMsg');
+  if (document.body.classList.contains('drunk')) { m.textContent = 'Je bent sterrezat. Even wachten…'; }
+  btn.onclick = async () => {
+    btn.disabled = true; m.className = 'msg'; m.textContent = '';
+    const { data, error } = await sb.rpc('buy_beer');
+    if (error) { m.className = 'msg err'; m.textContent = error.message; btn.disabled = false; return; }
+    setWallet(data.wallet);
+    await chugScreen();
+    if (data.drunk_ms > 0) { m.className = 'msg'; m.textContent = 'Je bent sterrezat.'; goDrunk(data.drunk_ms); }
+    else { m.className = 'msg ok'; m.textContent = ['Proost!', 'Santé!', 'Ad fundum!', 'Cheers!', 'Gezondheid!'][data.total % 5]; }
+    btn.disabled = false;
+  };
+}
 
 // ---------- Tab: Ideas — ideeënbus met upvotes (supabase/setup.sql) ----------
 const IDEA_STATUS = {
@@ -6794,7 +6827,7 @@ async function renderCasino(view) {
 
   view.innerHTML = `<section class="col cz-page" style="max-width:none">
     ${pageHead('Casino', 'casino')}
-    <div class="cz-limit"><span>Vandaag <b id="czLost" class="${lost > 0 ? 'cz-lose' : lost < 0 ? 'cz-win' : ''}">${lost > 0 ? '−' + lost : lost < 0 ? '+' + -lost : '±0'}</b> credits</span><small>Inzet van 1 tot 50 per spel. Geen limiet: speel met verstand.</small></div>
+    <div class="cz-limit"><span>Vandaag <b id="czLost" class="${lost > 0 ? 'cz-lose' : lost < 0 ? 'cz-win' : ''}">${lost > 0 ? '−' + lost : lost < 0 ? '+' + -lost : '±0'}</b> credits</span><small>${feat('smallbets') ? 'Inzet van 1 tot 50' : 'Inzet per 5, max. 50'} per spel. Geen limiet: speel met verstand.</small></div>
     ${st.bj ? `<button type="button" class="ar-go cz-go" data-open="bj"><span class="ar-go-k">Je hand ligt nog open</span><b>Ga verder</b><small>Blackjack · inzet ${st.bj.bet}</small></button>` : ''}
     <div class="ar-hub cz-hub">
       ${tile('bj', '<span class="cz-ic">🂡</span>', 'Blackjack', 'Kom dichter bij 21 dan de dealer')}
@@ -6844,7 +6877,7 @@ async function renderCasino(view) {
 
   // Inzet (gedeeld door alle spelletjes)
   const syncBet = () => view.querySelectorAll('[data-betv]').forEach(b => { b.textContent = czState.bet; });
-  view.querySelectorAll('[data-bet]').forEach(b => b.onclick = () => { const i = CZ_BETS.indexOf(czState.bet); czState.bet = CZ_BETS[clamp((i < 0 ? 3 : i) + (b.dataset.bet === '+' ? 1 : -1), 0, CZ_BETS.length - 1)]; syncBet(); if (view.querySelector('.ar-pop[data-pop="sport"][open]')) drawSport(); });
+  view.querySelectorAll('[data-bet]').forEach(b => b.onclick = () => { const bets = feat('smallbets') ? CZ_BETS : CZ_BETS.filter(x => x >= 5), i = bets.indexOf(czState.bet); czState.bet = bets[clamp((i < 0 ? 1 : i) + (b.dataset.bet === '+' ? 1 : -1), 0, bets.length - 1)]; syncBet(); if (view.querySelector('.ar-pop[data-pop="sport"][open]')) drawSport(); });
   const msgOf = id => view.querySelector(`.ar-pop[data-pop="${id}"] .cz-msg`);
   const say = (id, text, cls = '') => { const m = msgOf(id); m.className = `msg cz-msg ${cls}`; m.innerHTML = text; };
   const after = r => {

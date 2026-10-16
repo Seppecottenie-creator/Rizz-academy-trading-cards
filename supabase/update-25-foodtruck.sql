@@ -10,7 +10,7 @@
 -- Alles wat je koopt, komt in food_log (voor de geheime trofeeën, zie update 27).
 -- Zolang je sterrezat bent, krijg je geen alcohol (pintje of shotje).
 --
--- TESTFASE: de nieuwe dingen van 16 oktober (Food Truck-kaart, Sportsbook, geheime trofeeën, muziek)
+-- TESTFASE: de nieuwe dingen van 16 oktober (Food Truck-kaart, Sportsbook, geheime trofeeën, muziek, inzet 1-2)
 -- staan eerst enkel aan voor de admin (tabel feature_flags). Voor iedereen openzetten:
 -- voer release-16-oktober.sql uit.
 --
@@ -30,7 +30,8 @@ insert into public.feature_flags (key, note) values
   ('foodmenu', 'Food Truck: shotje, Red Bull, kapsalon, Rizz-poeder'),
   ('sportsbook', 'Casino: inzetten op voetbal'),
   ('secrets', 'Geheime trofeeën'),
-  ('sound', 'Muziek en geluidseffecten')
+  ('sound', 'Muziek en geluidseffecten'),
+  ('smallbets', 'Casino: inzetten van 1 en 2 credits')
 on conflict (key) do nothing;
 
 create or replace function public._feature_on(p_key text, p_user uuid default auth.uid()) returns boolean

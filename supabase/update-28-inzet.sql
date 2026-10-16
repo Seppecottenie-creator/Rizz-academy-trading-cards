@@ -5,10 +5,11 @@
 -- Eerlijke afronding bij 1 of 2 credits: 0,4× op 1 credit wordt in 40% van de keren 1 credit (anders 0),
 -- 2,7× op 1 credit wordt in 70% van de keren 3 (anders 2). Gemiddeld krijg je dus exact de quotering.
 -- Vanaf 5 credits blijft alles zoals het was (naar beneden afgerond).
+-- TESTFASE: 1 en 2 credits kan eerst enkel de admin (release-16-oktober.sql zet het open).
 --
 -- Gebruik: Supabase -> SQL Editor -> nieuwe query -> dit VOLLEDIGE bestand plakken -> Run.
 -- Kies bij de waarschuwing "Run without RLS".
--- Veilig om opnieuw uit te voeren. Voer eerst update-14-casino-zonder-limiet.sql uit.
+-- Veilig om opnieuw uit te voeren. Voer eerst update-14-casino-zonder-limiet.sql en update-25-foodtruck.sql uit.
 -- =====================================================================
 
 create or replace function public._casino_take(p_bet int) returns void
@@ -16,8 +17,9 @@ language plpgsql volatile security definer set search_path = public as $$
 declare v_coins int;
 begin
   if auth.uid() is null then raise exception 'Niet ingelogd.'; end if;
-  if p_bet is null or p_bet < 1 or p_bet > 50 or (p_bet > 2 and p_bet % 5 <> 0) then
-    raise exception 'Inzet: 1, 2, of 5 tot 50 credits per 5.';
+  if p_bet is null or p_bet < 1 or p_bet > 50 or (p_bet > 2 and p_bet % 5 <> 0)
+     or (p_bet < 5 and not public._feature_on('smallbets')) then
+    raise exception '%', case when public._feature_on('smallbets') then 'Inzet: 1, 2, of 5 tot 50 credits per 5.' else 'Inzet: 5 tot 50 credits, per 5.' end;
   end if;
   select polycoins into v_coins from public.user_wallet where user_id = auth.uid() for update;
   if coalesce(v_coins, 0) < p_bet then raise exception 'Niet genoeg credits.'; end if;
