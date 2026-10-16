@@ -2637,6 +2637,42 @@ body.fx-trip .shell{animation:trip-hue 6s linear infinite}
 .cz-tile:hover .ar-ico{animation:ico-bounce .6s ease}
 @keyframes ico-bounce{40%{transform:scale(1.18) rotate(-8deg)}}
 .cz-ctrl .btn{min-width:150px;font-size:16px;padding:12px 24px;box-shadow:0 0 0 2px #F2CC72,0 10px 26px -8px rgba(224,40,74,.9)}
+/* --- Sportsbook --- */
+.cz-tile[data-open="sport"]{grid-column:1/-1;min-height:110px}
+.sb-top{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:10px}
+.sb-tabs{display:flex;gap:6px;flex-wrap:wrap}
+.sb-tab,.sb-comp{padding:7px 14px;border-radius:999px;border:1px solid rgba(242,204,114,.35);background:rgba(255,255,255,.04);color:var(--ink);font:600 13px var(--body);cursor:pointer}
+.sb-tab.on{background:#F2CC72;color:#2A1A05;border-color:#F2CC72}
+.sb-comps{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;padding-bottom:4px;margin-bottom:6px}
+.sb-comp{flex:none;padding:5px 11px;font-size:12px}.sb-comp.on{background:rgba(242,204,114,.2);border-color:#F2CC72;color:#F6DE9C}
+.sb-day{margin:14px 2px 6px;font:400 15px var(--varsity);letter-spacing:.06em;text-transform:uppercase;color:#F2CC72}
+#sbList{display:grid;gap:10px}
+.sb-m{display:grid;gap:8px;padding:12px 14px;border-radius:14px;background:rgba(255,255,255,.045);border:1px solid rgba(242,204,114,.22)}
+.sb-meta{display:flex;justify-content:space-between;font:600 11.5px var(--body);letter-spacing:.08em;text-transform:uppercase;color:var(--ink-soft)}
+.sb-teams{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:10px}
+.sb-teams b{font:700 16px var(--body);color:var(--ink)}.sb-teams b:last-child{text-align:right}
+.sb-teams i{font:italic 600 12px var(--body);color:var(--muted)}
+.sb-score{font:400 22px var(--varsity);color:#F2CC72}.sb-score.off{font-size:14px;color:var(--muted)}
+.sb-poll{display:flex;height:16px;border-radius:999px;overflow:hidden;background:rgba(255,255,255,.06);font:700 10px/16px var(--body);color:#0b1020}
+.sb-poll i{display:block;min-width:0;text-align:center;font-style:normal;overflow:hidden}
+.sb-poll .pk1{background:#7FD3A0}.sb-poll .pkX{background:#C9C2B2}.sb-poll .pk2{background:#6FA8FF}
+.sb-poll em{padding:0 10px;color:var(--muted);font:500 11px/16px var(--body)}
+.sb-odds{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}
+.sb-odd{display:grid;gap:1px;padding:7px 6px;border-radius:10px;border:1px solid rgba(242,204,114,.3);background:rgba(10,16,36,.6);color:var(--ink);cursor:pointer;text-align:center}
+.sb-odd small{font:600 11px var(--body);color:var(--ink-soft);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sb-odd b{font:400 19px var(--varsity);color:#F2CC72}
+.sb-odd.on{background:#F2CC72;border-color:#F2CC72}.sb-odd.on small,.sb-odd.on b{color:#2A1A05}
+.sb-odd.voted::after{content:"jouw stem";font:600 9.5px var(--body);color:#7FD3A0}.sb-odd.on.voted::after{color:#1E5A35}
+.sb-odd:disabled{cursor:default;opacity:.85}
+.sb-act{display:flex;gap:8px;justify-content:flex-end;flex-wrap:wrap}
+.sb-mybet{padding:7px 10px;border-radius:10px;background:rgba(242,204,114,.1);font:500 13px var(--body);color:var(--ink)}
+.sb-mybet.st-won{background:rgba(127,211,160,.15)}.sb-mybet.st-lost{background:rgba(224,40,74,.12)}
+.sb-admin{display:grid;gap:8px}.sb-admin h4{margin:8px 0 0;color:#F2CC72}
+.sb-form,.sb-res{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.sb-form select,.sb-form input,.sb-res input{padding:8px 10px;border-radius:10px;border:1px solid var(--line2);background:rgba(255,255,255,.06);color:var(--ink);font:500 14px var(--body)}
+.sb-res input{width:58px}.sb-res span{flex:1 1 220px}
+@media (max-width:599px){.sb-teams b{font-size:14px}.sb-odd b{font-size:17px}}
+@media (min-width:600px) and (max-height:500px){.cz-tile[data-open="sport"]{min-height:0;height:clamp(54px,15vh,80px)}}
 /* muntenregen */
 .coin-rain{position:fixed;inset:0;z-index:5000;pointer-events:none;overflow:hidden}
 .coin-rain i{position:absolute;top:-40px;width:26px;height:26px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#FFF3BF,#F2CC72 45%,#B8862E);box-shadow:inset 0 0 0 3px rgba(140,90,20,.5);animation:coin-fall linear both}
@@ -3471,7 +3507,8 @@ const INFO = {
     <li><strong>Roulette</strong>: rood/zwart, even/oneven, 1–18 of 19–36 = 2× terug. Eén getal = 36× terug. Op 0 wint het huis.</li>
     <li><strong>Slotmachine</strong>: drie gelijke symbolen, of kersen. Drie keer RIZZ = 60×.</li>
     <li><strong>Paardenrace</strong>: kies een van de 5 paarden. Hoe kleiner de kans, hoe hoger de quotering.</li>
-    <li><strong>Geen limiet</strong>: je kan al je credits inzetten, en dus ook alles verliezen. Bovenaan zie je hoeveel je vandaag gewonnen of verloren hebt.</li></ul>
+    <li><strong>Geen limiet</strong>: je kan al je credits inzetten, en dus ook alles verliezen. Bovenaan zie je hoeveel je vandaag gewonnen of verloren hebt.</li>
+    <li><strong>Sportsbook</strong>: zet in op echte voetbalwedstrijden (1 = thuis wint, X = gelijk, 2 = uit wint). Iedereen kan gratis stemmen; hoe meer stemmen op een uitslag, hoe lager de quotering. Je quotering ligt vast op het moment dat je inzet. Na de wedstrijd wordt automatisch uitbetaald.</li></ul>
     <p>Het huis wint op termijn een klein beetje, zoals in een echt casino. Speel dus voor de fun.</p>`],
   ideas: ['Ideeënbus', `
     <p>Heb je een idee om de site beter of leuker te maken? Dien het hier in — iedereen kan alle ideeën zien.</p>
@@ -6553,6 +6590,7 @@ const CZ_HORSES = [
 const CZ_WHEEL = [0, 32, 15, 19, 4, 21, 2, 25, 17, 34, 6, 27, 13, 36, 11, 30, 8, 23, 10, 5, 24, 16, 33, 1, 20, 14, 31, 9, 22, 18, 29, 7, 28, 12, 35, 3, 26];
 const CZ_RED = new Set([1, 3, 5, 7, 9, 12, 14, 16, 18, 19, 21, 23, 25, 27, 30, 32, 34, 36]);
 const czState = { bet: 10, rkind: 'red', rnum: 7, horse: 1 };
+const SB_COMP = { CL: 'Champions League', PL: 'Premier League', SA: 'Serie A', PD: 'La Liga', FL1: 'Ligue 1', BPL: 'Pro League', UNL: 'Nations League' };
 const bjCardHtml = c => {
   if (c == null) return '<span class="bj-card back"></span>';
   const r = ['A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K'][c % 13], s = ['♠', '♥', '♦', '♣'][Math.floor(c / 13)];
@@ -6584,8 +6622,10 @@ async function renderCasino(view) {
       ${tile('roul', ICO('<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="3.5"/><path d="M12 3v5.5M12 15.5V21M3 12h5.5M15.5 12H21"/>'), 'Roulette', 'Rood of zwart, of alles op één getal')}
       ${tile('slots', '<span class="cz-ic">🍒</span>', 'Slotmachine', 'Drie RIZZ op een rij = 60×')}
       ${tile('horses', '<span class="cz-ic">🏇</span>', 'Paardenrace', 'Kies je paard, tot 10× je inzet')}
+      ${tile('sport', '<span class="cz-ic">⚽</span>', 'Sportsbook', 'Zet in op echte voetbalwedstrijden')}
     </div>
 
+    ${pop('sport', 'Sportsbook', `<div class="sb" id="sbBox"><div class="sb-top"><div class="sb-tabs" id="sbTabs"></div>${betHtml}</div><div id="sbList"></div></div>`)}
     ${pop('bj', 'Blackjack', `<div class="cz-bj cz-felt"><div class="bj-deck" id="czDeck" aria-hidden="true"><span></span><span></span><span></span></div>
       <div class="felt-arc">BLACKJACK PAYS 3 TO 2 · DEALER STANDS ON 17</div>
       <div class="cz-bj-row"><span class="cz-lbl">Dealer <b id="bjDt"></b></span><div class="bj-cards" id="bjD"></div></div>
@@ -6618,14 +6658,14 @@ async function renderCasino(view) {
   </section>`;
 
   // Pop-ups
-  const openPop = id => { view.querySelectorAll('.ar-pop[open]').forEach(p => p.close()); view.querySelector(`.ar-pop[data-pop="${id}"]`)?.showModal(); if (id === 'bj') drawBj(st.bj); };
+  const openPop = id => { view.querySelectorAll('.ar-pop[open]').forEach(p => p.close()); view.querySelector(`.ar-pop[data-pop="${id}"]`)?.showModal(); if (id === 'bj') drawBj(st.bj); if (id === 'sport') loadSport(); };
   view.querySelectorAll('[data-open]').forEach(b => b.onclick = () => openPop(b.dataset.open));
   view.querySelectorAll('[data-close]').forEach(b => b.onclick = () => b.closest('dialog').close());
   view.querySelectorAll('.ar-pop').forEach(p => p.addEventListener('click', e => { if (e.target === p) p.close(); }));
 
   // Inzet (gedeeld door alle spelletjes)
   const syncBet = () => view.querySelectorAll('[data-betv]').forEach(b => { b.textContent = czState.bet; });
-  view.querySelectorAll('[data-bet]').forEach(b => b.onclick = () => { czState.bet = clamp(czState.bet + (b.dataset.bet === '+' ? 5 : -5), 5, 50); syncBet(); });
+  view.querySelectorAll('[data-bet]').forEach(b => b.onclick = () => { czState.bet = clamp(czState.bet + (b.dataset.bet === '+' ? 5 : -5), 5, 50); syncBet(); if (view.querySelector('.ar-pop[data-pop="sport"][open]')) drawSport(); });
   const msgOf = id => view.querySelector(`.ar-pop[data-pop="${id}"] .cz-msg`);
   const say = (id, text, cls = '') => { const m = msgOf(id); m.className = `msg cz-msg ${cls}`; m.innerHTML = text; };
   const after = r => {
@@ -6759,6 +6799,126 @@ async function renderCasino(view) {
     if (r.payout) { coinRain(40); window.celebrate?.('epic'); }
     busy(false, btn, ...view.querySelectorAll('[data-horse]'));
   };
+
+  // --- Sportsbook: echte voetbalwedstrijden (supabase/update-26-voetbal.sql) ---
+  const sbState = { tab: 'open', comp: 'all', pick: {}, data: null };
+  const sbBox = () => view.querySelector('#sbBox');
+  const pct = (v, n) => n ? Math.round(v / n * 100) : 0;
+  const kickTime = iso => new Date(iso).toLocaleTimeString('nl-BE', { hour: '2-digit', minute: '2-digit', timeZone: 'Europe/Brussels' });
+  const kickDay = iso => { const s = new Date(iso).toLocaleDateString('nl-BE', { weekday: 'long', day: 'numeric', month: 'long', timeZone: 'Europe/Brussels' }); return s[0].toUpperCase() + s.slice(1); };
+  async function loadSport() {
+    const box = sbBox(); if (!box) return;
+    if (!sbState.data) box.querySelector('#sbList').innerHTML = '<p class="hint">Wedstrijden laden…</p>';
+    const { data, error } = await sb.rpc('fb_overview');
+    if (error) { box.querySelector('#sbList').innerHTML = `<p class="msg err">Het Sportsbook is nog niet open: ${esc(error.message)}</p>`; return; }
+    sbState.data = data; drawSport();
+  }
+  function sbMatchHtml(m) {
+    const o = m.odds || {}, v = o.votes || {}, n = (v['1'] || 0) + (v.X || 0) + (v['2'] || 0);
+    const open = m.status === 'scheduled' && !m.started;
+    const sel = sbState.pick[m.id] || m.my_bet?.pick || m.my_vote || null;
+    const lbl = { 1: m.home, X: 'Gelijk', 2: m.away };
+    const odd = k => `<button type="button" class="sb-odd${sel === k ? ' on' : ''}${m.my_vote === k ? ' voted' : ''}" data-pick="${k}" ${open && !m.my_bet ? '' : 'disabled'}>
+      <small>${k} · ${esc(lbl[k])}</small><b>${Number(o[k] || 0).toFixed(2)}</b></button>`;
+    const score = m.status === 'finished' ? `<span class="sb-score">${m.home_goals} – ${m.away_goals}</span>` : m.status === 'cancelled' ? '<span class="sb-score off">Afgelast</span>' : '';
+    let foot = '';
+    if (m.my_bet) {
+      const b = m.my_bet, win = Math.floor(b.stake * b.odds);
+      foot = `<div class="sb-mybet st-${b.status}">${b.status === 'open' ? `Ingezet: <b>${b.stake}</b> op <b>${esc(lbl[b.pick])}</b> @ ${Number(b.odds).toFixed(2)} → wint <b>${win}</b>`
+        : b.status === 'won' ? `Gewonnen! <b class="cz-win">+${b.payout - b.stake}</b> (${b.stake} op ${esc(lbl[b.pick])} @ ${Number(b.odds).toFixed(2)})`
+        : b.status === 'void' ? `Afgelast: je ${b.stake} credits zijn terug` : `Verloren: <b class="cz-lose">−${b.stake}</b> (${esc(lbl[b.pick])} @ ${Number(b.odds).toFixed(2)})`}</div>`;
+    } else if (open) {
+      foot = `<div class="sb-act"><button type="button" class="btn small ghost" data-sbvote ${sel ? '' : 'disabled'}>${m.my_vote && m.my_vote === sel ? 'Je stemde dit' : 'Gratis stemmen'}</button>
+        <button type="button" class="btn small" data-sbbet ${sel ? '' : 'disabled'}>Zet ${czState.bet} in${sel ? ` · wint ${Math.floor(czState.bet * (o[sel] || 0))}` : ''}</button></div>`;
+    } else if (m.status === 'scheduled') foot = '<div class="sb-mybet">Bezig · inzetten gesloten</div>';
+    return `<div class="sb-m" data-m="${m.id}">
+      <div class="sb-meta"><span>${esc(SB_COMP[m.competition] || m.competition)}</span><span>${kickTime(m.kickoff)}</span></div>
+      <div class="sb-teams"><b>${esc(m.home)}</b>${score || '<i>vs</i>'}<b>${esc(m.away)}</b></div>
+      <div class="sb-poll" title="Gratis voorspellingen van iedereen">${n ? ['1', 'X', '2'].map(k => `<i class="pk${k}" style="flex:${v[k] || 0}">${v[k] ? pct(v[k], n) + '%' : ''}</i>`).join('') : '<em>Nog geen stemmen: de quoteringen volgen de voorspellingen</em>'}</div>
+      <div class="sb-odds">${odd('1')}${odd('X')}${odd('2')}</div>${foot}</div>`;
+  }
+  function drawSport() {
+    const box = sbBox(); if (!box || !sbState.data) return;
+    const all = sbState.data.matches || [], admin = sbState.data.is_admin;
+    box.querySelector('#sbTabs').innerHTML = [['open', 'Wedstrijden'], ['mine', 'Mijn inzetten'], ...(admin ? [['admin', 'Beheer']] : [])]
+      .map(([k, l]) => `<button type="button" class="sb-tab${sbState.tab === k ? ' on' : ''}" data-sbtab="${k}">${l}</button>`).join('');
+    let html = '';
+    if (sbState.tab === 'open') {
+      const comps = ['all', ...Object.keys(SB_COMP).filter(c => all.some(m => m.competition === c))];
+      html += `<div class="sb-comps">${comps.map(c => `<button type="button" class="sb-comp${sbState.comp === c ? ' on' : ''}" data-sbcomp="${c}">${c === 'all' ? 'Alles' : esc(SB_COMP[c])}</button>`).join('')}</div>`;
+      const list = all.filter(m => (sbState.comp === 'all' || m.competition === sbState.comp) && (m.status === 'scheduled' || (m.my_bet && m.my_bet.status === 'open')));
+      if (!list.length) html += '<p class="hint">Geen wedstrijden in de komende twee weken.</p>';
+      let lastDay = '';
+      for (const m of list) {
+        const d = kickDay(m.kickoff);
+        if (d !== lastDay) { html += `<h4 class="sb-day">${d}</h4>`; lastDay = d; }
+        html += sbMatchHtml(m);
+      }
+    } else if (sbState.tab === 'mine') {
+      const mine = all.filter(m => m.my_bet).sort((a, b) => b.kickoff.localeCompare(a.kickoff));
+      html = mine.length ? mine.map(sbMatchHtml).join('') : '<p class="hint">Je hebt nog niet ingezet. Kies een wedstrijd en tik op 1, X of 2.</p>';
+    } else {
+      const todo = all.filter(m => m.status === 'scheduled' && m.started && !m.settled);
+      const local = new Date(Date.now() + 864e5); local.setMinutes(0, 0, 0);
+      const dflt = new Date(local.getTime() - local.getTimezoneOffset() * 6e4).toISOString().slice(0, 16);
+      html = `<div class="sb-admin">
+        <h4>Wedstrijd toevoegen</h4><p class="hint">Voor de Pro League en de Nations League (die zitten niet in de gratis API).</p>
+        <div class="sb-form"><select id="sbComp">${Object.entries(SB_COMP).map(([k, l]) => `<option value="${k}"${k === 'BPL' ? ' selected' : ''}>${l}</option>`).join('')}</select>
+          <input id="sbHome" placeholder="Thuisploeg" maxlength="40"><input id="sbAway" placeholder="Uitploeg" maxlength="40">
+          <input id="sbKick" type="datetime-local" value="${dflt}"><button type="button" class="btn small" id="sbAdd">Toevoegen</button></div>
+        <h4>Uitslag invullen</h4>${todo.length ? todo.map(m => `<div class="sb-res" data-m="${m.id}"><span>${esc(SB_COMP[m.competition] || m.competition)} · ${esc(m.home)} – ${esc(m.away)}${m.manual ? '' : ' <small>(komt normaal vanzelf)</small>'}</span>
+          <input type="number" min="0" max="20" class="sb-g1" aria-label="Goals ${esc(m.home)}"><b>–</b><input type="number" min="0" max="20" class="sb-g2" aria-label="Goals ${esc(m.away)}">
+          <button type="button" class="btn small" data-sbres>Opslaan</button><button type="button" class="link danger" data-sbcancel>Afgelast</button></div>`).join('') : '<p class="hint">Geen begonnen wedstrijden zonder uitslag.</p>'}
+        <p class="hint">Laatste automatische update: ${sbState.data.last_sync ? new Date(sbState.data.last_sync).toLocaleString('nl-BE', { timeZone: 'Europe/Brussels' }) : 'nog nooit (sleutel ingesteld?)'}</p></div>`;
+    }
+    box.querySelector('#sbList').innerHTML = html;
+    box.querySelectorAll('[data-sbtab]').forEach(b => b.onclick = () => { sbState.tab = b.dataset.sbtab; drawSport(); });
+    box.querySelectorAll('[data-sbcomp]').forEach(b => b.onclick = () => { sbState.comp = b.dataset.sbcomp; drawSport(); });
+    box.querySelectorAll('.sb-m').forEach(card => {
+      const id = Number(card.dataset.m), m = all.find(x => x.id === id);
+      card.querySelectorAll('[data-pick]').forEach(b => b.onclick = () => { sbState.pick[id] = b.dataset.pick; drawSport(); });
+      const vb = card.querySelector('[data-sbvote]');
+      if (vb) vb.onclick = async () => {
+        vb.disabled = true; const pick = sbState.pick[id] || m.my_vote;
+        const { data, error } = await sb.rpc('fb_vote', { p_match: id, p_pick: pick });
+        if (error) { say('sport', esc(error.message), 'err'); vb.disabled = false; return; }
+        m.odds = data; m.my_vote = pick; say('sport', 'Je stem is geteld. De quoteringen zijn bijgewerkt.', 'ok'); drawSport();
+      };
+      const bb = card.querySelector('[data-sbbet]');
+      if (bb) bb.onclick = async () => {
+        bb.disabled = true; const pick = sbState.pick[id] || m.my_vote;
+        const { data, error } = await sb.rpc('fb_bet', { p_match: id, p_pick: pick, p_stake: czState.bet });
+        if (error) { say('sport', esc(error.message), 'err'); bb.disabled = false; return; }
+        state.wallet = data.wallet; syncCoinUI();
+        say('sport', `Ingezet: ${data.stake} credits @ ${Number(data.odds).toFixed(2)}. Succes!`, 'ok');
+        await loadSport();
+      };
+    });
+    const add = box.querySelector('#sbAdd');
+    if (add) add.onclick = async () => {
+      const kick = box.querySelector('#sbKick').value;
+      const { error } = await sb.rpc('fb_admin_add', { p_competition: box.querySelector('#sbComp').value, p_home: box.querySelector('#sbHome').value,
+        p_away: box.querySelector('#sbAway').value, p_kickoff: kick ? new Date(kick).toISOString() : null });
+      if (error) { say('sport', esc(error.message), 'err'); return; }
+      say('sport', 'Wedstrijd toegevoegd.', 'ok'); await loadSport();
+    };
+    box.querySelectorAll('.sb-res').forEach(row => {
+      const id = Number(row.dataset.m);
+      row.querySelector('[data-sbres]').onclick = async () => {
+        const g1 = row.querySelector('.sb-g1').value, g2 = row.querySelector('.sb-g2').value;
+        if (g1 === '' || g2 === '') { say('sport', 'Vul beide scores in.', 'err'); return; }
+        const { error } = await sb.rpc('fb_admin_result', { p_match: id, p_home_goals: Number(g1), p_away_goals: Number(g2) });
+        if (error) { say('sport', esc(error.message), 'err'); return; }
+        say('sport', 'Uitslag opgeslagen en uitbetaald.', 'ok'); await loadSport();
+      };
+      row.querySelector('[data-sbcancel]').onclick = async () => {
+        if (!confirm('Deze wedstrijd afgelasten? Iedereen krijgt zijn inzet terug.')) return;
+        const { error } = await sb.rpc('fb_admin_cancel', { p_match: id });
+        if (error) { say('sport', esc(error.message), 'err'); return; }
+        say('sport', 'Afgelast: alle inzetten zijn terugbetaald.', 'ok'); await loadSport();
+      };
+    });
+  }
 
   // --- Blackjack ---
   // Twee handen na een split: de hand die aan de beurt is, licht op
