@@ -2604,6 +2604,8 @@ body.drunk .place-bg,body.drunk .campus-map{animation:drunk-double 2.4s ease-in-
 @keyframes fs-flash{5%{opacity:.85}15%{opacity:0}40%{opacity:.6}50%{opacity:0}}
 .fs-kapsalon{background:radial-gradient(circle,rgba(255,214,120,.92),rgba(150,80,20,.96))}
 .fs-kap{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);font-size:min(55vw,300px);animation:fs-eat 1.9s ease both}
+.fs-kap img{display:block;width:min(80vw,440px);height:auto;filter:drop-shadow(0 18px 30px rgba(0,0,0,.45))}
+.bi-ico img{width:100%;height:auto;filter:drop-shadow(0 3px 5px rgba(0,0,0,.35))}
 @keyframes fs-eat{0%{transform:translate(-50%,-50%) scale(.3)}25%{transform:translate(-50%,-50%) scale(1.05)}45%{clip-path:inset(0 0 0 0)}60%{clip-path:inset(0 0 0 35%)}75%{clip-path:inset(0 0 0 65%)}100%{clip-path:inset(0 0 0 100%);transform:translate(-50%,-50%) scale(1)}}
 .fs-poeder{background:#120018}
 .fs-trip{position:absolute;inset:-50%;background:conic-gradient(#ff3b6b,#ffb03b,#f9f871,#3bff8f,#3bd7ff,#9b5bff,#ff3b6b);animation:fs-spin 1.9s linear;opacity:.85;filter:blur(30px)}
@@ -2657,35 +2659,31 @@ body.fx-trip .shell{animation:trip-hue 6s linear infinite}
 .sb-tab.on{background:#F2CC72;color:#2A1A05;border-color:#F2CC72}
 .sb-comps{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;padding-bottom:4px;margin-bottom:6px}
 .sb-comp{flex:none;padding:5px 11px;font-size:12px}.sb-comp.on{background:rgba(242,204,114,.2);border-color:#F2CC72;color:#F6DE9C}
-.sb-day{margin:14px 2px 6px;font:400 15px var(--varsity);letter-spacing:.06em;text-transform:uppercase;color:#F2CC72}
-#sbList{display:grid;gap:10px}
-.sb-m{display:grid;gap:8px;padding:12px 14px;border-radius:14px;background:rgba(255,255,255,.045);border:1px solid rgba(242,204,114,.22)}
-.sb-meta{display:flex;justify-content:space-between;font:600 11.5px var(--body);letter-spacing:.08em;text-transform:uppercase;color:var(--ink-soft)}
-.sb-teams{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:10px}
-.sb-teams b{font:700 16px var(--body);color:var(--ink)}.sb-teams b:last-child{text-align:right}
-.sb-teams i{font:italic 600 12px var(--body);color:var(--muted)}
-.sb-score{font:400 22px var(--varsity);color:#F2CC72}.sb-score.off{font-size:14px;color:var(--muted)}
-.sb-poll{display:flex;height:16px;border-radius:999px;overflow:hidden;background:rgba(255,255,255,.06);font:700 10px/16px var(--body);color:#0b1020}
-.sb-poll i{display:block;min-width:0;text-align:center;font-style:normal;overflow:hidden}
+.sb-day{margin:10px 2px 2px;font:400 14px var(--varsity);letter-spacing:.06em;text-transform:uppercase;color:#F2CC72}
+#sbList{display:grid;gap:6px}
+.sb-m{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:6px 10px;padding:8px 10px;border-radius:12px;background:rgba(255,255,255,.045);border:1px solid rgba(242,204,114,.16)}
+.sb-m.picked{border-color:rgba(242,204,114,.6)}
+.sb-info{display:grid;gap:1px;min-width:0}
+.sb-meta{font:600 10.5px var(--body);letter-spacing:.06em;text-transform:uppercase;color:var(--ink-soft)}
+.sb-team{display:flex;justify-content:space-between;gap:6px;font:600 14px/1.25 var(--body);color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sb-team em{font:400 15px var(--varsity);font-style:normal;color:#F2CC72}
+.sb-poll{display:flex;height:3px;margin-top:4px;border-radius:999px;overflow:hidden;background:rgba(255,255,255,.06)}
+.sb-poll i{display:block;min-width:0}
 .sb-poll .pk1{background:#7FD3A0}.sb-poll .pkX{background:#C9C2B2}.sb-poll .pk2{background:#6FA8FF}
-.sb-poll em{padding:0 10px;color:var(--muted);font:500 11px/16px var(--body)}
-.sb-src{margin-top:-2px;color:var(--muted);font:500 11px/1.3 var(--body);text-align:center}
-.sb-oddsrow input{width:70px}
-.sb-odds{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}
-.sb-odd{display:grid;gap:1px;padding:7px 6px;border-radius:10px;border:1px solid rgba(242,204,114,.3);background:rgba(10,16,36,.6);color:var(--ink);cursor:pointer;text-align:center}
-.sb-odd small{font:600 11px var(--body);color:var(--ink-soft);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.sb-odd b{font:400 19px var(--varsity);color:#F2CC72}
+.sb-src{margin:6px 2px 0;color:var(--muted);font:500 11px/1.3 var(--body);text-align:center}
+.sb-odds{display:grid;grid-template-columns:repeat(3,54px);gap:5px}
+.sb-odd{position:relative;display:grid;gap:0;padding:4px 2px;border-radius:9px;border:1px solid rgba(242,204,114,.3);background:rgba(10,16,36,.6);color:var(--ink);cursor:pointer;text-align:center}
+.sb-odd small{font:600 10px var(--body);color:var(--ink-soft)}
+.sb-odd b{font:400 16px var(--varsity);color:#F2CC72}
 .sb-odd.on{background:#F2CC72;border-color:#F2CC72}.sb-odd.on small,.sb-odd.on b{color:#2A1A05}
-.sb-odd.voted::after{content:"jouw stem";font:600 9.5px var(--body);color:#7FD3A0}.sb-odd.on.voted::after{color:#1E5A35}
-.sb-odd:disabled{cursor:default;opacity:.85}
-.sb-act{display:flex;gap:8px;justify-content:flex-end;flex-wrap:wrap}
-.sb-mybet{padding:7px 10px;border-radius:10px;background:rgba(242,204,114,.1);font:500 13px var(--body);color:var(--ink)}
+.sb-odd.voted::after{content:"";position:absolute;top:4px;right:4px;width:6px;height:6px;border-radius:50%;background:#7FD3A0}
+.sb-odd:disabled{cursor:default;opacity:.8}
+.sb-act{grid-column:1/-1;display:flex;gap:6px;justify-content:flex-end;align-items:center;flex-wrap:wrap}
+.sb-act span{margin-right:auto;font:600 12.5px var(--body);color:var(--ink-soft)}
+.sb-mybet{grid-column:1/-1;padding:5px 9px;border-radius:9px;background:rgba(242,204,114,.1);font:500 12.5px var(--body);color:var(--ink)}
 .sb-mybet.st-won{background:rgba(127,211,160,.15)}.sb-mybet.st-lost{background:rgba(224,40,74,.12)}
-.sb-admin{display:grid;gap:8px}.sb-admin h4{margin:8px 0 0;color:#F2CC72}
-.sb-form,.sb-res{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
-.sb-form select,.sb-form input,.sb-res input{padding:8px 10px;border-radius:10px;border:1px solid var(--line2);background:rgba(255,255,255,.06);color:var(--ink);font:500 14px var(--body)}
-.sb-res input{width:58px}.sb-res span{flex:1 1 220px}
-@media (max-width:599px){.sb-teams b{font-size:14px}.sb-odd b{font-size:17px}}
+@media (max-width:399px){.sb-odds{grid-template-columns:repeat(3,48px)}.sb-team{font-size:13px}}
+@media (min-width:900px){#sbList{grid-template-columns:repeat(2,minmax(0,1fr));align-items:start}#sbList>:not(.sb-m){grid-column:1/-1}}
 @media (min-width:600px) and (max-height:500px){.cz-tile[data-open="sport"]{min-height:0;height:clamp(54px,15vh,80px)}}
 /* muntenregen */
 .coin-rain{position:fixed;inset:0;z-index:5000;pointer-events:none;overflow:hidden}
@@ -3009,17 +3007,36 @@ const Sound = (() => {
   }
   function stopMusic() { clearInterval(timer); timer = null; song = null; }
   // eerste tik: geluid ontgrendelen
-  const unlock = () => { if (!prefs.music && !prefs.sfx) return; const c = init(); if (c && c.state !== 'running') c.resume().then(startMusic, () => {}); else startMusic(); };
-  addEventListener('pointerdown', unlock, { capture: true });
-  addEventListener('keydown', unlock, { capture: true });
+  // iPhone: zonder dit blijft alles stil als de belschakelaar op stil staat
+  let silent = null;
+  function iosSession() {
+    try { if (navigator.audioSession) { navigator.audioSession.type = 'playback'; return; } } catch (_) { /* */ }
+    if (silent || !/iPhone|iPad|iPod/.test(navigator.userAgent)) return;
+    // oudere iPhones: een stil, herhalend geluidje zet de telefoon in "afspelen"-modus
+    silent = new Audio('data:audio/wav;base64,UklGRrQBAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YZABAACAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICA');
+    silent.loop = true; silent.setAttribute('playsinline', ''); silent.play().catch(() => { silent = null; });
+  }
+  const unlock = () => {
+    if (!feat('sound') || (!prefs.music && !prefs.sfx)) return;
+    iosSession();
+    const c = init(); if (!c) return;
+    if (c.state !== 'running') c.resume().then(startMusic, () => {}); else startMusic();
+  };
+  // Safari telt pas een echte tik (touchend/click) als toestemming voor geluid
+  for (const ev of ['pointerdown', 'touchend', 'click', 'keydown']) addEventListener(ev, unlock, { capture: true });
   // kleine klik op knoppen
   addEventListener('click', e => { if (e.target.closest?.('button, .btn, [data-tab]')) Sound.play('click'); }, true);
   document.addEventListener('visibilitychange', () => { if (!ctx) return; if (document.hidden) ctx.suspend(); else ctx.resume().then(startMusic, () => {}); });
   return {
-    play(name) { if (!feat('sound') || !prefs.sfx || !FX[name] || prefersReduced?.() && name === 'click') return; if (!init() || ctx.state !== 'running') return; try { FX[name](); } catch (_) { /* */ } },
+    play(name) {
+      if (!feat('sound') || !prefs.sfx || !FX[name] || prefersReduced?.() && name === 'click') return;
+      if (!init()) return;
+      const go = () => { try { FX[name](); } catch (_) { /* */ } };
+      if (ctx.state === 'running') go(); else ctx.resume().then(() => { if (ctx.state === 'running') go(); }, () => {});
+    },
     setPlace(p) { place = p; if (!feat('sound')) { stopMusic(); return; } if (prefs.music) startMusic(); },
     get prefs() { return { ...prefs }; },
-    toggle(which) { prefs[which] = !prefs[which]; save(); if (which === 'music') { if (prefs.music) { init(); ctx.resume().then(startMusic, () => {}); } else stopMusic(); } return prefs[which]; },
+    toggle(which) { prefs[which] = !prefs[which]; save(); if (which === 'music') { if (prefs.music) { iosSession(); if (init()) ctx.resume().then(startMusic, () => {}); } else stopMusic(); } return prefs[which]; },
   };
 })();
 
@@ -6088,12 +6105,12 @@ const FOOD = [
   { id: 'pintje', icon: '🍺', name: 'Pintje', price: 1, desc: 'Een vers getapt pintje. Hoeveel je er aankan voor je sterrezat bent? Dat zie je wel.' },
   { id: 'shotje', icon: '🥃', name: 'Shotje', price: 2, desc: 'Telt dubbel. Sneller sterrezat, maar wel stijlvol.' },
   { id: 'redbull', icon: '⚡', name: 'Red Bull', price: 2, desc: 'Geen alcohol, wel vleugels: 30 seconden hyper.' },
-  { id: 'kapsalon', icon: '🍟', name: 'Kapsalon', price: 4, desc: 'Friet, shoarma, kaas, saus. Je bent meteen weer nuchter.' },
+  { id: 'kapsalon', icon: '<img src="img/kapsalon.webp" alt="" width="54" height="41">', name: 'Kapsalon', price: 4, desc: 'Friet, shoarma, kaas, saus. Je bent meteen weer nuchter.' },
   { id: 'poeder', icon: '✨', name: 'Rizz-poeder', price: 8, desc: 'Niemand weet wat erin zit. Eén minuut trippen, en wie weet vind je iets zeldzaams. Max. 3 per dag.' },
 ];
 const FOOD_SAY = {
-  pintje: ['PROOST!', 'AD FUNDUM!', 'SANTÉ!', 'CHEERS!'], shotje: ['SHOT!', 'IN ÉÉN KEER!', 'SKOL!'],
-  redbull: ['WIIINGS!', 'ZZZAP!', 'ENERGIE!'], kapsalon: ['NOM NOM!', 'MMMM…', 'BOEM, NUCHTER!'], poeder: ['WHOAAA…', 'RIZZ!', 'KLEUREN!'],
+  pintje: ['PROOST!', 'AD FUNDUM!', 'SCHOL!', 'GEZONDHEID!'], shotje: ['IN ÉÉN KEER!', 'HOP, BINNEN!', 'DAAR GAAT IE!'],
+  redbull: ['VLEUGELS!', 'ZOEF!', 'VOLLE ENERGIE!'], kapsalon: ['SMAKELIJK!', 'MMMM…', 'BOEM, NUCHTER!'], poeder: ['WAUW…', 'RIZZ!', 'KLEUREN!'],
 };
 function renderBar(view) {
   if (!feat('foodmenu')) return renderBarClassic(view);
@@ -6122,7 +6139,7 @@ function renderBar(view) {
     else if (item === 'redbull') { goEffect('wired', 30000); m.className = 'msg ok'; m.textContent = 'Je vliegt.'; }
     else if (item === 'poeder') { goEffect('trip', 60000); m.className = 'msg ok'; m.textContent = 'Alles is zo… mooi.'; }
     else if (data.drunk_ms > 0) { m.className = 'msg'; m.textContent = 'Je bent sterrezat.'; goDrunk(data.drunk_ms); }
-    else { m.className = 'msg ok'; m.textContent = ['Proost!', 'Santé!', 'Ad fundum!', 'Cheers!', 'Gezondheid!'][Math.floor(Math.random() * 5)]; }
+    else { m.className = 'msg ok'; m.textContent = ['Proost!', 'Schol!', 'Ad fundum!', 'Op ons!', 'Gezondheid!'][Math.floor(Math.random() * 5)]; }
     if (data.find) {
       const card = cardById(data.find);
       state.owned.set(data.find, (state.owned.get(data.find) || 0) + 1);
@@ -6144,7 +6161,7 @@ function foodScreen(item) {
     pintje: `<div class="chug-beer">${'<i></i>'.repeat(14)}</div><div class="chug-foam"></div>`,
     shotje: `<div class="chug-beer shot">${'<i></i>'.repeat(14)}</div>`,
     redbull: `<div class="fs-bolt">⚡</div><div class="fs-flash"></div>`,
-    kapsalon: `<div class="fs-kap">🍟</div>`,
+    kapsalon: `<div class="fs-kap"><img src="img/kapsalon.webp" alt=""></div>`,
     poeder: `<div class="fs-trip"></div><div class="fs-sparkle">${'<i></i>'.repeat(24)}</div>`,
   }[item];
   return new Promise(res => {
@@ -6803,6 +6820,7 @@ const CZ_WHEEL = [0, 32, 15, 19, 4, 21, 2, 25, 17, 34, 6, 27, 13, 36, 11, 30, 8,
 const CZ_RED = new Set([1, 3, 5, 7, 9, 12, 14, 16, 18, 19, 21, 23, 25, 27, 30, 32, 34, 36]);
 const czState = { bet: 10, rkind: 'red', rnum: 7, horse: 1 };
 const SB_COMP = { CL: 'Champions League', PL: 'Premier League', SA: 'Serie A', PD: 'La Liga', FL1: 'Ligue 1', BPL: 'Pro League', UNL: 'Nations League' };
+const SB_SHORT = { CL: 'CL', PL: 'Premier L.', SA: 'Serie A', PD: 'La Liga', FL1: 'Ligue 1', BPL: 'Pro League', UNL: 'Nations L.' };
 const bjCardHtml = c => {
   if (c == null) return '<span class="bj-card back"></span>';
   const r = ['A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K'][c % 13], s = ['♠', '♥', '♦', '♣'][Math.floor(c / 13)];
@@ -7031,39 +7049,40 @@ async function renderCasino(view) {
   function sbMatchHtml(m) {
     const o = m.odds || {}, v = o.votes || {}, n = (v['1'] || 0) + (v.X || 0) + (v['2'] || 0), has = o['1'] != null;
     const open = m.status === 'scheduled' && !m.started && has;
-    const sel = sbState.pick[m.id] || m.my_bet?.pick || m.my_vote || null;
+    const sel = sbState.pick[m.id] || m.my_bet?.pick || null;
     const lbl = { 1: m.home, X: 'Gelijk', 2: m.away };
-    const odd = k => `<button type="button" class="sb-odd${sel === k ? ' on' : ''}${m.my_vote === k ? ' voted' : ''}" data-pick="${k}" ${open && !m.my_bet ? '' : 'disabled'}>
-      <small>${k} · ${esc(lbl[k])}</small><b>${has ? Number(o[k]).toFixed(2) : '–'}</b></button>`;
-    const score = m.status === 'finished' ? `<span class="sb-score">${m.home_goals} – ${m.away_goals}</span>` : m.status === 'cancelled' ? '<span class="sb-score off">Afgelast</span>' : '';
+    const odd = k => `<button type="button" class="sb-odd${sel === k ? ' on' : ''}${m.my_vote === k ? ' voted' : ''}" data-pick="${k}" ${open && !m.my_bet ? '' : 'disabled'} aria-label="${k} · ${esc(lbl[k])}">
+      <small>${k}</small><b>${has ? Number(o[k]).toFixed(2) : '–'}</b></button>`;
+    const fin = m.status === 'finished';
+    const goals = side => fin ? `<em>${side === 1 ? m.home_goals : m.away_goals}</em>` : '';
+    const when = m.status === 'cancelled' ? 'Afgelast' : fin ? 'Einde' : m.started ? 'Bezig' : kickTime(m.kickoff);
     let foot = '';
     if (m.my_bet) {
       const b = m.my_bet, win = winTxt(b.stake, b.odds);
-      foot = `<div class="sb-mybet st-${b.status}">${b.status === 'open' ? `Ingezet: <b>${b.stake}</b> op <b>${esc(lbl[b.pick])}</b> @ ${Number(b.odds).toFixed(2)} → wint <b>${win}</b>`
+      foot = `<div class="sb-mybet st-${b.status}">${b.status === 'open' ? `Jouw inzet: <b>${b.stake}</b> op <b>${esc(lbl[b.pick])}</b> @ ${Number(b.odds).toFixed(2)} → wint <b>${win}</b>`
         : b.status === 'won' ? `Gewonnen! <b class="cz-win">+${b.payout - b.stake}</b> (${b.stake} op ${esc(lbl[b.pick])} @ ${Number(b.odds).toFixed(2)})`
         : b.status === 'void' ? `Afgelast: je ${b.stake} credits zijn terug` : `Verloren: <b class="cz-lose">−${b.stake}</b> (${esc(lbl[b.pick])} @ ${Number(b.odds).toFixed(2)})`}</div>`;
-    } else if (open) {
-      foot = `<div class="sb-act"><button type="button" class="btn small ghost" data-sbvote ${sel ? '' : 'disabled'}>${m.my_vote && m.my_vote === sel ? 'Je stemde dit' : 'Gratis stemmen'}</button>
-        <button type="button" class="btn small" data-sbbet ${sel ? '' : 'disabled'}>Zet ${czState.bet} in${sel ? ` · wint ${winTxt(czState.bet, o[sel] || 0)}` : ''}</button></div>`;
-    } else if (m.status === 'scheduled' && !m.started) foot = '<div class="sb-mybet">Nog geen quotering · even geduld</div>';
-    else if (m.status === 'scheduled') foot = '<div class="sb-mybet">Bezig · inzetten gesloten</div>';
-    return `<div class="sb-m" data-m="${m.id}">
-      <div class="sb-meta"><span>${esc(SB_COMP[m.competition] || m.competition)}</span><span>${kickTime(m.kickoff)}</span></div>
-      <div class="sb-teams"><b>${esc(m.home)}</b>${score || '<i>vs</i>'}<b>${esc(m.away)}</b></div>
-      <div class="sb-poll" title="Gratis voorspellingen van de groep">${n ? ['1', 'X', '2'].map(k => `<i class="pk${k}" style="flex:${v[k] || 0}">${v[k] ? pct(v[k], n) + '%' : ''}</i>`).join('') : '<em>Nog geen voorspellingen van de groep</em>'}</div>
-      <div class="sb-odds">${odd('1')}${odd('X')}${odd('2')}</div>
-      ${m.status === 'scheduled' && !m.my_bet ? `<div class="sb-src">${!has ? 'De bookmakers hebben nog geen quotering' : o.books ? `Quotering: gemiddelde van ${o.books} bookmakers` : 'Quotering van de admin'}</div>` : ''}${foot}</div>`;
+    } else if (open && sel) {
+      foot = `<div class="sb-act"><span>${esc(lbl[sel])} @ ${Number(o[sel]).toFixed(2)}</span>
+        <button type="button" class="btn small ghost" data-sbvote ${m.my_vote === sel ? 'disabled' : ''}>${m.my_vote === sel ? 'Voorspeld' : 'Gratis voorspellen'}</button>
+        <button type="button" class="btn small" data-sbbet>Zet ${czState.bet} in · wint ${winTxt(czState.bet, o[sel])}</button></div>`;
+    }
+    const poll = n ? `<div class="sb-poll" title="Voorspellingen van de groep: ${['1', 'X', '2'].map(k => `${k} ${pct(v[k] || 0, n)}%`).join(' · ')}">${['1', 'X', '2'].map(k => `<i class="pk${k}" style="flex:${v[k] || 0}"></i>`).join('')}</div>` : '';
+    return `<div class="sb-m${sel && !m.my_bet ? ' picked' : ''}" data-m="${m.id}">
+      <div class="sb-info"><span class="sb-meta">${esc(SB_SHORT[m.competition] || m.competition)} · ${when}</span>
+        <span class="sb-team">${esc(m.home)}${goals(1)}</span><span class="sb-team">${esc(m.away)}${goals(2)}</span>${poll}</div>
+      <div class="sb-odds">${odd('1')}${odd('X')}${odd('2')}</div>${foot}</div>`;
   }
   function drawSport() {
     const box = sbBox(); if (!box || !sbState.data) return;
-    const all = sbState.data.matches || [], admin = sbState.data.is_admin;
-    box.querySelector('#sbTabs').innerHTML = [['open', 'Wedstrijden'], ['mine', 'Mijn inzetten'], ...(admin ? [['admin', 'Beheer']] : [])]
+    const all = sbState.data.matches || [];
+    box.querySelector('#sbTabs').innerHTML = [['open', 'Wedstrijden'], ['mine', 'Mijn inzetten']]
       .map(([k, l]) => `<button type="button" class="sb-tab${sbState.tab === k ? ' on' : ''}" data-sbtab="${k}">${l}</button>`).join('');
     let html = '';
     if (sbState.tab === 'open') {
-      const comps = ['all', ...Object.keys(SB_COMP).filter(c => all.some(m => m.competition === c))];
+      const comps = ['all', ...Object.keys(SB_COMP).filter(c => all.some(m => m.competition === c && m.status === 'scheduled'))];
       html += `<div class="sb-comps">${comps.map(c => `<button type="button" class="sb-comp${sbState.comp === c ? ' on' : ''}" data-sbcomp="${c}">${c === 'all' ? 'Alles' : esc(SB_COMP[c])}</button>`).join('')}</div>`;
-      const list = all.filter(m => (sbState.comp === 'all' || m.competition === sbState.comp) && (m.status === 'scheduled' || (m.my_bet && m.my_bet.status === 'open')));
+      const list = all.filter(m => (sbState.comp === 'all' || m.competition === sbState.comp) && m.status === 'scheduled' && (!m.started || m.my_bet));
       if (!list.length) html += '<p class="hint">Geen wedstrijden in de komende twee weken.</p>';
       let lastDay = '';
       for (const m of list) {
@@ -7071,81 +7090,32 @@ async function renderCasino(view) {
         if (d !== lastDay) { html += `<h4 class="sb-day">${d}</h4>`; lastDay = d; }
         html += sbMatchHtml(m);
       }
-    } else if (sbState.tab === 'mine') {
+      if (list.length) html += '<p class="sb-src">Tik op 1 (thuis), X (gelijk) of 2 (uit). Quoteringen: gemiddelde van bookmakers wereldwijd.</p>';
+    } else {
       const mine = all.filter(m => m.my_bet).sort((a, b) => b.kickoff.localeCompare(a.kickoff));
       html = mine.length ? mine.map(sbMatchHtml).join('') : '<p class="hint">Je hebt nog niet ingezet. Kies een wedstrijd en tik op 1, X of 2.</p>';
-    } else {
-      const todo = all.filter(m => m.status === 'scheduled' && m.started && !m.settled);
-      const noOdds = all.filter(m => m.status === 'scheduled' && !m.started && !m.odds?.books);
-      const local = new Date(Date.now() + 864e5); local.setMinutes(0, 0, 0);
-      const dflt = new Date(local.getTime() - local.getTimezoneOffset() * 6e4).toISOString().slice(0, 16);
-      html = `<div class="sb-admin">
-        <h4>Wedstrijd toevoegen</h4><p class="hint">Pro League en Nations League komen normaal vanzelf mee met de quoteringen. Ontbreekt er een? Voeg ze hier toe.</p>
-        <div class="sb-form"><select id="sbComp">${Object.entries(SB_COMP).map(([k, l]) => `<option value="${k}"${k === 'BPL' ? ' selected' : ''}>${l}</option>`).join('')}</select>
-          <input id="sbHome" placeholder="Thuisploeg" maxlength="40"><input id="sbAway" placeholder="Uitploeg" maxlength="40">
-          <input id="sbKick" type="datetime-local" value="${dflt}"><button type="button" class="btn small" id="sbAdd">Toevoegen</button></div>
-        <h4>Uitslag invullen</h4>${todo.length ? todo.map(m => `<div class="sb-res" data-m="${m.id}"><span>${esc(SB_COMP[m.competition] || m.competition)} · ${esc(m.home)} – ${esc(m.away)}${m.manual ? '' : ' <small>(komt normaal vanzelf)</small>'}</span>
-          <input type="number" min="0" max="20" class="sb-g1" aria-label="Goals ${esc(m.home)}"><b>–</b><input type="number" min="0" max="20" class="sb-g2" aria-label="Goals ${esc(m.away)}">
-          <button type="button" class="btn small" data-sbres>Opslaan</button><button type="button" class="link danger" data-sbcancel>Afgelast</button></div>`).join('') : '<p class="hint">Geen begonnen wedstrijden zonder uitslag.</p>'}
-        <h4>Quotering invullen</h4>${noOdds.length ? noOdds.map(m => `<div class="sb-res sb-oddsrow" data-m="${m.id}"><span>${esc(SB_COMP[m.competition] || m.competition)} · ${esc(m.home)} – ${esc(m.away)} <small>${kickDay(m.kickoff)} ${kickTime(m.kickoff)}${m.odds?.['1'] != null ? ' · nu ' + ['1', 'X', '2'].map(k => Number(m.odds[k]).toFixed(2)).join(' / ') : ''}</small></span>
-          ${['1', 'X', '2'].map(k => `<input type="number" min="1.01" max="50" step="0.01" class="sb-o" data-k="${k}" placeholder="${k}" aria-label="Quotering ${k}" value="${m.odds?.[k] ?? ''}">`).join('')}
-          <button type="button" class="btn small" data-sbodds>Opslaan</button></div>`).join('') : '<p class="hint">Alle komende wedstrijden hebben een quotering van de bookmakers.</p>'}
-        <p class="hint">Laatste automatische update: ${sbState.data.last_sync ? new Date(sbState.data.last_sync).toLocaleString('nl-BE', { timeZone: 'Europe/Brussels' }) : 'nog nooit (sleutel ingesteld?)'}<br>
-          Laatste quoteringen: ${sbState.data.last_odds ? new Date(sbState.data.last_odds).toLocaleString('nl-BE', { timeZone: 'Europe/Brussels' }) + (sbState.data.odds_msg ? ` (${esc(sbState.data.odds_msg)})` : '') : 'nog nooit (ODDS_API_KEY ingesteld?)'}</p></div>`;
     }
     box.querySelector('#sbList').innerHTML = html;
     box.querySelectorAll('[data-sbtab]').forEach(b => b.onclick = () => { sbState.tab = b.dataset.sbtab; drawSport(); });
     box.querySelectorAll('[data-sbcomp]').forEach(b => b.onclick = () => { sbState.comp = b.dataset.sbcomp; drawSport(); });
     box.querySelectorAll('.sb-m').forEach(card => {
       const id = Number(card.dataset.m), m = all.find(x => x.id === id);
-      card.querySelectorAll('[data-pick]').forEach(b => b.onclick = () => { sbState.pick[id] = b.dataset.pick; drawSport(); });
+      card.querySelectorAll('[data-pick]').forEach(b => b.onclick = () => { sbState.pick[id] = sbState.pick[id] === b.dataset.pick ? null : b.dataset.pick; drawSport(); });
       const vb = card.querySelector('[data-sbvote]');
       if (vb) vb.onclick = async () => {
-        vb.disabled = true; const pick = sbState.pick[id] || m.my_vote;
+        vb.disabled = true; const pick = sbState.pick[id];
         const { data, error } = await sb.rpc('fb_vote', { p_match: id, p_pick: pick });
         if (error) { say('sport', esc(error.message), 'err'); vb.disabled = false; return; }
         m.odds = data; m.my_vote = pick; say('sport', 'Je voorspelling is geteld.', 'ok'); drawSport();
       };
       const bb = card.querySelector('[data-sbbet]');
       if (bb) bb.onclick = async () => {
-        bb.disabled = true; const pick = sbState.pick[id] || m.my_vote;
+        bb.disabled = true; const pick = sbState.pick[id];
         const { data, error } = await sb.rpc('fb_bet', { p_match: id, p_pick: pick, p_stake: czState.bet });
         if (error) { say('sport', esc(error.message), 'err'); bb.disabled = false; return; }
-        state.wallet = data.wallet; syncCoinUI();
+        state.wallet = data.wallet; syncCoinUI(); delete sbState.pick[id];
         say('sport', `Ingezet: ${data.stake} credit${data.stake === 1 ? '' : 's'} @ ${Number(data.odds).toFixed(2)}. Succes!`, 'ok');
         await loadSport();
-      };
-    });
-    const add = box.querySelector('#sbAdd');
-    if (add) add.onclick = async () => {
-      const kick = box.querySelector('#sbKick').value;
-      const { error } = await sb.rpc('fb_admin_add', { p_competition: box.querySelector('#sbComp').value, p_home: box.querySelector('#sbHome').value,
-        p_away: box.querySelector('#sbAway').value, p_kickoff: kick ? new Date(kick).toISOString() : null });
-      if (error) { say('sport', esc(error.message), 'err'); return; }
-      say('sport', 'Wedstrijd toegevoegd.', 'ok'); await loadSport();
-    };
-    box.querySelectorAll('.sb-oddsrow').forEach(row => {
-      row.querySelector('[data-sbodds]').onclick = async () => {
-        const v = k => Number(row.querySelector(`.sb-o[data-k="${k}"]`).value.replace(',', '.'));
-        const { error } = await sb.rpc('fb_admin_odds', { p_match: Number(row.dataset.m), p_1: v('1'), p_x: v('X'), p_2: v('2') });
-        if (error) { say('sport', esc(error.message), 'err'); return; }
-        say('sport', 'Quotering opgeslagen.', 'ok'); await loadSport();
-      };
-    });
-    box.querySelectorAll('.sb-res:not(.sb-oddsrow)').forEach(row => {
-      const id = Number(row.dataset.m);
-      row.querySelector('[data-sbres]').onclick = async () => {
-        const g1 = row.querySelector('.sb-g1').value, g2 = row.querySelector('.sb-g2').value;
-        if (g1 === '' || g2 === '') { say('sport', 'Vul beide scores in.', 'err'); return; }
-        const { error } = await sb.rpc('fb_admin_result', { p_match: id, p_home_goals: Number(g1), p_away_goals: Number(g2) });
-        if (error) { say('sport', esc(error.message), 'err'); return; }
-        say('sport', 'Uitslag opgeslagen en uitbetaald.', 'ok'); await loadSport();
-      };
-      row.querySelector('[data-sbcancel]').onclick = async () => {
-        if (!confirm('Deze wedstrijd afgelasten? Iedereen krijgt zijn inzet terug.')) return;
-        const { error } = await sb.rpc('fb_admin_cancel', { p_match: id });
-        if (error) { say('sport', esc(error.message), 'err'); return; }
-        say('sport', 'Afgelast: alle inzetten zijn terugbetaald.', 'ok'); await loadSport();
       };
     });
   }
