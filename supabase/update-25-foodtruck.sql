@@ -10,10 +10,42 @@
 -- Alles wat je koopt, komt in food_log (voor de geheime trofeeën, zie update 27).
 -- Zolang je sterrezat bent, krijg je geen alcohol (pintje of shotje).
 --
+-- TESTFASE: de nieuwe dingen van 16 oktober (Food Truck-kaart, Sportsbook, geheime trofeeën, muziek)
+-- staan eerst enkel aan voor de admin (tabel feature_flags). Voor iedereen openzetten:
+-- voer release-16-oktober.sql uit.
+--
 -- Gebruik: Supabase -> SQL Editor -> nieuwe query -> dit VOLLEDIGE bestand plakken -> Run.
 -- Kies bij de waarschuwing "Run without RLS".
 -- Veilig om opnieuw uit te voeren. Voer eerst update-21-pintje-random.sql uit.
 -- =====================================================================
+
+-- Nieuwe dingen eerst enkel voor de admin: released = false -> enkel de admin, true -> iedereen
+create table if not exists public.feature_flags (
+  key text primary key,
+  released boolean not null default false,
+  note text
+);
+alter table public.feature_flags enable row level security; -- enkel via feature_list()
+insert into public.feature_flags (key, note) values
+  ('foodmenu', 'Food Truck: shotje, Red Bull, kapsalon, Rizz-poeder'),
+  ('sportsbook', 'Casino: inzetten op voetbal'),
+  ('secrets', 'Geheime trofeeën'),
+  ('sound', 'Muziek en geluidseffecten')
+on conflict (key) do nothing;
+
+create or replace function public._feature_on(p_key text, p_user uuid default auth.uid()) returns boolean
+language sql stable security definer set search_path = public as $$
+  select coalesce((select released from public.feature_flags where key = p_key), true)
+      or coalesce(public._is_admin_user(p_user), false);
+$$;
+revoke all on function public._feature_on(text, uuid) from public, anon, authenticated;
+
+-- Welke nieuwe dingen staan aan voor mij? {"sportsbook": true, ...}
+create or replace function public.feature_list() returns jsonb
+language sql stable security definer set search_path = public as $$
+  select coalesce(jsonb_object_agg(key, public._feature_on(key)), '{}'::jsonb) from public.feature_flags;
+$$;
+grant execute on function public.feature_list() to authenticated;
 
 create table if not exists public.food_log (
   id bigserial primary key,
@@ -36,7 +68,7 @@ declare
 begin
   if me is null then raise exception 'Niet ingelogd.'; end if;
   price := case p_item when 'pintje' then 1 when 'shotje' then 2 when 'redbull' then 2 when 'kapsalon' then 4 when 'poeder' then 8 end;
-  if price is null then raise exception 'Dat staat niet op de kaart.'; end if;
+  if price is null or (p_item <> 'pintje' and not public._feature_on('foodmenu')) then raise exception 'Dat staat niet op de kaart.'; end if;
 
   select polycoins into v_coins from public.user_wallet where user_id = me for update;
   if coalesce(v_coins, 0) < price then raise exception 'Niet genoeg credits.'; end if;

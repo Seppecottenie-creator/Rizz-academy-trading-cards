@@ -1,6 +1,6 @@
 -- =====================================================================
 -- RIZZ ACADEMY — update 13: het casino
--- LET OP: voer je dit bestand opnieuw uit, voer daarna ook update-14 en update-22 opnieuw uit
+-- LET OP: voer je dit bestand opnieuw uit, voer daarna ook update-14, update-22 en update-28 opnieuw uit
 -- (anders komt de daglimiet terug en verdwijnt splitsen bij blackjack).
 --
 -- Vier spelletjes waarin je je credits inzet, telkens per 5 (min. 5, max. 50 per spel):

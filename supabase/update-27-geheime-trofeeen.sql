@@ -3,6 +3,7 @@
 --
 -- 14 trofeeën die je pas ziet als je ze haalt. Tot dan staat er enkel "???" in je lijst.
 -- Elke geheime trofee geeft ook credits (ophalen in Stats, zoals de gewone trofeeën).
+-- TESTFASE: enkel de admin ziet (en haalt) ze tot release-16-oktober.sql uitgevoerd is.
 --
 -- Gebruik: Supabase -> SQL Editor -> nieuwe query -> dit VOLLEDIGE bestand plakken -> Run.
 -- Kies bij de waarschuwing "Run without RLS".
@@ -25,7 +26,7 @@ language sql stable security definer set search_path = public as $$
       count(*) filter (where status = 'done' and mode = 'pvp' and ((player_a = p_user and winner = 'A') or (player_b = p_user and winner = 'B'))) as pvp_wins,
       count(*) filter (where status = 'done' and mode = 'pve' and difficulty = 'hard' and player_a = p_user and winner = 'A') as hard_wins
     from public.tbattles where player_a = p_user or player_b = p_user)
-  select k, d, r from best, fullset, bat, lateral (values
+  select k, d and (k not like 'x\_%' or public._feature_on('secrets', p_user)), r from best, fullset, bat, lateral (values
     ('freshman',      (select count(*) from days) > 0,                          20),
     ('on_fire',       best.s >= 3,                                              50),
     ('iron_streak',   best.s >= 7,                                             150),
@@ -105,7 +106,7 @@ language sql stable security definer set search_path = public as $$
     else jsonb_build_object('key', 'secret', 'done', false, 'secret', true)
     end order by s.key is not null, t.done desc), '[]'::jsonb)
   from public._trophies(auth.uid()) t left join public._secret_trophies() s on s.key = t.key
-  where auth.uid() is not null;
+  where auth.uid() is not null and (s.key is null or public._feature_on('secrets'));
 $$;
 grant execute on function public.trophy_status() to authenticated;
 

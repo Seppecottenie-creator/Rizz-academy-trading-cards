@@ -4163,6 +4163,33 @@ notify pgrst, 'reload schema';
 -- FOODTRUCK-UPDATE (zelfde inhoud als update-25-foodtruck.sql)
 -- =====================================================================
 
+create table if not exists public.feature_flags (
+  key text primary key,
+  released boolean not null default false,
+  note text
+);
+alter table public.feature_flags enable row level security; -- enkel via feature_list()
+insert into public.feature_flags (key, note) values
+  ('foodmenu', 'Food Truck: shotje, Red Bull, kapsalon, Rizz-poeder'),
+  ('sportsbook', 'Casino: inzetten op voetbal'),
+  ('secrets', 'Geheime trofeeën'),
+  ('sound', 'Muziek en geluidseffecten')
+on conflict (key) do nothing;
+
+create or replace function public._feature_on(p_key text, p_user uuid default auth.uid()) returns boolean
+language sql stable security definer set search_path = public as $$
+  select coalesce((select released from public.feature_flags where key = p_key), true)
+      or coalesce(public._is_admin_user(p_user), false);
+$$;
+revoke all on function public._feature_on(text, uuid) from public, anon, authenticated;
+
+-- Welke nieuwe dingen staan aan voor mij? {"sportsbook": true, ...}
+create or replace function public.feature_list() returns jsonb
+language sql stable security definer set search_path = public as $$
+  select coalesce(jsonb_object_agg(key, public._feature_on(key)), '{}'::jsonb) from public.feature_flags;
+$$;
+grant execute on function public.feature_list() to authenticated;
+
 create table if not exists public.food_log (
   id bigserial primary key,
   user_id uuid not null references auth.users(id) on delete cascade,
@@ -4184,7 +4211,7 @@ declare
 begin
   if me is null then raise exception 'Niet ingelogd.'; end if;
   price := case p_item when 'pintje' then 1 when 'shotje' then 2 when 'redbull' then 2 when 'kapsalon' then 4 when 'poeder' then 8 end;
-  if price is null then raise exception 'Dat staat niet op de kaart.'; end if;
+  if price is null or (p_item <> 'pintje' and not public._feature_on('foodmenu')) then raise exception 'Dat staat niet op de kaart.'; end if;
 
   select polycoins into v_coins from public.user_wallet where user_id = me for update;
   if coalesce(v_coins, 0) < price then raise exception 'Niet genoeg credits.'; end if;
@@ -4238,10 +4265,75 @@ grant execute on function public.buy_beer() to authenticated;
 notify pgrst, 'reload schema';
 
 -- =====================================================================
+-- INZET-UPDATE (zelfde inhoud als update-28-inzet.sql)
+-- =====================================================================
+
+create or replace function public._casino_take(p_bet int) returns void
+language plpgsql volatile security definer set search_path = public as $$
+declare v_coins int;
+begin
+  if auth.uid() is null then raise exception 'Niet ingelogd.'; end if;
+  if p_bet is null or p_bet < 1 or p_bet > 50 or (p_bet > 2 and p_bet % 5 <> 0) then
+    raise exception 'Inzet: 1, 2, of 5 tot 50 credits per 5.';
+  end if;
+  select polycoins into v_coins from public.user_wallet where user_id = auth.uid() for update;
+  if coalesce(v_coins, 0) < p_bet then raise exception 'Niet genoeg credits.'; end if;
+  update public.user_wallet set polycoins = polycoins - p_bet where user_id = auth.uid();
+end $$;
+revoke all on function public._casino_take(int) from public, anon, authenticated;
+
+-- Uitbetaling afronden: vanaf 5 credits naar beneden, bij 1 of 2 credits eerlijk (kans = het stukje na de komma)
+create or replace function public._casino_round(p_bet int, p_amount numeric) returns int
+language sql volatile as $$
+  select case when p_bet >= 5 then floor(p_amount)::int else floor(p_amount + random())::int end;
+$$;
+revoke all on function public._casino_round(int, numeric) from public, anon, authenticated;
+
+create or replace function public.casino_slots(p_bet int) returns jsonb
+language plpgsql volatile security definer set search_path = public as $$
+declare a text; b text; c text; n int; mult numeric := 0;
+begin
+  perform public._casino_take(p_bet);
+  a := public._casino_reel(); b := public._casino_reel(); c := public._casino_reel();
+  n := (a = 'C')::int + (b = 'C')::int + (c = 'C')::int;
+  if a = b and b = c then
+    mult := case a when 'R' then 60 when 'K' then 25 when 'D' then 15 when 'B' then 10 when 'L' then 6 else 5 end;
+  elsif n = 2 then mult := 2;
+  elsif n = 1 then mult := 0.4;
+  end if;
+  return public._casino_pay('slots', p_bet, public._casino_round(p_bet, p_bet * mult), jsonb_build_object('reels', jsonb_build_array(a, b, c), 'mult', mult));
+end $$;
+grant execute on function public.casino_slots(int) to authenticated;
+
+create or replace function public.casino_horses(p_bet int, p_horse int) returns jsonb
+language plpgsql volatile security definer set search_path = public as $$
+declare r int; acc int := 0; h jsonb; winner int; mult numeric := 0; others int[];
+begin
+  if p_horse not between 1 and 5 then raise exception 'Kies een paard van 1 tot 5.'; end if;
+  perform public._casino_take(p_bet);
+  r := floor(random() * 100)::int;
+  for h in select * from jsonb_array_elements(public.casino_horses_odds()) loop
+    acc := acc + (h->>'p')::int;
+    if winner is null and r < acc then winner := (h->>'n')::int; if winner = p_horse then mult := (h->>'x')::numeric; end if; end if;
+  end loop;
+  select array_agg(x order by random()) into others from generate_series(1, 5) x where x <> winner;
+  return public._casino_pay('horses', p_bet, public._casino_round(p_bet, p_bet * mult),
+    jsonb_build_object('winner', winner, 'order', to_jsonb(array[winner] || others), 'pick', p_horse, 'mult', mult));
+end $$;
+grant execute on function public.casino_horses(int, int) to authenticated;
+
+-- Blackjack: 3 tegen 2 (2,5× terug) bij 1 credit = 2 of 3, eerlijk afgerond
+create or replace function public._bj_payout(p_outcome text, p_bet int) returns int
+language sql volatile as $$
+  select case p_outcome when 'blackjack' then public._casino_round(p_bet, p_bet * 2.5) when 'win' then p_bet * 2 when 'push' then p_bet else 0 end;
+$$;
+
+notify pgrst, 'reload schema';
+
+-- =====================================================================
 -- VOETBAL-UPDATE (zelfde inhoud als update-26-voetbal.sql)
 -- =====================================================================
 
--- 1. Tabellen ----------------------------------------------------------------------------------------
 create table if not exists public.fb_matches (
   id bigserial primary key,
   ext_id bigint unique,                         -- id bij football-data.org (null = door de admin toegevoegd)
@@ -4255,6 +4347,15 @@ create table if not exists public.fb_matches (
   settled boolean not null default false,
   created_at timestamptz not null default now()
 );
+-- Quoteringen van de bookmakers (the-odds-api.com) of van de admin
+alter table public.fb_matches add column if not exists odds_1 numeric(6, 2);
+alter table public.fb_matches add column if not exists odds_x numeric(6, 2);
+alter table public.fb_matches add column if not exists odds_2 numeric(6, 2);
+alter table public.fb_matches add column if not exists odds_books int;          -- aantal bookmakers (0 = door de admin)
+alter table public.fb_matches add column if not exists odds_at timestamptz;
+alter table public.fb_matches add column if not exists odds_id text unique;     -- id bij the-odds-api.com
+alter table public.fb_matches add column if not exists home_alt text;           -- volledige ploegnaam (om te koppelen)
+alter table public.fb_matches add column if not exists away_alt text;
 create index if not exists fb_matches_kickoff_idx on public.fb_matches (kickoff);
 alter table public.fb_matches enable row level security;
 drop policy if exists "wedstrijden lezen" on public.fb_matches;
@@ -4289,30 +4390,53 @@ create table if not exists public.fb_config (
   last_sync timestamptz,
   last_msg text
 );
+alter table public.fb_config add column if not exists last_odds timestamptz;
+alter table public.fb_config add column if not exists last_scores timestamptz;
+alter table public.fb_config add column if not exists odds_msg text;
 alter table public.fb_config enable row level security; -- enkel de server
 insert into public.fb_config (id) values (1) on conflict do nothing;
 
--- 2. Quoteringen uit de stemmen ----------------------------------------------------------------------
--- Startpunt (zonder stemmen): thuis 44%, gelijk 27%, uit 29%, telt als 6 "neppe" stemmen.
--- Kans = (stemmen + 6 × startpunt) / (alle stemmen + 6). Quotering = 0,93 / kans (7% voor het casino),
--- afgerond op 0,05 en tussen 1,10 en 10.
+-- 2. Quoteringen --------------------------------------------------------------------------------------
+-- De quotering komt van de bookmakers (of de admin). De stemmen tonen enkel wat de groep denkt.
 create or replace function public._fb_odds(p_match bigint) returns jsonb
 language sql stable security definer set search_path = public as $$
-  with v as (
-    select count(*) filter (where pick = '1') as v1, count(*) filter (where pick = 'X') as vx,
-           count(*) filter (where pick = '2') as v2, count(*) as n
-    from public.fb_votes where match_id = p_match
-  ), p as (
-    select v.*, (v1 + 6 * .44) / (n + 6) as p1, (vx + 6 * .27) / (n + 6) as px, (v2 + 6 * .29) / (n + 6) as p2 from v
-  )
   select jsonb_build_object(
-    '1', round(least(10, greatest(1.10, round(.93 / p1 * 20) / 20)), 2),
-    'X', round(least(10, greatest(1.10, round(.93 / px * 20) / 20)), 2),
-    '2', round(least(10, greatest(1.10, round(.93 / p2 * 20) / 20)), 2),
-    'votes', jsonb_build_object('1', v1, 'X', vx, '2', v2))
-  from p;
+    '1', m.odds_1, 'X', m.odds_x, '2', m.odds_2, 'books', m.odds_books, 'at', m.odds_at,
+    'votes', (select jsonb_build_object('1', count(*) filter (where pick = '1'), 'X', count(*) filter (where pick = 'X'),
+                                        '2', count(*) filter (where pick = '2'))
+              from public.fb_votes where match_id = p_match))
+  from public.fb_matches m where m.id = p_match;
 $$;
 revoke all on function public._fb_odds(bigint) from public, anon, authenticated;
+
+-- Ploegnamen vergelijken: "Man United" = "Manchester United FC", "Barça" = "FC Barcelona", "België" = "Belgium", ...
+-- Een wedstrijd wordt enkel gekoppeld als BEIDE ploegen overeenkomen (en de competitie en het uur).
+create or replace function public._fb_words(p_name text) returns text[]
+language sql immutable as $$
+  select coalesce(array_agg(coalesce(nl.en, w)), '{}') from regexp_split_to_table(
+    regexp_replace(lower(translate(coalesce(p_name, ''), 'áàâäãåçéèêëíìîïñóòôöõøúùûüýÁÀÂÄÃÅÇÉÈÊËÍÌÎÏÑÓÒÔÖÕØÚÙÛÜÝ',
+                                                           'aaaaaaceeeeiiiinoooooouuuuyaaaaaaceeeeiiiinoooooouuuuy')),
+                   '[^a-z0-9]+', ' ', 'g'), ' ') w
+  -- Nederlandse landnamen (Nations League) -> Engels, zoals bij de bookmakers
+  left join (values ('belgie', 'belgium'), ('frankrijk', 'france'), ('duitsland', 'germany'), ('nederland', 'netherlands'),
+    ('engeland', 'england'), ('spanje', 'spain'), ('italie', 'italy'), ('zwitserland', 'switzerland'), ('oostenrijk', 'austria'),
+    ('denemarken', 'denmark'), ('zweden', 'sweden'), ('noorwegen', 'norway'), ('kroatie', 'croatia'), ('polen', 'poland'),
+    ('turkije', 'turkey'), ('schotland', 'scotland'), ('griekenland', 'greece'), ('hongarije', 'hungary'), ('tsjechie', 'czech'),
+    ('ierland', 'ireland'), ('oekraine', 'ukraine'), ('servie', 'serbia'), ('roemenie', 'romania'), ('slovenie', 'slovenia'),
+    ('slowakije', 'slovakia'), ('ijsland', 'iceland'), ('georgie', 'georgia'), ('noord', 'northern'), ('bosnie', 'bosnia'),
+    ('wit', 'belarus')) nl(nl, en) on nl.nl = w
+  where length(w) >= 3 and w not in ('the', 'and', 'club', 'united', 'city', 'real', 'sporting', 'athletic', 'atletico',
+    'olympique', 'stade', 'calcio', 'football', 'futbol', 'town', 'hotspur', 'albion', 'wanderers', 'rovers', 'county',
+    'royal', 'koninklijke', 'racing', 'saint', 'sint', 'afc', 'cfc', 'ssc', 'rsc', 'krc', 'kaa', 'kvc', 'rcd', 'vfl', 'vfb', 'tsg',
+    'bsc', 'deportivo');
+$$;
+
+create or replace function public._fb_same_team(p_a text, p_a2 text, p_b text) returns boolean
+language sql immutable as $$
+  select exists (
+    select 1 from unnest(public._fb_words(p_a) || public._fb_words(p_a2)) x, unnest(public._fb_words(p_b)) y
+    where x = y or x like y || '%' or y like x || '%' or (length(x) >= 5 and length(y) >= 5 and left(x, 4) = left(y, 4)));
+$$;
 
 -- 3. Uitbetalen ---------------------------------------------------------------------------------------
 create or replace function public._fb_settle(p_match bigint) returns void
@@ -4325,7 +4449,7 @@ begin
               when m.home_goals > m.away_goals then '1' when m.home_goals = m.away_goals then 'X' else '2' end;
   for bt in select * from public.fb_bets where match_id = p_match and status = 'open' for update loop
     if m.status = 'cancelled' then pay := bt.stake;
-    elsif bt.pick = res then pay := floor(bt.stake * bt.odds)::int;
+    elsif bt.pick = res then pay := public._casino_round(bt.stake, bt.stake * bt.odds);
     else pay := 0; end if;
     if pay > 0 then update public.user_wallet set polycoins = polycoins + pay where user_id = bt.user_id; end if;
     update public.fb_bets set payout = pay,
@@ -4343,9 +4467,11 @@ revoke all on function public._fb_settle(bigint) from public, anon, authenticate
 -- 4. Alles voor het scherm ----------------------------------------------------------------------------
 create or replace function public.fb_overview() returns jsonb
 language sql stable security definer set search_path = public as $$
-  select case when auth.uid() is null then null else jsonb_build_object(
+  select case when auth.uid() is null or not public._feature_on('sportsbook') then null else jsonb_build_object(
     'is_admin', public._is_admin_user(auth.uid()),
     'last_sync', (select last_sync from public.fb_config where id = 1),
+    'last_odds', (select last_odds from public.fb_config where id = 1),
+    'odds_msg', (select odds_msg from public.fb_config where id = 1),
     'matches', coalesce((
       select jsonb_agg(jsonb_build_object(
         'id', m.id, 'competition', m.competition, 'home', m.home, 'away', m.away, 'kickoff', m.kickoff,
@@ -4370,6 +4496,7 @@ language plpgsql volatile security definer set search_path = public as $$
 declare m public.fb_matches;
 begin
   if auth.uid() is null then raise exception 'Niet ingelogd.'; end if;
+  if not public._feature_on('sportsbook') then raise exception 'Het Sportsbook is nog niet open.'; end if;
   if p_pick not in ('1', 'X', '2') then raise exception 'Kies 1, X of 2.'; end if;
   select * into m from public.fb_matches where id = p_match;
   if not found then raise exception 'Wedstrijd niet gevonden.'; end if;
@@ -4388,6 +4515,7 @@ language plpgsql volatile security definer set search_path = public as $$
 declare m public.fb_matches; o numeric; v_coins int;
 begin
   if auth.uid() is null then raise exception 'Niet ingelogd.'; end if;
+  if not public._feature_on('sportsbook') then raise exception 'Het Sportsbook is nog niet open.'; end if;
   if p_pick not in ('1', 'X', '2') then raise exception 'Kies 1, X of 2.'; end if;
   select * into m from public.fb_matches where id = p_match for update;
   if not found then raise exception 'Wedstrijd niet gevonden.'; end if;
@@ -4395,11 +4523,12 @@ begin
   if exists (select 1 from public.fb_bets where match_id = p_match and user_id = auth.uid()) then
     raise exception 'Je hebt al ingezet op deze wedstrijd.';
   end if;
-  -- eerst je stem op je keuze zetten, dan de quotering vastleggen
+  o := case p_pick when '1' then m.odds_1 when 'X' then m.odds_x else m.odds_2 end;
+  if o is null then raise exception 'Er is nog geen quotering voor deze wedstrijd.'; end if;
+  perform public._casino_take(p_stake);
+  -- je stem volgt je inzet
   insert into public.fb_votes (match_id, user_id, pick) values (p_match, auth.uid(), p_pick)
   on conflict (match_id, user_id) do update set pick = excluded.pick;
-  o := (public._fb_odds(p_match)->>p_pick)::numeric;
-  perform public._casino_take(p_stake);
   insert into public.fb_bets (match_id, user_id, pick, stake, odds) values (p_match, auth.uid(), p_pick, p_stake, o);
   select polycoins into v_coins from public.user_wallet where user_id = auth.uid();
   return jsonb_build_object('pick', p_pick, 'stake', p_stake, 'odds', o, 'wallet', v_coins);
@@ -4442,6 +4571,20 @@ begin
 end $$;
 grant execute on function public.fb_admin_cancel(bigint) to authenticated;
 
+-- Quotering zelf invullen (bv. als de bookmakers een wedstrijd niet hebben)
+create or replace function public.fb_admin_odds(p_match bigint, p_1 numeric, p_x numeric, p_2 numeric) returns void
+language plpgsql volatile security definer set search_path = public as $$
+begin
+  if not public._is_admin_user(auth.uid()) then raise exception 'Enkel voor de admin.'; end if;
+  if least(p_1, p_x, p_2) < 1.01 or greatest(p_1, p_x, p_2) > 50 or p_1 is null or p_x is null or p_2 is null then
+    raise exception 'Quoteringen: tussen 1,01 en 50.';
+  end if;
+  update public.fb_matches set odds_1 = round(p_1, 2), odds_x = round(p_x, 2), odds_2 = round(p_2, 2), odds_books = 0, odds_at = now()
+  where id = p_match and status = 'scheduled' and kickoff > now();
+  if not found then raise exception 'Kan niet meer: de wedstrijd is al begonnen.'; end if;
+end $$;
+grant execute on function public.fb_admin_odds(bigint, numeric, numeric, numeric) to authenticated;
+
 -- 7. Binnenkomende wedstrijden van de functie rizz-voetbal (enkel de server) ---------------------------
 -- p_matches: [{ext_id, competition, home, away, kickoff, status, home_goals, away_goals}]
 create or replace function public.fb_sync(p_matches jsonb) returns jsonb
@@ -4449,11 +4592,11 @@ language plpgsql volatile security definer set search_path = public as $$
 declare x jsonb; v_id bigint; n int := 0; s int := 0;
 begin
   for x in select * from jsonb_array_elements(p_matches) loop
-    insert into public.fb_matches (ext_id, competition, home, away, kickoff, status, home_goals, away_goals)
-    values ((x->>'ext_id')::bigint, x->>'competition', x->>'home', x->>'away', (x->>'kickoff')::timestamptz,
+    insert into public.fb_matches (ext_id, competition, home, away, home_alt, away_alt, kickoff, status, home_goals, away_goals)
+    values ((x->>'ext_id')::bigint, x->>'competition', x->>'home', x->>'away', x->>'home_alt', x->>'away_alt', (x->>'kickoff')::timestamptz,
             x->>'status', (x->>'home_goals')::int, (x->>'away_goals')::int)
     on conflict (ext_id) do update set
-      home = excluded.home, away = excluded.away, kickoff = excluded.kickoff,
+      home = excluded.home, away = excluded.away, home_alt = excluded.home_alt, away_alt = excluded.away_alt, kickoff = excluded.kickoff,
       status = case when fb_matches.settled then fb_matches.status else excluded.status end,
       home_goals = case when fb_matches.settled then fb_matches.home_goals else excluded.home_goals end,
       away_goals = case when fb_matches.settled then fb_matches.away_goals else excluded.away_goals end
@@ -4466,6 +4609,84 @@ begin
 end $$;
 revoke all on function public.fb_sync(jsonb) from public, anon, authenticated;
 grant execute on function public.fb_sync(jsonb) to service_role;
+
+-- Quoteringen van the-odds-api.com (enkel de server)
+-- p_events: [{odds_id, competition, home, away, kickoff, o1, ox, o2, books}]
+-- Elke wedstrijd wordt gekoppeld op competitie + aftrap (max. 3 uur verschil) + beide ploegnamen.
+-- Pro League en Nations League: niet gevonden = nieuwe wedstrijd.
+create or replace function public.fb_sync_odds(p_events jsonb) returns jsonb
+language plpgsql volatile security definer set search_path = public as $$
+declare x jsonb; v_id bigint; k timestamptz; n int := 0; nnew int := 0; nmiss int := 0;
+begin
+  for x in select * from jsonb_array_elements(p_events) loop
+    k := (x->>'kickoff')::timestamptz;
+    if k <= now() then continue; end if;
+    select id into v_id from public.fb_matches where odds_id = x->>'odds_id';
+    if v_id is null then
+      select m.id into v_id from public.fb_matches m
+      where m.competition = x->>'competition' and m.status = 'scheduled' and not m.settled
+        and abs(extract(epoch from m.kickoff - k)) <= 3 * 3600
+        and (m.odds_id is null or m.odds_id = x->>'odds_id')
+        and public._fb_same_team(m.home, m.home_alt, x->>'home') and public._fb_same_team(m.away, m.away_alt, x->>'away')
+      order by abs(extract(epoch from m.kickoff - k)) limit 1;
+    end if;
+    if v_id is null and x->>'competition' in ('BPL', 'UNL') then
+      insert into public.fb_matches (competition, home, away, kickoff, odds_id)
+      values (x->>'competition', x->>'home', x->>'away', k, x->>'odds_id') returning id into v_id;
+      nnew := nnew + 1; n := n - 1;
+    end if;
+    if v_id is null then nmiss := nmiss + 1; continue; end if;
+    update public.fb_matches set odds_id = x->>'odds_id',
+      kickoff = case when ext_id is null then k else kickoff end,
+      odds_1 = least(50, greatest(1.01, round((x->>'o1')::numeric, 2))),
+      odds_x = least(50, greatest(1.01, round((x->>'ox')::numeric, 2))),
+      odds_2 = least(50, greatest(1.01, round((x->>'o2')::numeric, 2))),
+      odds_books = (x->>'books')::int, odds_at = now()
+    where id = v_id and status = 'scheduled' and kickoff > now() and coalesce(odds_books, 1) <> 0; -- de admin heeft voorrang
+    n := n + 1;
+    v_id := null;
+  end loop;
+  update public.fb_config set last_odds = now(), odds_msg = format('%s gekoppeld, %s nieuw, %s niet gevonden', n, nnew, nmiss) where id = 1;
+  return jsonb_build_object('linked', n, 'new', nnew, 'missing', nmiss);
+end $$;
+revoke all on function public.fb_sync_odds(jsonb) from public, anon, authenticated;
+grant execute on function public.fb_sync_odds(jsonb) to service_role;
+
+-- Uitslagen van the-odds-api.com, voor wedstrijden die niet uit football-data.org komen (Pro League, Nations League)
+-- p_scores: [{odds_id, home_goals, away_goals}]
+create or replace function public.fb_sync_scores(p_scores jsonb) returns jsonb
+language plpgsql volatile security definer set search_path = public as $$
+declare x jsonb; v_id bigint; n int := 0;
+begin
+  for x in select * from jsonb_array_elements(p_scores) loop
+    update public.fb_matches set status = 'finished', home_goals = (x->>'home_goals')::int, away_goals = (x->>'away_goals')::int
+    where odds_id = x->>'odds_id' and ext_id is null and not settled and kickoff <= now()
+    returning id into v_id;
+    if v_id is not null then perform public._fb_settle(v_id); n := n + 1; v_id := null; end if;
+  end loop;
+  update public.fb_config set last_scores = now() where id = 1;
+  return jsonb_build_object('finished', n);
+end $$;
+revoke all on function public.fb_sync_scores(jsonb) from public, anon, authenticated;
+grant execute on function public.fb_sync_scores(jsonb) to service_role;
+
+-- Wat moet de functie ophalen bij the-odds-api.com? (zuinig: 500 gratis vragen per maand)
+-- odds: elke 12 uur, voor de competities met wedstrijden in de komende 8 dagen (+ Pro League en Nations League)
+-- scores: elke 6 uur, enkel als er een Pro League- of Nations League-wedstrijd op een uitslag wacht
+create or replace function public.fb_odds_plan() returns jsonb
+language sql stable security definer set search_path = public as $$
+  select jsonb_build_object(
+    'odds', coalesce((select last_odds < now() - interval '12 hours' from public.fb_config where id = 1), true),
+    'comps', coalesce((select jsonb_agg(distinct competition) from public.fb_matches
+                       where status = 'scheduled' and kickoff between now() and now() + interval '8 days'), '[]'::jsonb),
+    'scores', coalesce((select last_scores is null or last_scores < now() - interval '6 hours' from public.fb_config where id = 1), true)
+              and exists (select 1 from public.fb_matches where ext_id is null and odds_id is not null and not settled
+                          and status = 'scheduled' and kickoff < now() - interval '150 minutes' and kickoff > now() - interval '3 days'),
+    'score_comps', coalesce((select jsonb_agg(distinct competition) from public.fb_matches where ext_id is null and odds_id is not null
+                       and not settled and status = 'scheduled' and kickoff < now() - interval '150 minutes'), '[]'::jsonb));
+$$;
+revoke all on function public.fb_odds_plan() from public, anon, authenticated;
+grant execute on function public.fb_odds_plan() to service_role;
 
 create or replace function public.fb_should_sync() returns boolean
 language sql stable security definer set search_path = public as $$
@@ -4510,7 +4731,7 @@ language sql stable security definer set search_path = public as $$
       count(*) filter (where status = 'done' and mode = 'pvp' and ((player_a = p_user and winner = 'A') or (player_b = p_user and winner = 'B'))) as pvp_wins,
       count(*) filter (where status = 'done' and mode = 'pve' and difficulty = 'hard' and player_a = p_user and winner = 'A') as hard_wins
     from public.tbattles where player_a = p_user or player_b = p_user)
-  select k, d, r from best, fullset, bat, lateral (values
+  select k, d and (k not like 'x\_%' or public._feature_on('secrets', p_user)), r from best, fullset, bat, lateral (values
     ('freshman',      (select count(*) from days) > 0,                          20),
     ('on_fire',       best.s >= 3,                                              50),
     ('iron_streak',   best.s >= 7,                                             150),
@@ -4590,7 +4811,7 @@ language sql stable security definer set search_path = public as $$
     else jsonb_build_object('key', 'secret', 'done', false, 'secret', true)
     end order by s.key is not null, t.done desc), '[]'::jsonb)
   from public._trophies(auth.uid()) t left join public._secret_trophies() s on s.key = t.key
-  where auth.uid() is not null;
+  where auth.uid() is not null and (s.key is null or public._feature_on('secrets'));
 $$;
 grant execute on function public.trophy_status() to authenticated;
 

@@ -2669,6 +2669,8 @@ body.fx-trip .shell{animation:trip-hue 6s linear infinite}
 .sb-poll i{display:block;min-width:0;text-align:center;font-style:normal;overflow:hidden}
 .sb-poll .pk1{background:#7FD3A0}.sb-poll .pkX{background:#C9C2B2}.sb-poll .pk2{background:#6FA8FF}
 .sb-poll em{padding:0 10px;color:var(--muted);font:500 11px/16px var(--body)}
+.sb-src{margin-top:-2px;color:var(--muted);font:500 11px/1.3 var(--body);text-align:center}
+.sb-oddsrow input{width:70px}
 .sb-odds{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}
 .sb-odd{display:grid;gap:1px;padding:7px 6px;border-radius:10px;border:1px solid rgba(242,204,114,.3);background:rgba(10,16,36,.6);color:var(--ink);cursor:pointer;text-align:center}
 .sb-odd small{font:600 11px var(--body);color:var(--ink-soft);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
@@ -2881,7 +2883,9 @@ const PARTICLE_COLORS = {
   cat: ['#8FB9A4', '#E9E1D3']
 };
 
-const state = { startTab: START_TAB, photos: new Map(), session: null, recovery: IS_RECOVERY_LINK, cards: [], owned: new Map(), playDates: new Set(), play: null, name: '', avatarUrl: null, friendCode: '', wallet: 0, incomingRequests: 0, incomingBattles: 0, incomingTrades: 0, welcomeAvailable: false, isAdmin: false, tab: 'campus', page: 0, room: null };
+const state = { startTab: START_TAB, photos: new Map(), session: null, recovery: IS_RECOVERY_LINK, cards: [], owned: new Map(), playDates: new Set(), play: null, name: '', avatarUrl: null, friendCode: '', wallet: 0, incomingRequests: 0, incomingBattles: 0, incomingTrades: 0, welcomeAvailable: false, isAdmin: false, features: {}, tab: 'campus', page: 0, room: null };
+// Nieuwe dingen in testfase: eerst enkel voor de admin (feature_flags in de database, zie update-25)
+const feat = k => !!state.features[k];
 
 // Werkt alle plekken bij die het saldo, de collectie en de streak tonen (scorebord, shop)
 // Admin heeft oneindig geld (supabase/update-17-admin-test.sql)
@@ -3012,15 +3016,15 @@ const Sound = (() => {
   addEventListener('click', e => { if (e.target.closest?.('button, .btn, [data-tab]')) Sound.play('click'); }, true);
   document.addEventListener('visibilitychange', () => { if (!ctx) return; if (document.hidden) ctx.suspend(); else ctx.resume().then(startMusic, () => {}); });
   return {
-    play(name) { if (!prefs.sfx || !FX[name] || prefersReduced?.() && name === 'click') return; if (!init() || ctx.state !== 'running') return; try { FX[name](); } catch (_) { /* */ } },
-    setPlace(p) { place = p; if (prefs.music) startMusic(); },
+    play(name) { if (!feat('sound') || !prefs.sfx || !FX[name] || prefersReduced?.() && name === 'click') return; if (!init() || ctx.state !== 'running') return; try { FX[name](); } catch (_) { /* */ } },
+    setPlace(p) { place = p; if (!feat('sound')) { stopMusic(); return; } if (prefs.music) startMusic(); },
     get prefs() { return { ...prefs }; },
     toggle(which) { prefs[which] = !prefs[which]; save(); if (which === 'music') { if (prefs.music) { init(); ctx.resume().then(startMusic, () => {}); } else stopMusic(); } return prefs[which]; },
   };
 })();
 
 // Knoppen voor muziek en geluid (campus en account)
-const soundButtons = () => { const p = Sound.prefs; return `<button type="button" class="snd-btn${p.music ? ' on' : ''}" data-snd="music" aria-pressed="${p.music}" title="Muziek ${p.music ? 'uit' : 'aan'}zetten">🎵</button><button type="button" class="snd-btn${p.sfx ? ' on' : ''}" data-snd="sfx" aria-pressed="${p.sfx}" title="Geluid ${p.sfx ? 'uit' : 'aan'}zetten">${p.sfx ? '🔊' : '🔇'}</button>`; };
+const soundButtons = () => { if (!feat('sound')) return ''; const p = Sound.prefs; return `<button type="button" class="snd-btn${p.music ? ' on' : ''}" data-snd="music" aria-pressed="${p.music}" title="Muziek ${p.music ? 'uit' : 'aan'}zetten">🎵</button><button type="button" class="snd-btn${p.sfx ? ' on' : ''}" data-snd="sfx" aria-pressed="${p.sfx}" title="Geluid ${p.sfx ? 'uit' : 'aan'}zetten">${p.sfx ? '🔊' : '🔇'}</button>`; };
 function bindSoundButtons(root) {
   root.querySelectorAll('[data-snd]').forEach(b => b.onclick = () => {
     const on = Sound.toggle(b.dataset.snd);
@@ -3232,7 +3236,7 @@ async function route() {
 
 async function loadData() {
   const uid = state.session.user.id;
-  const [cards, mine, prof, wallet, requests, admin, battlesIn, welcome, played, tradesIn] = await Promise.all([
+  const [cards, mine, prof, wallet, requests, admin, battlesIn, welcome, played, tradesIn, features] = await Promise.all([
     sb.from('cards').select('*').order('id'),
     sb.from('user_cards').select('card_id').eq('user_id', uid),
     sb.from('profiles').select('display_name, avatar_url, friend_code').eq('id', uid).maybeSingle(),
@@ -3242,7 +3246,8 @@ async function loadData() {
     sb.from('tbattles').select('player_a, player_b, status, moved:state->moved').eq('mode', 'pvp').in('status', ['pending', 'active']).or(`player_a.eq.${uid},player_b.eq.${uid}`),
     sb.from('welcome_packs').select('user_id').eq('user_id', uid).maybeSingle(),
     sb.from('exam_results').select('exam_date').eq('user_id', uid).eq('status', 'done'),
-    sb.from('trade_requests').select('id', { count: 'exact', head: true }).eq('status', 'pending').eq('turn', uid)
+    sb.from('trade_requests').select('id', { count: 'exact', head: true }).eq('status', 'pending').eq('turn', uid),
+    sb.rpc('feature_list')
   ]);
   for (const r of [cards, mine, prof, wallet]) if (r.error) throw new Error(r.error.message);
   // Niet fataal: enkel voor het bolletje op de Vrienden-tab
@@ -3250,6 +3255,8 @@ async function loadData() {
   state.incomingTrades = tradesIn.error ? 0 : (tradesIn.count || 0);
   // Admin ziet alle kaarten ontgrendeld (enkel weergave; echte bezittingen blijven ongewijzigd)
   state.isAdmin = !admin.error && !!admin.data;
+  state.features = (!features.error && features.data) || {};
+  if (!feat('sound')) Sound.setPlace(null);
   // Bolletje Battle: uitdagingen aan jou + gevechten tegen vrienden waarin jij aan zet bent
   state.incomingBattles = battlesIn.error ? 0 : (battlesIn.data || []).filter(b =>
     b.status === 'pending' ? b.player_b === uid : !(b.moved || {})[b.player_a === uid ? 'A' : 'B']).length;
@@ -3638,18 +3645,20 @@ const INFO = {
     <li>Groen bolletje = online, oranje = AFK (app open maar niets aan het doen), grijs = offline.</li></ul>`],
   bar: ['De foodtruck', `
     <p>Alles wordt betaald met credits. Na een paar glazen ben je <strong>sterrezat</strong>: een minuut lang ziet alles er wazig uit en zwiert het scherm.</p>
-    <ul><li><strong>Pintje</strong> (1) telt 1, <strong>shotje</strong> (2) telt dubbel. Hoeveel het duurt voor je zat bent, is elke keer anders.</li>
-    <li><strong>Red Bull</strong> (2): 30 seconden hyper. <strong>Kapsalon</strong> (4): je bent meteen nuchter en de teller begint opnieuw.</li>
-    <li><strong>Rizz-poeder</strong> (8): een minuut trippen, en soms vind je er een gratis kaart in. Max. 3 per dag.</li>
-    <li>Zolang je zat bent, krijg je geen alcohol. En wie weet zit er achter sommige combinaties iets geheims…</li></ul>`],
+    <ul><li><strong>Pintje</strong> (1 credit). Hoeveel het duurt voor je zat bent, is elke keer anders.</li>
+    <li data-feat="foodmenu"><strong>Shotje</strong> (2) telt dubbel.</li>
+    <li data-feat="foodmenu"><strong>Red Bull</strong> (2): 30 seconden hyper. <strong>Kapsalon</strong> (4): je bent meteen nuchter en de teller begint opnieuw.</li>
+    <li data-feat="foodmenu"><strong>Rizz-poeder</strong> (8): een minuut trippen, en soms vind je er een gratis kaart in. Max. 3 per dag.</li>
+    <li data-feat="foodmenu">Zolang je zat bent, krijg je geen alcohol. En wie weet zit er achter sommige combinaties iets geheims…</li></ul>`],
   casino: ['Het casino', `
-    <p>Zet je credits in, telkens per 5 (minstens 5, hoogstens 50 per spel). Alle uitkomsten worden op de server getrokken.</p>
+    <p>Zet 1, 2, 5, 10, … tot 50 credits in per spel. Alle uitkomsten worden op de server getrokken.</p>
     <ul><li><strong>Blackjack</strong>: kom dichter bij 21 dan de dealer. Winst = 2× terug, blackjack = 2,5×, gelijk = inzet terug. Twee kaarten met dezelfde waarde? Dan kan je <strong>splitsen</strong> in twee handen (nog eens dezelfde inzet).</li>
     <li><strong>Roulette</strong>: rood/zwart, even/oneven, 1–18 of 19–36 = 2× terug. Eén getal = 36× terug. Op 0 wint het huis.</li>
     <li><strong>Slotmachine</strong>: drie gelijke symbolen, of kersen. Drie keer RIZZ = 60×.</li>
     <li><strong>Paardenrace</strong>: kies een van de 5 paarden. Hoe kleiner de kans, hoe hoger de quotering.</li>
     <li><strong>Geen limiet</strong>: je kan al je credits inzetten, en dus ook alles verliezen. Bovenaan zie je hoeveel je vandaag gewonnen of verloren hebt.</li>
-    <li><strong>Sportsbook</strong>: zet in op echte voetbalwedstrijden (1 = thuis wint, X = gelijk, 2 = uit wint). Iedereen kan gratis stemmen; hoe meer stemmen op een uitslag, hoe lager de quotering. Je quotering ligt vast op het moment dat je inzet. Na de wedstrijd wordt automatisch uitbetaald.</li></ul>
+    <li data-feat="sportsbook"><strong>Sportsbook</strong>: zet in op echte voetbalwedstrijden (1 = thuis wint, X = gelijk, 2 = uit wint). De quoteringen zijn het gemiddelde van echte bookmakers wereldwijd. Je quotering ligt vast op het moment dat je inzet. Na de wedstrijd wordt automatisch uitbetaald.</li>
+    <li>Bij 1 of 2 credits wordt een stukje credit eerlijk afgerond: 2,7× op 1 credit geeft 7 op 10 keer 3 credits en anders 2. Gemiddeld krijg je dus precies de quotering.</li></ul>
     <p>Het huis wint op termijn een klein beetje, zoals in een echt casino. Speel dus voor de fun.</p>`],
   ideas: ['Ideeënbus', `
     <p>Heb je een idee om de site beter of leuker te maken? Dien het hier in — iedereen kan alle ideeën zien.</p>
@@ -3691,6 +3700,7 @@ function openInfo(key) {
   const dlg = $('#infoModal');
   const [title, html] = INFO[key];
   dlg.innerHTML = `<div class="infobox"><h2>${title}</h2>${html}<button type="button" class="link" id="infoClose">Sluiten</button></div>`;
+  dlg.querySelectorAll('[data-feat]').forEach(el => { if (!feat(el.dataset.feat)) el.remove(); });
   $('#infoClose').onclick = () => dlg.close();
   dlg.showModal();
 }
@@ -3876,8 +3886,8 @@ const TUTORIAL = [
   { pin: 'house', title: 'Frat House', text: 'Elke gast heeft een kamer. Aan de muur hangen zijn 9 kaarten: wat jij al hebt, zie je; de rest blijft donker. Een verlicht raam betekent dat je al minstens één kaart van hem hebt.' },
   { pin: 'friends', title: 'The Quad', text: 'Voeg je vrienden toe met hun code of met de <b>+</b>. Van je vrienden zie je hun collectie, cijfers, F\'s en trofeeën. Enkel vrienden kan je uitdagen of mee ruilen.' },
   { pin: 'battle', title: 'The Arena', text: 'Kies 3 kaarten en vecht tegen de computer of een vriend. Elke ronde kies je geheim <b>Flex</b>, <b>Roast</b> of <b>Charm</b>: Flex wint van Charm, Charm van Roast, Roast van Flex. Winnen levert credits op.' },
-  { pin: 'bar', title: 'Food Truck', text: 'Pintjes, shotjes, Red Bull, een kapsalon of het mysterieuze Rizz-poeder. Hoeveel je aankan voor je sterrezat bent, is elke keer een verrassing.' },
-  { pin: 'casino', title: 'Casino', text: 'Waag je kans met je credits: blackjack, roulette, de slotmachine of de paardenrace. Inzet per 5, en er is geen limiet: je kan alles winnen, of alles verliezen.' },
+  { pin: 'bar', title: 'Food Truck', text: 'Drinken en eten voor een paar credits. Hoeveel pintjes je aankan voor je sterrezat bent, is elke keer een verrassing.' },
+  { pin: 'casino', title: 'Casino', text: 'Waag je kans met je credits: blackjack, roulette, de slotmachine of de paardenrace. Inzet vanaf 1 credit, en er is geen limiet: je kan alles winnen, of alles verliezen.' },
   { pin: 'trade', title: 'Black Market', text: 'Ruil kaarten met je vrienden. Je kiest zelf wat je biedt en vraagt, bijvoorbeeld 2 commons voor 1 epic.' },
   { pin: 'shop', title: 'The Vault', text: 'Geef je credits uit aan envelopes met nieuwe kaarten, of verkoop je dubbels voor credits. Je credits staan altijd rechtsboven.' },
   { pin: 'stats', title: 'The Library', text: 'Je stats: je streak, al je cijfers en je trofeeën.' },
@@ -4050,7 +4060,7 @@ function openAccountModal() {
         </div>
       </form>
       <div class="acc-push" id="accPush"></div>
-      <div class="acc-sound"><h4>Muziek en geluid</h4><div class="acc-sound-row">${soundButtons()}<small>Muziek per plek (standaard uit) en geluidseffecten. Onthouden op dit toestel.</small></div></div>
+      ${feat('sound') ? `<div class="acc-sound"><h4>Muziek en geluid</h4><div class="acc-sound-row">${soundButtons()}<small>Muziek per plek (standaard uit) en geluidseffecten. Onthouden op dit toestel.</small></div></div>` : ''}
       <div class="acc-switch">
         <h4>Accounts op dit toestel</h4>
         ${Object.entries(savedAccounts()).filter(([id]) => id !== state.session.user.id).map(([id, a]) => `
@@ -4167,10 +4177,11 @@ const CAMPUS_PLACES = [
 // Bij elke nieuwe update: bovenaan een dag toevoegen (of de bestaande dag van vandaag aanvullen).
 const UPDATES = [
   { date: '2026-10-16', items: [
-    ['⚽', 'Sportsbook', 'Nieuw in het casino: zet in op echte voetbalwedstrijden (Champions League, Premier League, Serie A, La Liga, Ligue 1, Pro League en Nations League). Iedereen kan gratis voorspellen, en die stemmen bepalen de quoteringen.'],
-    ['🍟', 'Food Truck: volledige kaart', 'Naast pintjes nu ook shotjes, Red Bull, een kapsalon (meteen nuchter) en het mysterieuze Rizz-poeder, waarin je soms een gratis kaart vindt.'],
-    ['🤫', 'Geheime trofeeën', '14 trofeeën die je pas ziet als je ze haalt. Kijk in Stats hoeveel er nog te ontdekken zijn.'],
-    ['🎵', 'Muziek en geluid', 'Elke plek heeft zijn eigen muziek, en bijna alles maakt geluid. Zet muziek en geluid aan of uit met de knoppen op de campus of in je account.'],
+    ['⚽', 'Sportsbook', 'Nieuw in het casino: zet in op echte voetbalwedstrijden (Champions League, Premier League, Serie A, La Liga, Ligue 1, Pro League en Nations League), met de quoteringen van echte bookmakers.', 'sportsbook'],
+    ['🍟', 'Food Truck: volledige kaart', 'Naast pintjes nu ook shotjes, Red Bull, een kapsalon (meteen nuchter) en het mysterieuze Rizz-poeder, waarin je soms een gratis kaart vindt.', 'foodmenu'],
+    ['🤫', 'Geheime trofeeën', '14 trofeeën die je pas ziet als je ze haalt. Kijk in Stats hoeveel er nog te ontdekken zijn.', 'secrets'],
+    ['🎵', 'Muziek en geluid', 'Elke plek heeft zijn eigen muziek, en bijna alles maakt geluid. Zet muziek en geluid aan of uit met de knoppen op de campus of in je account.', 'sound'],
+    ['🪙', 'Inzetten vanaf 1 credit', 'In het casino kan je nu ook 1 of 2 credits inzetten. Handig als je bijna blut bent.'],
   ] },
   { date: '2026-10-14', items: [
     ['🏳️', 'Opgeven in The Arena', 'Geeft je vriend op tijdens een gevecht? Dan krijg jij gewoon je 25 credits voor de overwinning.'],
@@ -4205,7 +4216,9 @@ const UPDATES = [
   ] },
 ];
 const UPD_KEY = 'rizz-updates-seen';
-const updSeen = () => { try { return localStorage.getItem(UPD_KEY) || ''; } catch (_) { return UPDATES[0].date; } };
+// Enkel wat voor jou al aan staat (items met een 4de veld zitten nog in testfase, zie feat)
+const updList = () => UPDATES.map(u => ({ ...u, items: u.items.filter(i => !i[3] || feat(i[3])) })).filter(u => u.items.length);
+const updSeen = () => { try { return localStorage.getItem(UPD_KEY) || ''; } catch (_) { return updList()[0].date; } };
 const updDay = d => new Date(d + 'T12:00:00').toLocaleDateString('nl-BE', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
 function openUpdates() {
   const seen = updSeen();
@@ -4214,7 +4227,7 @@ function openUpdates() {
   const rel = d => d === today ? 'Vandaag' : '';
   document.body.insertAdjacentHTML('beforeend', `<dialog class="ar-pop upd-pop" id="updPop" aria-label="Updates"><div class="ar-pop-box">
     <div class="ar-pop-head"><h3>Updates <small>wat is er nieuw op Rizz Academy</small></h3><button type="button" class="ar-x" data-close aria-label="Sluiten">✕</button></div>
-    ${UPDATES.map(u => `<section class="upd-day${u.date > seen ? ' fresh' : ''}">
+    ${updList().map(u => `<section class="upd-day${u.date > seen ? ' fresh' : ''}">
       <h4><span class="upd-date">${updDay(u.date)}</span>${rel(u.date) ? `<span class="upd-rel">${rel(u.date)}</span>` : ''}${u.date > seen ? '<span class="upd-new">Nieuw</span>' : ''}</h4>
       <ul>${u.items.map(([i, t, x]) => `<li><span class="upd-ic" aria-hidden="true">${i}</span><span><b>${esc(t)}</b>${esc(x)}</span></li>`).join('')}</ul>
     </section>`).join('')}
@@ -4224,7 +4237,7 @@ function openUpdates() {
   pop.addEventListener('click', e => { if (e.target === pop) pop.close(); });
   pop.addEventListener('close', () => pop.remove());
   pop.showModal();
-  try { localStorage.setItem(UPD_KEY, UPDATES[0].date); } catch (_) { /* */ }
+  try { localStorage.setItem(UPD_KEY, updList()[0].date); } catch (_) { /* */ }
   document.querySelectorAll('.upd-dot').forEach(d => d.remove());
 }
 
@@ -4245,7 +4258,7 @@ async function renderCampus(view) {
         </div>
       </div>
       <div class="campus-tools">
-        <button type="button" class="campus-news" id="openUpdates"><span aria-hidden="true">📰</span> Updates${updSeen() < UPDATES[0].date ? '<i class="upd-dot" aria-label="nieuw"></i>' : ''}</button>
+        <button type="button" class="campus-news" id="openUpdates"><span aria-hidden="true">📰</span> Updates${updSeen() < updList()[0].date ? '<i class="upd-dot" aria-label="nieuw"></i>' : ''}</button>
         ${soundButtons()}
       </div>
       <div class="campus-hint">${phase === 'night' ? 'Lights are on in the Frat House.' : phase === 'dusk' ? 'Golden hour on the quad.' : 'Classes are in session.'} <span>Swipe en tik op een gebouw.</span></div>
@@ -4281,7 +4294,7 @@ async function renderCampus(view) {
   setStatus('trade', state.incomingTrades ? `${state.incomingTrades} offer${state.incomingTrades > 1 ? 's' : ''} waiting` : 'Doors open', state.incomingTrades || '');
   setStatus('ideas', 'Speak up');
   setStatus('casino', 'Place your bets');
-  setStatus('bar', 'Drinks & kapsalon');
+  setStatus('bar', feat('foodmenu') ? 'Drinks & kapsalon' : 'Cold beer');
   setStatus('house', `${collectionText()} collected`);
   if (!askPhotoOnCampus(view)) askPushOnCampus(view);
   // Trofeeën waarvan je de beloning nog kan ophalen
@@ -6082,7 +6095,7 @@ function renderBar(view) {
     ${pageHead('Food Truck', 'bar')}
     <div class="bar-menu">
       <div class="bar-board-head"><b>Op de kaart</b><small>Vers van de truck, midden op het plein</small></div>
-      <div class="bar-items">${FOOD.map(f => `<button type="button" class="bar-item bi-${f.id}" data-food="${f.id}">
+      <div class="bar-items">${FOOD.filter(f => f.id === 'pintje' || feat('foodmenu')).map(f => `<button type="button" class="bar-item bi-${f.id}" data-food="${f.id}">
         <span class="bi-ico" aria-hidden="true">${f.icon}</span>
         <span class="bi-txt"><b>${f.name}</b><small>${f.desc}</small></span>
         <span class="bi-price">${f.price} 🪙</span></button>`).join('')}</div>
@@ -6745,7 +6758,8 @@ async function renderBattle(view) {
 
 // ---------- Casino ----------
 // Alle uitkomsten komen van de server (supabase/update-13-casino.sql): de website toont enkel het resultaat.
-// Inzet per 5 (5 tot 50), geen daglimiet: je kan al je credits vergokken.
+// Inzet 1, 2, 5, 10, ... 50 (CZ_BETS), geen daglimiet: je kan al je credits vergokken.
+const CZ_BETS = [1, 2, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50];
 const CZ_SYM = { C: '🍒', L: '🍋', B: '🔔', D: '💎', K: '👑', R: '<b class="cz-rizz">RIZZ</b>' };
 const CZ_HORSES = [
   { n: 1, name: 'Thunder Rizz', x: 2.7, col: '#E0284A' }, { n: 2, name: 'Lucky Legend', x: 3.6, col: '#F2CC72' },
@@ -6780,17 +6794,17 @@ async function renderCasino(view) {
 
   view.innerHTML = `<section class="col cz-page" style="max-width:none">
     ${pageHead('Casino', 'casino')}
-    <div class="cz-limit"><span>Vandaag <b id="czLost" class="${lost > 0 ? 'cz-lose' : lost < 0 ? 'cz-win' : ''}">${lost > 0 ? '−' + lost : lost < 0 ? '+' + -lost : '±0'}</b> credits</span><small>Inzet per 5, max. 50 per spel. Geen limiet: speel met verstand.</small></div>
+    <div class="cz-limit"><span>Vandaag <b id="czLost" class="${lost > 0 ? 'cz-lose' : lost < 0 ? 'cz-win' : ''}">${lost > 0 ? '−' + lost : lost < 0 ? '+' + -lost : '±0'}</b> credits</span><small>Inzet van 1 tot 50 per spel. Geen limiet: speel met verstand.</small></div>
     ${st.bj ? `<button type="button" class="ar-go cz-go" data-open="bj"><span class="ar-go-k">Je hand ligt nog open</span><b>Ga verder</b><small>Blackjack · inzet ${st.bj.bet}</small></button>` : ''}
     <div class="ar-hub cz-hub">
       ${tile('bj', '<span class="cz-ic">🂡</span>', 'Blackjack', 'Kom dichter bij 21 dan de dealer')}
       ${tile('roul', ICO('<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="3.5"/><path d="M12 3v5.5M12 15.5V21M3 12h5.5M15.5 12H21"/>'), 'Roulette', 'Rood of zwart, of alles op één getal')}
       ${tile('slots', '<span class="cz-ic">🍒</span>', 'Slotmachine', 'Drie RIZZ op een rij = 60×')}
       ${tile('horses', '<span class="cz-ic">🏇</span>', 'Paardenrace', 'Kies je paard, tot 10× je inzet')}
-      ${tile('sport', '<span class="cz-ic">⚽</span>', 'Sportsbook', 'Zet in op echte voetbalwedstrijden')}
+      ${feat('sportsbook') ? tile('sport', '<span class="cz-ic">⚽</span>', 'Sportsbook', 'Zet in op echte voetbalwedstrijden') : ''}
     </div>
 
-    ${pop('sport', 'Sportsbook', `<div class="sb" id="sbBox"><div class="sb-top"><div class="sb-tabs" id="sbTabs"></div>${betHtml}</div><div id="sbList"></div></div>`)}
+    ${!feat('sportsbook') ? '' : pop('sport', 'Sportsbook', `<div class="sb" id="sbBox"><div class="sb-top"><div class="sb-tabs" id="sbTabs"></div>${betHtml}</div><div id="sbList"></div></div>`)}
     ${pop('bj', 'Blackjack', `<div class="cz-bj cz-felt"><div class="bj-deck" id="czDeck" aria-hidden="true"><span></span><span></span><span></span></div>
       <div class="felt-arc">BLACKJACK PAYS 3 TO 2 · DEALER STANDS ON 17</div>
       <div class="cz-bj-row"><span class="cz-lbl">Dealer <b id="bjDt"></b></span><div class="bj-cards" id="bjD"></div></div>
@@ -6830,7 +6844,7 @@ async function renderCasino(view) {
 
   // Inzet (gedeeld door alle spelletjes)
   const syncBet = () => view.querySelectorAll('[data-betv]').forEach(b => { b.textContent = czState.bet; });
-  view.querySelectorAll('[data-bet]').forEach(b => b.onclick = () => { czState.bet = clamp(czState.bet + (b.dataset.bet === '+' ? 5 : -5), 5, 50); syncBet(); if (view.querySelector('.ar-pop[data-pop="sport"][open]')) drawSport(); });
+  view.querySelectorAll('[data-bet]').forEach(b => b.onclick = () => { const i = CZ_BETS.indexOf(czState.bet); czState.bet = CZ_BETS[clamp((i < 0 ? 3 : i) + (b.dataset.bet === '+' ? 1 : -1), 0, CZ_BETS.length - 1)]; syncBet(); if (view.querySelector('.ar-pop[data-pop="sport"][open]')) drawSport(); });
   const msgOf = id => view.querySelector(`.ar-pop[data-pop="${id}"] .cz-msg`);
   const say = (id, text, cls = '') => { const m = msgOf(id); m.className = `msg cz-msg ${cls}`; m.innerHTML = text; };
   const after = r => {
@@ -6979,29 +6993,33 @@ async function renderCasino(view) {
     if (error) { box.querySelector('#sbList').innerHTML = `<p class="msg err">Het Sportsbook is nog niet open: ${esc(error.message)}</p>`; return; }
     sbState.data = data; drawSport();
   }
+  // Wat je terugkrijgt: vanaf 5 credits naar beneden afgerond, bij 1 of 2 gemiddeld (eerlijk afgerond op de server)
+  const winTxt = (stake, odd) => stake >= 5 ? String(Math.floor(stake * odd)) : '±' + (stake * odd).toFixed(1).replace('.', ',');
   function sbMatchHtml(m) {
-    const o = m.odds || {}, v = o.votes || {}, n = (v['1'] || 0) + (v.X || 0) + (v['2'] || 0);
-    const open = m.status === 'scheduled' && !m.started;
+    const o = m.odds || {}, v = o.votes || {}, n = (v['1'] || 0) + (v.X || 0) + (v['2'] || 0), has = o['1'] != null;
+    const open = m.status === 'scheduled' && !m.started && has;
     const sel = sbState.pick[m.id] || m.my_bet?.pick || m.my_vote || null;
     const lbl = { 1: m.home, X: 'Gelijk', 2: m.away };
     const odd = k => `<button type="button" class="sb-odd${sel === k ? ' on' : ''}${m.my_vote === k ? ' voted' : ''}" data-pick="${k}" ${open && !m.my_bet ? '' : 'disabled'}>
-      <small>${k} · ${esc(lbl[k])}</small><b>${Number(o[k] || 0).toFixed(2)}</b></button>`;
+      <small>${k} · ${esc(lbl[k])}</small><b>${has ? Number(o[k]).toFixed(2) : '–'}</b></button>`;
     const score = m.status === 'finished' ? `<span class="sb-score">${m.home_goals} – ${m.away_goals}</span>` : m.status === 'cancelled' ? '<span class="sb-score off">Afgelast</span>' : '';
     let foot = '';
     if (m.my_bet) {
-      const b = m.my_bet, win = Math.floor(b.stake * b.odds);
+      const b = m.my_bet, win = winTxt(b.stake, b.odds);
       foot = `<div class="sb-mybet st-${b.status}">${b.status === 'open' ? `Ingezet: <b>${b.stake}</b> op <b>${esc(lbl[b.pick])}</b> @ ${Number(b.odds).toFixed(2)} → wint <b>${win}</b>`
         : b.status === 'won' ? `Gewonnen! <b class="cz-win">+${b.payout - b.stake}</b> (${b.stake} op ${esc(lbl[b.pick])} @ ${Number(b.odds).toFixed(2)})`
         : b.status === 'void' ? `Afgelast: je ${b.stake} credits zijn terug` : `Verloren: <b class="cz-lose">−${b.stake}</b> (${esc(lbl[b.pick])} @ ${Number(b.odds).toFixed(2)})`}</div>`;
     } else if (open) {
       foot = `<div class="sb-act"><button type="button" class="btn small ghost" data-sbvote ${sel ? '' : 'disabled'}>${m.my_vote && m.my_vote === sel ? 'Je stemde dit' : 'Gratis stemmen'}</button>
-        <button type="button" class="btn small" data-sbbet ${sel ? '' : 'disabled'}>Zet ${czState.bet} in${sel ? ` · wint ${Math.floor(czState.bet * (o[sel] || 0))}` : ''}</button></div>`;
-    } else if (m.status === 'scheduled') foot = '<div class="sb-mybet">Bezig · inzetten gesloten</div>';
+        <button type="button" class="btn small" data-sbbet ${sel ? '' : 'disabled'}>Zet ${czState.bet} in${sel ? ` · wint ${winTxt(czState.bet, o[sel] || 0)}` : ''}</button></div>`;
+    } else if (m.status === 'scheduled' && !m.started) foot = '<div class="sb-mybet">Nog geen quotering · even geduld</div>';
+    else if (m.status === 'scheduled') foot = '<div class="sb-mybet">Bezig · inzetten gesloten</div>';
     return `<div class="sb-m" data-m="${m.id}">
       <div class="sb-meta"><span>${esc(SB_COMP[m.competition] || m.competition)}</span><span>${kickTime(m.kickoff)}</span></div>
       <div class="sb-teams"><b>${esc(m.home)}</b>${score || '<i>vs</i>'}<b>${esc(m.away)}</b></div>
-      <div class="sb-poll" title="Gratis voorspellingen van iedereen">${n ? ['1', 'X', '2'].map(k => `<i class="pk${k}" style="flex:${v[k] || 0}">${v[k] ? pct(v[k], n) + '%' : ''}</i>`).join('') : '<em>Nog geen stemmen: de quoteringen volgen de voorspellingen</em>'}</div>
-      <div class="sb-odds">${odd('1')}${odd('X')}${odd('2')}</div>${foot}</div>`;
+      <div class="sb-poll" title="Gratis voorspellingen van de groep">${n ? ['1', 'X', '2'].map(k => `<i class="pk${k}" style="flex:${v[k] || 0}">${v[k] ? pct(v[k], n) + '%' : ''}</i>`).join('') : '<em>Nog geen voorspellingen van de groep</em>'}</div>
+      <div class="sb-odds">${odd('1')}${odd('X')}${odd('2')}</div>
+      ${m.status === 'scheduled' && !m.my_bet ? `<div class="sb-src">${!has ? 'De bookmakers hebben nog geen quotering' : o.books ? `Quotering: gemiddelde van ${o.books} bookmakers` : 'Quotering van de admin'}</div>` : ''}${foot}</div>`;
   }
   function drawSport() {
     const box = sbBox(); if (!box || !sbState.data) return;
@@ -7025,17 +7043,22 @@ async function renderCasino(view) {
       html = mine.length ? mine.map(sbMatchHtml).join('') : '<p class="hint">Je hebt nog niet ingezet. Kies een wedstrijd en tik op 1, X of 2.</p>';
     } else {
       const todo = all.filter(m => m.status === 'scheduled' && m.started && !m.settled);
+      const noOdds = all.filter(m => m.status === 'scheduled' && !m.started && !m.odds?.books);
       const local = new Date(Date.now() + 864e5); local.setMinutes(0, 0, 0);
       const dflt = new Date(local.getTime() - local.getTimezoneOffset() * 6e4).toISOString().slice(0, 16);
       html = `<div class="sb-admin">
-        <h4>Wedstrijd toevoegen</h4><p class="hint">Voor de Pro League en de Nations League (die zitten niet in de gratis API).</p>
+        <h4>Wedstrijd toevoegen</h4><p class="hint">Pro League en Nations League komen normaal vanzelf mee met de quoteringen. Ontbreekt er een? Voeg ze hier toe.</p>
         <div class="sb-form"><select id="sbComp">${Object.entries(SB_COMP).map(([k, l]) => `<option value="${k}"${k === 'BPL' ? ' selected' : ''}>${l}</option>`).join('')}</select>
           <input id="sbHome" placeholder="Thuisploeg" maxlength="40"><input id="sbAway" placeholder="Uitploeg" maxlength="40">
           <input id="sbKick" type="datetime-local" value="${dflt}"><button type="button" class="btn small" id="sbAdd">Toevoegen</button></div>
         <h4>Uitslag invullen</h4>${todo.length ? todo.map(m => `<div class="sb-res" data-m="${m.id}"><span>${esc(SB_COMP[m.competition] || m.competition)} · ${esc(m.home)} – ${esc(m.away)}${m.manual ? '' : ' <small>(komt normaal vanzelf)</small>'}</span>
           <input type="number" min="0" max="20" class="sb-g1" aria-label="Goals ${esc(m.home)}"><b>–</b><input type="number" min="0" max="20" class="sb-g2" aria-label="Goals ${esc(m.away)}">
           <button type="button" class="btn small" data-sbres>Opslaan</button><button type="button" class="link danger" data-sbcancel>Afgelast</button></div>`).join('') : '<p class="hint">Geen begonnen wedstrijden zonder uitslag.</p>'}
-        <p class="hint">Laatste automatische update: ${sbState.data.last_sync ? new Date(sbState.data.last_sync).toLocaleString('nl-BE', { timeZone: 'Europe/Brussels' }) : 'nog nooit (sleutel ingesteld?)'}</p></div>`;
+        <h4>Quotering invullen</h4>${noOdds.length ? noOdds.map(m => `<div class="sb-res sb-oddsrow" data-m="${m.id}"><span>${esc(SB_COMP[m.competition] || m.competition)} · ${esc(m.home)} – ${esc(m.away)} <small>${kickDay(m.kickoff)} ${kickTime(m.kickoff)}${m.odds?.['1'] != null ? ' · nu ' + ['1', 'X', '2'].map(k => Number(m.odds[k]).toFixed(2)).join(' / ') : ''}</small></span>
+          ${['1', 'X', '2'].map(k => `<input type="number" min="1.01" max="50" step="0.01" class="sb-o" data-k="${k}" placeholder="${k}" aria-label="Quotering ${k}" value="${m.odds?.[k] ?? ''}">`).join('')}
+          <button type="button" class="btn small" data-sbodds>Opslaan</button></div>`).join('') : '<p class="hint">Alle komende wedstrijden hebben een quotering van de bookmakers.</p>'}
+        <p class="hint">Laatste automatische update: ${sbState.data.last_sync ? new Date(sbState.data.last_sync).toLocaleString('nl-BE', { timeZone: 'Europe/Brussels' }) : 'nog nooit (sleutel ingesteld?)'}<br>
+          Laatste quoteringen: ${sbState.data.last_odds ? new Date(sbState.data.last_odds).toLocaleString('nl-BE', { timeZone: 'Europe/Brussels' }) + (sbState.data.odds_msg ? ` (${esc(sbState.data.odds_msg)})` : '') : 'nog nooit (ODDS_API_KEY ingesteld?)'}</p></div>`;
     }
     box.querySelector('#sbList').innerHTML = html;
     box.querySelectorAll('[data-sbtab]').forEach(b => b.onclick = () => { sbState.tab = b.dataset.sbtab; drawSport(); });
@@ -7048,7 +7071,7 @@ async function renderCasino(view) {
         vb.disabled = true; const pick = sbState.pick[id] || m.my_vote;
         const { data, error } = await sb.rpc('fb_vote', { p_match: id, p_pick: pick });
         if (error) { say('sport', esc(error.message), 'err'); vb.disabled = false; return; }
-        m.odds = data; m.my_vote = pick; say('sport', 'Je stem is geteld. De quoteringen zijn bijgewerkt.', 'ok'); drawSport();
+        m.odds = data; m.my_vote = pick; say('sport', 'Je voorspelling is geteld.', 'ok'); drawSport();
       };
       const bb = card.querySelector('[data-sbbet]');
       if (bb) bb.onclick = async () => {
@@ -7056,7 +7079,7 @@ async function renderCasino(view) {
         const { data, error } = await sb.rpc('fb_bet', { p_match: id, p_pick: pick, p_stake: czState.bet });
         if (error) { say('sport', esc(error.message), 'err'); bb.disabled = false; return; }
         state.wallet = data.wallet; syncCoinUI();
-        say('sport', `Ingezet: ${data.stake} credits @ ${Number(data.odds).toFixed(2)}. Succes!`, 'ok');
+        say('sport', `Ingezet: ${data.stake} credit${data.stake === 1 ? '' : 's'} @ ${Number(data.odds).toFixed(2)}. Succes!`, 'ok');
         await loadSport();
       };
     });
@@ -7068,7 +7091,15 @@ async function renderCasino(view) {
       if (error) { say('sport', esc(error.message), 'err'); return; }
       say('sport', 'Wedstrijd toegevoegd.', 'ok'); await loadSport();
     };
-    box.querySelectorAll('.sb-res').forEach(row => {
+    box.querySelectorAll('.sb-oddsrow').forEach(row => {
+      row.querySelector('[data-sbodds]').onclick = async () => {
+        const v = k => Number(row.querySelector(`.sb-o[data-k="${k}"]`).value.replace(',', '.'));
+        const { error } = await sb.rpc('fb_admin_odds', { p_match: Number(row.dataset.m), p_1: v('1'), p_x: v('X'), p_2: v('2') });
+        if (error) { say('sport', esc(error.message), 'err'); return; }
+        say('sport', 'Quotering opgeslagen.', 'ok'); await loadSport();
+      };
+    });
+    box.querySelectorAll('.sb-res:not(.sb-oddsrow)').forEach(row => {
       const id = Number(row.dataset.m);
       row.querySelector('[data-sbres]').onclick = async () => {
         const g1 = row.querySelector('.sb-g1').value, g2 = row.querySelector('.sb-g2').value;
@@ -7116,7 +7147,7 @@ async function renderCasino(view) {
       btns.innerHTML = h.done ? '<button type="button" class="btn small" data-bj="deal">Nieuwe hand</button>'
         : `<button type="button" class="btn small" data-bj="hit">Hit</button><button type="button" class="btn small ghost" data-bj="stand">Stand</button><button type="button" class="btn small ghost" data-bj="double" ${h.can_double ? '' : 'disabled'}>Double</button><button type="button" class="btn small ghost" data-bj="split" ${h.can_split ? '' : 'disabled'} title="Splitsen kan met twee kaarten van dezelfde waarde">Split</button>`;
     }
-    const cs = $('#bjChips'); if (cs) { const n = Math.round((h?.bet || czState.bet) / 5); cs.innerHTML = Array.from({ length: Math.min(n, 12) }, (_, i) => `<i style="--i:${i}"></i>`).join('') + `<b>${h?.bet || czState.bet}</b>`; }
+    const cs = $('#bjChips'); if (cs) { const n = Math.max(1, Math.round((h?.bet || czState.bet) / 5)); cs.innerHTML = Array.from({ length: Math.min(n, 12) }, (_, i) => `<i style="--i:${i}"></i>`).join('') + `<b>${h?.bet || czState.bet}</b>`; }
     btns.querySelectorAll('[data-bj]').forEach(b => b.onclick = () => bjDo(b.dataset.bj));
   }
   async function bjDo(act) {

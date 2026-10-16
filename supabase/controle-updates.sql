@@ -61,15 +61,23 @@ select 'update-24-opgeven.sql',
        coalesce((select prosrc not like '%r < 3 then v_ca := 0%' from pg_proc where oid = to_regprocedure('public._tb_resolve(bigint)')), false)
 union all
 select 'update-25-foodtruck.sql',
-       to_regprocedure('public.buy_food(text)') is not null
+       to_regprocedure('public.buy_food(text)') is not null and to_regprocedure('public.feature_list()') is not null
+union all
+select 'update-28-inzet.sql',
+       coalesce((select prosrc like '%p_bet < 1%' from pg_proc where oid = to_regprocedure('public._casino_take(integer)')), false)
+       and to_regprocedure('public._casino_round(integer,numeric)') is not null
 union all
 select 'update-26-voetbal.sql',
-       to_regprocedure('public.fb_overview()') is not null
+       to_regprocedure('public.fb_sync_odds(jsonb)') is not null
 union all
 select 'update-27-geheime-trofeeen.sql',
-       to_regprocedure('public._secret_trophies()') is not null
+       coalesce((select prosrc like '%_feature_on%' from pg_proc where oid = to_regprocedure('public.trophy_status()')), false)
 union all
-select 'Functie rizz-voetbal (haalt elk uur wedstrijden op; werkt zodra de sleutel ingesteld is)',
+select 'Testfase: enkel de admin ziet het nieuwe (false = nog niet voor iedereen, dat is normaal tot de release)',
+       case when to_regclass('public.feature_flags') is null then false
+            else (xpath('/row/c/text()', query_to_xml('select count(*) as c from public.feature_flags where released', false, true, '')))[1]::text <> '0' end
+union all
+select 'Functie rizz-voetbal (haalt elk uur wedstrijden op; werkt zodra de sleutels ingesteld zijn)',
        case when to_regclass('public.fb_config') is null then false
             else (xpath('/row/c/text()', query_to_xml('select count(*) as c from public.fb_config where last_sync is not null', false, true, '')))[1]::text <> '0' end
 union all

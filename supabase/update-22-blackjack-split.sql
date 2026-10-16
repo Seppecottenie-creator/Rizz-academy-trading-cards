@@ -11,6 +11,7 @@
 -- Gebruik: Supabase -> SQL Editor -> nieuwe query -> dit VOLLEDIGE bestand plakken -> Run.
 -- Kies bij de waarschuwing "Run without RLS".
 -- Veilig om opnieuw uit te voeren. Voer eerst update-14-casino-zonder-limiet.sql uit.
+-- LET OP: voer je dit bestand later opnieuw uit, voer daarna ook update-28-inzet.sql opnieuw uit.
 -- =====================================================================
 
 -- Tweede hand bij een split
