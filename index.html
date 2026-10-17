@@ -2904,109 +2904,67 @@ function goDrunk(ms) {
   tick(); drunkTimer = setInterval(tick, 1000);
 }
 try { const u = Number(localStorage.getItem('rizz-drunk-until')); if (u > Date.now()) { if (document.readyState === 'loading') addEventListener('DOMContentLoaded', () => goDrunk(u - Date.now())); else setTimeout(() => goDrunk(u - Date.now()), 0); } } catch (_) { /* */ }
-// ---------- Muziek en geluidseffecten (alles gemaakt in de browser, geen bestanden) ----------
+// ---------- Muziek en geluidseffecten (echte instrumenten, zie audio/make.py) ----------
 // Muziek staat standaard uit, effecten aan; de keuze wordt per toestel onthouden.
 // Browsers spelen pas geluid af na de eerste tik op de pagina: tot dan blijft alles stil.
+// De bestanden worden pas geladen als het geluid aan staat (effecten bij de eerste tik, muziek per plek).
 const Sound = (() => {
-  let ctx = null, master, musicBus, sfxBus, noiseBuf, timer = null, song = null, step = 0, nextT = 0, place = null;
+  const SFX = ['click', 'card', 'flip', 'coins', 'win', 'lose', 'epic', 'legendary', 'pack', 'stamp', 'fail', 'lever', 'reel', 'tick',
+    'roulette', 'bell', 'gallop', 'hit', 'ko', 'gulp', 'shot', 'zap', 'nom', 'sparkle'];
+  const PLACE_SONG = { casino: 'casino', battle: 'battle', bar: 'bar' };
+  const VOL = { music: .32, sfx: .85 };
+  let ctx = null, musicBus, sfxBus, place = null, song = null, songSrc = null, songGain = null, sfxLoaded = false;
+  const bufs = new Map();
   let prefs = { music: false, sfx: true };
   try { prefs = { ...prefs, ...JSON.parse(localStorage.getItem('rizz-sound') || '{}') }; } catch (_) { /* */ }
   const save = () => { try { localStorage.setItem('rizz-sound', JSON.stringify(prefs)); } catch (_) { /* */ } };
-  const hz = m => 440 * Math.pow(2, (m - 69) / 12);
   function init() {
     if (ctx) return ctx;
     const AC = window.AudioContext || window.webkitAudioContext; if (!AC) return null;
     ctx = new AC();
-    const comp = ctx.createDynamicsCompressor(); comp.threshold.value = -16; comp.knee.value = 10; comp.ratio.value = 4; comp.connect(ctx.destination);
-    master = ctx.createGain(); master.gain.value = 3.2; master.connect(comp);
-    musicBus = ctx.createGain(); musicBus.gain.value = .22; musicBus.connect(master);
-    sfxBus = ctx.createGain(); sfxBus.gain.value = .5; sfxBus.connect(master);
-    noiseBuf = ctx.createBuffer(1, ctx.sampleRate, ctx.sampleRate);
-    const d = noiseBuf.getChannelData(0); for (let i = 0; i < d.length; i++) d[i] = Math.random() * 2 - 1;
+    musicBus = ctx.createGain(); musicBus.gain.value = VOL.music; musicBus.connect(ctx.destination);
+    sfxBus = ctx.createGain(); sfxBus.gain.value = VOL.sfx; sfxBus.connect(ctx.destination);
     return ctx;
   }
-  // bouwstenen
-  function tone({ f = 440, f2 = null, t = 0, dur = .2, type = 'sine', vol = .3, a = .005, bus = sfxBus, cut = null, q = 1 }) {
-    if (!ctx) return;
-    const s = ctx.currentTime + t, o = ctx.createOscillator(), g = ctx.createGain();
-    o.type = type; o.frequency.setValueAtTime(f, s); if (f2) o.frequency.exponentialRampToValueAtTime(Math.max(20, f2), s + dur);
-    g.gain.setValueAtTime(0, s); g.gain.linearRampToValueAtTime(vol, s + a); g.gain.exponentialRampToValueAtTime(.0005, s + dur);
-    let node = o;
-    if (cut) { const fl = ctx.createBiquadFilter(); fl.type = 'lowpass'; fl.frequency.value = cut; fl.Q.value = q; o.connect(fl); node = fl; }
-    node.connect(g); g.connect(bus); o.start(s); o.stop(s + dur + .05);
-  }
-  function noise({ t = 0, dur = .1, vol = .3, type = 'highpass', f = 6000, q = 1, bus = sfxBus, f2 = null }) {
-    if (!ctx) return;
-    const s = ctx.currentTime + t, src = ctx.createBufferSource(), fl = ctx.createBiquadFilter(), g = ctx.createGain();
-    src.buffer = noiseBuf; fl.type = type; fl.frequency.setValueAtTime(f, s); if (f2) fl.frequency.exponentialRampToValueAtTime(f2, s + dur); fl.Q.value = q;
-    g.gain.setValueAtTime(vol, s); g.gain.exponentialRampToValueAtTime(.0005, s + dur);
-    src.connect(fl); fl.connect(g); g.connect(bus); src.start(s, Math.random() * .5); src.stop(s + dur + .05);
-  }
-  const arp = (notes, gap, opts) => notes.forEach((n, i) => tone({ f: hz(n), t: i * gap, ...opts }));
-  // effecten
-  const FX = {
-    click: () => tone({ f: 1400, f2: 900, dur: .05, type: 'triangle', vol: .08 }),
-    card: () => noise({ dur: .12, vol: .22, type: 'bandpass', f: 3000, f2: 1200, q: .8 }),
-    flip: () => { noise({ dur: .07, vol: .18, type: 'bandpass', f: 2500, q: 1 }); tone({ f: 600, f2: 900, dur: .08, type: 'triangle', vol: .06, t: .03 }); },
-    coins: () => { for (let i = 0; i < 9; i++) tone({ f: 1800 + Math.random() * 1400, t: i * .07 + Math.random() * .03, dur: .18, type: 'triangle', vol: .09 }); },
-    win: () => arp([72, 76, 79, 84], .09, { type: 'triangle', vol: .16, dur: .35 }),
-    lose: () => arp([67, 63, 60], .16, { type: 'sawtooth', vol: .07, dur: .4, cut: 1400 }),
-    epic: () => { arp([67, 71, 74, 79, 83], .07, { type: 'triangle', vol: .14, dur: .5 }); tone({ f: hz(55), dur: 1, type: 'sine', vol: .2, t: .3 }); },
-    legendary: () => { arp([60, 64, 67, 72, 76, 79, 84, 88], .06, { type: 'square', vol: .06, dur: .6, cut: 3500 }); arp([72, 76, 79], 0, { type: 'triangle', vol: .12, dur: 1.6, t: .5 }); noise({ t: .45, dur: 1.2, vol: .1, type: 'highpass', f: 8000 }); },
-    pack: () => { noise({ dur: .5, vol: .25, type: 'bandpass', f: 800, f2: 4000, q: .7 }); tone({ f: 120, f2: 60, dur: .4, vol: .25, t: .35 }); },
-    stamp: () => { tone({ f: 140, f2: 50, dur: .25, vol: .35 }); noise({ dur: .08, vol: .2, type: 'lowpass', f: 1500 }); },
-    fail: () => arp([55, 54, 53, 52], .22, { type: 'sawtooth', vol: .08, dur: .3, cut: 900 }),
-    lever: () => { noise({ dur: .25, vol: .18, type: 'bandpass', f: 600, f2: 200, q: 2 }); tone({ f: 90, f2: 60, dur: .2, vol: .2, t: .2 }); },
-    reel: () => tone({ f: 220, f2: 140, dur: .12, type: 'square', vol: .08, cut: 1200 }),
-    tick: () => tone({ f: 2400, dur: .03, type: 'square', vol: .04 }),
-    roulette: () => { let t = 0, gap = .05; while (t < 4.2) { tone({ f: 2200 + Math.random() * 400, t, dur: .025, type: 'square', vol: .035 }); t += gap; gap *= 1.07; } },
-    bell: () => { tone({ f: 1320, dur: 1.2, type: 'sine', vol: .18 }); tone({ f: 1980, dur: .8, type: 'sine', vol: .08 }); },
-    gallop: () => { for (let i = 0; i < 22; i++) { noise({ t: i * .18, dur: .05, vol: .12, type: 'lowpass', f: 500 }); noise({ t: i * .18 + .07, dur: .04, vol: .08, type: 'lowpass', f: 700 }); } },
-    hit: () => { tone({ f: 180, f2: 50, dur: .18, vol: .35 }); noise({ dur: .1, vol: .22, type: 'lowpass', f: 2500 }); },
-    ko: () => { tone({ f: 300, f2: 40, dur: .7, type: 'sawtooth', vol: .12, cut: 1200 }); noise({ dur: .5, vol: .15, type: 'lowpass', f: 900, f2: 200 }); },
-    gulp: () => { for (let i = 0; i < 4; i++) tone({ f: 260, f2: 140, t: i * .32, dur: .2, vol: .2, cut: 900 }); tone({ f: 500, f2: 300, t: 1.5, dur: .25, type: 'triangle', vol: .12 }); },
-    shot: () => { tone({ f: 300, f2: 120, dur: .15, vol: .25 }); arp([72, 79], .08, { type: 'triangle', vol: .12, dur: .2, t: .25 }); },
-    zap: () => { tone({ f: 80, f2: 2000, dur: .4, type: 'sawtooth', vol: .1, cut: 4000 }); noise({ dur: .3, vol: .15, type: 'highpass', f: 3000, t: .1 }); },
-    nom: () => { for (let i = 0; i < 5; i++) noise({ t: i * .28, dur: .1, vol: .2, type: 'bandpass', f: 900 + Math.random() * 600, q: 2 }); },
-    sparkle: () => { for (let i = 0; i < 14; i++) tone({ f: hz(84 + [0, 2, 4, 7, 9, 12][i % 6]), t: i * .08, dur: .3, type: 'sine', vol: .08 }); },
-  };
-  // muziek: vier "nummers", elk met akkoorden, bas, drums en een losse melodie (16 stappen per maat)
-  const SONGS = {
-    campus: { bpm: 76, swing: .12, chords: [[65, 69, 72, 76], [64, 67, 71, 74], [62, 65, 69, 72], [60, 64, 67, 71]], pad: 'triangle', cut: 1400, kick: [0, 10], snare: [8], hat: 2, mel: .25 },
-    casino: { bpm: 96, swing: .2, chords: [[62, 65, 69, 72], [55, 59, 62, 65], [60, 64, 67, 71], [57, 61, 64, 67]], pad: 'sine', cut: 2200, kick: [0, 8], snare: [], hat: 2, mel: .35, walk: true },
-    battle: { bpm: 124, swing: 0, chords: [[57, 60, 64], [53, 57, 60], [60, 64, 67], [55, 59, 62]], pad: 'sawtooth', cut: 1100, kick: [0, 4, 8, 12], snare: [4, 12], hat: 1, mel: .3 },
-    bar: { bpm: 110, swing: .08, chords: [[60, 64, 67], [55, 59, 62], [57, 60, 64], [53, 57, 60]], pad: 'square', cut: 1600, kick: [0, 6, 8], snare: [4, 12], hat: 2, mel: .4, pluck: true },
-  };
-  const PLACE_SONG = { casino: 'casino', battle: 'battle', bar: 'bar' };
-  function schedule() {
-    const sp = 60 / song.bpm / 4, night = typeof dayPhase === 'function' && dayPhase() === 'night';
-    while (nextT < ctx.currentTime + .25) {
-      const bar = Math.floor(step / 16) % song.chords.length, s16 = step % 16, ch = song.chords[bar];
-      const t = nextT - ctx.currentTime + (s16 % 2 ? song.swing * sp : 0), bus = musicBus, cut = song.cut * (night ? .6 : 1);
-      if (s16 === 0) ch.forEach(n => tone({ f: hz(n), t, dur: sp * 16, type: song.pad, vol: song.pad === 'sine' ? .09 : .045, a: .3, bus, cut }));
-      if (song.pluck && s16 % 4 === 2) ch.forEach((n, i) => tone({ f: hz(n + 12), t: t + i * .01, dur: .18, type: 'triangle', vol: .04, bus }));
-      if (song.walk) { if (s16 % 4 === 0) tone({ f: hz(ch[s16 / 4 % ch.length] - 24), t, dur: sp * 3.5, type: 'triangle', vol: .2, bus }); }
-      else if (s16 === 0 || s16 === 8 || (song.bpm > 100 && s16 % 4 === 0)) tone({ f: hz(ch[0] - 24), t, dur: sp * 3, type: 'triangle', vol: .2, bus });
-      if (song.kick.includes(s16)) tone({ f: 120, f2: 45, t, dur: .22, vol: .32, bus });
-      if (song.snare.includes(s16)) noise({ t, dur: .12, vol: .1, type: 'bandpass', f: 1800, q: .7, bus });
-      if (s16 % song.hat === 0) noise({ t, dur: .03, vol: s16 % 4 ? .025 : .04, type: 'highpass', f: 8000, bus });
-      if (s16 % 2 === 0 && Math.random() < song.mel) {
-        const scale = [0, 2, 4, 7, 9], n = ch[0] + 12 + scale[Math.floor(Math.random() * scale.length)] + (Math.random() < .3 ? 12 : 0);
-        tone({ f: hz(n), t, dur: sp * 2.5, type: 'triangle', vol: .05, bus, cut: 3000 });
-      }
-      nextT += sp; step++;
+  // Een bestand laden en decoderen (één keer; daarna uit het geheugen)
+  function load(path) {
+    if (!bufs.has(path)) {
+      bufs.set(path, fetch(path).then(r => { if (!r.ok) throw new Error(r.status); return r.arrayBuffer(); })
+        .then(data => new Promise((ok, ko) => { const p = ctx.decodeAudioData(data, ok, ko); if (p && p.then) p.then(ok, ko); }))
+        .catch(e => { bufs.delete(path); throw e; }));
     }
+    return bufs.get(path);
+  }
+  const loadSfx = () => { if (sfxLoaded || !ctx) return; sfxLoaded = true; SFX.forEach(n => load(`audio/sfx/${n}.mp3`).catch(() => {})); };
+  // Muziek: naadloos herhalen (stilte die de mp3 vooraan en achteraan toevoegt, wordt overgeslagen)
+  function edges(buf) {
+    const d = buf.getChannelData(0), lim = Math.min(d.length, buf.sampleRate);
+    let a = 0, b = d.length - 1;
+    while (a < lim && Math.abs(d[a]) < 1e-5) a++;
+    while (b > d.length - lim && Math.abs(d[b]) < 1e-5) b--;
+    return [a / buf.sampleRate, (b + 1) / buf.sampleRate];
+  }
+  function stopMusic(fade = .8) {
+    if (!songSrc) { song = null; return; }
+    const src = songSrc, g = songGain, t = ctx.currentTime;
+    g.gain.cancelScheduledValues(t); g.gain.setValueAtTime(g.gain.value, t); g.gain.linearRampToValueAtTime(0, t + fade);
+    try { src.stop(t + fade + .05); } catch (_) { /* */ }
+    songSrc = songGain = null; song = null;
   }
   function startMusic() {
-    if (!ctx || !prefs.music || ctx.state !== 'running') return;
-    const want = SONGS[PLACE_SONG[place] || 'campus'];
-    if (song === want && timer) return;
-    stopMusic(); song = want; step = 0; nextT = ctx.currentTime + .1;
-    musicBus.gain.cancelScheduledValues(ctx.currentTime); musicBus.gain.setValueAtTime(0, ctx.currentTime); musicBus.gain.linearRampToValueAtTime(.22, ctx.currentTime + 1.5);
-    timer = setInterval(schedule, 60); schedule();
+    if (!ctx || !prefs.music || !feat('sound') || ctx.state !== 'running') return;
+    const want = PLACE_SONG[place] || 'campus';
+    if (song === want) return;
+    stopMusic(); song = want;
+    load(`audio/music/${want}.mp3`).then(buf => {
+      if (song !== want || !prefs.music || songSrc) return;
+      const [a, b] = edges(buf), src = ctx.createBufferSource(), g = ctx.createGain(), t = ctx.currentTime;
+      src.buffer = buf; src.loop = true; src.loopStart = a; src.loopEnd = b;
+      g.gain.setValueAtTime(0, t); g.gain.linearRampToValueAtTime(1, t + 1.2);
+      src.connect(g); g.connect(musicBus); src.start(t, a);
+      songSrc = src; songGain = g;
+    }, () => { if (song === want) song = null; });
   }
-  function stopMusic() { clearInterval(timer); timer = null; song = null; }
-  // eerste tik: geluid ontgrendelen
   // iPhone: zonder dit blijft alles stil als de belschakelaar op stil staat
   let silent = null;
   function iosSession() {
@@ -3020,6 +2978,7 @@ const Sound = (() => {
     if (!feat('sound') || (!prefs.music && !prefs.sfx)) return;
     iosSession();
     const c = init(); if (!c) return;
+    if (prefs.sfx) loadSfx();
     if (c.state !== 'running') c.resume().then(startMusic, () => {}); else startMusic();
   };
   // Safari telt pas een echte tik (touchend/click) als toestemming voor geluid
@@ -3029,14 +2988,23 @@ const Sound = (() => {
   document.addEventListener('visibilitychange', () => { if (!ctx) return; if (document.hidden) ctx.suspend(); else ctx.resume().then(startMusic, () => {}); });
   return {
     play(name) {
-      if (!feat('sound') || !prefs.sfx || !FX[name] || prefersReduced?.() && name === 'click') return;
+      if (!feat('sound') || !prefs.sfx || !SFX.includes(name) || prefersReduced?.() && name === 'click') return;
       if (!init()) return;
-      const go = () => { try { FX[name](); } catch (_) { /* */ } };
-      if (ctx.state === 'running') go(); else ctx.resume().then(() => { if (ctx.state === 'running') go(); }, () => {});
+      loadSfx();
+      const at = performance.now();
+      Promise.all([load(`audio/sfx/${name}.mp3`), ctx.state === 'running' ? null : ctx.resume()]).then(([buf]) => {
+        if (ctx.state !== 'running' || performance.now() - at > 700) return; // te laat geladen: niet meer afspelen
+        const src = ctx.createBufferSource(); src.buffer = buf; src.connect(sfxBus); src.start();
+      }, () => {});
     },
-    setPlace(p) { place = p; if (!feat('sound')) { stopMusic(); return; } if (prefs.music) startMusic(); },
+    setPlace(p) { place = p; if (!ctx) return; if (!feat('sound')) { stopMusic(); return; } if (prefs.music) startMusic(); },
     get prefs() { return { ...prefs }; },
-    toggle(which) { prefs[which] = !prefs[which]; save(); if (which === 'music') { if (prefs.music) { iosSession(); if (init()) ctx.resume().then(startMusic, () => {}); } else stopMusic(); } return prefs[which]; },
+    toggle(which) {
+      prefs[which] = !prefs[which]; save();
+      if (which === 'music') { if (prefs.music) { iosSession(); if (init()) ctx.resume().then(startMusic, () => {}); } else if (ctx) stopMusic(); }
+      if (which === 'sfx' && prefs.sfx && init()) loadSfx();
+      return prefs[which];
+    },
   };
 })();
 

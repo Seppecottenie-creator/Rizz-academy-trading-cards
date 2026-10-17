@@ -1,0 +1,4 @@
+Muziek en geluidseffecten van Rizz Academy (tools/make-audio.py).
+
+Gecomponeerd voor Rizz Academy en ingespeeld met de FluidR3 GM-soundfont
+(Frank Wen e.a.), uitgebracht onder de MIT-licentie.
