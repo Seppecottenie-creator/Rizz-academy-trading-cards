@@ -53,4 +53,4 @@ Lijst van ideeën die nog niet gebouwd zijn. Nieuwste bovenaan.
   kamerthema's voor het Frat House, emotes, een andere kaartachterkant.
 
 ## Gebouwd
-- 16 oktober 2026: Sportsbook (voetbal), Food Truck-kaart, geheime trofeeën, muziek en geluid.
+- 17 oktober 2026: Sportsbook (voetbal), Food Truck-kaart, geheime trofeeën, muziek en geluid, inzet vanaf 1 credit.
