@@ -2713,7 +2713,7 @@ body.fx-trip .shell{animation:trip-hue 6s linear infinite}
 .boss-admin{margin-top:22px;padding:16px;border-radius:16px;border:1px dashed rgba(242,204,114,.4)}
 .boss-admin h3{margin:0 0 10px}.boss-admin h3 small{font:500 12px var(--body);color:var(--muted)}
 .ba-form{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px}
-.ba-form label{display:grid;gap:4px;font:600 12px var(--body);color:var(--ink-soft)}
+.ba-form label{display:grid;gap:4px;font:600 12px var(--body);color:var(--ink-soft)}.ba-form label small{font-weight:500;color:var(--muted)}
 .ba-form input,.ba-form select{padding:9px 10px;border-radius:10px;border:1px solid var(--line2);background:rgba(255,255,255,.06);color:var(--ink);font:500 14px var(--body)}
 .ba-form .ba-file,.ba-form .ba-chk,.ba-prev,.ba-act,#baMsg{grid-column:1/-1}.ba-chk{display:flex!important;align-items:center;gap:8px}
 .ba-prev img{max-height:200px;background:repeating-conic-gradient(#333 0 25%,#222 0 50%) 0 0/16px 16px;border-radius:10px}
@@ -7229,23 +7229,20 @@ async function bossFight(view, start) {
 
 // ----- Beheer (enkel admin) -----
 function bossAdminHtml() {
-  const next = new Date(bossNow()); // volgende zondag 20u (Belgische tijd)
-  const sun = new Date(next); sun.setDate(sun.getDate() + ((7 - sun.getDay()) % 7)); sun.setHours(20, 0, 0, 0);
-  if (sun.getTime() <= bossNow()) sun.setDate(sun.getDate() + 7);
-  const local = new Date(sun.getTime() - sun.getTimezoneOffset() * 6e4).toISOString().slice(0, 16);
   const persons = [...new Set(state.cards.filter(c => c.rarity !== 'cat').map(c => c.person))].sort();
   return `<div class="boss-admin"><h3>Beheer <small>enkel jij ziet dit</small></h3>
+    <p class="hint">Upload enkel een foto en klik op Opslaan: naam, uitspraak, zwakte en de eerstvolgende vrije zondag om 20u worden vanzelf gekozen. Wil je toch iets zelf kiezen, vul het dan in.</p>
     <div class="ba-form" id="baForm"><input type="hidden" id="baId">
-      <label>Naam<input id="baName" maxlength="40" placeholder="bv. De Dean"></label>
-      <label>Uitspraak<input id="baTitle" maxlength="80" placeholder="bv. Wie te laat is, betaalt."></label>
-      <label>Start (1 uur lang)<input id="baStart" type="datetime-local" value="${local}"></label>
-      <label>Zwakte<select id="baWeak"><option value="">Geen</option>
+      <label class="ba-file">Foto (volledig lichaam; effen of doorzichtige achtergrond)<input id="baImg" type="file" accept="image/*"></label>
+      <label class="ba-chk"><input type="checkbox" id="baCut" checked> Effen achtergrond automatisch weghalen</label>
+      <div class="ba-prev" id="baPrev" hidden><img alt=""></div>
+      <label>Naam<input id="baName" maxlength="40" placeholder="leeg = verzonnen"></label>
+      <label>Uitspraak<input id="baTitle" maxlength="80" placeholder="leeg = verzonnen"></label>
+      <label>Start (1 uur lang)<input id="baStart" type="datetime-local"><small>leeg = eerstvolgende vrije zondag 20u</small></label>
+      <label>Zwakte<select id="baWeak"><option value="">Willekeurig</option>
         <optgroup label="Zeldzaamheid">${['common', 'epic', 'legendary'].map(r => `<option value="rarity:${r}">${RARITY_LABEL[r]}-kaarten</option>`).join('')}</optgroup>
         <optgroup label="Kaarten van">${persons.map(p => `<option value="person:${esc(p)}">${esc(p)}</option>`).join('')}</optgroup></select></label>
       <label>HP (leeg = automatisch)<input id="baHp" type="number" min="1000" step="1000" placeholder="automatisch"></label>
-      <label class="ba-file">Foto (volledig lichaam, PNG zonder achtergrond is het mooist)<input id="baImg" type="file" accept="image/*"></label>
-      <label class="ba-chk"><input type="checkbox" id="baCut" checked> Effen achtergrond automatisch weghalen</label>
-      <div class="ba-prev" id="baPrev" hidden><img alt=""></div>
       <div class="ba-act"><button type="button" class="btn" id="baSave">Opslaan</button><button type="button" class="link" id="baNew" hidden>Nieuwe boss</button></div>
       <p class="msg" id="baMsg" role="status"></p></div>
     <h4>Gepland en gespeeld</h4><div id="baList"><p class="hint">Laden…</p></div></div>`;
@@ -7281,7 +7278,7 @@ function bindBossAdmin(view) {
   const say = (t, cls = '') => { msg.className = 'msg ' + cls; msg.textContent = t; };
   const fill = b => {
     $v('#baId').value = b?.id || ''; $v('#baName').value = b?.name || ''; $v('#baTitle').value = b?.title || '';
-    if (b) $v('#baStart').value = new Date(new Date(b.starts_at).getTime() - new Date(b.starts_at).getTimezoneOffset() * 6e4).toISOString().slice(0, 16);
+    $v('#baStart').value = b ? new Date(new Date(b.starts_at).getTime() - new Date(b.starts_at).getTimezoneOffset() * 6e4).toISOString().slice(0, 16) : '';
     $v('#baWeak').value = b?.weakness_kind ? `${b.weakness_kind}:${b.weakness_value}` : '';
     $v('#baHp').value = b?.hp_override || ''; $v('#baNew').hidden = !b; blob = null; $v('#baImg').value = '';
     const pv = $v('#baPrev'); pv.hidden = !b?.image_path; if (b?.image_path) bossImgUrl(b.image_path).then(u => { if (u) pv.querySelector('img').src = u; });
@@ -7290,7 +7287,7 @@ function bindBossAdmin(view) {
   const draw = async () => {
     const { data } = await sb.rpc('boss_admin_list'); list = data || [];
     const fmt = iso => new Date(iso).toLocaleString('nl-BE', { weekday: 'short', day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit', timeZone: 'Europe/Brussels' });
-    $v('#baList').innerHTML = list.length ? list.map(b => `<div class="ba-row" data-id="${b.id}"><span><b>${esc(b.name)}</b><small>${fmt(b.starts_at)}${b.defeated_at ? ' · verslagen' : new Date(b.ends_at).getTime() < bossNow() ? ' · voorbij' : ''}${b.damage ? ` · ${fmtN(b.damage)} schade` : ''}</small></span>
+    $v('#baList').innerHTML = list.length ? list.map(b => `<div class="ba-row" data-id="${b.id}"><span><b>${esc(b.name)}</b><small>“${esc(b.title || '')}” · zwak tegen ${esc(bossWeak(b))}</small><small>${fmt(b.starts_at)}${b.image_path ? '' : ' · ⚠️ nog geen foto'}${b.defeated_at ? ' · verslagen' : new Date(b.ends_at).getTime() < bossNow() ? ' · voorbij' : ''}${b.damage ? ` · ${fmtN(b.damage)} schade` : ''}</small></span>
       <button type="button" class="link" data-ba="edit">Aanpassen</button><button type="button" class="link" data-ba="test">Test nu</button><button type="button" class="link danger" data-ba="del">Verwijder</button></div>`).join('') : '<p class="hint">Nog geen bosses.</p>';
     $v('#baList').querySelectorAll('[data-ba]').forEach(btn => btn.onclick = async () => {
       const id = Number(btn.closest('[data-id]').dataset.id), b = list.find(x => x.id === id);
@@ -7327,7 +7324,8 @@ function bindBossAdmin(view) {
         p_name: $v('#baName').value, p_title: $v('#baTitle').value, p_image_path: path, p_weakness_kind: wk || null, p_weakness_value: wv.join(':') || null,
         p_hp_override: Number($v('#baHp').value) || null });
       if (error) throw error;
-      say('Opgeslagen.', 'ok'); fill(null); await loadBoss(); drawBoss(view);
+      fill(null); await loadBoss(); await drawBoss(view);
+      view.querySelector('#baMsg')?.replaceChildren('Opgeslagen. Kijk hieronder welke naam en zwakte de boss kreeg.');
     } catch (e) { say(e.message || 'Opslaan mislukt.', 'err'); }
     btn.disabled = false;
   };

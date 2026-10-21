@@ -5067,15 +5067,87 @@ language sql stable security definer set search_path = public as $$
 $$;
 grant execute on function public.boss_admin_list() to authenticated;
 
+-- Namen en uitspraken: de server verzint er zelf een (zelden twee keer dezelfde)
+create or replace function public._boss_names() returns table (name text, title text)
+language sql immutable as $$
+  values
+    ('De Rizz Lord', 'Niemand ontsnapt aan mijn aura.'),
+    ('Kapitein Kater', 'Jullie hebben gisteren te veel gedronken. Ik niet.'),
+    ('De Afterparty Tiran', 'Het feestje stopt pas als ík zeg dat het stopt.'),
+    ('Graaf Ghosting', 'Ik heb je bericht gelezen. Om 03:12.'),
+    ('De Kotbaas', 'Je huur is verhoogd. Met pijn.'),
+    ('Lord of the Lounge', 'Op deze bank zit ík.'),
+    ('De Examenbeul', 'Vraag 1: hoeveel pijn kan jij verdragen?'),
+    ('Sir Snooze', 'Jullie wekker? Die heb ik ingeslikt.'),
+    ('Baron von Bankrupt', 'Al jullie credits zijn van mij.'),
+    ('De Fakbar Furie', 'Laatste ronde. Voor jullie.'),
+    ('Mister Main Character', 'Dit is mijn verhaal. Jullie zijn figuranten.'),
+    ('De Gym Gorilla', 'Leg day? Elke dag.'),
+    ('Koning Kapsalon', 'Ik ben gemaakt van friet en woede.'),
+    ('De Stille Stalker', 'Ik zag je story. Alle 47.'),
+    ('Doctor Deadline', 'Inleveren voor 23:59. Of anders.'),
+    ('De Vibe Vampier', 'Ik zuig alle sfeer uit deze campus.'),
+    ('Generaal Gatekeep', 'Jullie komen er niet in. Niet met die schoenen.'),
+    ('De Ex', 'Ik ben terug. En ik ben sterker.'),
+    ('Tante Toxic', 'Ik zeg het maar eens eerlijk…'),
+    ('De Shotjes Sjeik', 'Nog één. Nog één. Nog één.'),
+    ('Big Boss Brunch', 'Eerst eten. Dan jullie.'),
+    ('De Campus Cowboy', 'Deze quad is te klein voor ons allebei.'),
+    ('Professor Plankgas', 'Ik geef nooit les. Ik geef klappen.'),
+    ('De Rizz Reaper', 'Jouw rizz is vanavond van mij.'),
+    ('Mevrouw Mondmasker', 'Hoest één keer en je ligt eruit.'),
+    ('De Sjans Sultan', 'Ik heb al jullie crushes gerizzd.'),
+    ('Captain Cringe', 'Jullie gaan je hier later voor schamen.'),
+    ('De Nachtburgemeester', 'Na middernacht regeer ik.'),
+    ('Sergeant Sixpack', 'Twintig push-ups. Nu. Allemaal.'),
+    ('De Laatste Trein', 'Wie mij mist, slaapt hier.');
+$$;
+
+-- Volgende vrije zondag 20u (Belgische tijd) zonder boss
+create or replace function public._boss_next_sunday() returns timestamptz
+language plpgsql stable security definer set search_path = public as $$
+declare d date := (now() at time zone 'Europe/Brussels')::date; t timestamptz;
+begin
+  d := d + ((7 - extract(dow from d)::int) % 7);
+  loop
+    t := (d + time '20:00') at time zone 'Europe/Brussels';
+    if t > now() and not exists (select 1 from public.boss_events where starts_at::date between d - 1 and d + 1
+                                 and abs(extract(epoch from starts_at - t)) < 86400) then return t; end if;
+    d := d + 7;
+  end loop;
+end $$;
+revoke all on function public._boss_next_sunday() from public, anon, authenticated;
+
+-- Opslaan. Leeg laten = de server kiest: naam en uitspraak, willekeurige zwakte, eerstvolgende vrije zondag 20u.
 create or replace function public.boss_admin_save(p_id bigint, p_starts_at timestamptz, p_name text, p_title text, p_image_path text,
   p_weakness_kind text, p_weakness_value text, p_hp_override int) returns bigint
 language plpgsql volatile security definer set search_path = public as $$
-declare v_id bigint;
+declare v_id bigint; nm record; old public.boss_events;
 begin
   if not public._is_admin_user(auth.uid()) then raise exception 'Enkel voor de admin.'; end if;
-  if coalesce(trim(p_name), '') = '' then raise exception 'Geef de boss een naam.'; end if;
-  if p_starts_at is null then raise exception 'Kies een datum en uur.'; end if;
-  if p_weakness_kind not in ('person', 'rarity') then p_weakness_kind := null; p_weakness_value := null; end if;
+  if p_id is not null then select * into old from public.boss_events where id = p_id; end if;
+  -- naam en uitspraak verzinnen (eentje die de laatste tijd niet gebruikt werd)
+  if coalesce(trim(p_name), '') = '' then
+    select n.name, n.title into nm from public._boss_names() n
+    where n.name not in (select name from public.boss_events where id is distinct from p_id order by starts_at desc limit 20)
+    order by random() limit 1;
+    if nm.name is null then select n.name, n.title into nm from public._boss_names() n order by random() limit 1; end if;
+    p_name := nm.name;
+    if coalesce(trim(p_title), '') = '' then p_title := nm.title; end if;
+  end if;
+  -- willekeurige zwakte: een zeldzaamheid of de kaarten van één persoon (niet dezelfde als vorige week)
+  if p_weakness_kind is null or p_weakness_kind not in ('person', 'rarity') then
+    if random() < .5 then
+      p_weakness_kind := 'rarity';
+      p_weakness_value := (array['common', 'common', 'epic', 'epic', 'legendary'])[1 + floor(random() * 5)::int];
+    else
+      p_weakness_kind := 'person';
+      select person into p_weakness_value from (select distinct person from public.cards where rarity <> 'cat') x
+      where person is distinct from (select weakness_value from public.boss_events where weakness_kind = 'person' order by starts_at desc limit 1)
+      order by random() limit 1;
+    end if;
+  end if;
+  p_starts_at := coalesce(p_starts_at, old.starts_at, public._boss_next_sunday());
   if p_id is null then
     insert into public.boss_events (starts_at, ends_at, name, title, image_path, weakness_kind, weakness_value, hp_override)
     values (p_starts_at, p_starts_at + interval '1 hour', trim(p_name), nullif(trim(p_title), ''), p_image_path,
