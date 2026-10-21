@@ -2658,8 +2658,9 @@ body.fx-trip .shell{animation:trip-hue 6s linear infinite}
 .boss-banner small{font:600 12px var(--body);color:#F6DE9C;font-variant-numeric:tabular-nums}
 .boss-banner.ph-live{animation:bb-pulse 1.2s ease-in-out infinite;border-color:#ff3355}
 @keyframes bb-pulse{50%{box-shadow:0 0 0 6px rgba(224,40,74,.25),0 8px 24px rgba(0,0,0,.45)}}
-.boss-stage{position:relative;display:grid;justify-items:center;padding:18px 12px 16px;border-radius:22px;overflow:hidden;min-height:360px;
+.boss-stage{position:relative;isolation:isolate;display:grid;justify-items:center;padding:18px 12px 16px;border-radius:22px;overflow:hidden;min-height:360px;
   background:radial-gradient(ellipse at 50% 100%,rgba(224,40,74,.28),transparent 60%),radial-gradient(ellipse at 50% 0%,rgba(242,204,114,.12),transparent 55%),linear-gradient(#140812,#07040b);border:1px solid rgba(224,40,74,.3)}
+.boss-stage>*{position:relative;z-index:1}.boss-stage>.boss-lights{position:absolute}
 .boss-lights{position:absolute;inset:0;background:conic-gradient(from 200deg at 20% -10%,transparent 0 30deg,rgba(255,220,180,.08) 36deg,transparent 44deg),conic-gradient(from 120deg at 80% -10%,transparent 0 30deg,rgba(255,220,180,.08) 36deg,transparent 44deg);pointer-events:none}
 .boss-figwrap{position:relative;display:grid;justify-items:center;height:min(46vh,380px)}
 .boss-fig{height:100%;max-width:min(80vw,420px);object-fit:contain;transform-origin:50% 100%;animation:boss-idle 3.2s ease-in-out infinite;filter:drop-shadow(0 10px 22px rgba(0,0,0,.6));user-select:none;-webkit-user-drag:none}
@@ -2730,37 +2731,56 @@ body.fx-trip .shell{animation:trip-hue 6s linear infinite}
 .bp-foot{display:flex;justify-content:space-between;align-items:center;margin-top:12px;gap:10px}
 /* gevecht */
 body.bf-open{overflow:hidden}
-.bf{position:fixed;inset:0;z-index:4000;display:grid;grid-template-rows:auto auto 1fr auto;background:radial-gradient(ellipse at 50% 85%,rgba(224,40,74,.35),transparent 60%),linear-gradient(#170812,#050307);color:#fff;touch-action:manipulation;user-select:none;-webkit-user-select:none;padding:max(10px,env(safe-area-inset-top)) 14px max(12px,env(safe-area-inset-bottom))}
+.bf{position:fixed;inset:0;z-index:4000;display:grid;grid-template-rows:auto 1fr auto;color:#fff;touch-action:manipulation;user-select:none;-webkit-user-select:none;overflow:hidden;
+  padding:max(10px,env(safe-area-inset-top)) max(14px,env(safe-area-inset-right)) max(14px,env(safe-area-inset-bottom)) max(14px,env(safe-area-inset-left));background:#07030a}
+.bf-bg,.boss-stage::before{position:absolute;inset:0;z-index:0;pointer-events:none;
+  background:linear-gradient(180deg,rgba(7,3,10,.55),rgba(7,3,10,.15) 35%,rgba(40,4,14,.55) 75%,#07030a),radial-gradient(ellipse at 50% 88%,rgba(224,40,74,.45),transparent 55%),var(--arena) center 30%/cover}
+.boss-stage::before{content:""}
+:root{--arena:url('img/boss-arena.webp'),url('img/campus-night.webp')}
+.bf>*:not(.bf-bg){position:relative;z-index:1}
 .bf.shake{animation:bf-shake .35s}@keyframes bf-shake{20%{transform:translate(-8px,4px)}40%{transform:translate(7px,-5px)}60%{transform:translate(-5px,3px)}80%{transform:translate(4px,-2px)}}
 .bf.dodging .bf-arena{animation:bf-dodge .45s ease-out}@keyframes bf-dodge{40%{transform:translateX(-40px) rotate(-3deg)}}
-.bf-top{display:flex;align-items:center;gap:12px}.bf-hp{flex:1;display:grid;gap:3px}.bf-hp b{font:600 13px var(--body);font-variant-numeric:tabular-nums}
-.bf-time{font:400 30px var(--varsity);min-width:44px;text-align:right;font-variant-numeric:tabular-nums}.bf-time.low{color:#ff3355;animation:bh-rage .5s infinite}
-.bf-feed{display:flex;gap:10px;flex-wrap:wrap;min-height:20px;margin-top:6px;font:500 12px var(--body);color:var(--ink-soft)}.bf-feed b{color:#fff}
-.bf-arena{position:relative;display:grid;place-items:end center;min-height:0;cursor:crosshair;padding-bottom:12px}
-.bf-arena .boss-fig{height:min(52vh,460px)}
-.bf-warn{position:absolute;top:8%;left:50%;transform:translateX(-50%) scale(0);font:400 64px var(--varsity);color:#ff3355;text-shadow:0 0 20px #ff3355;transition:transform .15s;pointer-events:none;z-index:2}.bf-warn.on{transform:translateX(-50%) scale(1);animation:bh-rage .3s infinite}
-.bf-dmg{position:absolute;z-index:3;transform:translate(-50%,-50%);font:400 26px var(--varsity);color:#fff;text-shadow:0 2px 6px rgba(0,0,0,.8);pointer-events:none;animation:bf-float .9s ease-out forwards;white-space:nowrap}
-.bf-dmg.weak{color:#7FD3A0}.bf-dmg.super{font-size:54px;color:#F2CC72;text-shadow:0 0 18px rgba(242,204,114,.9)}.bf-dmg.hurt{color:#ff3355;font-size:30px}.bf-dmg.dodge{color:#6FA8FF;font-size:28px}
+.bf-top{display:flex;align-items:center;gap:12px}
+.bf-hp{flex:1;display:grid;gap:5px;padding:8px 12px;border-radius:14px;background:rgba(10,4,12,.7);border:1px solid rgba(224,40,74,.45);backdrop-filter:blur(6px)}
+.bf-name{display:flex;justify-content:space-between;align-items:baseline;gap:8px}
+.bf-name b{font:400 18px var(--varsity);letter-spacing:.06em;text-transform:uppercase;color:#FFE6A8}.bf-name span{font:600 12.5px var(--body);font-variant-numeric:tabular-nums;color:var(--ink-soft)}
+.bf-hp .bh-bar{height:14px}
+.bf-time{--t:1;flex:none;width:56px;height:56px;border-radius:50%;display:grid;place-items:center;background:conic-gradient(#F2CC72 calc(var(--t)*360deg),rgba(255,255,255,.12) 0);padding:4px}
+.bf-time b{width:100%;height:100%;border-radius:50%;display:grid;place-items:center;background:#120610;font:400 22px var(--varsity);font-variant-numeric:tabular-nums}
+.bf-time.low{background:conic-gradient(#ff3355 calc(var(--t)*360deg),rgba(255,255,255,.12) 0)}.bf-time.low b{color:#ff3355}
+.bf-arena{position:relative;display:grid;place-items:end center;min-height:0;cursor:crosshair;padding-bottom:6px}
+.bf-arena .boss-fig{height:min(54vh,520px);max-width:92vw}
+.bf-hint{position:absolute;bottom:30%;left:50%;transform:translateX(-50%);margin:0;padding:6px 14px;border-radius:999px;background:rgba(10,4,12,.7);font:600 13px var(--body);white-space:nowrap;pointer-events:none;animation:bh-rage 1.2s infinite}
+.bf-warn{position:absolute;top:6%;left:50%;transform:translateX(-50%) scale(0);font:400 72px var(--varsity);color:#ff3355;text-shadow:0 0 22px #ff3355;transition:transform .15s;pointer-events:none;z-index:2}.bf-warn.on{transform:translateX(-50%) scale(1);animation:bh-rage .3s infinite}
+.bf-dmg{position:absolute;z-index:3;transform:translate(-50%,-50%);font:400 28px var(--varsity);color:#fff;text-shadow:0 2px 6px rgba(0,0,0,.9);pointer-events:none;animation:bf-float .9s ease-out forwards;white-space:nowrap}
+.bf-dmg.weak{color:#7FD3A0}.bf-dmg.super{font-size:58px;color:#F2CC72;text-shadow:0 0 18px rgba(242,204,114,.9)}.bf-dmg.hurt{color:#ff3355;font-size:30px}.bf-dmg.dodge{color:#6FA8FF;font-size:28px}
 @keyframes bf-float{0%{opacity:0;transform:translate(-50%,-30%) scale(.6)}15%{opacity:1;transform:translate(-50%,-60%) scale(1.15)}100%{opacity:0;transform:translate(-50%,-160%) scale(1)}}
-.bf-bottom{display:grid;gap:8px}
-.bf-team{display:flex;gap:6px;justify-content:center}
-.bft{position:relative;width:46px;height:58px;border-radius:9px;background:#2a1a30 center/cover;border:2px solid rgba(255,255,255,.15);overflow:hidden;opacity:.7}
-.bft.on{width:auto;min-width:150px;opacity:1;border-color:#F2CC72;display:flex;align-items:flex-end;padding:0 6px 8px 50px;background-size:48px 100%;background-repeat:no-repeat;background-position:left}
-.bft b{font:600 12.5px var(--body);white-space:nowrap}
-.bft i{position:absolute;left:0;bottom:0;height:4px;background:#7FD3A0;transition:width .3s}.bft.ko{opacity:.25;filter:grayscale(1)}
-.bf-energy{height:8px;border-radius:999px;background:rgba(255,255,255,.1);overflow:hidden}.bf-energy i{display:block;height:100%;width:0;background:linear-gradient(90deg,#6FA8FF,#F2CC72);transition:width .15s}
-.bf-btns{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.bf-btns button{padding:14px;border-radius:14px;border:0;font:700 17px var(--body);color:#fff;cursor:pointer}
-.bf-dodge{background:#24314f}.bf-dodge.ready{background:#3a6fd8;box-shadow:0 0 0 3px rgba(111,168,255,.6);animation:bh-rage .3s infinite}
-.bf-super{background:linear-gradient(135deg,#F2CC72,#e08a2a);color:#2A1A05!important}.bf-super:disabled{background:#2a2a35;color:rgba(255,255,255,.35)!important;cursor:default}
-.bf-hint{margin:0;text-align:center;font:500 12px var(--body);color:var(--muted)}
+/* onderbalk: ontwijken links, team in het midden, super rechts (duim-bereik) */
+.bf-hud{display:grid;grid-template-columns:auto 1fr auto;align-items:end;gap:10px}
+.bf-dodge,.bf-super{display:grid;place-items:center;align-content:center;gap:0;border:0;border-radius:50%;color:#fff;cursor:pointer;font:inherit;-webkit-tap-highlight-color:transparent}
+.bf-dodge span,.bf-super span{font-size:28px;line-height:1}.bf-dodge small,.bf-super small{font:700 11px var(--body);letter-spacing:.06em;text-transform:uppercase}
+.bf-dodge{width:78px;height:78px;background:radial-gradient(circle at 40% 30%,#4a6cb8,#1d2a4d);box-shadow:0 6px 18px rgba(0,0,0,.5),inset 0 0 0 2px rgba(111,168,255,.5)}
+.bf-dodge.ready{background:radial-gradient(circle at 40% 30%,#7fb0ff,#2f5fd0);box-shadow:0 0 0 5px rgba(111,168,255,.55),0 0 26px rgba(111,168,255,.9);animation:bf-pop .3s ease-in-out infinite alternate}
+@keyframes bf-pop{to{transform:scale(1.08)}}
+.bf-super{--e:0;width:92px;height:92px;padding:6px;background:conic-gradient(#F2CC72 calc(var(--e)*3.6deg),rgba(255,255,255,.14) 0)}
+.bf-super::before{content:"";position:absolute;inset:6px;border-radius:50%;background:radial-gradient(circle at 40% 30%,#4a2a20,#1e0d10);z-index:-1}
+.bf-super{position:relative;isolation:isolate}.bf-super:disabled{cursor:default}.bf-super:disabled span{filter:grayscale(1) opacity(.5)}.bf-super:disabled small{opacity:.5}
+.bf-super.full::before{background:radial-gradient(circle at 40% 30%,#ffd76a,#e0782a)}.bf-super.full{box-shadow:0 0 30px rgba(242,204,114,.9);animation:bf-pop .45s ease-in-out infinite alternate}.bf-super.full small{color:#2A1A05}
+.bf-team{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px;align-self:center}
+.bft{display:grid;justify-items:center;gap:3px;padding:5px 4px;border-radius:12px;background:rgba(10,4,12,.65);border:1px solid rgba(255,255,255,.12);opacity:.65;transition:transform .2s,opacity .2s}
+.bft.on{opacity:1;border-color:#F2CC72;transform:translateY(-6px);box-shadow:0 6px 16px rgba(0,0,0,.5)}
+.bft-ph{width:40px;height:50px;border-radius:7px;background:#2a1a30 center/cover}
+.bft b{max-width:100%;font:600 10.5px var(--body);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.bft i{display:block;width:100%;height:5px;border-radius:999px;background:rgba(255,255,255,.12);overflow:hidden}.bft i u{display:block;height:100%;background:#7FD3A0;transition:width .3s}
+.bft.ko{opacity:.3;filter:grayscale(1)}
 .bf-flash{position:absolute;inset:0;pointer-events:none;opacity:0}.bf-flash.go{animation:bf-flash .35s ease-out}.bf-flash.red{background:rgba(255,30,50,.35)}.bf-flash.white{background:rgba(255,255,255,.5)}
 @keyframes bf-flash{0%{opacity:1}100%{opacity:0}}
 .bf-end{position:absolute;inset:0;display:grid;place-items:center;background:rgba(5,3,8,.75);z-index:5}
 .bf-end-box{display:grid;justify-items:center;gap:10px;padding:26px;border-radius:20px;background:#1a0d18;border:1px solid rgba(242,204,114,.4);text-align:center;min-width:260px}
 .bf-end-t{font:400 38px var(--varsity);letter-spacing:.06em;color:#F2CC72}.bf-end-n small{display:block;color:var(--muted)}.bf-end-n b{font:400 44px var(--varsity)}
 .bf-end-r{font:700 20px var(--body);color:#7FD3A0}
-@media (orientation:landscape) and (max-height:500px){.boss-figwrap{height:52vh}.bf-arena .boss-fig{height:44vh}.bf{grid-template-rows:auto auto 1fr auto}.bf-team .bft{height:44px}}
+@media (orientation:landscape) and (max-height:500px){.boss-figwrap{height:52vh}.bf-arena .boss-fig{height:50vh}.bf{grid-template-rows:auto 1fr auto}.bft-ph{width:32px;height:38px}.bf-dodge{width:66px;height:66px}.bf-super{width:78px;height:78px}}
+@media (min-width:900px){.bf-hud{max-width:760px;width:100%;justify-self:center}.bf-top{max-width:900px;width:100%;justify-self:center}}
 @media (prefers-reduced-motion:reduce){.boss-fig,.boss-shadow{animation:none!important}}
 /* --- Sportsbook --- */
 .cz-tile[data-open="sport"]{grid-column:1/-1;min-height:110px}
@@ -3752,9 +3772,9 @@ const INFO = {
     <li data-feat="foodmenu">Zolang je zat bent, krijg je geen alcohol. En wie weet zit er achter sommige combinaties iets geheims…</li></ul></div>`],
   boss: ['Boss Battle', `
     <p>Elke <strong>zondag van 20u tot 21u</strong> valt er een boss de campus aan. Iedereen vecht tegelijk, en iedereen ziet dezelfde HP-balk.</p>
-    <ul><li>Kies 5 kaarten en tik 60 seconden op de boss. Elke tik vult je energie; vol = <strong>superaanval</strong>.</li>
+    <ul><li>Kies een team van 3 kaarten voor de hele avond en tik 60 seconden op de boss. Elke tik vult je energie; vol = <strong>superaanval</strong>.</li>
     <li>Licht de boss rood op? Tik op <strong>Ontwijk</strong>. Te laat? Dan verliest je kaart HP. Valt ze uit, dan neemt de volgende over.</li>
-    <li>Max. 3 gevechten per avond, en elke kaart vecht maar één keer. Legendary en epic doen meer schade, en de zwakte van de boss telt ×1,5.</li>
+    <li>Met dat team speel je 3 gevechten per avond. Legendary en epic doen meer schade, en de zwakte van de boss telt ×1,5.</li>
     <li>Is de boss verslagen voor 21u, dan krijgt iedereen die meedeed credits. Ontsnapt hij, dan krijgt niemand iets.</li></ul>`],
   casino: ['Het casino', `
     <p data-feat="smallbets">Zet 1, 2, 5, 10, … tot 50 credits in per spel. Alle uitkomsten worden op de server getrokken.</p>
@@ -4286,7 +4306,7 @@ const CAMPUS_PLACES = [
 // Bij elke nieuwe update: bovenaan een dag toevoegen (of de bestaande dag van vandaag aanvullen).
 const UPDATES = [
   { date: '2026-10-21', items: [
-    ['👹', 'Boss Battle', 'Elke zondag om 20u valt een boss de campus aan. Vecht samen met iedereen met 5 kaarten, en versla hem voor 21u voor credits.', 'boss'],
+    ['👹', 'Boss Battle', 'Elke zondag om 20u valt een boss de campus aan. Kies 3 kaarten, vecht samen met iedereen en versla hem voor 21u voor credits.', 'boss'],
   ] },
   { date: '2026-10-17', items: [
     ['⚽', 'Sportsbook', 'Nieuw in het casino: zet in op echte voetbalwedstrijden (Champions League, Premier League, Serie A, La Liga, Ligue 1, Pro League en Nations League), met de quoteringen van echte bookmakers.', 'sportsbook'],
@@ -6987,20 +7007,19 @@ async function drawBoss(view) {
       <div class="boss-hp${left / (e.hp_max || 1) < .5 ? ' rage' : ''}" id="bossHp"><div class="bh-bar"><i style="width:${(left / (e.hp_max || 1) * 100).toFixed(2)}%"></i></div>
         <div class="bh-txt"><b id="bossHpTxt">${fmtN(left)} / ${fmtN(e.hp_max)} HP</b><span id="bossPlayers">${e.players} speler${e.players === 1 ? '' : 's'}</span></div></div>`}
     </div>
-    ${e.phase === 'live' ? `<div class="boss-cta"><button type="button" class="btn boss-go" id="bossFight" ${e.my.fights >= 3 ? 'disabled' : ''}>${e.my.fights >= 3 ? 'Je 3 gevechten zijn gespeeld' : `⚔️ Vecht mee <small>${3 - e.my.fights} van 3 over</small>`}</button>
+    ${e.phase === 'live' ? `<div class="boss-cta"><button type="button" class="btn boss-go" id="bossFight" ${e.my.fights >= 3 ? 'disabled' : ''}>${e.my.fights >= 3 ? 'Je 3 gevechten zijn gespeeld' : `⚔️ ${e.my.fights ? 'Volgend gevecht' : 'Vecht mee'} <small>${3 - e.my.fights} van 3 over${e.my.used.length ? ' · ' + e.my.used.map(id => esc(cardById(id)?.name || '')).join(', ') : ''}</small>`}</button>
       <span class="boss-left">Nog <b id="bossClock"></b></span></div>` : ''}
     ${e.phase === 'defeated' ? `<div class="boss-result win"><b>VERSLAGEN!</b><span>${e.last_hit ? `Laatste klap: ${esc(e.last_hit)}. ` : ''}${e.my.reward ? `Jij kreeg <b>+${e.my.reward} credits</b>.` : e.my.damage ? '' : 'Jij deed niet mee deze keer.'}</span></div>` : ''}
     ${e.phase === 'ended' ? '<div class="boss-result lose"><b>ONTSNAPT</b><span>De boss was te sterk. Geen beloning deze week.</span></div>' : ''}
     <div class="boss-cols">
-      ${up ? '' : `<div class="boss-card"><h4>Live</h4><ul class="boss-feed" id="bossFeed">${bossFeedHtml(e)}</ul></div>
-      <div class="boss-card"><h4>Meeste schade</h4><ol class="boss-top" id="bossTop">${bossTopHtml(e)}</ol>${e.my.damage ? `<p class="hint">Jouw schade: <b>${fmtN(e.my.damage)}</b></p>` : ''}</div>`}
+      ${up ? '' : `<div class="boss-card"><h4>Meeste schade</h4><ol class="boss-top" id="bossTop">${bossTopHtml(e)}</ol>${e.my.damage ? `<p class="hint">Jouw schade: <b>${fmtN(e.my.damage)}</b></p>` : ''}</div>`}
       <div class="boss-card"><h4>Hoe werkt het?</h4><ul class="boss-rules">
         <li>Elke <b>zondag van 20u tot 21u</b>. Iedereen vecht tegelijk tegen dezelfde boss.</li>
-        <li>Kies <b>5 kaarten</b> en tik 60 seconden op de boss. Volle energie? <b>Superaanval!</b></li>
+        <li>Kies een team van <b>3 kaarten</b> voor de hele avond en tik 60 seconden op de boss. Volle energie? <b>Superaanval!</b></li>
         <li>Licht de boss rood op? Tik op <b>Ontwijk</b>, anders raakt hij je kaart.</li>
-        <li>Max. <b>3 gevechten</b>, en elke kaart maar één keer per avond.</li>
+        <li>Met dat team speel je <b>3 gevechten</b>. Bij elk gevecht staan je kaarten weer recht.</li>
         ${e.weakness_kind ? `<li>Zwak tegen <b>${esc(bossWeak(e))}</b>: ×1,5 schade.</li>` : ''}
-        <li>Verslagen? Iedereen die meedeed krijgt <b>50+ credits</b>, meer naargelang je schade. Topschutter +50, laatste klap +25.</li>
+        <li>De boss is sterk: hij valt enkel als bijna iedereen meedoet. Verslagen? Iedereen die meedeed krijgt <b>50+ credits</b>, meer naargelang je schade. Topschutter +50, laatste klap +25.</li>
       </ul></div>
     </div>
     ${d.is_admin ? bossAdminHtml() : ''}`;
@@ -7018,7 +7037,6 @@ async function drawBoss(view) {
   const fb = view.querySelector('#bossFight'); if (fb) fb.onclick = () => bossPickTeam(view);
   if (d.is_admin) bindBossAdmin(view);
 }
-const bossFeedHtml = e => e.feed.length ? e.feed.map(h => `<li${h.super ? ' class="sup"' : ''}><b>${esc(h.name)}</b><span>−${fmtN(h.damage)}${h.super ? ' 💥' : ''}</span></li>`).join('') : '<li class="empty">Nog niemand aangevallen…</li>';
 const bossTopHtml = e => e.top.length ? e.top.map(t => `<li${t.me ? ' class="me"' : ''}><b>${esc(t.name)}</b><span>${fmtN(t.dmg)}</span></li>`).join('') : '<li class="empty">—</li>';
 function updateBossLive(view) {
   const e = bossState.data?.event; if (!e || e.phase === 'upcoming') return;
@@ -7027,7 +7045,6 @@ function updateBossLive(view) {
   const t = view.querySelector('#bossHpTxt'); if (t) t.textContent = `${fmtN(left)} / ${fmtN(e.hp_max)} HP`;
   const p = view.querySelector('#bossPlayers'); if (p) p.textContent = `${e.players} speler${e.players === 1 ? '' : 's'}`;
   view.querySelector('#bossHp')?.classList.toggle('rage', left / (e.hp_max || 1) < .5);
-  const f = view.querySelector('#bossFeed'); if (f) f.innerHTML = bossFeedHtml(e);
   const tp = view.querySelector('#bossTop'); if (tp) tp.innerHTML = bossTopHtml(e);
 }
 
@@ -7039,23 +7056,29 @@ function bossPower(c, e) {
 }
 
 // Team kiezen: 5 kaarten die vanavond nog niet vochten
-function bossPickTeam(view) {
-  const e = bossState.data.event, used = new Set(e.my.used);
-  const pool = state.cards.filter(c => (state.isAdmin || (state.owned.get(c.id) || 0) > 0) && !used.has(c.id))
+async function bossPickTeam(view) {
+  const e = bossState.data.event;
+  // Team ligt vast na het eerste gevecht: meteen vechten
+  if (e.my.used.length === 3) {
+    const { data, error } = await sb.rpc('boss_fight_start', { p_cards: e.my.used });
+    if (error) return alert(error.message);
+    return bossFight(view, data);
+  }
+  const pool = state.cards.filter(c => state.isAdmin || (state.owned.get(c.id) || 0) > 0)
     .map(c => ({ c, p: bossPower(c, e) })).sort((a, b) => (b.p.tap * 10 + b.p.sup) - (a.p.tap * 10 + a.p.sup));
-  const pick = new Set(pool.slice(0, 5).map(x => x.c.id));
+  const pick = new Set(pool.slice(0, 3).map(x => x.c.id));
   document.querySelector('#bossPick')?.remove();
   document.body.insertAdjacentHTML('beforeend', `<dialog class="ar-pop boss-pick" id="bossPick" aria-label="Kies je team"><div class="ar-pop-box">
-    <div class="ar-pop-head"><h3>Kies 5 kaarten <small>${e.weakness_kind ? `zwak tegen ${esc(bossWeak(e))}` : 'elke kaart vecht maar één keer per avond'}</small></h3><button type="button" class="ar-x" data-close aria-label="Sluiten">✕</button></div>
-    ${pool.length < 5 ? `<p class="msg err">Je hebt nog maar ${pool.length} kaart${pool.length === 1 ? '' : 'en'} die vanavond niet gevochten ${pool.length === 1 ? 'heeft' : 'hebben'}.</p>` : ''}
+    <div class="ar-pop-head"><h3>Kies je team <small>3 kaarten voor al je gevechten van vanavond${e.weakness_kind ? ` · zwak tegen ${esc(bossWeak(e))}` : ''}</small></h3><button type="button" class="ar-x" data-close aria-label="Sluiten">✕</button></div>
+    ${pool.length < 3 ? `<p class="msg err">Je hebt minstens 3 kaarten nodig.</p>` : ''}
     <div class="bp-grid">${pool.map(({ c, p }) => `<button type="button" class="bp-card r-${c.rarity}${pick.has(c.id) ? ' on' : ''}" data-bp="${c.id}">
       <span class="bp-ph"${state.photos.get(c.id) ? ` style="background-image:url('${esc(state.photos.get(c.id))}')"` : ''}></span>
       <span class="bp-t"><b>${esc(c.name)}</b><small>${esc(c.person)} · ${RARITY_LABEL[c.rarity]}</small><span class="bp-st">👊 ${p.tap} · 💥 ${p.sup} · ❤️ ${c.hp}</span></span>${p.weak ? '<i class="bp-weak">×1,5</i>' : ''}</button>`).join('')}</div>
     <div class="bp-foot"><span id="bpCount"></span><button type="button" class="btn" id="bpGo">Vechten!</button></div>
   </div></dialog>`);
   const dlg = $('#bossPick'), go = $('#bpGo'), cnt = $('#bpCount');
-  const sync = () => { cnt.textContent = `${pick.size}/5 gekozen`; go.disabled = pick.size !== 5; dlg.querySelectorAll('[data-bp]').forEach(b => b.classList.toggle('on', pick.has(Number(b.dataset.bp)))); };
-  dlg.querySelectorAll('[data-bp]').forEach(b => b.onclick = () => { const id = Number(b.dataset.bp); if (pick.has(id)) pick.delete(id); else if (pick.size < 5) pick.add(id); sync(); });
+  const sync = () => { cnt.textContent = `${pick.size}/3 gekozen`; go.disabled = pick.size !== 3; dlg.querySelectorAll('[data-bp]').forEach(b => b.classList.toggle('on', pick.has(Number(b.dataset.bp)))); };
+  dlg.querySelectorAll('[data-bp]').forEach(b => b.onclick = () => { const id = Number(b.dataset.bp); if (pick.has(id)) pick.delete(id); else if (pick.size < 3) pick.add(id); sync(); });
   dlg.querySelector('[data-close]').onclick = () => dlg.close();
   dlg.addEventListener('close', () => dlg.remove());
   go.onclick = async () => {
@@ -7075,15 +7098,18 @@ async function bossFight(view, start) {
     end: performance.now() + start.seconds * 1000, lastTap: 0, wind: false, dodged: false, over: false, sent: 0, defeated: false, reward: null };
   Sound.setPlace('battle');
   document.body.insertAdjacentHTML('beforeend', `<div class="bf" id="bossFightEl">
-    <div class="bf-top"><div class="bf-hp"><div class="bh-bar"><i id="bfBar"></i></div><b id="bfHpTxt"></b></div><b class="bf-time" id="bfTime">60</b></div>
-    <div class="bf-feed" id="bfFeed"></div>
+    <div class="bf-bg" aria-hidden="true"></div>
+    <div class="bf-top">
+      <div class="bf-hp"><div class="bf-name"><b>${esc(e.name)}</b><span id="bfHpTxt"></span></div><div class="bh-bar"><i id="bfBar"></i></div></div>
+      <div class="bf-time" id="bfTimeWrap"><b id="bfTime">60</b></div>
+    </div>
     <div class="bf-arena" id="bfArena"><div class="bf-warn" id="bfWarn">!</div>
-      <img class="boss-fig" id="bfBoss" src="${esc(img)}" alt="" draggable="false"><i class="boss-shadow"></i></div>
-    <div class="bf-bottom">
+      <img class="boss-fig" id="bfBoss" src="${esc(img)}" alt="" draggable="false"><i class="boss-shadow"></i>
+      <p class="bf-hint" id="bfHint">Tik op de boss om aan te vallen</p></div>
+    <div class="bf-hud">
+      <button type="button" class="bf-dodge" id="bfDodge" aria-label="Ontwijk"><span>↺</span><small>Ontwijk</small></button>
       <div class="bf-team" id="bfTeam"></div>
-      <div class="bf-energy"><i id="bfEnergy"></i></div>
-      <div class="bf-btns"><button type="button" class="bf-dodge" id="bfDodge">↺ Ontwijk</button><button type="button" class="bf-super" id="bfSuper" disabled>💥 Super</button></div>
-      <p class="bf-hint">Tik op de boss om aan te vallen</p>
+      <button type="button" class="bf-super" id="bfSuper" disabled aria-label="Superaanval"><span>💥</span><small>Super</small></button>
     </div>
     <div class="bf-flash" id="bfFlash"></div></div>`);
   const el = $('#bossFightEl'), boss = $('#bfBoss'), arena = $('#bfArena');
@@ -7096,10 +7122,10 @@ async function bossFight(view, start) {
     boss.classList.toggle('rage', pctLeft() < .5); boss.classList.toggle('wobble', pctLeft() < .2);
   };
   const drawTeam = () => {
-    $('#bfTeam').innerHTML = f.team.map((c, i) => `<span class="bft${i === f.cur ? ' on' : ''}${c.left <= 0 ? ' ko' : ''}"${state.photos.get(c.id) ? ` style="background-image:url('${esc(state.photos.get(c.id))}')"` : ''}>
-      <i style="width:${Math.max(0, c.left / c.hp * 100)}%"></i>${i === f.cur ? `<b>${esc(c.name)}</b>` : ''}</span>`).join('');
-    $('#bfEnergy').style.width = f.energy + '%';
-    $('#bfSuper').disabled = f.energy < 100 || f.over;
+    $('#bfTeam').innerHTML = f.team.map((c, i) => `<span class="bft${i === f.cur ? ' on' : ''}${c.left <= 0 ? ' ko' : ''}">
+      <span class="bft-ph"${state.photos.get(c.id) ? ` style="background-image:url('${esc(state.photos.get(c.id))}')"` : ''}></span>
+      <b>${esc(c.name)}</b><i><u style="width:${Math.max(0, c.left / c.hp * 100)}%"></u></i></span>`).join('');
+    const sup = $('#bfSuper'); sup.style.setProperty('--e', f.energy); sup.disabled = f.energy < 100 || f.over; sup.classList.toggle('full', f.energy >= 100 && !f.over);
   };
   const pop = (txt, x, y, cls = '') => {
     const r = arena.getBoundingClientRect();
@@ -7112,7 +7138,7 @@ async function bossFight(view, start) {
   arena.addEventListener('pointerdown', ev => {
     if (f.over || f.team[f.cur].left <= 0) return;
     const now = performance.now(); if (now - f.lastTap < 125) return; f.lastTap = now; // max. 8 per seconde (zoals de server)
-    const c = f.team[f.cur]; add(0, 1); f.dmg += c.tap; f.energy = Math.min(100, f.energy + 10);
+    const c = f.team[f.cur]; add(0, 1); f.dmg += c.tap; f.energy = Math.min(100, f.energy + 10); $('#bfHint')?.remove();
     pop(`−${c.tap}`, ev.clientX + (Math.random() * 30 - 15), ev.clientY - 10, c.weak ? 'weak' : '');
     boss.classList.remove('hit'); void boss.offsetWidth; boss.classList.add('hit');
     if (now - (f.lastSnd || 0) > 140) { Sound.play('hit'); f.lastSnd = now; }
@@ -7170,11 +7196,10 @@ async function bossFight(view, start) {
     const d = await loadBoss(); const ev = d?.event; if (!ev || f.over) return;
     if (ev.phase === 'defeated' && !f.defeated) { f.defeated = true; f.reward = ev.my.reward; return finish('De boss is verslagen!'); }
     f.base = ev.damage - f.sent; drawHp();
-    $('#bfFeed').innerHTML = ev.feed.slice(0, 4).map(h => `<span><b>${esc(h.name)}</b> −${fmtN(h.damage)}</span>`).join('');
   }, 3000);
   const clock = setInterval(() => {
     const s = Math.max(0, Math.ceil((f.end - performance.now()) / 1000));
-    $('#bfTime').textContent = s; $('#bfTime').classList.toggle('low', s <= 10);
+    $('#bfTime').textContent = s; $('#bfTimeWrap').classList.toggle('low', s <= 10); $('#bfTimeWrap').style.setProperty('--t', s / 60);
     if (s <= 0) finish('De tijd is om.');
   }, 200);
   async function finish(why) {

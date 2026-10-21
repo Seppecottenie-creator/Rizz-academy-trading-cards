@@ -4,11 +4,12 @@
 -- - Elke week een andere boss (iemand die we kennen). De admin maakt hem aan op de Boss-pagina:
 --   naam, uitspraak, foto (PNG met doorzichtige achtergrond, volledig lichaam) en een zwakte.
 -- - Tot de start zie je enkel een silhouet en een aftelklok. Om 20u verschijnt de boss.
--- - Tijdens het uur vecht iedereen tegelijk: kies 5 kaarten, 60 seconden tikken op de boss,
---   superaanval als je energie vol is, en ontwijk zijn aanvallen.
---   Max. 3 gevechten per persoon, elke kaart maar één keer per avond.
--- - Eén gedeelde HP-balk voor iedereen. HP = 15.000 × aantal spelers die de afgelopen 7 dagen actief waren
---   (minstens 30.000), tenzij de admin zelf een aantal invult.
+-- - Tijdens het uur vecht iedereen tegelijk: kies 3 kaarten (je team voor de hele avond),
+--   60 seconden tikken op de boss, superaanval als je energie vol is, en ontwijk zijn aanvallen.
+--   Met dat team speel je max. 3 gevechten; bij elk gevecht staan je kaarten weer recht.
+-- - Eén gedeelde HP-balk voor iedereen. HP = 20.000 × aantal spelers die de afgelopen 7 dagen actief waren
+--   (minstens 60.000), tenzij de admin zelf een aantal invult. Een gemiddelde speler doet ±10.000 schade
+--   per gevecht: ongeveer twee op de drie spelers moeten hun 3 gevechten spelen om te winnen.
 -- - Verslagen? Iedereen die meedeed krijgt credits: 50 + een deel van 500 naar verhouding van je schade,
 --   +50 voor wie de meeste schade deed en +25 voor de laatste klap. Niet verslagen: niets.
 -- - Alle schade wordt op de server berekend uit de kaarten en de tijd (max. 8 tikken per seconde).
@@ -116,7 +117,7 @@ begin
   if e.hp_max is not null then return e.hp_max; end if;
   -- spelers die de afgelopen 7 dagen de app open hadden (zonder admin)
   select count(*) into n from public.profiles where last_active > now() - interval '7 days' and not public._is_admin_user(id);
-  update public.boss_events set hp_max = coalesce(hp_override, greatest(30000, 15000 * coalesce(n, 0))) where id = p_event
+  update public.boss_events set hp_max = coalesce(hp_override, greatest(60000, 20000 * coalesce(n, 0))) where id = p_event
   returning hp_max into n;
   return n;
 end $$;
@@ -162,9 +163,6 @@ begin
     'hp_max', hp, 'damage', dmg,
     'players', (select count(distinct user_id) from public.boss_fights f where f.event_id = e.id),
     'last_hit', (select display_name from public.profiles where id = e.last_hit),
-    'feed', coalesce((select jsonb_agg(x order by x.id desc) from (
-       select h.id, coalesce(p.display_name, '?') as name, h.damage, h.super from public.boss_hits h left join public.profiles p on p.id = h.user_id
-       where h.event_id = e.id and (adm or not public._is_admin_user(h.user_id)) order by h.id desc limit 8) x), '[]'::jsonb),
     'top', coalesce((select jsonb_agg(x order by x.dmg desc) from (
        select coalesce(p.display_name, '?') as name, sum(f.damage)::int as dmg, f.user_id = me as me from public.boss_fights f
        left join public.profiles p on p.id = f.user_id
@@ -178,7 +176,7 @@ begin
 end $$;
 grant execute on function public.boss_status() to authenticated;
 
--- 5. Een gevecht starten (5 kaarten) -----------------------------------------------------------------
+-- 5. Een gevecht starten (3 kaarten; vanaf het tweede gevecht hetzelfde team) ---------------------------
 create or replace function public.boss_fight_start(p_cards int[]) returns jsonb
 language plpgsql volatile security definer set search_path = public as $$
 declare me uuid := auth.uid(); e public.boss_events; fid bigint; hp int; team jsonb;
@@ -191,15 +189,16 @@ begin
   if (select count(*) from public.boss_fights where event_id = e.id and user_id = me) >= 3 then
     raise exception 'Je hebt je 3 gevechten van vanavond al gespeeld.';
   end if;
-  if p_cards is null or array_length(p_cards, 1) <> 5 or (select count(distinct c) from unnest(p_cards) c) <> 5 then
-    raise exception 'Kies 5 verschillende kaarten.';
+  if p_cards is null or array_length(p_cards, 1) <> 3 or (select count(distinct c) from unnest(p_cards) c) <> 3 then
+    raise exception 'Kies 3 verschillende kaarten.';
   end if;
   if not public._is_admin_user(me) and exists (select 1 from unnest(p_cards) c
        where not exists (select 1 from public.user_cards uc where uc.user_id = me and uc.card_id = c)) then
     raise exception 'Je kan enkel kaarten gebruiken die je hebt.';
   end if;
-  if exists (select 1 from public.boss_fights f, unnest(f.cards) c where f.event_id = e.id and f.user_id = me and c = any (p_cards)) then
-    raise exception 'Elke kaart mag maar één keer per avond vechten.';
+  if exists (select 1 from public.boss_fights f where f.event_id = e.id and f.user_id = me
+             and not (f.cards @> p_cards and p_cards @> f.cards)) then
+    raise exception 'Je team ligt vast voor vanavond: vecht met dezelfde 3 kaarten.';
   end if;
   update public.boss_fights set ended = true where event_id = e.id and user_id = me and not ended;
   hp := public._boss_hp(e.id);
