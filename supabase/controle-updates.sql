@@ -73,6 +73,9 @@ union all
 select 'update-27-geheime-trofeeen.sql',
        coalesce((select prosrc like '%_feature_on%' from pg_proc where oid = to_regprocedure('public.trophy_status()')), false)
 union all
+select 'update-29-boss.sql',
+       to_regprocedure('public.boss_status()') is not null
+union all
 select 'Testfase: enkel de admin ziet het nieuwe (false = nog niet voor iedereen, dat is normaal tot de release)',
        case when to_regclass('public.feature_flags') is null then false
             else (xpath('/row/c/text()', query_to_xml('select count(*) as c from public.feature_flags where released', false, true, '')))[1]::text <> '0' end

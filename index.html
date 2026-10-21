@@ -2651,6 +2651,117 @@ body.fx-trip .shell{animation:trip-hue 6s linear infinite}
 .cz-tile:hover .ar-ico{animation:ico-bounce .6s ease}
 @keyframes ico-bounce{40%{transform:scale(1.18) rotate(-8deg)}}
 .cz-ctrl .btn{min-width:150px;font-size:16px;padding:12px 24px;box-shadow:0 0 0 2px #F2CC72,0 10px 26px -8px rgba(224,40,74,.9)}
+/* --- Boss Battle --- */
+.boss-banner{position:absolute;left:50%;top:clamp(12px,calc(70px - (100vw - 600px) * 9),62px);transform:translateX(-50%);z-index:6;display:flex;align-items:center;gap:10px;padding:8px 16px 8px 10px;border-radius:999px;border:1px solid rgba(224,40,74,.6);background:linear-gradient(135deg,rgba(40,8,20,.92),rgba(80,10,30,.92));color:#fff;cursor:pointer;box-shadow:0 8px 24px rgba(0,0,0,.45);font:inherit}
+.boss-banner .bb-ic{font-size:24px;filter:drop-shadow(0 0 6px rgba(224,40,74,.8))}
+.boss-banner .bb-t{display:grid;text-align:left;line-height:1.15}.boss-banner b{font:400 15px var(--varsity);letter-spacing:.08em;text-transform:uppercase;color:#FF8FA3}
+.boss-banner small{font:600 12px var(--body);color:#F6DE9C;font-variant-numeric:tabular-nums}
+.boss-banner.ph-live{animation:bb-pulse 1.2s ease-in-out infinite;border-color:#ff3355}
+@keyframes bb-pulse{50%{box-shadow:0 0 0 6px rgba(224,40,74,.25),0 8px 24px rgba(0,0,0,.45)}}
+.boss-stage{position:relative;display:grid;justify-items:center;padding:18px 12px 16px;border-radius:22px;overflow:hidden;min-height:360px;
+  background:radial-gradient(ellipse at 50% 100%,rgba(224,40,74,.28),transparent 60%),radial-gradient(ellipse at 50% 0%,rgba(242,204,114,.12),transparent 55%),linear-gradient(#140812,#07040b);border:1px solid rgba(224,40,74,.3)}
+.boss-lights{position:absolute;inset:0;background:conic-gradient(from 200deg at 20% -10%,transparent 0 30deg,rgba(255,220,180,.08) 36deg,transparent 44deg),conic-gradient(from 120deg at 80% -10%,transparent 0 30deg,rgba(255,220,180,.08) 36deg,transparent 44deg);pointer-events:none}
+.boss-figwrap{position:relative;display:grid;justify-items:center;height:min(46vh,380px)}
+.boss-fig{height:100%;max-width:min(80vw,420px);object-fit:contain;transform-origin:50% 100%;animation:boss-idle 3.2s ease-in-out infinite;filter:drop-shadow(0 10px 22px rgba(0,0,0,.6));user-select:none;-webkit-user-drag:none}
+.boss-fig.sil{filter:brightness(0) drop-shadow(0 0 2px rgba(224,40,74,.9)) drop-shadow(0 0 18px rgba(224,40,74,.6))}
+.boss-fig.sil-admin{filter:brightness(.25) drop-shadow(0 0 2px rgba(224,40,74,.9))}
+.boss-shadow{position:absolute;bottom:-6px;left:50%;width:60%;height:18px;transform:translateX(-50%);border-radius:50%;background:radial-gradient(rgba(0,0,0,.65),transparent 70%);animation:boss-shadow 3.2s ease-in-out infinite}
+@keyframes boss-idle{0%,100%{transform:translateY(0) scale(1,1) rotate(0)}25%{transform:translateY(-4px) scale(1.01,.995) rotate(-.8deg)}50%{transform:translateY(-8px) scale(.995,1.02) rotate(0)}75%{transform:translateY(-4px) scale(1.01,.995) rotate(.8deg)}}
+@keyframes boss-shadow{50%{transform:translateX(-50%) scale(.85);opacity:.7}}
+.boss-fig.rage{animation-duration:1.6s;filter:drop-shadow(0 0 14px rgba(255,40,60,.85)) drop-shadow(0 10px 22px rgba(0,0,0,.6))}
+.boss-fig.wobble{animation:boss-wobble .9s ease-in-out infinite}
+@keyframes boss-wobble{0%,100%{transform:rotate(-3deg) translateY(-3px)}50%{transform:rotate(3deg) translateY(0)}}
+.boss-fig.hit{animation:boss-hit .18s ease-out}
+@keyframes boss-hit{0%{filter:brightness(2.4) saturate(0) drop-shadow(0 0 10px #fff);transform:translateX(-6px) scale(.98)}100%{transform:translateX(0)}}
+.boss-fig.smash{animation:boss-smash .6s ease-out}
+@keyframes boss-smash{0%{filter:brightness(3) saturate(0);transform:scale(.9) rotate(-6deg)}40%{transform:scale(1.04) rotate(3deg)}100%{transform:none}}
+.boss-fig.windup{animation:boss-windup .9s ease-in both;filter:drop-shadow(0 0 22px rgba(255,30,50,1)) brightness(1.1) sepia(.4) hue-rotate(-30deg) saturate(2)}
+@keyframes boss-windup{0%{transform:none}100%{transform:translateY(-14px) scale(1.07)}}
+.boss-fig.strike{animation:boss-strike .45s cubic-bezier(.2,1.6,.4,1)}
+@keyframes boss-strike{0%{transform:translateY(-14px) scale(1.07)}35%{transform:translateY(30px) scale(1.28)}100%{transform:none}}
+.boss-fig.dead{animation:boss-dead 1.5s ease-in forwards}
+@keyframes boss-dead{0%{transform:none}20%{transform:rotate(6deg)}100%{transform:rotate(-82deg) translate(-30%,30%);filter:grayscale(1) brightness(.6);opacity:.25}}
+.boss-plate{z-index:1;margin-top:10px;display:grid;justify-items:center;text-align:center}
+.boss-plate b{font:400 clamp(26px,6vw,40px)/1 var(--varsity);letter-spacing:.06em;text-transform:uppercase;color:#FFE6A8;text-shadow:0 0 18px rgba(224,40,74,.7)}
+.boss-plate small{margin-top:4px;font:italic 500 14px var(--body);color:var(--ink-soft)}
+.boss-cd{z-index:1;margin-top:12px;display:grid;justify-items:center;gap:2px}
+.boss-cd small{font:600 13px var(--body);letter-spacing:.1em;text-transform:uppercase;color:#FF8FA3}
+.boss-cd b{font:400 clamp(34px,9vw,58px)/1 var(--varsity);letter-spacing:.04em;color:#fff;font-variant-numeric:tabular-nums;text-shadow:0 0 24px rgba(224,40,74,.6)}
+.boss-cd span{font:500 13px var(--body);color:var(--muted)}
+.boss-hp{z-index:1;width:min(560px,100%);margin-top:14px}
+.bh-bar{height:18px;border-radius:999px;background:rgba(255,255,255,.08);overflow:hidden;box-shadow:inset 0 0 0 1px rgba(255,255,255,.12)}
+.bh-bar i{display:block;height:100%;background:linear-gradient(90deg,#ff3355,#ff8a3d);border-radius:inherit;transition:width .5s ease}
+.boss-hp.rage .bh-bar i{background:linear-gradient(90deg,#ff1a3c,#ff3355);animation:bh-rage .8s ease-in-out infinite}
+@keyframes bh-rage{50%{filter:brightness(1.4)}}
+.bh-txt{display:flex;justify-content:space-between;margin-top:5px;font:600 13px var(--body);color:var(--ink-soft);font-variant-numeric:tabular-nums}.bh-txt b{color:#fff}
+.boss-cta{display:flex;align-items:center;justify-content:center;gap:16px;flex-wrap:wrap;margin:14px 0}
+.boss-go{font-size:18px;padding:14px 26px;background:linear-gradient(135deg,#ff3355,#b3122f);box-shadow:0 10px 28px rgba(224,40,74,.45)}
+.boss-go small{display:block;font:500 12px var(--body);opacity:.85}
+.boss-left{font:600 14px var(--body);color:var(--ink-soft)}.boss-left b{color:#fff;font-variant-numeric:tabular-nums}
+.boss-result{display:grid;justify-items:center;gap:4px;margin:14px 0;padding:14px;border-radius:16px;text-align:center}
+.boss-result b{font:400 34px var(--varsity);letter-spacing:.08em}.boss-result.win{background:rgba(127,211,160,.12)}.boss-result.win b{color:#7FD3A0}
+.boss-result.lose{background:rgba(224,40,74,.1)}.boss-result.lose b{color:#FF8FA3}
+.boss-cols{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px;margin-top:14px}
+.boss-card{padding:14px;border-radius:16px;background:rgba(255,255,255,.045);border:1px solid var(--line2)}
+.boss-card h4{margin:0 0 8px;font:400 15px var(--varsity);letter-spacing:.08em;text-transform:uppercase;color:#F2CC72}
+.boss-feed,.boss-top{margin:0;padding:0;list-style:none;display:grid;gap:5px}
+.boss-feed li,.boss-top li{display:flex;justify-content:space-between;gap:8px;font:500 14px var(--body)}.boss-feed span,.boss-top span{font-variant-numeric:tabular-nums;color:#FF8FA3}
+.boss-feed li.sup span{color:#F2CC72;font-weight:700}.boss-top li.me b{color:#F2CC72}.boss-feed .empty,.boss-top .empty{color:var(--muted)}
+.boss-top{counter-reset:t}.boss-top li::before{counter-increment:t;content:counter(t) ".";width:20px;color:var(--muted)}.boss-top li b{flex:1}
+.boss-rules{margin:0;padding-left:18px;display:grid;gap:5px;font:400 14px/1.4 var(--body);color:var(--ink-soft)}
+.boss-admin{margin-top:22px;padding:16px;border-radius:16px;border:1px dashed rgba(242,204,114,.4)}
+.boss-admin h3{margin:0 0 10px}.boss-admin h3 small{font:500 12px var(--body);color:var(--muted)}
+.ba-form{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px}
+.ba-form label{display:grid;gap:4px;font:600 12px var(--body);color:var(--ink-soft)}
+.ba-form input,.ba-form select{padding:9px 10px;border-radius:10px;border:1px solid var(--line2);background:rgba(255,255,255,.06);color:var(--ink);font:500 14px var(--body)}
+.ba-form .ba-file,.ba-form .ba-chk,.ba-prev,.ba-act,#baMsg{grid-column:1/-1}.ba-chk{display:flex!important;align-items:center;gap:8px}
+.ba-prev img{max-height:200px;background:repeating-conic-gradient(#333 0 25%,#222 0 50%) 0 0/16px 16px;border-radius:10px}
+.ba-act{display:flex;gap:12px;align-items:center}
+.ba-row{display:flex;align-items:center;gap:10px;padding:8px 0;border-top:1px solid var(--line2)}.ba-row span{flex:1;display:grid}.ba-row small{color:var(--muted)}
+.boss-pick .ar-pop-box{max-width:760px}
+.bp-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:8px;max-height:55vh;overflow:auto;padding:2px}
+.bp-card{position:relative;display:flex;gap:10px;align-items:center;padding:7px;border-radius:12px;border:1px solid var(--line2);background:rgba(255,255,255,.04);color:var(--ink);text-align:left;cursor:pointer;font:inherit}
+.bp-card.on{border-color:#F2CC72;background:rgba(242,204,114,.16);box-shadow:inset 0 0 0 1px #F2CC72}
+.bp-card.r-epic{border-left:3px solid #C58BFF}.bp-card.r-legendary{border-left:3px solid #F2CC72}
+.bp-ph{flex:none;width:44px;height:56px;border-radius:8px;background:#2a1a30 center/cover}
+.bp-t{display:grid;min-width:0}.bp-t b{font:600 13.5px var(--body);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.bp-t small{font:500 11.5px var(--body);color:var(--muted)}
+.bp-st{font:600 12px var(--body);color:var(--ink-soft)}
+.bp-weak{position:absolute;top:5px;right:7px;font:700 11px var(--body);font-style:normal;color:#7FD3A0}
+.bp-foot{display:flex;justify-content:space-between;align-items:center;margin-top:12px;gap:10px}
+/* gevecht */
+body.bf-open{overflow:hidden}
+.bf{position:fixed;inset:0;z-index:4000;display:grid;grid-template-rows:auto auto 1fr auto;background:radial-gradient(ellipse at 50% 85%,rgba(224,40,74,.35),transparent 60%),linear-gradient(#170812,#050307);color:#fff;touch-action:manipulation;user-select:none;-webkit-user-select:none;padding:max(10px,env(safe-area-inset-top)) 14px max(12px,env(safe-area-inset-bottom))}
+.bf.shake{animation:bf-shake .35s}@keyframes bf-shake{20%{transform:translate(-8px,4px)}40%{transform:translate(7px,-5px)}60%{transform:translate(-5px,3px)}80%{transform:translate(4px,-2px)}}
+.bf.dodging .bf-arena{animation:bf-dodge .45s ease-out}@keyframes bf-dodge{40%{transform:translateX(-40px) rotate(-3deg)}}
+.bf-top{display:flex;align-items:center;gap:12px}.bf-hp{flex:1;display:grid;gap:3px}.bf-hp b{font:600 13px var(--body);font-variant-numeric:tabular-nums}
+.bf-time{font:400 30px var(--varsity);min-width:44px;text-align:right;font-variant-numeric:tabular-nums}.bf-time.low{color:#ff3355;animation:bh-rage .5s infinite}
+.bf-feed{display:flex;gap:10px;flex-wrap:wrap;min-height:20px;margin-top:6px;font:500 12px var(--body);color:var(--ink-soft)}.bf-feed b{color:#fff}
+.bf-arena{position:relative;display:grid;place-items:end center;min-height:0;cursor:crosshair;padding-bottom:12px}
+.bf-arena .boss-fig{height:min(52vh,460px)}
+.bf-warn{position:absolute;top:8%;left:50%;transform:translateX(-50%) scale(0);font:400 64px var(--varsity);color:#ff3355;text-shadow:0 0 20px #ff3355;transition:transform .15s;pointer-events:none;z-index:2}.bf-warn.on{transform:translateX(-50%) scale(1);animation:bh-rage .3s infinite}
+.bf-dmg{position:absolute;z-index:3;transform:translate(-50%,-50%);font:400 26px var(--varsity);color:#fff;text-shadow:0 2px 6px rgba(0,0,0,.8);pointer-events:none;animation:bf-float .9s ease-out forwards;white-space:nowrap}
+.bf-dmg.weak{color:#7FD3A0}.bf-dmg.super{font-size:54px;color:#F2CC72;text-shadow:0 0 18px rgba(242,204,114,.9)}.bf-dmg.hurt{color:#ff3355;font-size:30px}.bf-dmg.dodge{color:#6FA8FF;font-size:28px}
+@keyframes bf-float{0%{opacity:0;transform:translate(-50%,-30%) scale(.6)}15%{opacity:1;transform:translate(-50%,-60%) scale(1.15)}100%{opacity:0;transform:translate(-50%,-160%) scale(1)}}
+.bf-bottom{display:grid;gap:8px}
+.bf-team{display:flex;gap:6px;justify-content:center}
+.bft{position:relative;width:46px;height:58px;border-radius:9px;background:#2a1a30 center/cover;border:2px solid rgba(255,255,255,.15);overflow:hidden;opacity:.7}
+.bft.on{width:auto;min-width:150px;opacity:1;border-color:#F2CC72;display:flex;align-items:flex-end;padding:0 6px 8px 50px;background-size:48px 100%;background-repeat:no-repeat;background-position:left}
+.bft b{font:600 12.5px var(--body);white-space:nowrap}
+.bft i{position:absolute;left:0;bottom:0;height:4px;background:#7FD3A0;transition:width .3s}.bft.ko{opacity:.25;filter:grayscale(1)}
+.bf-energy{height:8px;border-radius:999px;background:rgba(255,255,255,.1);overflow:hidden}.bf-energy i{display:block;height:100%;width:0;background:linear-gradient(90deg,#6FA8FF,#F2CC72);transition:width .15s}
+.bf-btns{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.bf-btns button{padding:14px;border-radius:14px;border:0;font:700 17px var(--body);color:#fff;cursor:pointer}
+.bf-dodge{background:#24314f}.bf-dodge.ready{background:#3a6fd8;box-shadow:0 0 0 3px rgba(111,168,255,.6);animation:bh-rage .3s infinite}
+.bf-super{background:linear-gradient(135deg,#F2CC72,#e08a2a);color:#2A1A05!important}.bf-super:disabled{background:#2a2a35;color:rgba(255,255,255,.35)!important;cursor:default}
+.bf-hint{margin:0;text-align:center;font:500 12px var(--body);color:var(--muted)}
+.bf-flash{position:absolute;inset:0;pointer-events:none;opacity:0}.bf-flash.go{animation:bf-flash .35s ease-out}.bf-flash.red{background:rgba(255,30,50,.35)}.bf-flash.white{background:rgba(255,255,255,.5)}
+@keyframes bf-flash{0%{opacity:1}100%{opacity:0}}
+.bf-end{position:absolute;inset:0;display:grid;place-items:center;background:rgba(5,3,8,.75);z-index:5}
+.bf-end-box{display:grid;justify-items:center;gap:10px;padding:26px;border-radius:20px;background:#1a0d18;border:1px solid rgba(242,204,114,.4);text-align:center;min-width:260px}
+.bf-end-t{font:400 38px var(--varsity);letter-spacing:.06em;color:#F2CC72}.bf-end-n small{display:block;color:var(--muted)}.bf-end-n b{font:400 44px var(--varsity)}
+.bf-end-r{font:700 20px var(--body);color:#7FD3A0}
+@media (orientation:landscape) and (max-height:500px){.boss-figwrap{height:52vh}.bf-arena .boss-fig{height:44vh}.bf{grid-template-rows:auto auto 1fr auto}.bf-team .bft{height:44px}}
+@media (prefers-reduced-motion:reduce){.boss-fig,.boss-shadow{animation:none!important}}
 /* --- Sportsbook --- */
 .cz-tile[data-open="sport"]{grid-column:1/-1;min-height:110px}
 .sb-top{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:10px}
@@ -2911,7 +3022,7 @@ try { const u = Number(localStorage.getItem('rizz-drunk-until')); if (u > Date.n
 const Sound = (() => {
   const SFX = ['click', 'card', 'flip', 'coins', 'win', 'lose', 'epic', 'legendary', 'pack', 'stamp', 'fail', 'lever', 'reel', 'tick',
     'roulette', 'bell', 'gallop', 'hit', 'ko', 'gulp', 'shot', 'zap', 'nom', 'sparkle'];
-  const PLACE_SONG = { casino: 'casino', battle: 'battle', bar: 'bar' };
+  const PLACE_SONG = { casino: 'casino', battle: 'battle', bar: 'bar', boss: 'battle' };
   const VOL = { music: .32, sfx: .85 };
   let ctx = null, musicBus, sfxBus, place = null, song = null, songSrc = null, songGain = null, sfxLoaded = false;
   const bufs = new Map();
@@ -3502,6 +3613,7 @@ const TABS = [
   { id: 'house', label: 'Frat House', short: 'House', icon: ICON('<path d="M3 11 12 4l9 7"/><path d="M5 10v10h14V10"/><path d="M10 20v-5h4v5"/>') },
   { id: 'friends', label: 'Friends', short: 'Friends', icon: ICON('<circle cx="9" cy="8" r="3.5"/><path d="M2.5 20a6.5 6.5 0 0 1 13 0"/><circle cx="17" cy="9" r="2.6"/><path d="M15.5 14.2A5 5 0 0 1 21.5 19"/>'), badge: 'friend' },
   { id: 'battle', label: 'The Arena', short: 'Arena', icon: ICON('<path d="M14.5 17.5 3 6V3h3l11.5 11.5M13 19l6-6M16 16l4 4M19 21l2-2"/><path d="M9.5 17.5 21 6V3h-3L6.5 14.5M11 19l-6-6M8 16l-4 4M5 21l-2-2"/>'), badge: 'battle' },
+  { id: 'boss', label: 'Boss Battle', short: 'Boss', feat: 'boss', icon: ICON('<path d="M5 10a7 7 0 0 1 14 0v4a3 3 0 0 1-3 3h-1v3H9v-3H8a3 3 0 0 1-3-3z"/><circle cx="9.5" cy="11" r="1.4" fill="currentColor"/><circle cx="14.5" cy="11" r="1.4" fill="currentColor"/><path d="M5 6 3 3M19 6l2-3"/>') },
   { id: 'casino', label: 'Casino', short: 'Casino', icon: ICON('<rect x="3" y="3" width="18" height="18" rx="4"/><circle cx="8" cy="8" r="1.3" fill="currentColor"/><circle cx="16" cy="16" r="1.3" fill="currentColor"/><circle cx="12" cy="12" r="1.3" fill="currentColor"/><circle cx="16" cy="8" r="1.3" fill="currentColor"/><circle cx="8" cy="16" r="1.3" fill="currentColor"/>') },
   { id: 'bar', label: 'Food Truck', short: 'Truck', icon: ICON('<path d="M6 4h9l-1 16H7z"/><path d="M15 8h2.5a2.5 2.5 0 0 1 0 5H15"/><path d="M6.4 9h8.2"/>') },
   { id: 'trade', label: 'Black Market', short: 'Market', icon: ICON('<path d="M4 8h14l-4-4M20 16H6l4 4"/>'), badge: 'trade' },
@@ -3510,7 +3622,7 @@ const TABS = [
   { id: 'ideas', label: 'Town Hall', short: 'Town Hall', icon: ICON('<path d="M3 10v4a1 1 0 0 0 1 1h3l6 4V5L7 9H4a1 1 0 0 0-1 1zM17 9a4 4 0 0 1 0 6"/>') },
 ];
 
-const navHtml = () => TABS.map(t => `<button type="button" class="nav-btn" data-tab="${t.id}"${t.id === state.tab ? ' aria-current="page"' : ''}>
+const navHtml = () => TABS.filter(t => !t.feat || feat(t.feat)).map(t => `<button type="button" class="nav-btn" data-tab="${t.id}"${t.id === state.tab ? ' aria-current="page"' : ''}>
   <span class="ni" aria-hidden="true">${t.icon}</span><span class="nl">${t.label}${t.id === 'campus' ? '<small>Main menu</small>' : ''}</span><span class="ns">${t.short}</span>${t.badge ? `<span class="tab-badge" data-${t.badge}-badge hidden></span>` : ''}</button>`).join('');
 const logoHtml = () => `<div class="logo"><span class="crest" aria-hidden="true">RIZZ</span><span class="logo-txt"><b>RIZZ ACADEMY</b><small>EST. MMXXVI</small></span></div>`;
 
@@ -3523,7 +3635,7 @@ function renderMain() {
   const initial = esc((state.name || '?').trim().charAt(0).toUpperCase());
   const avStyle = state.avatarUrl ? ` style="background-image:url('${esc(state.avatarUrl)}')"` : '';
   const avatar = `<span class="avbtn"${avStyle}>${state.avatarUrl ? '' : initial}</span>`;
-  if (!TABS.some(t => t.id === state.tab)) state.tab = 'campus';
+  if (!TABS.some(t => t.id === state.tab && (!t.feat || feat(t.feat)))) state.tab = 'campus';
   Sound.setPlace(state.tab);
   app.innerHTML = `
   <div class="shell" data-place="${state.tab}" data-phase="${dayPhase() === 'night' ? 'night' : 'day'}">
@@ -3638,6 +3750,12 @@ const INFO = {
     <li data-feat="foodmenu"><strong>Red Bull</strong> (2): 30 seconden hyper. <strong>Kapsalon</strong> (4): je bent meteen nuchter en de teller begint opnieuw.</li>
     <li data-feat="foodmenu"><strong>Rizz-poeder</strong> (8): een minuut trippen, en soms vind je er een gratis kaart in. Max. 3 per dag.</li>
     <li data-feat="foodmenu">Zolang je zat bent, krijg je geen alcohol. En wie weet zit er achter sommige combinaties iets geheims…</li></ul></div>`],
+  boss: ['Boss Battle', `
+    <p>Elke <strong>zondag van 20u tot 21u</strong> valt er een boss de campus aan. Iedereen vecht tegelijk, en iedereen ziet dezelfde HP-balk.</p>
+    <ul><li>Kies 5 kaarten en tik 60 seconden op de boss. Elke tik vult je energie; vol = <strong>superaanval</strong>.</li>
+    <li>Licht de boss rood op? Tik op <strong>Ontwijk</strong>. Te laat? Dan verliest je kaart HP. Valt ze uit, dan neemt de volgende over.</li>
+    <li>Max. 3 gevechten per avond, en elke kaart vecht maar één keer. Legendary en epic doen meer schade, en de zwakte van de boss telt ×1,5.</li>
+    <li>Is de boss verslagen voor 21u, dan krijgt iedereen die meedeed credits. Ontsnapt hij, dan krijgt niemand iets.</li></ul>`],
   casino: ['Het casino', `
     <p data-feat="smallbets">Zet 1, 2, 5, 10, … tot 50 credits in per spel. Alle uitkomsten worden op de server getrokken.</p>
     <p data-nofeat="smallbets">Zet je credits in, telkens per 5 (minstens 5, hoogstens 50 per spel). Alle uitkomsten worden op de server getrokken.</p>
@@ -3668,7 +3786,7 @@ const INFO = {
 const infoBtn = key => `<button class="info-btn" type="button" data-info="${key}" aria-label="Uitleg">i</button>`;
 const KICKERS = { today: () => `Exam Hall · ${dateLabel()}`, house: () => 'Members only', campus: () => dateLabel(), book: () => 'Class of MMXXVI', stats: () => 'The numbers don\'t lie',
   battle: () => 'Winner takes the credits', bar: () => 'Open till late', casino: () => 'The house always wins. Mostly.', friends: () => 'Ride or die', trade: () => 'No receipts. No refunds.',
-  shop: () => 'Credits only · no credit', ideas: () => 'Speak up or shut up' };
+  shop: () => 'Credits only · no credit', ideas: () => 'Speak up or shut up', boss: () => 'Sunday night · 20:00' };
 const JOKES = {
   house: ['Doors lock at midnight. Nobody has a key.', 'What happens in the house stays on the wall.', 'Your room says more about you than your Wordle streak.'],
   today: ['One word. Six shots. Don\'t waste them.', 'Attendance is mandatory. Excuses are not accepted.', 'The envelope doesn\'t open itself.'],
@@ -4137,6 +4255,7 @@ function renderView() {
   else if (state.tab === 'trade') renderTrade(view);
   else if (state.tab === 'shop') renderShop(view);
   else if (state.tab === 'ideas') renderIdeas(view);
+  else if (state.tab === 'boss') renderBoss(view);
 }
 
 // ---------- Campus: de kaart met alle gebouwen (startscherm) ----------
@@ -4166,6 +4285,9 @@ const CAMPUS_PLACES = [
 // ---------- Updates: wat is er nieuw (nieuwste dag bovenaan) ----------
 // Bij elke nieuwe update: bovenaan een dag toevoegen (of de bestaande dag van vandaag aanvullen).
 const UPDATES = [
+  { date: '2026-10-21', items: [
+    ['👹', 'Boss Battle', 'Elke zondag om 20u valt een boss de campus aan. Vecht samen met iedereen met 5 kaarten, en versla hem voor 21u voor credits.', 'boss'],
+  ] },
   { date: '2026-10-17', items: [
     ['⚽', 'Sportsbook', 'Nieuw in het casino: zet in op echte voetbalwedstrijden (Champions League, Premier League, Serie A, La Liga, Ligue 1, Pro League en Nations League), met de quoteringen van echte bookmakers.', 'sportsbook'],
     ['🍟', 'Food Truck: volledige kaart', 'Naast pintjes nu ook shotjes, Red Bull, een kapsalon (meteen nuchter) en het mysterieuze Rizz-poeder, waarin je soms een gratis kaart vindt.', 'foodmenu'],
@@ -4256,6 +4378,7 @@ async function renderCampus(view) {
   </section>`;
   const go = id => { state.tab = id; renderMain(); scrollTo({ top: 0 }); };
   $('#openUpdates').onclick = openUpdates;
+  bossCampusBanner(view);
   bindSoundButtons(view);
   view.querySelectorAll('[data-go]').forEach(el => { el.onclick = () => go(el.dataset.go); });
   // Zone en bordje lichten samen op
@@ -6772,6 +6895,414 @@ async function renderBattle(view) {
     openBattle(view, id);
   });
   sync();
+}
+
+// ---------- Boss Battle: elke zondag 20u–21u (supabase/update-29-boss.sql) ----------
+// Iedereen vecht tegelijk tegen dezelfde boss, met één gedeelde HP-balk. Alle schade rekent de server.
+const BOSS_BUCKET = 'boss-images';
+const bossImgs = new Map();
+const bossState = { data: null, offset: 0, timer: null, poll: null, fight: null };
+const bossNow = () => Date.now() + bossState.offset;
+async function bossImgUrl(path) {
+  if (!path) return null;
+  if (bossImgs.has(path)) return bossImgs.get(path);
+  const { data } = await sb.storage.from(BOSS_BUCKET).createSignedUrl(path, 6 * 3600);
+  const url = data?.signedUrl || null; if (url) bossImgs.set(path, url);
+  return url;
+}
+async function loadBoss() {
+  const { data, error } = await sb.rpc('boss_status');
+  if (error || !data) return null;
+  bossState.offset = new Date(data.now).getTime() - Date.now();
+  bossState.data = data;
+  return data;
+}
+// Aftellen: "2d 04:12:55"
+function bossCountdown(ms) {
+  if (ms <= 0) return '00:00:00';
+  const s = Math.floor(ms / 1000), d = Math.floor(s / 86400), h = Math.floor(s % 86400 / 3600), m = Math.floor(s % 3600 / 60), x = s % 60;
+  const p = n => String(n).padStart(2, '0');
+  return `${d ? d + 'd ' : ''}${p(h)}:${p(m)}:${p(x)}`;
+}
+const bossWhen = iso => { const s = new Date(iso).toLocaleString('nl-BE', { weekday: 'long', hour: '2-digit', minute: '2-digit', timeZone: 'Europe/Brussels' }); return s[0].toUpperCase() + s.slice(1); };
+const bossWeak = e => !e?.weakness_kind ? '' : e.weakness_kind === 'rarity' ? `${RARITY_LABEL[e.weakness_value] || e.weakness_value}-kaarten` : `kaarten van ${e.weakness_value}`;
+const fmtN = n => Number(n || 0).toLocaleString('nl-BE');
+// Silhouet als er (nog) geen foto is
+const BOSS_FALLBACK = `data:image/svg+xml,${encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 320"><g fill="#3a2440"><circle cx="100" cy="52" r="34"/><path d="M52 100q48-22 96 0l14 92-22 6-6-56-6 168h-26l-2-98-2 98H72l-6-168-6 56-22-6z"/></g></svg>')}`;
+
+// Banner op de campus: aftellen of LIVE
+async function bossCampusBanner(view) {
+  if (!feat('boss')) return;
+  const d = await loadBoss(); const e = d?.event;
+  const host = view.querySelector('.campus'); if (!host || !view.isConnected) return;
+  if (!e) return;
+  host.insertAdjacentHTML('beforeend', `<button type="button" class="boss-banner ph-${e.phase}" id="bossBanner"><span class="bb-ic" aria-hidden="true">👹</span>
+    <span class="bb-t"><b>Boss Battle</b><small id="bossBannerTxt"></small></span></button>`);
+  const b = $('#bossBanner'), t = $('#bossBannerTxt');
+  b.onclick = () => { state.tab = 'boss'; renderMain(); scrollTo({ top: 0 }); };
+  const tick = () => {
+    if (!b.isConnected) return clearInterval(iv);
+    const now = bossNow(), st = new Date(e.starts_at).getTime(), en = new Date(e.ends_at).getTime();
+    if (e.phase === 'defeated') t.textContent = 'Verslagen! 🎉';
+    else if (now < st) t.textContent = `${bossWhen(e.starts_at)} · ${bossCountdown(st - now)}`;
+    else if (now < en) { b.classList.add('ph-live'); t.textContent = `LIVE · nog ${bossCountdown(en - now)}`; }
+    else t.textContent = 'Ontsnapt… volgende week beter';
+  };
+  const iv = setInterval(tick, 1000); tick();
+}
+
+async function renderBoss(view) {
+  clearInterval(bossState.timer); clearInterval(bossState.poll);
+  view.innerHTML = `<section class="col boss-page" style="max-width:none">${pageHead('Boss Battle', 'boss')}<div id="bossBox"><p class="hint">Laden…</p></div></section>`;
+  const d = await loadBoss();
+  if (!view.isConnected) return;
+  if (!d) { $('#bossBox').innerHTML = '<p class="msg err">De Boss Battle is nog niet open.</p>'; return; }
+  await drawBoss(view);
+  bossState.poll = setInterval(async () => {
+    if (!view.isConnected || state.tab !== 'boss') return clearInterval(bossState.poll);
+    if (bossState.fight) return;
+    const prev = bossState.data?.event?.phase;
+    await loadBoss();
+    if (!view.isConnected) return;
+    if (bossState.data?.event?.phase !== prev) drawBoss(view); else updateBossLive(view);
+  }, 3000);
+}
+
+async function drawBoss(view) {
+  const d = bossState.data, e = d.event, box = view.querySelector('#bossBox'); if (!box) return;
+  const img = (e && await bossImgUrl(e.image_path)) || BOSS_FALLBACK;
+  if (!e) {
+    box.innerHTML = `<div class="boss-stage empty"><img class="boss-fig sil" src="${BOSS_FALLBACK}" alt=""><div class="boss-cd"><small>Nog geen boss gepland</small></div></div>
+      <p class="hint" style="text-align:center">Elke zondag om 20u valt er een boss de campus aan. Hou deze pagina in de gaten.</p>${d.is_admin ? bossAdminHtml() : ''}`;
+    if (d.is_admin) bindBossAdmin(view);
+    return;
+  }
+  const up = e.phase === 'upcoming', left = Math.max(0, (e.hp_max || 1) - e.damage);
+  box.innerHTML = `
+    <div class="boss-stage ph-${e.phase}" id="bossStage">
+      <div class="boss-lights" aria-hidden="true"></div>
+      <div class="boss-figwrap"><img class="boss-fig${up && !d.is_admin ? ' sil' : up ? ' sil-admin' : ''}" id="bossFig" src="${esc(img)}" alt="${esc(e.name || 'Geheime boss')}"><i class="boss-shadow"></i></div>
+      <div class="boss-plate"><b>${up && !d.is_admin ? '???' : esc(e.name)}</b>${e.title && (!up || d.is_admin) ? `<small>“${esc(e.title)}”</small>` : ''}</div>
+      ${up ? `<div class="boss-cd"><small>${bossWhen(e.starts_at)}</small><b id="bossClock"></b><span>Wie is het deze week? 👀</span></div>` : `
+      <div class="boss-hp${left / (e.hp_max || 1) < .5 ? ' rage' : ''}" id="bossHp"><div class="bh-bar"><i style="width:${(left / (e.hp_max || 1) * 100).toFixed(2)}%"></i></div>
+        <div class="bh-txt"><b id="bossHpTxt">${fmtN(left)} / ${fmtN(e.hp_max)} HP</b><span id="bossPlayers">${e.players} speler${e.players === 1 ? '' : 's'}</span></div></div>`}
+    </div>
+    ${e.phase === 'live' ? `<div class="boss-cta"><button type="button" class="btn boss-go" id="bossFight" ${e.my.fights >= 3 ? 'disabled' : ''}>${e.my.fights >= 3 ? 'Je 3 gevechten zijn gespeeld' : `⚔️ Vecht mee <small>${3 - e.my.fights} van 3 over</small>`}</button>
+      <span class="boss-left">Nog <b id="bossClock"></b></span></div>` : ''}
+    ${e.phase === 'defeated' ? `<div class="boss-result win"><b>VERSLAGEN!</b><span>${e.last_hit ? `Laatste klap: ${esc(e.last_hit)}. ` : ''}${e.my.reward ? `Jij kreeg <b>+${e.my.reward} credits</b>.` : e.my.damage ? '' : 'Jij deed niet mee deze keer.'}</span></div>` : ''}
+    ${e.phase === 'ended' ? '<div class="boss-result lose"><b>ONTSNAPT</b><span>De boss was te sterk. Geen beloning deze week.</span></div>' : ''}
+    <div class="boss-cols">
+      ${up ? '' : `<div class="boss-card"><h4>Live</h4><ul class="boss-feed" id="bossFeed">${bossFeedHtml(e)}</ul></div>
+      <div class="boss-card"><h4>Meeste schade</h4><ol class="boss-top" id="bossTop">${bossTopHtml(e)}</ol>${e.my.damage ? `<p class="hint">Jouw schade: <b>${fmtN(e.my.damage)}</b></p>` : ''}</div>`}
+      <div class="boss-card"><h4>Hoe werkt het?</h4><ul class="boss-rules">
+        <li>Elke <b>zondag van 20u tot 21u</b>. Iedereen vecht tegelijk tegen dezelfde boss.</li>
+        <li>Kies <b>5 kaarten</b> en tik 60 seconden op de boss. Volle energie? <b>Superaanval!</b></li>
+        <li>Licht de boss rood op? Tik op <b>Ontwijk</b>, anders raakt hij je kaart.</li>
+        <li>Max. <b>3 gevechten</b>, en elke kaart maar één keer per avond.</li>
+        ${e.weakness_kind ? `<li>Zwak tegen <b>${esc(bossWeak(e))}</b>: ×1,5 schade.</li>` : ''}
+        <li>Verslagen? Iedereen die meedeed krijgt <b>50+ credits</b>, meer naargelang je schade. Topschutter +50, laatste klap +25.</li>
+      </ul></div>
+    </div>
+    ${d.is_admin ? bossAdminHtml() : ''}`;
+  const clock = view.querySelector('#bossClock');
+  clearInterval(bossState.timer);
+  if (clock) {
+    const tick = () => {
+      if (!clock.isConnected) return clearInterval(iv);
+      const now = bossNow(), st = new Date(e.starts_at).getTime(), en = new Date(e.ends_at).getTime();
+      clock.textContent = bossCountdown(up ? st - now : en - now);
+      if (up && st - now <= 0) { clearInterval(iv); loadBoss().then(() => drawBoss(view)); }
+    };
+    const iv = bossState.timer = setInterval(tick, 250); tick();
+  }
+  const fb = view.querySelector('#bossFight'); if (fb) fb.onclick = () => bossPickTeam(view);
+  if (d.is_admin) bindBossAdmin(view);
+}
+const bossFeedHtml = e => e.feed.length ? e.feed.map(h => `<li${h.super ? ' class="sup"' : ''}><b>${esc(h.name)}</b><span>−${fmtN(h.damage)}${h.super ? ' 💥' : ''}</span></li>`).join('') : '<li class="empty">Nog niemand aangevallen…</li>';
+const bossTopHtml = e => e.top.length ? e.top.map(t => `<li${t.me ? ' class="me"' : ''}><b>${esc(t.name)}</b><span>${fmtN(t.dmg)}</span></li>`).join('') : '<li class="empty">—</li>';
+function updateBossLive(view) {
+  const e = bossState.data?.event; if (!e || e.phase === 'upcoming') return;
+  const left = Math.max(0, (e.hp_max || 1) - e.damage), bar = view.querySelector('#bossHp .bh-bar i');
+  if (bar) bar.style.width = (left / (e.hp_max || 1) * 100).toFixed(2) + '%';
+  const t = view.querySelector('#bossHpTxt'); if (t) t.textContent = `${fmtN(left)} / ${fmtN(e.hp_max)} HP`;
+  const p = view.querySelector('#bossPlayers'); if (p) p.textContent = `${e.players} speler${e.players === 1 ? '' : 's'}`;
+  view.querySelector('#bossHp')?.classList.toggle('rage', left / (e.hp_max || 1) < .5);
+  const f = view.querySelector('#bossFeed'); if (f) f.innerHTML = bossFeedHtml(e);
+  const tp = view.querySelector('#bossTop'); if (tp) tp.innerHTML = bossTopHtml(e);
+}
+
+// Kracht van een kaart (zelfde formule als op de server)
+function bossPower(c, e) {
+  const m = { legendary: 1.6, epic: 1.25, cat: .7 }[c.rarity] || 1;
+  const w = (e.weakness_kind === 'person' && (c.person || '').toLowerCase() === (e.weakness_value || '').toLowerCase()) || (e.weakness_kind === 'rarity' && c.rarity === e.weakness_value) ? 1.5 : 1;
+  return { tap: Math.round(c.attack * m * w), sup: Math.round((c.special_power ?? c.attack * 1.6) * 6 * m * w), weak: w > 1 };
+}
+
+// Team kiezen: 5 kaarten die vanavond nog niet vochten
+function bossPickTeam(view) {
+  const e = bossState.data.event, used = new Set(e.my.used);
+  const pool = state.cards.filter(c => (state.isAdmin || (state.owned.get(c.id) || 0) > 0) && !used.has(c.id))
+    .map(c => ({ c, p: bossPower(c, e) })).sort((a, b) => (b.p.tap * 10 + b.p.sup) - (a.p.tap * 10 + a.p.sup));
+  const pick = new Set(pool.slice(0, 5).map(x => x.c.id));
+  document.querySelector('#bossPick')?.remove();
+  document.body.insertAdjacentHTML('beforeend', `<dialog class="ar-pop boss-pick" id="bossPick" aria-label="Kies je team"><div class="ar-pop-box">
+    <div class="ar-pop-head"><h3>Kies 5 kaarten <small>${e.weakness_kind ? `zwak tegen ${esc(bossWeak(e))}` : 'elke kaart vecht maar één keer per avond'}</small></h3><button type="button" class="ar-x" data-close aria-label="Sluiten">✕</button></div>
+    ${pool.length < 5 ? `<p class="msg err">Je hebt nog maar ${pool.length} kaart${pool.length === 1 ? '' : 'en'} die vanavond niet gevochten ${pool.length === 1 ? 'heeft' : 'hebben'}.</p>` : ''}
+    <div class="bp-grid">${pool.map(({ c, p }) => `<button type="button" class="bp-card r-${c.rarity}${pick.has(c.id) ? ' on' : ''}" data-bp="${c.id}">
+      <span class="bp-ph"${state.photos.get(c.id) ? ` style="background-image:url('${esc(state.photos.get(c.id))}')"` : ''}></span>
+      <span class="bp-t"><b>${esc(c.name)}</b><small>${esc(c.person)} · ${RARITY_LABEL[c.rarity]}</small><span class="bp-st">👊 ${p.tap} · 💥 ${p.sup} · ❤️ ${c.hp}</span></span>${p.weak ? '<i class="bp-weak">×1,5</i>' : ''}</button>`).join('')}</div>
+    <div class="bp-foot"><span id="bpCount"></span><button type="button" class="btn" id="bpGo">Vechten!</button></div>
+  </div></dialog>`);
+  const dlg = $('#bossPick'), go = $('#bpGo'), cnt = $('#bpCount');
+  const sync = () => { cnt.textContent = `${pick.size}/5 gekozen`; go.disabled = pick.size !== 5; dlg.querySelectorAll('[data-bp]').forEach(b => b.classList.toggle('on', pick.has(Number(b.dataset.bp)))); };
+  dlg.querySelectorAll('[data-bp]').forEach(b => b.onclick = () => { const id = Number(b.dataset.bp); if (pick.has(id)) pick.delete(id); else if (pick.size < 5) pick.add(id); sync(); });
+  dlg.querySelector('[data-close]').onclick = () => dlg.close();
+  dlg.addEventListener('close', () => dlg.remove());
+  go.onclick = async () => {
+    go.disabled = true;
+    const { data, error } = await sb.rpc('boss_fight_start', { p_cards: [...pick] });
+    if (error) { cnt.textContent = error.message; go.disabled = false; return; }
+    dlg.close(); bossFight(view, data);
+  };
+  sync(); dlg.showModal();
+}
+
+// Het gevecht: 60 seconden tikken, superaanvallen en ontwijken
+async function bossFight(view, start) {
+  const e = bossState.data.event, img = (await bossImgUrl(e.image_path)) || BOSS_FALLBACK;
+  const team = start.team.map(c => ({ ...c, left: c.hp }));
+  const f = bossState.fight = { id: start.fight, team, cur: 0, energy: 0, pend: {}, dmg: 0, base: start.damage, hpMax: start.hp_max,
+    end: performance.now() + start.seconds * 1000, lastTap: 0, wind: false, dodged: false, over: false, sent: 0, defeated: false, reward: null };
+  Sound.setPlace('battle');
+  document.body.insertAdjacentHTML('beforeend', `<div class="bf" id="bossFightEl">
+    <div class="bf-top"><div class="bf-hp"><div class="bh-bar"><i id="bfBar"></i></div><b id="bfHpTxt"></b></div><b class="bf-time" id="bfTime">60</b></div>
+    <div class="bf-feed" id="bfFeed"></div>
+    <div class="bf-arena" id="bfArena"><div class="bf-warn" id="bfWarn">!</div>
+      <img class="boss-fig" id="bfBoss" src="${esc(img)}" alt="" draggable="false"><i class="boss-shadow"></i></div>
+    <div class="bf-bottom">
+      <div class="bf-team" id="bfTeam"></div>
+      <div class="bf-energy"><i id="bfEnergy"></i></div>
+      <div class="bf-btns"><button type="button" class="bf-dodge" id="bfDodge">↺ Ontwijk</button><button type="button" class="bf-super" id="bfSuper" disabled>💥 Super</button></div>
+      <p class="bf-hint">Tik op de boss om aan te vallen</p>
+    </div>
+    <div class="bf-flash" id="bfFlash"></div></div>`);
+  const el = $('#bossFightEl'), boss = $('#bfBoss'), arena = $('#bfArena');
+  document.body.classList.add('bf-open');
+  const pctLeft = () => Math.max(0, f.hpMax - f.base - f.dmg) / f.hpMax;
+  const drawHp = () => {
+    const left = Math.max(0, f.hpMax - f.base - f.dmg);
+    $('#bfBar').style.width = (left / f.hpMax * 100).toFixed(2) + '%';
+    $('#bfHpTxt').textContent = `${fmtN(left)} HP`;
+    boss.classList.toggle('rage', pctLeft() < .5); boss.classList.toggle('wobble', pctLeft() < .2);
+  };
+  const drawTeam = () => {
+    $('#bfTeam').innerHTML = f.team.map((c, i) => `<span class="bft${i === f.cur ? ' on' : ''}${c.left <= 0 ? ' ko' : ''}"${state.photos.get(c.id) ? ` style="background-image:url('${esc(state.photos.get(c.id))}')"` : ''}>
+      <i style="width:${Math.max(0, c.left / c.hp * 100)}%"></i>${i === f.cur ? `<b>${esc(c.name)}</b>` : ''}</span>`).join('');
+    $('#bfEnergy').style.width = f.energy + '%';
+    $('#bfSuper').disabled = f.energy < 100 || f.over;
+  };
+  const pop = (txt, x, y, cls = '') => {
+    const r = arena.getBoundingClientRect();
+    arena.insertAdjacentHTML('beforeend', `<b class="bf-dmg ${cls}" style="left:${x - r.left}px;top:${y - r.top}px">${txt}</b>`);
+    const n = arena.lastElementChild; setTimeout(() => n.remove(), 900);
+  };
+  const flash = cls => { const fl = $('#bfFlash'); fl.className = 'bf-flash ' + cls; void fl.offsetWidth; fl.classList.add('go'); };
+  const add = (k, n) => { const c = f.team[f.cur]; (f.pend[c.id] ||= [0, 0])[k] += n; };
+  // Aanvallen
+  arena.addEventListener('pointerdown', ev => {
+    if (f.over || f.team[f.cur].left <= 0) return;
+    const now = performance.now(); if (now - f.lastTap < 125) return; f.lastTap = now; // max. 8 per seconde (zoals de server)
+    const c = f.team[f.cur]; add(0, 1); f.dmg += c.tap; f.energy = Math.min(100, f.energy + 10);
+    pop(`−${c.tap}`, ev.clientX + (Math.random() * 30 - 15), ev.clientY - 10, c.weak ? 'weak' : '');
+    boss.classList.remove('hit'); void boss.offsetWidth; boss.classList.add('hit');
+    if (now - (f.lastSnd || 0) > 140) { Sound.play('hit'); f.lastSnd = now; }
+    drawHp(); drawTeam();
+  });
+  $('#bfSuper').onclick = () => {
+    if (f.energy < 100 || f.over) return;
+    const c = f.team[f.cur]; add(1, 1); f.dmg += c.super; f.energy = 0;
+    const r = boss.getBoundingClientRect(); pop(`−${fmtN(c.super)}`, r.left + r.width / 2, r.top + r.height * .35, 'super');
+    boss.classList.remove('smash'); void boss.offsetWidth; boss.classList.add('smash'); flash('white'); Sound.play('ko');
+    drawHp(); drawTeam();
+  };
+  $('#bfDodge').onclick = () => {
+    if (f.over || el.classList.contains('dodging')) return;
+    el.classList.add('dodging'); setTimeout(() => el.classList.remove('dodging'), 450);
+    if (f.wind) { f.dodged = true; pop('Ontweken!', innerWidth / 2, innerHeight * .62, 'dodge'); Sound.play('flip'); }
+  };
+  // De boss valt aan: eerst oplichten (0,9 s), dan toeslaan
+  const attack = async () => {
+    while (!f.over) {
+      await sleep(1800 + Math.random() * 1800 * (pctLeft() < .5 ? .6 : 1));
+      if (f.over) return;
+      f.wind = true; f.dodged = false; boss.classList.add('windup'); $('#bfWarn').classList.add('on'); $('#bfDodge').classList.add('ready');
+      await sleep(pctLeft() < .2 ? 700 : 900);
+      boss.classList.remove('windup'); $('#bfWarn').classList.remove('on'); $('#bfDodge').classList.remove('ready'); f.wind = false;
+      if (f.over) return;
+      boss.classList.remove('strike'); void boss.offsetWidth; boss.classList.add('strike');
+      if (f.dodged) continue;
+      const c = f.team[f.cur], hit = Math.round(18 + Math.random() * 12 + (pctLeft() < .5 ? 6 : 0));
+      c.left -= hit; flash('red'); el.classList.remove('shake'); void el.offsetWidth; el.classList.add('shake'); Sound.play('stamp');
+      pop(`−${hit} ❤️`, innerWidth / 2, innerHeight * .78, 'hurt');
+      if (c.left <= 0) {
+        c.left = 0; f.energy = 0;
+        const next = f.team.findIndex(x => x.left > 0);
+        if (next < 0) { drawTeam(); return finish('Al je kaarten zijn uitgeteld.'); }
+        f.cur = next; pop(`${esc(f.team[next].name)} neemt over!`, innerWidth / 2, innerHeight * .7, 'dodge');
+      }
+      drawTeam();
+    }
+  };
+  // Schade doorsturen naar de server (elke 3 seconden en op het einde)
+  const flush = async (final = false) => {
+    const hits = f.pend; f.pend = {};
+    if (!Object.keys(hits).length && !final) return;
+    const { data, error } = await sb.rpc('boss_hit', { p_fight: f.id, p_hits: hits, p_final: final });
+    if (error || !data) return;
+    f.sent += data.damage || 0;
+    if (data.total != null) { f.base = data.total - f.sent; }
+    if (data.defeated) { f.defeated = true; f.reward = data.reward; if (data.wallet != null) setWallet(data.wallet); if (!f.over) finish(data.last_hit ? 'Jij gaf de laatste klap!' : ''); }
+    else if (data.ended && !f.over) finish('De boss is al verslagen!');
+  };
+  const feedIv = setInterval(async () => {
+    if (f.over) return clearInterval(feedIv);
+    await flush();
+    const d = await loadBoss(); const ev = d?.event; if (!ev || f.over) return;
+    if (ev.phase === 'defeated' && !f.defeated) { f.defeated = true; f.reward = ev.my.reward; return finish('De boss is verslagen!'); }
+    f.base = ev.damage - f.sent; drawHp();
+    $('#bfFeed').innerHTML = ev.feed.slice(0, 4).map(h => `<span><b>${esc(h.name)}</b> −${fmtN(h.damage)}</span>`).join('');
+  }, 3000);
+  const clock = setInterval(() => {
+    const s = Math.max(0, Math.ceil((f.end - performance.now()) / 1000));
+    $('#bfTime').textContent = s; $('#bfTime').classList.toggle('low', s <= 10);
+    if (s <= 0) finish('De tijd is om.');
+  }, 200);
+  async function finish(why) {
+    if (f.over) return; f.over = true;
+    clearInterval(clock); clearInterval(feedIv);
+    await flush(true);
+    if (f.defeated) { boss.classList.add('dead'); window.celebrate?.('legendary'); }
+    else Sound.play(f.dmg ? 'win' : 'lose');
+    await sleep(f.defeated ? 1600 : 400);
+    el.insertAdjacentHTML('beforeend', `<div class="bf-end"><div class="bf-end-box">
+      <b class="bf-end-t">${f.defeated ? 'VERSLAGEN!' : 'Gevecht voorbij'}</b>
+      <span>${esc(why)}</span>
+      <div class="bf-end-n"><small>Jouw schade</small><b>${fmtN(f.dmg)}</b></div>
+      ${f.defeated && f.reward ? `<div class="bf-end-r">+${f.reward} credits 🎉</div>` : ''}
+      <button type="button" class="btn" id="bfClose">Terug</button></div></div>`);
+    $('#bfClose').onclick = async () => {
+      el.remove(); document.body.classList.remove('bf-open'); bossState.fight = null; Sound.setPlace('boss');
+      await loadBoss(); if (view.isConnected) drawBoss(view);
+    };
+  }
+  drawHp(); drawTeam(); attack();
+}
+
+// ----- Beheer (enkel admin) -----
+function bossAdminHtml() {
+  const next = new Date(bossNow()); // volgende zondag 20u (Belgische tijd)
+  const sun = new Date(next); sun.setDate(sun.getDate() + ((7 - sun.getDay()) % 7)); sun.setHours(20, 0, 0, 0);
+  if (sun.getTime() <= bossNow()) sun.setDate(sun.getDate() + 7);
+  const local = new Date(sun.getTime() - sun.getTimezoneOffset() * 6e4).toISOString().slice(0, 16);
+  const persons = [...new Set(state.cards.filter(c => c.rarity !== 'cat').map(c => c.person))].sort();
+  return `<div class="boss-admin"><h3>Beheer <small>enkel jij ziet dit</small></h3>
+    <div class="ba-form" id="baForm"><input type="hidden" id="baId">
+      <label>Naam<input id="baName" maxlength="40" placeholder="bv. De Dean"></label>
+      <label>Uitspraak<input id="baTitle" maxlength="80" placeholder="bv. Wie te laat is, betaalt."></label>
+      <label>Start (1 uur lang)<input id="baStart" type="datetime-local" value="${local}"></label>
+      <label>Zwakte<select id="baWeak"><option value="">Geen</option>
+        <optgroup label="Zeldzaamheid">${['common', 'epic', 'legendary'].map(r => `<option value="rarity:${r}">${RARITY_LABEL[r]}-kaarten</option>`).join('')}</optgroup>
+        <optgroup label="Kaarten van">${persons.map(p => `<option value="person:${esc(p)}">${esc(p)}</option>`).join('')}</optgroup></select></label>
+      <label>HP (leeg = automatisch)<input id="baHp" type="number" min="1000" step="1000" placeholder="automatisch"></label>
+      <label class="ba-file">Foto (volledig lichaam, PNG zonder achtergrond is het mooist)<input id="baImg" type="file" accept="image/*"></label>
+      <label class="ba-chk"><input type="checkbox" id="baCut" checked> Effen achtergrond automatisch weghalen</label>
+      <div class="ba-prev" id="baPrev" hidden><img alt=""></div>
+      <div class="ba-act"><button type="button" class="btn" id="baSave">Opslaan</button><button type="button" class="link" id="baNew" hidden>Nieuwe boss</button></div>
+      <p class="msg" id="baMsg" role="status"></p></div>
+    <h4>Gepland en gespeeld</h4><div id="baList"><p class="hint">Laden…</p></div></div>`;
+}
+// Effen achtergrond weghalen: vanaf de randen alles wat op de hoekkleur lijkt doorzichtig maken
+async function bossCutout(file) {
+  const bmp = await createImageBitmap(file);
+  const sc = Math.min(1, 1400 / Math.max(bmp.width, bmp.height)), w = Math.round(bmp.width * sc), h = Math.round(bmp.height * sc);
+  const cv = document.createElement('canvas'); cv.width = w; cv.height = h;
+  const cx = cv.getContext('2d'); cx.drawImage(bmp, 0, 0, w, h);
+  const im = cx.getImageData(0, 0, w, h), d = im.data;
+  const corner = [0, w - 1, (h - 1) * w, h * w - 1].map(i => [d[i * 4], d[i * 4 + 1], d[i * 4 + 2], d[i * 4 + 3]]);
+  if (corner.some(c => c[3] < 20)) return cv; // al doorzichtig
+  const bg = corner.reduce((a, c) => a.map((v, i) => v + c[i] / 4), [0, 0, 0]);
+  const near = i => Math.abs(d[i * 4] - bg[0]) + Math.abs(d[i * 4 + 1] - bg[1]) + Math.abs(d[i * 4 + 2] - bg[2]) < 70;
+  const seen = new Uint8Array(w * h), q = [];
+  for (let x = 0; x < w; x++) q.push(x, (h - 1) * w + x);
+  for (let y = 0; y < h; y++) q.push(y * w, y * w + w - 1);
+  while (q.length) {
+    const i = q.pop(); if (seen[i] || !near(i)) continue;
+    seen[i] = 1; d[i * 4 + 3] = 0;
+    const x = i % w;
+    if (x > 0) q.push(i - 1); if (x < w - 1) q.push(i + 1); if (i >= w) q.push(i - w); if (i < w * (h - 1)) q.push(i + w);
+  }
+  // zachte rand
+  for (let i = 0; i < w * h; i++) if (!seen[i] && ((i % w > 0 && seen[i - 1]) || (i % w < w - 1 && seen[i + 1]) || seen[i - w] || seen[i + w])) d[i * 4 + 3] = 140;
+  cx.putImageData(im, 0, 0);
+  return cv;
+}
+function bindBossAdmin(view) {
+  const $v = s => view.querySelector(s), msg = $v('#baMsg');
+  let blob = null, list = [];
+  const say = (t, cls = '') => { msg.className = 'msg ' + cls; msg.textContent = t; };
+  const fill = b => {
+    $v('#baId').value = b?.id || ''; $v('#baName').value = b?.name || ''; $v('#baTitle').value = b?.title || '';
+    if (b) $v('#baStart').value = new Date(new Date(b.starts_at).getTime() - new Date(b.starts_at).getTimezoneOffset() * 6e4).toISOString().slice(0, 16);
+    $v('#baWeak').value = b?.weakness_kind ? `${b.weakness_kind}:${b.weakness_value}` : '';
+    $v('#baHp').value = b?.hp_override || ''; $v('#baNew').hidden = !b; blob = null; $v('#baImg').value = '';
+    const pv = $v('#baPrev'); pv.hidden = !b?.image_path; if (b?.image_path) bossImgUrl(b.image_path).then(u => { if (u) pv.querySelector('img').src = u; });
+    say(b ? `Je past "${b.name}" aan.` : '');
+  };
+  const draw = async () => {
+    const { data } = await sb.rpc('boss_admin_list'); list = data || [];
+    const fmt = iso => new Date(iso).toLocaleString('nl-BE', { weekday: 'short', day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit', timeZone: 'Europe/Brussels' });
+    $v('#baList').innerHTML = list.length ? list.map(b => `<div class="ba-row" data-id="${b.id}"><span><b>${esc(b.name)}</b><small>${fmt(b.starts_at)}${b.defeated_at ? ' · verslagen' : new Date(b.ends_at).getTime() < bossNow() ? ' · voorbij' : ''}${b.damage ? ` · ${fmtN(b.damage)} schade` : ''}</small></span>
+      <button type="button" class="link" data-ba="edit">Aanpassen</button><button type="button" class="link" data-ba="test">Test nu</button><button type="button" class="link danger" data-ba="del">Verwijder</button></div>`).join('') : '<p class="hint">Nog geen bosses.</p>';
+    $v('#baList').querySelectorAll('[data-ba]').forEach(btn => btn.onclick = async () => {
+      const id = Number(btn.closest('[data-id]').dataset.id), b = list.find(x => x.id === id);
+      if (btn.dataset.ba === 'edit') { fill(b); $v('#baForm').scrollIntoView({ behavior: 'smooth', block: 'start' }); return; }
+      if (btn.dataset.ba === 'del' && !confirm(`"${b.name}" verwijderen?`)) return;
+      if (btn.dataset.ba === 'test' && !confirm(`"${b.name}" nu meteen starten voor 1 uur? Eerdere testschade wordt gewist. Vergeet niet het uur daarna terug op zondag te zetten.`)) return;
+      const { error } = await sb.rpc(btn.dataset.ba === 'del' ? 'boss_admin_delete' : 'boss_admin_test', { p_id: id });
+      if (error) return say(error.message, 'err');
+      await loadBoss(); drawBoss(view);
+    });
+  };
+  $v('#baImg').onchange = async () => {
+    const file = $v('#baImg').files[0]; if (!file) return;
+    say('Foto verwerken…');
+    try {
+      const cv = $v('#baCut').checked ? await bossCutout(file) : await (async () => { const bmp = await createImageBitmap(file); const c = document.createElement('canvas'); const sc = Math.min(1, 1400 / Math.max(bmp.width, bmp.height)); c.width = bmp.width * sc; c.height = bmp.height * sc; c.getContext('2d').drawImage(bmp, 0, 0, c.width, c.height); return c; })();
+      blob = await new Promise(r => cv.toBlob(r, 'image/png'));
+      const pv = $v('#baPrev'); pv.hidden = false; pv.querySelector('img').src = URL.createObjectURL(blob); say('');
+    } catch (_) { say('Deze foto kan ik niet openen.', 'err'); }
+  };
+  $v('#baNew').onclick = () => fill(null);
+  $v('#baSave').onclick = async () => {
+    const btn = $v('#baSave'); btn.disabled = true;
+    try {
+      let path = null;
+      if (blob) {
+        path = `boss-${Date.now()}.png`;
+        const { error } = await sb.storage.from(BOSS_BUCKET).upload(path, blob, { contentType: 'image/png' });
+        if (error) throw error;
+      }
+      const [wk, ...wv] = ($v('#baWeak').value || '').split(':');
+      const start = $v('#baStart').value;
+      const { error } = await sb.rpc('boss_admin_save', { p_id: Number($v('#baId').value) || null, p_starts_at: start ? new Date(start).toISOString() : null,
+        p_name: $v('#baName').value, p_title: $v('#baTitle').value, p_image_path: path, p_weakness_kind: wk || null, p_weakness_value: wv.join(':') || null,
+        p_hp_override: Number($v('#baHp').value) || null });
+      if (error) throw error;
+      say('Opgeslagen.', 'ok'); fill(null); await loadBoss(); drawBoss(view);
+    } catch (e) { say(e.message || 'Opslaan mislukt.', 'err'); }
+    btn.disabled = false;
+  };
+  draw();
 }
 
 // ---------- Casino ----------
