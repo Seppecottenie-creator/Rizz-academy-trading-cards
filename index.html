@@ -924,6 +924,7 @@ h3{color:var(--gold)}
 .snd-btn{width:36px;height:36px;display:grid;place-items:center;border-radius:50%;border:1px solid rgba(242,204,114,.45);background:rgba(10,16,36,.82);font-size:16px;cursor:pointer;opacity:.6;box-shadow:0 6px 16px -6px rgba(0,0,0,.7)}
 .snd-btn.on{opacity:1;border-color:#F2CC72;box-shadow:0 0 0 1px rgba(242,204,114,.4),0 6px 16px -6px rgba(0,0,0,.7)}
 .acc-sound{margin-top:16px}.acc-sound h4{margin:0 0 8px}
+.acc-shrink{display:grid;gap:6px;justify-items:start;margin:16px 0 8px}.acc-shrink h4{margin:0}.acc-shrink small{color:var(--ink-soft);font-size:12px}
 .acc-sound-row{display:flex;align-items:center;gap:8px}.acc-sound-row small{color:var(--ink-soft);font-size:12px;line-height:1.35}
 @media (min-width:600px) and (max-height:500px){.campus-tools{top:8px;left:10px}.snd-btn{width:30px;height:30px;font-size:13px}}
 .campus-news{position:absolute;left:14px;top:12px;z-index:5;display:flex;align-items:center;gap:6px;padding:7px 14px;border-radius:999px;border:1px solid rgba(242,204,114,.6);
@@ -3399,16 +3400,71 @@ async function loadData() {
 // Supabase geeft enkel een tijdelijke link voor kaarten die je bezit (of als admin). Zonder link
 // (map nog leeg, of kaart niet in je bezit) toont de kaart de varsity-letter.
 const PHOTO_BUCKET = 'card-photos';
+// Elke foto wordt maar één keer per toestel gedownload en daarna bewaard (Cache Storage):
+// zo blijft het verkeer bij Supabase laag. Zonder Cache Storage: gewoon de tijdelijke link.
+const PHOTO_CACHE = 'rizz-photos-v1';
+const photoKey = path => `${location.origin}/__photo-cache/${encodeURIComponent(path)}`;
+async function photoCache() { try { return 'caches' in window ? await caches.open(PHOTO_CACHE) : null; } catch (_) { return null; } }
 async function loadPhotos(ids) {
   const want = [...new Set(ids)].map(id => state.cards.find(c => c.id === id))
     .filter(c => c && c.image_url && !state.photos.has(c.id));
   if (!want.length) return;
   try {
-    const paths = want.map(c => c.image_url.replace(/^cards\//, ''));
-    const { data, error } = await sb.storage.from(PHOTO_BUCKET).createSignedUrls(paths, 24 * 3600);
+    const cache = await photoCache(), todo = [];
+    for (const c of want) {
+      const path = c.image_url.replace(/^cards\//, '');
+      const hit = cache && await cache.match(photoKey(path)).catch(() => null);
+      if (hit) state.photos.set(c.id, URL.createObjectURL(await hit.blob()));
+      else todo.push({ c, path });
+    }
+    if (!todo.length) return;
+    const { data, error } = await sb.storage.from(PHOTO_BUCKET).createSignedUrls(todo.map(t => t.path), 24 * 3600);
     if (error || !data) return;
-    data.forEach((r, i) => { if (r.signedUrl && !r.error) state.photos.set(want[i].id, r.signedUrl); });
+    const jobs = data.map((r, i) => ({ ...todo[i], url: r.signedUrl && !r.error ? r.signedUrl : null })).filter(j => j.url);
+    if (!cache) { jobs.forEach(j => state.photos.set(j.c.id, j.url)); return; }
+    // downloaden en bewaren, 6 tegelijk
+    let k = 0;
+    await Promise.all(Array.from({ length: 6 }, async () => {
+      while (k < jobs.length) {
+        const j = jobs[k++];
+        try {
+          const res = await fetch(j.url);
+          if (!res.ok) throw new Error(res.status);
+          const blob = await res.blob();
+          await cache.put(photoKey(j.path), new Response(blob, { headers: { 'Content-Type': blob.type || 'image/jpeg' } })).catch(() => {});
+          state.photos.set(j.c.id, URL.createObjectURL(blob));
+        } catch (_) { state.photos.set(j.c.id, j.url); }
+      }
+    }));
   } catch (_) { /* opslag niet bereikbaar: dan gewoon zonder foto's */ }
+}
+
+// Admin: alle kaartfoto's in de opslag verkleinen (max. 900 px, JPEG) -> veel minder verkeer
+async function shrinkCardPhotos(onStep) {
+  const cards = state.cards.filter(c => c.image_url);
+  let before = 0, after = 0, done = 0, skipped = 0;
+  const paths = cards.map(c => c.image_url.replace(/^cards\//, ''));
+  const { data } = await sb.storage.from(PHOTO_BUCKET).createSignedUrls(paths, 3600);
+  for (let i = 0; i < cards.length; i++) {
+    onStep?.(i + 1, cards.length);
+    const url = data?.[i]?.signedUrl; if (!url) { skipped++; continue; }
+    try {
+      const blob = await (await fetch(url, { cache: 'no-store' })).blob();
+      before += blob.size;
+      const bmp = await createImageBitmap(blob);
+      const sc = Math.min(1, 900 / Math.max(bmp.width, bmp.height));
+      if (sc === 1 && blob.size < 250000) { after += blob.size; skipped++; continue; }
+      const cv = document.createElement('canvas'); cv.width = Math.round(bmp.width * sc); cv.height = Math.round(bmp.height * sc);
+      cv.getContext('2d').drawImage(bmp, 0, 0, cv.width, cv.height);
+      const small = await new Promise(r => cv.toBlob(r, 'image/jpeg', .82));
+      if (!small || small.size >= blob.size) { after += blob.size; skipped++; continue; }
+      const { error } = await sb.storage.from(PHOTO_BUCKET).upload(paths[i], small, { upsert: true, contentType: 'image/jpeg', cacheControl: '31536000' });
+      if (error) throw error;
+      after += small.size; done++;
+      const cache = await photoCache(); await cache?.put(photoKey(paths[i]), new Response(small, { headers: { 'Content-Type': 'image/jpeg' } })).catch(() => {});
+    } catch (e) { if (String(e.message || e).match(/policy|security|403|Unauthorized/i)) throw new Error('Geen toestemming: voer eerst update-30-fotos-kleiner.sql uit.'); skipped++; }
+  }
+  return { done, skipped, before, after };
 }
 
 // Telt per card_id hoeveel exemplaren een gebruiker bezit, op basis van ruwe user_cards-rijen
@@ -4203,10 +4259,22 @@ function openAccountModal() {
         <button type="button" class="link" id="accAdd">+ Ander account toevoegen</button>
         <p id="accSwitchMsg" role="alert" class="msg"></p>
       </div>
+      ${state.isAdmin ? `<div class="acc-shrink"><h4>Kaartfoto's verkleinen</h4><small>Maakt alle foto's in de opslag kleiner (max. 900 px). Scheelt veel verkeer bij Supabase. Eén keer doen is genoeg.</small>
+        <button type="button" class="btn small" id="accShrink">Verkleinen</button><p class="msg" id="accShrinkMsg" role="status"></p></div>` : ''}
       <button type="button" class="link" id="accTutorial">Rondleiding opnieuw bekijken</button>
       <button type="button" class="link danger" id="accLogout">Uitloggen</button>
     </div>`;
     bindSoundButtons(dlg);
+    const shr = $('#accShrink');
+    if (shr) shr.onclick = async () => {
+      const m = $('#accShrinkMsg'); shr.disabled = true; m.className = 'msg';
+      try {
+        const r = await shrinkCardPhotos((i, n) => { m.textContent = `Bezig: foto ${i} van ${n}…`; });
+        const mb = x => (x / 1048576).toFixed(1).replace('.', ',');
+        m.className = 'msg ok'; m.textContent = `Klaar: ${r.done} foto's verkleind (${mb(r.before)} MB → ${mb(r.after)} MB). ${r.skipped} waren al klein genoeg of overgeslagen.`;
+      } catch (e) { m.className = 'msg err'; m.textContent = e.message; }
+      shr.disabled = false;
+    };
     $('#accCancel').onclick = () => dlg.close();
     $('#photoBtn').onclick = () => $('#photoInput').click();
     $('#photoInput').onchange = async e => {
@@ -6930,8 +6998,20 @@ const bossNow = () => Date.now() + bossState.offset;
 async function bossImgUrl(path) {
   if (!path) return null;
   if (bossImgs.has(path)) return bossImgs.get(path);
+  // één keer downloaden per toestel (zoals de kaartfoto's)
+  const cache = await photoCache(), key = photoKey('boss/' + path);
+  const hit = cache && await cache.match(key).catch(() => null);
+  if (hit) { const u = URL.createObjectURL(await hit.blob()); bossImgs.set(path, u); return u; }
   const { data } = await sb.storage.from(BOSS_BUCKET).createSignedUrl(path, 6 * 3600);
-  const url = data?.signedUrl || null; if (url) bossImgs.set(path, url);
+  let url = data?.signedUrl || null;
+  if (url && cache) {
+    try {
+      const blob = await (await fetch(url)).blob();
+      await cache.put(key, new Response(blob, { headers: { 'Content-Type': blob.type || 'image/png' } })).catch(() => {});
+      url = URL.createObjectURL(blob);
+    } catch (_) { /* dan de link zelf */ }
+  }
+  if (url) bossImgs.set(path, url);
   return url;
 }
 async function loadBoss() {
@@ -7250,7 +7330,7 @@ function bossAdminHtml() {
 // Effen achtergrond weghalen: vanaf de randen alles wat op de hoekkleur lijkt doorzichtig maken
 async function bossCutout(file) {
   const bmp = await createImageBitmap(file);
-  const sc = Math.min(1, 1400 / Math.max(bmp.width, bmp.height)), w = Math.round(bmp.width * sc), h = Math.round(bmp.height * sc);
+  const sc = Math.min(1, 1000 / Math.max(bmp.width, bmp.height)), w = Math.round(bmp.width * sc), h = Math.round(bmp.height * sc);
   const cv = document.createElement('canvas'); cv.width = w; cv.height = h;
   const cx = cv.getContext('2d'); cx.drawImage(bmp, 0, 0, w, h);
   const im = cx.getImageData(0, 0, w, h), d = im.data;
@@ -7303,8 +7383,10 @@ function bindBossAdmin(view) {
     const file = $v('#baImg').files[0]; if (!file) return;
     say('Foto verwerken…');
     try {
-      const cv = $v('#baCut').checked ? await bossCutout(file) : await (async () => { const bmp = await createImageBitmap(file); const c = document.createElement('canvas'); const sc = Math.min(1, 1400 / Math.max(bmp.width, bmp.height)); c.width = bmp.width * sc; c.height = bmp.height * sc; c.getContext('2d').drawImage(bmp, 0, 0, c.width, c.height); return c; })();
-      blob = await new Promise(r => cv.toBlob(r, 'image/png'));
+      const cv = $v('#baCut').checked ? await bossCutout(file) : await (async () => { const bmp = await createImageBitmap(file); const c = document.createElement('canvas'); const sc = Math.min(1, 1000 / Math.max(bmp.width, bmp.height)); c.width = bmp.width * sc; c.height = bmp.height * sc; c.getContext('2d').drawImage(bmp, 0, 0, c.width, c.height); return c; })();
+      // WebP (doorzichtig en klein); kan de browser dat niet maken, dan PNG
+      blob = await new Promise(r => cv.toBlob(r, 'image/webp', .86));
+      if (!blob || blob.type !== 'image/webp') blob = await new Promise(r => cv.toBlob(r, 'image/png'));
       const pv = $v('#baPrev'); pv.hidden = false; pv.querySelector('img').src = URL.createObjectURL(blob); say('');
     } catch (_) { say('Deze foto kan ik niet openen.', 'err'); }
   };
@@ -7314,8 +7396,8 @@ function bindBossAdmin(view) {
     try {
       let path = null;
       if (blob) {
-        path = `boss-${Date.now()}.png`;
-        const { error } = await sb.storage.from(BOSS_BUCKET).upload(path, blob, { contentType: 'image/png' });
+        path = `boss-${Date.now()}.${blob.type === 'image/webp' ? 'webp' : 'png'}`;
+        const { error } = await sb.storage.from(BOSS_BUCKET).upload(path, blob, { contentType: blob.type, cacheControl: '31536000' });
         if (error) throw error;
       }
       const [wk, ...wv] = ($v('#baWeak').value || '').split(':');

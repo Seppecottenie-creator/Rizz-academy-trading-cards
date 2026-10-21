@@ -5191,3 +5191,16 @@ end $$;
 grant execute on function public.boss_admin_test(bigint) to authenticated;
 
 notify pgrst, 'reload schema';
+
+-- =====================================================================
+-- FOTO-UPDATE (zelfde inhoud als update-30-fotos-kleiner.sql)
+-- =====================================================================
+
+drop policy if exists "kaartfoto's uploaden (admin)" on storage.objects;
+create policy "kaartfoto's uploaden (admin)" on storage.objects
+  for insert to authenticated with check (bucket_id = 'card-photos' and public.is_admin());
+
+drop policy if exists "kaartfoto's vervangen (admin)" on storage.objects;
+create policy "kaartfoto's vervangen (admin)" on storage.objects
+  for update to authenticated using (bucket_id = 'card-photos' and public.is_admin())
+  with check (bucket_id = 'card-photos' and public.is_admin());
