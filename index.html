@@ -2734,9 +2734,10 @@ body.bf-open{overflow:hidden}
 .bf{position:fixed;inset:0;z-index:4000;display:grid;grid-template-rows:auto 1fr auto;color:#fff;touch-action:manipulation;user-select:none;-webkit-user-select:none;overflow:hidden;
   padding:max(10px,env(safe-area-inset-top)) max(14px,env(safe-area-inset-right)) max(14px,env(safe-area-inset-bottom)) max(14px,env(safe-area-inset-left));background:#07030a}
 .bf-bg,.boss-stage::before{position:absolute;inset:0;z-index:0;pointer-events:none;
-  background:linear-gradient(180deg,rgba(7,3,10,.55),rgba(7,3,10,.15) 35%,rgba(40,4,14,.55) 75%,#07030a),radial-gradient(ellipse at 50% 88%,rgba(224,40,74,.45),transparent 55%),var(--arena) center 30%/cover}
+  background:linear-gradient(180deg,rgba(7,3,10,.45),transparent 30%,transparent 70%,rgba(7,3,10,.7)),var(--arena) center/cover}
 .boss-stage::before{content:""}
-:root{--arena:url('img/boss-arena.webp'),url('img/campus-night.webp')}
+:root{--arena:url('img/boss-arena-portrait.webp')}
+@media (min-aspect-ratio:1/1){:root{--arena:url('img/boss-arena-wide.webp')}}
 .bf>*:not(.bf-bg){position:relative;z-index:1}
 .bf.shake{animation:bf-shake .35s}@keyframes bf-shake{20%{transform:translate(-8px,4px)}40%{transform:translate(7px,-5px)}60%{transform:translate(-5px,3px)}80%{transform:translate(4px,-2px)}}
 .bf.dodging .bf-arena{animation:bf-dodge .45s ease-out}@keyframes bf-dodge{40%{transform:translateX(-40px) rotate(-3deg)}}
@@ -2748,10 +2749,13 @@ body.bf-open{overflow:hidden}
 .bf-time{--t:1;flex:none;width:56px;height:56px;border-radius:50%;display:grid;place-items:center;background:conic-gradient(#F2CC72 calc(var(--t)*360deg),rgba(255,255,255,.12) 0);padding:4px}
 .bf-time b{width:100%;height:100%;border-radius:50%;display:grid;place-items:center;background:#120610;font:400 22px var(--varsity);font-variant-numeric:tabular-nums}
 .bf-time.low{background:conic-gradient(#ff3355 calc(var(--t)*360deg),rgba(255,255,255,.12) 0)}.bf-time.low b{color:#ff3355}
-.bf-arena{position:relative;display:grid;place-items:end center;min-height:0;cursor:crosshair;padding-bottom:6px}
-.bf-arena .boss-fig{height:min(54vh,520px);max-width:92vw}
-.bf-hint{position:absolute;bottom:30%;left:50%;transform:translateX(-50%);margin:0;padding:6px 14px;border-radius:999px;background:rgba(10,4,12,.7);font:600 13px var(--body);white-space:nowrap;pointer-events:none;animation:bh-rage 1.2s infinite}
-.bf-warn{position:absolute;top:6%;left:50%;transform:translateX(-50%) scale(0);font:400 72px var(--varsity);color:#ff3355;text-shadow:0 0 22px #ff3355;transition:transform .15s;pointer-events:none;z-index:2}.bf-warn.on{transform:translateX(-50%) scale(1);animation:bh-rage .3s infinite}
+.bf-arena{position:absolute!important;inset:0;z-index:0!important;cursor:crosshair}
+.bf-top,.bf-hud{z-index:2!important}.bf-hud{grid-row:3}
+/* de boss staat met zijn voeten op het podium in het midden van de achtergrond */
+.bf-figwrap{position:absolute;left:50%;bottom:33%;height:min(50vh,560px);transform:translateX(-50%);display:grid;justify-items:center}
+.bf-figwrap .boss-fig{height:100%;max-width:94vw}
+.bf-hint{position:absolute;bottom:25%;left:50%;transform:translateX(-50%);margin:0;padding:6px 14px;border-radius:999px;background:rgba(10,4,12,.7);font:600 13px var(--body);white-space:nowrap;pointer-events:none;animation:bh-rage 1.2s infinite}
+.bf-warn{position:absolute;top:13%;left:50%;transform:translateX(-50%) scale(0);font:400 72px var(--varsity);color:#ff3355;text-shadow:0 0 22px #ff3355;transition:transform .15s;pointer-events:none;z-index:2}.bf-warn.on{transform:translateX(-50%) scale(1);animation:bh-rage .3s infinite}
 .bf-dmg{position:absolute;z-index:3;transform:translate(-50%,-50%);font:400 28px var(--varsity);color:#fff;text-shadow:0 2px 6px rgba(0,0,0,.9);pointer-events:none;animation:bf-float .9s ease-out forwards;white-space:nowrap}
 .bf-dmg.weak{color:#7FD3A0}.bf-dmg.super{font-size:58px;color:#F2CC72;text-shadow:0 0 18px rgba(242,204,114,.9)}.bf-dmg.hurt{color:#ff3355;font-size:30px}.bf-dmg.dodge{color:#6FA8FF;font-size:28px}
 @keyframes bf-float{0%{opacity:0;transform:translate(-50%,-30%) scale(.6)}15%{opacity:1;transform:translate(-50%,-60%) scale(1.15)}100%{opacity:0;transform:translate(-50%,-160%) scale(1)}}
@@ -2779,7 +2783,7 @@ body.bf-open{overflow:hidden}
 .bf-end-box{display:grid;justify-items:center;gap:10px;padding:26px;border-radius:20px;background:#1a0d18;border:1px solid rgba(242,204,114,.4);text-align:center;min-width:260px}
 .bf-end-t{font:400 38px var(--varsity);letter-spacing:.06em;color:#F2CC72}.bf-end-n small{display:block;color:var(--muted)}.bf-end-n b{font:400 44px var(--varsity)}
 .bf-end-r{font:700 20px var(--body);color:#7FD3A0}
-@media (orientation:landscape) and (max-height:500px){.boss-figwrap{height:52vh}.bf-arena .boss-fig{height:50vh}.bf{grid-template-rows:auto 1fr auto}.bft-ph{width:32px;height:38px}.bf-dodge{width:66px;height:66px}.bf-super{width:78px;height:78px}}
+@media (orientation:landscape) and (max-height:500px){.boss-figwrap{height:52vh}.bf-figwrap{height:52vh;bottom:30%}.bf{grid-template-rows:auto 1fr auto}.bft-ph{width:32px;height:38px}.bf-dodge{width:66px;height:66px}.bf-super{width:78px;height:78px}}
 @media (min-width:900px){.bf-hud{max-width:760px;width:100%;justify-self:center}.bf-top{max-width:900px;width:100%;justify-self:center}}
 @media (prefers-reduced-motion:reduce){.boss-fig,.boss-shadow{animation:none!important}}
 /* --- Sportsbook --- */
@@ -7104,7 +7108,7 @@ async function bossFight(view, start) {
       <div class="bf-time" id="bfTimeWrap"><b id="bfTime">60</b></div>
     </div>
     <div class="bf-arena" id="bfArena"><div class="bf-warn" id="bfWarn">!</div>
-      <img class="boss-fig" id="bfBoss" src="${esc(img)}" alt="" draggable="false"><i class="boss-shadow"></i>
+      <div class="bf-figwrap"><img class="boss-fig" id="bfBoss" src="${esc(img)}" alt="" draggable="false"><i class="boss-shadow"></i></div>
       <p class="bf-hint" id="bfHint">Tik op de boss om aan te vallen</p></div>
     <div class="bf-hud">
       <button type="button" class="bf-dodge" id="bfDodge" aria-label="Ontwijk"><span>↺</span><small>Ontwijk</small></button>
