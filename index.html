@@ -2655,6 +2655,9 @@ body.fx-trip .shell{animation:trip-hue 6s linear infinite}
 /* --- Boss Battle --- */
 .campus-boss{position:absolute;left:39%;top:30%;height:38%;z-index:4;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;padding:0;border:0;background:none;cursor:pointer;font:inherit}
 .cb-fig{position:relative;flex:1;min-height:0;display:flex;justify-content:center}
+/* enkel het lijf en het bordje zijn klikbaar, niet de lege ruimte rond de figuur */
+.campus-boss{pointer-events:none}.campus-boss .cb-pin,.campus-boss .cb-hit{pointer-events:auto}
+.cb-hit{position:absolute;left:50%;top:12%;width:34%;height:80%;transform:translateX(-50%)}
 .campus-boss .cb-fig img{position:static;inset:auto;display:block;height:100%;width:auto;max-width:none;object-fit:contain;transform-origin:50% 100%;animation:boss-idle 3.2s ease-in-out infinite;
   filter:brightness(0) drop-shadow(0 0 2px rgba(224,40,74,.95)) drop-shadow(0 0 12px rgba(224,40,74,.7))}
 .campus-boss.live .cb-fig img{filter:drop-shadow(0 0 10px rgba(255,40,60,.9)) drop-shadow(0 8px 14px rgba(0,0,0,.6))}
@@ -7058,7 +7061,7 @@ async function bossCampusBanner(view) {
   const src = (live ? await bossImgUrl(e.image_path) : await bossImgUrl(e.sil_path)) || BOSS_FALLBACK;
   if (!view.isConnected) return;
   map.insertAdjacentHTML('beforeend', `<button type="button" class="campus-boss${live ? ' live' : ''}" id="campusBoss" aria-label="Boss Battle">
-    <span class="cb-fig"><img src="${esc(src)}" alt="" draggable="false"><i class="boss-shadow"></i></span>
+    <span class="cb-fig"><img src="${esc(src)}" alt="" draggable="false"><i class="boss-shadow"></i><i class="cb-hit"></i></span>
     <span class="cpin cb-pin"><b>Boss Battle</b><small id="campusBossTxt"></small></span></button>`);
   const b = $('#campusBoss'), t = $('#campusBossTxt');
   b.onclick = () => { state.tab = 'boss'; renderMain(); scrollTo({ top: 0 }); };
