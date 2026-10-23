@@ -2719,7 +2719,10 @@ body.fx-trip .shell{animation:trip-hue 6s linear infinite}
 .ba-form .ba-file,.ba-form .ba-chk,.ba-prev,.ba-act,#baMsg{grid-column:1/-1}.ba-chk{display:flex!important;align-items:center;gap:8px}
 .ba-prev img{max-height:200px;background:repeating-conic-gradient(#333 0 25%,#222 0 50%) 0 0/16px 16px;border-radius:10px}
 .ba-act{display:flex;gap:12px;align-items:center}
-.ba-row{display:flex;align-items:center;gap:10px;padding:8px 0;border-top:1px solid var(--line2)}.ba-row span{flex:1;display:grid}.ba-row small{color:var(--muted)}
+.ba-row{display:grid;grid-template-columns:44px minmax(0,1fr);align-items:center;gap:4px 12px;padding:10px 0;border-top:1px solid var(--line2)}.ba-row>span{display:grid}
+.ba-row .ba-btns{grid-column:2;display:flex;gap:16px;flex-wrap:wrap}
+.ba-row .ba-thumb{grid-row:span 2;width:44px;height:52px;display:grid;place-items:center;border-radius:10px;background:radial-gradient(circle at 50% 70%,rgba(224,40,74,.35),#1a0d18);overflow:hidden;color:var(--muted);font-weight:700}
+.ba-thumb img{width:100%;height:100%;object-fit:contain;object-position:50% 15%}.ba-row small{color:var(--muted)}
 .boss-pick .ar-pop-box{max-width:760px}
 .bp-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:8px;max-height:55vh;overflow:auto;padding:2px}
 .bp-card{position:relative;display:flex;gap:10px;align-items:center;padding:7px;border-radius:12px;border:1px solid var(--line2);background:rgba(255,255,255,.04);color:var(--ink);text-align:left;cursor:pointer;font:inherit}
@@ -7367,8 +7370,9 @@ function bindBossAdmin(view) {
   const draw = async () => {
     const { data } = await sb.rpc('boss_admin_list'); list = data || [];
     const fmt = iso => new Date(iso).toLocaleString('nl-BE', { weekday: 'short', day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit', timeZone: 'Europe/Brussels' });
-    $v('#baList').innerHTML = list.length ? list.map(b => `<div class="ba-row" data-id="${b.id}"><span><b>${esc(b.name)}</b><small>“${esc(b.title || '')}” · zwak tegen ${esc(bossWeak(b))}</small><small>${fmt(b.starts_at)}${b.image_path ? '' : ' · ⚠️ nog geen foto'}${b.defeated_at ? ' · verslagen' : new Date(b.ends_at).getTime() < bossNow() ? ' · voorbij' : ''}${b.damage ? ` · ${fmtN(b.damage)} schade` : ''}</small></span>
-      <button type="button" class="link" data-ba="edit">Aanpassen</button><button type="button" class="link" data-ba="test">Test nu</button><button type="button" class="link danger" data-ba="del">Verwijder</button></div>`).join('') : '<p class="hint">Nog geen bosses.</p>';
+    $v('#baList').innerHTML = list.length ? list.map(b => `<div class="ba-row" data-id="${b.id}"><span class="ba-thumb">${b.image_path ? `<img data-thumb="${esc(b.image_path)}" alt="">` : '?'}</span><span><b>${esc(b.name)}</b><small>“${esc(b.title || '')}” · zwak tegen ${esc(bossWeak(b))}</small><small>${fmt(b.starts_at)}${b.image_path ? '' : ' · ⚠️ nog geen foto'}${b.defeated_at ? ' · verslagen' : new Date(b.ends_at).getTime() < bossNow() ? ' · voorbij' : ''}${b.damage ? ` · ${fmtN(b.damage)} schade` : ''}</small></span>
+      <span class="ba-btns"><button type="button" class="link" data-ba="edit">Aanpassen</button><button type="button" class="link" data-ba="test">Test nu</button><button type="button" class="link danger" data-ba="del">Verwijder</button></span></div>`).join('') : '<p class="hint">Nog geen bosses.</p>';
+    $v('#baList').querySelectorAll('[data-thumb]').forEach(im => bossImgUrl(im.dataset.thumb).then(u => { if (u) im.src = u; }));
     $v('#baList').querySelectorAll('[data-ba]').forEach(btn => btn.onclick = async () => {
       const id = Number(btn.closest('[data-id]').dataset.id), b = list.find(x => x.id === id);
       if (btn.dataset.ba === 'edit') { fill(b); $v('#baForm').scrollIntoView({ behavior: 'smooth', block: 'start' }); return; }
