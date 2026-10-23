@@ -8,6 +8,7 @@
 -- - Bosses die al geüpload waren, krijgen hun silhouet vanzelf zodra de admin de Boss-pagina opent.
 --
 -- LET OP: voer je dit bestand later opnieuw uit, voer daarna ook update-33-boss-hp-team.sql opnieuw uit.
+-- LET OP: voer je dit bestand later opnieuw uit, voer daarna ook update-34-boss-test.sql opnieuw uit.
 -- Gebruik: Supabase -> SQL Editor -> nieuwe query -> dit VOLLEDIGE bestand plakken -> Run.
 -- Kies bij de waarschuwing "Run without RLS". Veilig om opnieuw uit te voeren.
 -- Voer eerst update-29-boss.sql uit (en voer deze update opnieuw uit als je 29 ooit opnieuw uitvoert).

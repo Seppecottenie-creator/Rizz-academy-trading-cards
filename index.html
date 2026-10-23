@@ -2653,6 +2653,7 @@ body.fx-trip .shell{animation:trip-hue 6s linear infinite}
 @keyframes ico-bounce{40%{transform:scale(1.18) rotate(-8deg)}}
 .cz-ctrl .btn{min-width:150px;font-size:16px;padding:12px 24px;box-shadow:0 0 0 2px #F2CC72,0 10px 26px -8px rgba(224,40,74,.9)}
 /* --- Boss Battle --- */
+.boss-testtag{margin:0 0 8px;padding:7px 12px;border-radius:10px;background:repeating-linear-gradient(45deg,#3a2a05,#3a2a05 10px,#2a1e04 10px,#2a1e04 20px);border:1px solid #F2CC72;color:#F2CC72;font:700 12.5px var(--body);letter-spacing:.04em;text-align:center}
 .campus-boss{position:absolute;left:39%;top:30%;height:38%;z-index:4;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;padding:0;border:0;background:none;cursor:pointer;font:inherit}
 .cb-fig{position:relative;flex:1;min-height:0;display:flex;justify-content:center}
 /* enkel het lijf en het bordje zijn klikbaar, niet de lege ruimte rond de figuur */
@@ -7104,6 +7105,7 @@ async function drawBoss(view) {
   const th = e.my.team_hp || null, teamDead = !!th && Object.values(th).every(v => v <= 0);
   const teamHp = id => { const c = cardById(id); return th && c ? Math.round(Math.max(0, th[id] ?? c.hp) / c.hp * 100) + '%' : '100%'; };
   box.innerHTML = `
+    ${e.is_test ? '<p class="boss-testtag">TEST · enkel jij ziet dit · de echte boss blijft geheim tot zondag</p>' : ''}
     <div class="boss-stage ph-${e.phase}" id="bossStage">
       <div class="boss-lights" aria-hidden="true"></div>
       <div class="boss-figwrap"><img class="boss-fig${up ? ' sil' : ''}" id="bossFig" src="${esc(img)}" alt="${esc(e.name || 'Geheime boss')}"><i class="boss-shadow"></i></div>
@@ -7424,7 +7426,7 @@ function bindBossAdmin(view) {
       const id = Number(btn.closest('[data-id]').dataset.id), b = list.find(x => x.id === id);
       if (btn.dataset.ba === 'edit') { fill(b); $v('#baForm').scrollIntoView({ behavior: 'smooth', block: 'start' }); return; }
       if (btn.dataset.ba === 'del' && !confirm(`"${b.name}" verwijderen?`)) return;
-      if (btn.dataset.ba === 'test' && !confirm(`"${b.name}" nu meteen starten voor 1 uur? Eerdere testschade wordt gewist. Vergeet niet het uur daarna terug op zondag te zetten.`)) return;
+      if (btn.dataset.ba === 'test' && !confirm(`Test "${b.name}" 20 minuten lang? Enkel jij ziet deze test; de echte boss blijft op zijn zondag staan en blijft voor iedereen een silhouet.`)) return;
       const { error } = await sb.rpc(btn.dataset.ba === 'del' ? 'boss_admin_delete' : 'boss_admin_test', { p_id: id });
       if (error) return say(error.message, 'err');
       await loadBoss(); drawBoss(view);

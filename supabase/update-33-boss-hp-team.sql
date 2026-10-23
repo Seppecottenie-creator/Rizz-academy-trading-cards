@@ -6,6 +6,7 @@
 -- - De boss slaat harder (ongeveer een derde van de HP van je kaart per klap): ontwijken telt echt.
 -- - HP van de boss: 9.000 per actieve speler (minstens 27.000), nagerekend met een simulatie.
 --
+-- LET OP: voer je dit bestand later opnieuw uit, voer daarna ook update-34-boss-test.sql opnieuw uit.
 -- Gebruik: Supabase -> SQL Editor -> nieuwe query -> dit VOLLEDIGE bestand plakken -> Run.
 -- Kies bij de waarschuwing "Run without RLS". Veilig om opnieuw uit te voeren.
 -- Voer eerst update-29, 31 en 32 uit (en deze opnieuw als je een van die ooit opnieuw uitvoert).
