@@ -2803,6 +2803,37 @@ body.bf-open{overflow:hidden}
 @media (orientation:landscape) and (max-height:500px){.boss-figwrap{height:52vh}.bf-figwrap{height:52vh;bottom:30%}.bf{grid-template-rows:auto 1fr auto}.bft-ph{width:32px;height:38px}.bf-dodge{width:66px;height:66px}.bf-super{width:78px;height:78px}}
 @media (min-width:900px){.bf-hud{max-width:760px;width:100%;justify-self:center}.bf-top{max-width:900px;width:100%;justify-self:center}}
 @media (prefers-reduced-motion:reduce){.boss-fig,.boss-shadow{animation:none!important}}
+/* --- Casino: mijn statistieken --- */
+.cz-tile[data-open="cstats"]{grid-column:1/-1}
+.cs{display:grid;gap:14px}
+.cs-hero{display:grid;grid-template-columns:1.6fr repeat(3,1fr);gap:8px}
+.cs-big,.cs-kpi{display:grid;align-content:center;gap:2px;padding:12px 14px;border-radius:14px;background:rgba(255,255,255,.045);border:1px solid var(--line2)}
+.cs-big small,.cs-kpi small{font:600 11.5px var(--body);color:var(--ink-soft)}
+.cs-big b{font:400 38px/1 var(--varsity);color:var(--ink)}.cs-big span{font:500 12px var(--body);color:var(--muted)}
+.cs-kpi b{font:400 24px/1 var(--varsity);color:var(--ink)}
+.cs .pos{color:#7FD3A0}.cs .neg{color:#FF8FA3}.cs-big.pos b{color:#7FD3A0}.cs-big.neg b{color:#FF8FA3}
+.cs-chart{position:relative;padding:12px 14px 6px;border-radius:14px;background:rgba(255,255,255,.045);border:1px solid var(--line2)}
+.cs-chart h4{margin:0 0 6px;font:600 12px var(--body);color:var(--ink-soft)}
+.cs-plot{position:relative;height:150px;margin:8px 48px 0 0;touch-action:none;cursor:crosshair}
+.cs-plot svg{display:block;width:100%;height:100%;overflow:visible}
+.cs-y{position:absolute;right:-46px;transform:translateY(-50%);font:500 11px var(--body);color:var(--muted);font-variant-numeric:tabular-nums}
+.cs-x{display:flex;justify-content:space-between;margin:6px 48px 4px 0;font:500 11px var(--body);color:var(--muted)}
+.cs-hl{position:absolute;top:0;bottom:0;width:1px;background:rgba(255,255,255,.45);opacity:0;pointer-events:none}
+.cs-dot{position:absolute;width:10px;height:10px;margin:-5px 0 0 -5px;border-radius:50%;background:#F2CC72;box-shadow:0 0 0 2px #1a0d18;opacity:0;pointer-events:none}
+.cs-line{fill:none;stroke:#F2CC72;stroke-width:2;stroke-linejoin:round;stroke-linecap:round}
+.cs-area{fill:rgba(242,204,114,.12)}.cs-zero{stroke:rgba(255,255,255,.35);stroke-width:1;stroke-dasharray:4 4}
+
+.cs-tip{position:absolute;top:34px;width:150px;padding:7px 9px;border-radius:9px;background:#120a14;border:1px solid var(--line2);font:500 12px/1.35 var(--body);color:var(--ink);pointer-events:none}
+.cs-tip b{display:block}.cs-tip small{color:var(--ink-soft)}
+.cs-games{display:grid;border-radius:14px;overflow:hidden;border:1px solid var(--line2)}
+.cs-row{display:grid;grid-template-columns:1.6fr repeat(5,1fr);gap:6px;padding:9px 12px;font:500 13.5px var(--body);color:var(--ink);font-variant-numeric:tabular-nums}
+.cs-row:nth-child(even){background:rgba(255,255,255,.035)}.cs-row span:not(:first-child){text-align:right}
+.cs-head{font:600 11px var(--body);letter-spacing:.06em;text-transform:uppercase;color:var(--ink-soft);background:rgba(255,255,255,.06)!important}
+.cs-facts{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.cs-facts span{display:grid;gap:2px;padding:10px 12px;border-radius:12px;background:rgba(255,255,255,.045);font:500 12.5px var(--body);color:var(--ink-soft)}
+.cs-facts small{font:600 11px var(--body);color:var(--muted)}.cs-facts b{font:400 20px var(--varsity);color:var(--ink)}
+@media (max-width:640px){.cs-hero{grid-template-columns:repeat(3,1fr)}.cs-big{grid-column:1/-1}.cs-facts{grid-template-columns:1fr 1fr}
+  .cs-row{grid-template-columns:1.5fr .8fr 1fr .9fr;font-size:12.5px}.cs-row span:nth-child(5),.cs-row span:nth-child(6){display:none}}
 /* --- Sportsbook --- */
 .cz-tile[data-open="sport"]{grid-column:1/-1;min-height:110px}
 .sb-top{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:10px}
@@ -3856,7 +3887,8 @@ const INFO = {
   casino: ['Het casino', `
     <p data-feat="smallbets">Zet 1, 2, 5, 10, … tot 50 credits in per spel. Alle uitkomsten worden op de server getrokken.</p>
     <p data-nofeat="smallbets">Zet je credits in, telkens per 5 (minstens 5, hoogstens 50 per spel). Alle uitkomsten worden op de server getrokken.</p>
-    <ul><li><strong>Blackjack</strong>: kom dichter bij 21 dan de dealer. Winst = 2× terug, blackjack = 2,5×, gelijk = inzet terug. Twee kaarten met dezelfde waarde? Dan kan je <strong>splitsen</strong> in twee handen (nog eens dezelfde inzet).</li>
+    <ul><li><strong>Blackjack</strong>: kom dichter bij 21 dan de dealer. Winst = 2× terug, blackjack = 2,5×, gelijk = inzet terug. Twee kaarten met dezelfde waarde? Dan kan je <strong>splitsen</strong> in twee handen (nog eens dezelfde inzet).
+      <strong>Verdubbelen</strong> kan altijd: je inzet ×2, je krijgt nog precies 1 kaart en daarna stopt die hand. Haal je <strong>6 kaarten zonder over 21</strong> te gaan, dan win je meteen.</li>
     <li><strong>Roulette</strong>: rood/zwart, even/oneven, 1–18 of 19–36 = 2× terug. Eén getal = 36× terug. Op 0 wint het huis.</li>
     <li><strong>Slotmachine</strong>: drie gelijke symbolen, of kersen. Drie keer RIZZ = 60×.</li>
     <li><strong>Paardenrace</strong>: kies een van de 5 paarden. Hoe kleiner de kans, hoe hoger de quotering.</li>
@@ -7514,6 +7546,7 @@ async function renderCasino(view) {
       ${tile('roul', ICO('<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="3.5"/><path d="M12 3v5.5M12 15.5V21M3 12h5.5M15.5 12H21"/>'), 'Roulette', 'Rood of zwart, of alles op één getal')}
       ${tile('slots', '<span class="cz-ic">🍒</span>', 'Slotmachine', 'Drie RIZZ op een rij = 60×')}
       ${tile('horses', '<span class="cz-ic">🏇</span>', 'Paardenrace', 'Kies je paard, tot 10× je inzet')}
+      ${tile('cstats', '<span class="cz-ic">📈</span>', 'Mijn statistieken', 'Je volledige casinogeschiedenis')}
       ${feat('sportsbook') ? tile('sport', '<span class="cz-ic">⚽</span>', 'Sportsbook', 'Zet in op echte voetbalwedstrijden') : ''}
     </div>
 
@@ -7543,6 +7576,7 @@ async function renderCasino(view) {
       </div>
       <button type="button" class="slot-lever" id="czLever" aria-label="Hendel"><i></i></button>
     </div>`)}
+    ${pop('cstats', 'Mijn statistieken', '<div class="cs" id="csBox"><p class="hint">Laden…</p></div>')}
     ${pop('horses', 'Paardenrace', `<div class="cz-race">
       <div class="cz-track" id="czTrack"><div class="cz-crowd" aria-hidden="true"></div>${CZ_HORSES.map(h => `<div class="cz-lane"><span class="cz-hn" style="--c:${h.col}">${h.n}</span><span class="cz-horse" data-h="${h.n}" style="--c:${h.col}"><b>🏇</b><i class="cz-dust"></i></span></div>`).join('')}<i class="cz-finish"></i><div class="cz-count" id="czCount"></div><div class="cz-flash" id="czFlash"></div></div>
       <div class="cz-picks">${CZ_HORSES.map(h => `<button type="button" class="cz-pick${czState.horse === h.n ? ' on' : ''}" data-horse="${h.n}" style="--c:${h.col}"><b>${h.n}. ${h.name}</b><small>${String(h.x).replace('.', ',')}×</small></button>`).join('')}</div>
@@ -7550,7 +7584,7 @@ async function renderCasino(view) {
   </section>`;
 
   // Pop-ups
-  const openPop = id => { view.querySelectorAll('.ar-pop[open]').forEach(p => p.close()); view.querySelector(`.ar-pop[data-pop="${id}"]`)?.showModal(); if (id === 'bj') drawBj(st.bj); if (id === 'sport') loadSport(); };
+  const openPop = id => { view.querySelectorAll('.ar-pop[open]').forEach(p => p.close()); view.querySelector(`.ar-pop[data-pop="${id}"]`)?.showModal(); if (id === 'bj') drawBj(st.bj); if (id === 'sport') loadSport(); if (id === 'cstats') loadCasinoStats(); };
   view.querySelectorAll('[data-open]').forEach(b => b.onclick = () => openPop(b.dataset.open));
   view.querySelectorAll('[data-close]').forEach(b => b.onclick = () => b.closest('dialog').close());
   view.querySelectorAll('.ar-pop').forEach(p => p.addEventListener('click', e => { if (e.target === p) p.close(); }));
@@ -7692,6 +7726,69 @@ async function renderCasino(view) {
     if (r.payout) { coinRain(40); window.celebrate?.('epic'); }
     busy(false, btn, ...view.querySelectorAll('[data-horse]'));
   };
+
+  // --- Mijn statistieken: de hele casinogeschiedenis in cijfers (supabase/update-35-blackjack-casino-stats.sql) ---
+  const CS_GAME = { blackjack: '🂡 Blackjack', roulette: '🎡 Roulette', slots: '🍒 Slotmachine', horses: '🏇 Paardenrace', football: '⚽ Sportsbook' };
+  const signed = n => (n > 0 ? '+' : n < 0 ? '−' : '±') + Math.abs(n).toLocaleString('nl-BE');
+  const pctOf = (a, b) => b ? Math.round(a / b * 100) + '%' : '–';
+  const dayFmt = d => new Date(d + 'T12:00:00').toLocaleDateString('nl-BE', { day: 'numeric', month: 'short' });
+  async function loadCasinoStats() {
+    const box = view.querySelector('#csBox'); if (!box) return;
+    const { data, error } = await sb.rpc('casino_stats');
+    if (error || !data) { box.innerHTML = `<p class="msg err">${esc(error?.message || 'Niet beschikbaar.')}</p>`; return; }
+    const t = data.total;
+    if (!t.n) { box.innerHTML = '<p class="hint">Je hebt nog niets gespeeld in het casino. Veel geluk!</p>'; return; }
+    // verloop: totale winst/verlies na elke speeldag
+    let run = 0; const pts = data.days.map(x => ({ d: x.d, n: x.n, day: x.net, v: (run += x.net) }));
+    box.innerHTML = `
+      <div class="cs-hero">
+        <div class="cs-big ${t.net > 0 ? 'pos' : t.net < 0 ? 'neg' : ''}"><small>Totaal gewonnen of verloren</small><b>${signed(t.net)}</b><span>credits</span></div>
+        <div class="cs-kpi"><b>${t.n.toLocaleString('nl-BE')}</b><small>keer gespeeld</small></div>
+        <div class="cs-kpi"><b>${pctOf(t.wins, t.n)}</b><small>gewonnen</small></div>
+        <div class="cs-kpi"><b>${pctOf(t.payout, t.bet)}</b><small>van je inzet terug</small></div>
+      </div>
+      ${pts.length > 1 ? `<div class="cs-chart" id="csChart"><h4>Verloop van je totaal</h4>${csChart(pts)}<div class="cs-tip" id="csTip" hidden></div></div>` : ''}
+      <div class="cs-games"><div class="cs-row cs-head"><span>Spel</span><span>Gespeeld</span><span>Ingezet</span><span>Netto</span><span>Gewonnen</span><span>Beste</span></div>
+        ${data.games.map(g => `<div class="cs-row"><span>${CS_GAME[g.game] || esc(g.game)}</span><span>${g.n.toLocaleString('nl-BE')}</span><span>${g.bet.toLocaleString('nl-BE')}</span>
+          <span class="${g.net > 0 ? 'pos' : g.net < 0 ? 'neg' : ''}">${signed(g.net)}</span><span>${pctOf(g.wins, g.n)}</span><span>${g.best > 0 ? '+' + g.best : '–'}</span></div>`).join('')}</div>
+      <div class="cs-facts">
+        <span><small>Beste dag</small><b class="pos">${signed(data.best_day.net)}</b> ${dayFmt(data.best_day.d)}</span>
+        <span><small>Slechtste dag</small><b class="neg">${signed(data.worst_day.net)}</b> ${dayFmt(data.worst_day.d)}</span>
+        <span><small>Grootste winst</small><b>${t.best > 0 ? '+' + t.best : '–'}</b></span>
+        <span><small>Speeldagen</small><b>${t.days}</b> sinds ${dayFmt(t.first)}</span>
+      </div>`;
+    const plot = box.querySelector('#csChart .cs-plot'); if (!plot) return;
+    // tooltip: de dichtstbijzijnde dag
+    const tip = box.querySelector('#csTip'), hl = plot.querySelector('.cs-hl'), dot = plot.querySelector('.cs-dot');
+    const mx = Number(plot.dataset.mx), mn = Number(plot.dataset.mn);
+    const move = ev => {
+      const r = plot.getBoundingClientRect(), f = Math.max(0, Math.min(1, (ev.clientX - r.left) / r.width));
+      const i = Math.round(f * (pts.length - 1)), p = pts[i], fx = i / Math.max(1, pts.length - 1), fy = (mx - p.v) / Math.max(1, mx - mn);
+      hl.style.left = dot.style.left = fx * 100 + '%'; dot.style.top = fy * 100 + '%'; hl.style.opacity = dot.style.opacity = 1;
+      tip.hidden = false; tip.innerHTML = `<b>${dayFmt(p.d)}</b>Totaal ${signed(p.v)}<br><small>Die dag ${signed(p.day)} · ${p.n}× gespeeld</small>`;
+      tip.style.left = Math.min(r.width - 150, Math.max(0, fx * r.width - 75)) + 14 + 'px';
+    };
+    plot.addEventListener('pointermove', move); plot.addEventListener('pointerdown', move);
+    plot.addEventListener('pointerleave', () => { tip.hidden = true; hl.style.opacity = dot.style.opacity = 0; });
+  }
+  // Eén lijn: je totaal na elke speeldag, met de nullijn als referentie.
+  // Vaste hoogte; lijnen schalen mee in de breedte, teksten en punt zijn gewone HTML (blijven scherp en even groot).
+  function csChart(pts) {
+    const W = 600, H = 150, vals = pts.map(p => p.v), mx = Math.max(0, ...vals), mn = Math.min(0, ...vals);
+    const k = H / Math.max(1, mx - mn), y0 = mx * k, step = W / Math.max(1, pts.length - 1);
+    const xy = pts.map((p, i) => [i * step, y0 - p.v * k]);
+    const line = xy.map(([x, y], i) => `${i ? 'L' : 'M'}${x.toFixed(1)},${y.toFixed(1)}`).join('');
+    const area = `${line}L${W},${y0.toFixed(1)}L0,${y0.toFixed(1)}Z`;
+    const pctY = v => ((y0 - v * k) / H * 100).toFixed(2) + '%';
+    return `<div class="cs-plot" data-mx="${mx}" data-mn="${mn}">
+      <svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="none" role="img" aria-label="Verloop van je casinototaal">
+        <path class="cs-area" d="${area}"/><line class="cs-zero" x1="0" x2="${W}" y1="${y0}" y2="${y0}" vector-effect="non-scaling-stroke"/>
+        <path class="cs-line" d="${line}" vector-effect="non-scaling-stroke"/></svg>
+      <span class="cs-y" style="top:0">${signed(mx)}</span>${mn < 0 ? `<span class="cs-y" style="top:100%">${signed(mn)}</span>` : ''}
+      ${mx > 0 && mn < 0 ? `<span class="cs-y zero" style="top:${pctY(0)}">0</span>` : ''}
+      <i class="cs-hl"></i><i class="cs-dot"></i></div>
+      <div class="cs-x"><span>${dayFmt(pts[0].d)}</span><span>${dayFmt(pts[pts.length - 1].d)}</span></div>`;
+  }
 
   // --- Sportsbook: echte voetbalwedstrijden (supabase/update-26-voetbal.sql) ---
   const sbState = { tab: 'open', comp: 'all', pick: {}, data: null };
@@ -7855,7 +7952,7 @@ async function renderCasino(view) {
     if (r.done) {
       after(r);
       view.querySelector('.cz-go')?.remove();
-      const TXT = { blackjack: 'Blackjack!', win: 'Gewonnen!', push: 'Gelijk.', lose: 'De dealer wint.', bust: 'Over 21.' };
+      const TXT = { blackjack: 'Blackjack!', win: 'Gewonnen!', charlie: '6 kaarten zonder bust: gewonnen!', push: 'Gelijk.', lose: 'De dealer wint.', bust: 'Over 21.' };
       const txt = r.player2 ? `Hand 1: ${TXT[r.outcome]} Hand 2: ${TXT[r.outcome2]}` : TXT[r.outcome];
       say('bj', `${txt} ${outcome(r)}`, r.payout > r.bet ? 'ok' : '');
       if (r.outcome === 'blackjack') window.celebrate?.('epic');

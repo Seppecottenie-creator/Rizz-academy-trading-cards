@@ -8,6 +8,7 @@
 -- - 21 na een split telt als gewone winst (2×), niet als blackjack.
 -- - Eén keer splitsen per hand.
 --
+-- LET OP: voer je dit bestand later opnieuw uit, voer daarna ook update-35-blackjack-casino-stats.sql opnieuw uit.
 -- Gebruik: Supabase -> SQL Editor -> nieuwe query -> dit VOLLEDIGE bestand plakken -> Run.
 -- Kies bij de waarschuwing "Run without RLS".
 -- Veilig om opnieuw uit te voeren. Voer eerst update-14-casino-zonder-limiet.sql uit.

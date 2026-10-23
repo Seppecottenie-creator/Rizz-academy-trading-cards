@@ -91,6 +91,10 @@ union all
 select 'update-34-boss-test.sql',
        exists (select 1 from information_schema.columns where table_name = 'boss_events' and column_name = 'is_test')
 union all
+select 'update-35-blackjack-casino-stats.sql',
+       to_regprocedure('public.casino_stats()') is not null
+       and coalesce((select prosrc like '%charlie%' from pg_proc where oid = to_regprocedure('public._bj_outcome(integer[],integer[],boolean)')), false)
+union all
 select 'Testfase: enkel de admin ziet het nieuwe (false = nog niet voor iedereen, dat is normaal tot de release)',
        case when to_regclass('public.feature_flags') is null then false
             else (xpath('/row/c/text()', query_to_xml('select count(*) as c from public.feature_flags where released', false, true, '')))[1]::text <> '0' end

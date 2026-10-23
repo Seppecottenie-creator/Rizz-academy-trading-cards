@@ -4,6 +4,7 @@
 -- Ook als je twee azen splitst, speel je elke hand gewoon verder: hit, stand of double
 -- zo vaak als je wil (vroeger kreeg elke aas maar één kaart).
 --
+-- LET OP: voer je dit bestand later opnieuw uit, voer daarna ook update-35-blackjack-casino-stats.sql opnieuw uit.
 -- Gebruik: Supabase -> SQL Editor -> nieuwe query -> dit VOLLEDIGE bestand plakken -> Run.
 -- Kies bij de waarschuwing "Run without RLS".
 -- Veilig om opnieuw uit te voeren. Voer eerst update-22-blackjack-split.sql uit.

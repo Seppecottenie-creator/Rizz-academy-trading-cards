@@ -7,6 +7,7 @@
 -- Vanaf 5 credits blijft alles zoals het was (naar beneden afgerond).
 -- TESTFASE: 1 en 2 credits kan eerst enkel de admin (release-16-oktober.sql zet het open).
 --
+-- LET OP: voer je dit bestand later opnieuw uit, voer daarna ook update-35-blackjack-casino-stats.sql opnieuw uit.
 -- Gebruik: Supabase -> SQL Editor -> nieuwe query -> dit VOLLEDIGE bestand plakken -> Run.
 -- Kies bij de waarschuwing "Run without RLS".
 -- Veilig om opnieuw uit te voeren. Voer eerst update-14-casino-zonder-limiet.sql en update-25-foodtruck.sql uit.
