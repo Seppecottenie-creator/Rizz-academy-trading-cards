@@ -6,6 +6,7 @@
 -- - Eenmalige opkuis: bosses die door een vroegere test naar een ander moment verschoven zijn,
 --   gaan terug naar de eerstvolgende vrije zondag 20u, en de testschade van de admin wordt gewist.
 --
+-- LET OP: voer je dit bestand later opnieuw uit, voer daarna ook update-36-boss-fix.sql opnieuw uit.
 -- Gebruik: Supabase -> SQL Editor -> nieuwe query -> dit VOLLEDIGE bestand plakken -> Run.
 -- Kies bij de waarschuwing "Run without RLS". Veilig om opnieuw uit te voeren.
 -- Voer eerst update-33-boss-hp-team.sql uit.
