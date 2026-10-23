@@ -3844,7 +3844,7 @@ const INFO = {
     <li data-feat="foodmenu">Zolang je zat bent, krijg je geen alcohol. En wie weet zit er achter sommige combinaties iets geheims…</li></ul></div>`],
   boss: ['Boss Battle', `
     <p>Elke <strong>zondag van 20u tot 21u</strong> valt er een boss de campus aan. Iedereen vecht tegelijk, en iedereen ziet dezelfde HP-balk.</p>
-    <ul><li>Kies een team van 3 kaarten voor de hele avond en tik 60 seconden op de boss. Elke tik vult je energie; vol = <strong>superaanval</strong>.</li>
+    <ul><li>Kies een team van 3 kaarten voor de hele avond en tik 30 seconden op de boss. Elke tik vult je energie; vol = <strong>superaanval</strong>.</li>
     <li>Licht de boss rood op? Tik op <strong>Ontwijk</strong>. Te laat? Dan verliest je kaart HP. Valt ze uit, dan neemt de volgende over.</li>
     <li>Met dat team speel je 3 gevechten per avond. Legendary en epic doen meer schade, en de zwakte van de boss telt ×1,5.</li>
     <li>Is de boss verslagen voor 21u, dan krijgt iedereen die meedeed credits. Ontsnapt hij, dan krijgt niemand iets.</li></ul>`],
@@ -7114,7 +7114,7 @@ async function drawBoss(view) {
       ${up ? '' : `<div class="boss-card"><h4>Meeste schade</h4><ol class="boss-top" id="bossTop">${bossTopHtml(e)}</ol>${e.my.damage ? `<p class="hint">Jouw schade: <b>${fmtN(e.my.damage)}</b></p>` : ''}</div>`}
       <div class="boss-card"><h4>Hoe werkt het?</h4><ul class="boss-rules">
         <li>Elke <b>zondag van 20u tot 21u</b>. Iedereen vecht tegelijk tegen dezelfde boss.</li>
-        <li>Kies een team van <b>3 kaarten</b> voor de hele avond en tik 60 seconden op de boss. Volle energie? <b>Superaanval!</b></li>
+        <li>Kies een team van <b>3 kaarten</b> voor de hele avond en tik 30 seconden op de boss. Volle energie? <b>Superaanval!</b></li>
         <li>Licht de boss rood op? Tik op <b>Ontwijk</b>, anders raakt hij je kaart.</li>
         <li>Met dat team speel je <b>3 gevechten</b>. Bij elk gevecht staan je kaarten weer recht.</li>
         ${e.weakness_kind ? `<li>Zwak tegen <b>${esc(bossWeak(e))}</b>: ×1,5 schade.</li>` : ''}
@@ -7189,7 +7189,7 @@ async function bossPickTeam(view) {
   sync(); dlg.showModal();
 }
 
-// Het gevecht: 60 seconden tikken, superaanvallen en ontwijken
+// Het gevecht: 30 seconden tikken, superaanvallen en ontwijken
 async function bossFight(view, start) {
   const e = bossState.data.event, img = (await bossImgUrl(e.image_path)) || BOSS_FALLBACK;
   const team = start.team.map(c => ({ ...c, left: c.hp }));
@@ -7200,7 +7200,7 @@ async function bossFight(view, start) {
     <div class="bf-bg" aria-hidden="true"></div>
     <div class="bf-top">
       <div class="bf-hp"><div class="bf-name"><b>${esc(e.name)}</b><span id="bfHpTxt"></span></div><div class="bh-bar"><i id="bfBar"></i></div></div>
-      <div class="bf-time" id="bfTimeWrap"><b id="bfTime">60</b></div>
+      <div class="bf-time" id="bfTimeWrap"><b id="bfTime">${start.seconds}</b></div>
     </div>
     <div class="bf-arena" id="bfArena"><div class="bf-warn" id="bfWarn">!</div>
       <div class="bf-figwrap"><img class="boss-fig" id="bfBoss" src="${esc(img)}" alt="" draggable="false"><i class="boss-shadow"></i></div>
@@ -7298,7 +7298,7 @@ async function bossFight(view, start) {
   }, 3000);
   const clock = setInterval(() => {
     const s = Math.max(0, Math.ceil((f.end - performance.now()) / 1000));
-    $('#bfTime').textContent = s; $('#bfTimeWrap').classList.toggle('low', s <= 10); $('#bfTimeWrap').style.setProperty('--t', s / 60);
+    $('#bfTime').textContent = s; $('#bfTimeWrap').classList.toggle('low', s <= 10); $('#bfTimeWrap').style.setProperty('--t', s / start.seconds);
     if (s <= 0) finish('De tijd is om.');
   }, 200);
   async function finish(why) {

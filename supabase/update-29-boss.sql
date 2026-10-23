@@ -5,10 +5,10 @@
 --   naam, uitspraak, zwakte en de eerstvolgende vrije zondag 20u kiest de server zelf (aanpassen kan).
 -- - Tot de start zie je enkel een silhouet en een aftelklok. Om 20u verschijnt de boss.
 -- - Tijdens het uur vecht iedereen tegelijk: kies 3 kaarten (je team voor de hele avond),
---   60 seconden tikken op de boss, superaanval als je energie vol is, en ontwijk zijn aanvallen.
+--   30 seconden tikken op de boss, superaanval als je energie vol is, en ontwijk zijn aanvallen.
 --   Met dat team speel je max. 3 gevechten; bij elk gevecht staan je kaarten weer recht.
--- - Eén gedeelde HP-balk voor iedereen. HP = 20.000 × aantal spelers die de afgelopen 7 dagen actief waren
---   (minstens 60.000), tenzij de admin zelf een aantal invult. Een gemiddelde speler doet ±10.000 schade
+-- - Eén gedeelde HP-balk voor iedereen. HP = 11.000 × aantal spelers die de afgelopen 7 dagen actief waren
+--   (minstens 33.000), tenzij de admin zelf een aantal invult. Een gemiddelde speler doet ±6.000 schade
 --   per gevecht: ongeveer twee op de drie spelers moeten hun 3 gevechten spelen om te winnen.
 -- - Verslagen? Iedereen die meedeed krijgt credits: 50 + een deel van 500 naar verhouding van je schade,
 --   +50 voor wie de meeste schade deed en +25 voor de laatste klap. Niet verslagen: niets.
@@ -118,7 +118,7 @@ begin
   if e.hp_max is not null then return e.hp_max; end if;
   -- spelers die de afgelopen 7 dagen de app open hadden (zonder admin)
   select count(*) into n from public.profiles where last_active > now() - interval '7 days' and not public._is_admin_user(id);
-  update public.boss_events set hp_max = coalesce(hp_override, greatest(60000, 20000 * coalesce(n, 0))) where id = p_event
+  update public.boss_events set hp_max = coalesce(hp_override, greatest(33000, 11000 * coalesce(n, 0))) where id = p_event
   returning hp_max into n;
   return n;
 end $$;
@@ -206,7 +206,7 @@ begin
   insert into public.boss_fights (event_id, user_id, cards) values (e.id, me, p_cards) returning id into fid;
   select jsonb_agg(public._boss_card_power(e, c) order by array_position(p_cards, c.id)) into team
   from public.cards c where c.id = any (p_cards);
-  return jsonb_build_object('fight', fid, 'team', team, 'hp_max', hp, 'seconds', 60,
+  return jsonb_build_object('fight', fid, 'team', team, 'hp_max', hp, 'seconds', 30,
     'damage', (select coalesce(sum(damage), 0) from public.boss_fights where event_id = e.id));
 end $$;
 grant execute on function public.boss_fight_start(int[]) to authenticated;
@@ -232,13 +232,13 @@ begin
     v_taps := v_taps + t; v_sups := v_sups + s;
     dmg := dmg + t * (pw->>'tap')::int + s * (pw->>'super')::int;
   end loop;
-  -- niet sneller dan een mens: max. 8 tikken per seconde, één superaanval per 10 tikken, 60 seconden
-  secs := least(65, extract(epoch from now() - f.started_at));
+  -- niet sneller dan een mens: max. 8 tikken per seconde, één superaanval per 10 tikken, 30 seconden
+  secs := least(35, extract(epoch from now() - f.started_at));
   if f.taps + v_taps > secs * 8 + 10 or f.supers + v_sups > floor((f.taps + v_taps) / 10.0) + 1 then
     raise exception 'Te snel getikt.';
   end if;
   update public.boss_fights set taps = taps + v_taps, supers = supers + v_sups, damage = damage + dmg,
-    ended = p_final or secs >= 64 where id = f.id;
+    ended = p_final or secs >= 34 where id = f.id;
   if dmg > 0 then insert into public.boss_hits (event_id, user_id, damage, super) values (e.id, me, dmg, v_sups > 0); end if;
   hp := coalesce(e.hp_max, public._boss_hp(e.id));
   select coalesce(sum(damage), 0) into tot from public.boss_fights where event_id = e.id;
