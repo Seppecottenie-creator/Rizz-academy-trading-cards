@@ -17,4 +17,4 @@ Lijst van ideeën die nog niet gebouwd zijn. Nieuwste bovenaan.
 
 ## Gebouwd
 - 17 oktober 2026: Sportsbook (voetbal), Food Truck-kaart, geheime trofeeën, muziek en geluid, inzet vanaf 1 credit.
-- 21 oktober 2026: Boss Battle elke zondag 20u–21u (in testfase, enkel admin).
+- 23 oktober 2026: Boss Battle elke zondag 20u–21u.
