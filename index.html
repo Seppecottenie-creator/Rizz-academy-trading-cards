@@ -3849,7 +3849,8 @@ const INFO = {
     <p>Elke <strong>zondag van 20u tot 21u</strong> valt er een boss de campus aan. Iedereen vecht tegelijk, en iedereen ziet dezelfde HP-balk.</p>
     <ul><li>Kies een team van 3 kaarten voor de hele avond en tik 30 seconden op de boss. Elke tik vult je energie; vol = <strong>superaanval</strong>.</li>
     <li>Licht de boss rood op? Tik op <strong>Ontwijk</strong>. Te laat? Dan verliest je kaart HP. Valt ze uit, dan neemt de volgende over.</li>
-    <li>Met dat team speel je 3 gevechten per avond. Legendary en epic doen meer schade, en de zwakte van de boss telt ×1,5.</li>
+    <li>Met dat team speel je 3 gevechten per avond. De HP van je kaarten blijft behouden tot het einde van de avond. Zijn ze alle 3 uitgeteld, dan kan je niet meer vechten.</li>
+    <li>Legendary en epic doen meer schade, en de zwakte van de boss telt ×1,5.</li>
     <li>Is de boss verslagen voor 21u, dan krijgt iedereen die meedeed credits. Ontsnapt hij, dan krijgt niemand iets.</li></ul>`],
   casino: ['Het casino', `
     <p data-feat="smallbets">Zet 1, 2, 5, 10, … tot 50 credits in per spel. Alle uitkomsten worden op de server getrokken.</p>
@@ -7100,6 +7101,8 @@ async function drawBoss(view) {
     return;
   }
   const up = e.phase === 'upcoming', left = Math.max(0, (e.hp_max || 1) - e.damage);
+  const th = e.my.team_hp || null, teamDead = !!th && Object.values(th).every(v => v <= 0);
+  const teamHp = id => { const c = cardById(id); return th && c ? Math.round(Math.max(0, th[id] ?? c.hp) / c.hp * 100) + '%' : '100%'; };
   box.innerHTML = `
     <div class="boss-stage ph-${e.phase}" id="bossStage">
       <div class="boss-lights" aria-hidden="true"></div>
@@ -7109,7 +7112,7 @@ async function drawBoss(view) {
       <div class="boss-hp${left / (e.hp_max || 1) < .5 ? ' rage' : ''}" id="bossHp"><div class="bh-bar"><i style="width:${(left / (e.hp_max || 1) * 100).toFixed(2)}%"></i></div>
         <div class="bh-txt"><b id="bossHpTxt">${fmtN(left)} / ${fmtN(e.hp_max)} HP</b><span id="bossPlayers">${e.players} speler${e.players === 1 ? '' : 's'}</span></div></div>`}
     </div>
-    ${e.phase === 'live' ? `<div class="boss-cta"><button type="button" class="btn boss-go" id="bossFight" ${e.my.fights >= 3 ? 'disabled' : ''}>${e.my.fights >= 3 ? 'Je 3 gevechten zijn gespeeld' : `⚔️ ${e.my.fights ? 'Volgend gevecht' : 'Vecht mee'} <small>${3 - e.my.fights} van 3 over${e.my.used.length ? ' · ' + e.my.used.map(id => esc(cardById(id)?.name || '')).join(', ') : ''}</small>`}</button>
+    ${e.phase === 'live' ? `<div class="boss-cta"><button type="button" class="btn boss-go" id="bossFight" ${e.my.fights >= 3 || teamDead ? 'disabled' : ''}>${teamDead ? 'Je team is uitgeteld voor vanavond' : e.my.fights >= 3 ? 'Je 3 gevechten zijn gespeeld' : `⚔️ ${e.my.fights ? 'Volgend gevecht' : 'Vecht mee'} <small>${3 - e.my.fights} van 3 over${e.my.used.length ? ' · ' + e.my.used.map(id => `${esc(cardById(id)?.name || '')} ❤️${teamHp(id)}`).join(', ') : ''}</small>`}</button>
       <span class="boss-left">Nog <b id="bossClock"></b></span></div>` : ''}
     ${e.phase === 'defeated' ? `<div class="boss-result win"><b>VERSLAGEN!</b><span>${e.last_hit ? `Laatste klap: ${esc(e.last_hit)}. ` : ''}${e.my.reward ? `Jij kreeg <b>+${e.my.reward} credits</b>.` : e.my.damage ? '' : 'Jij deed niet mee deze keer.'}</span></div>` : ''}
     ${e.phase === 'ended' ? '<div class="boss-result lose"><b>ONTSNAPT</b><span>De boss was te sterk. Geen beloning deze week.</span></div>' : ''}
@@ -7119,7 +7122,7 @@ async function drawBoss(view) {
         <li>Elke <b>zondag van 20u tot 21u</b>. Iedereen vecht tegelijk tegen dezelfde boss.</li>
         <li>Kies een team van <b>3 kaarten</b> voor de hele avond en tik 30 seconden op de boss. Volle energie? <b>Superaanval!</b></li>
         <li>Licht de boss rood op? Tik op <b>Ontwijk</b>, anders raakt hij je kaart.</li>
-        <li>Met dat team speel je <b>3 gevechten</b>. Bij elk gevecht staan je kaarten weer recht.</li>
+        <li>Met dat team speel je <b>3 gevechten</b>. De HP van je kaarten blijft behouden tot het einde van de avond: elke klap kost ongeveer een derde, dus ontwijk goed!</li>
         ${e.weakness_kind ? `<li>Zwak tegen <b>${esc(bossWeak(e))}</b>: ×1,5 schade.</li>` : ''}
         <li>De boss is sterk: hij valt enkel als bijna iedereen meedoet. Verslagen? Iedereen die meedeed krijgt <b>50+ credits</b>, meer naargelang je schade. Topschutter +50, laatste klap +25.</li>
       </ul></div>
@@ -7195,8 +7198,9 @@ async function bossPickTeam(view) {
 // Het gevecht: 30 seconden tikken, superaanvallen en ontwijken
 async function bossFight(view, start) {
   const e = bossState.data.event, img = (await bossImgUrl(e.image_path)) || BOSS_FALLBACK;
-  const team = start.team.map(c => ({ ...c, left: c.hp }));
-  const f = bossState.fight = { id: start.fight, team, cur: 0, energy: 0, pend: {}, dmg: 0, base: start.damage, hpMax: start.hp_max,
+  // HP van je kaarten blijft behouden over je gevechten van de avond
+  const team = start.team.map(c => ({ ...c, left: c.left ?? c.hp }));
+  const f = bossState.fight = { id: start.fight, team, cur: Math.max(0, team.findIndex(c => c.left > 0)), hpDirty: false, energy: 0, pend: {}, dmg: 0, base: start.damage, hpMax: start.hp_max,
     end: performance.now() + start.seconds * 1000, lastTap: 0, wind: false, dodged: false, over: false, sent: 0, defeated: false, reward: null };
   Sound.setPlace('battle');
   document.body.insertAdjacentHTML('beforeend', `<div class="bf" id="bossFightEl">
@@ -7269,13 +7273,14 @@ async function bossFight(view, start) {
       if (f.over) return;
       boss.classList.remove('strike'); void boss.offsetWidth; boss.classList.add('strike');
       if (f.dodged) continue;
-      const c = f.team[f.cur], hit = Math.round(18 + Math.random() * 12 + (pctLeft() < .5 ? 6 : 0));
-      c.left -= hit; flash('red'); el.classList.remove('shake'); void el.offsetWidth; el.classList.add('shake'); Sound.play('stamp');
+      // een klap kost ongeveer een derde van de HP van je kaart (meer als de boss woedend is)
+      const c = f.team[f.cur], hit = Math.round(c.hp * (.28 + Math.random() * .08 + (pctLeft() < .5 ? .06 : 0)));
+      c.left -= hit; f.hpDirty = true; flash('red'); el.classList.remove('shake'); void el.offsetWidth; el.classList.add('shake'); Sound.play('stamp');
       pop(`−${hit} ❤️`, innerWidth / 2, innerHeight * .78, 'hurt');
       if (c.left <= 0) {
         c.left = 0; f.energy = 0;
         const next = f.team.findIndex(x => x.left > 0);
-        if (next < 0) { drawTeam(); return finish('Al je kaarten zijn uitgeteld.'); }
+        if (next < 0) { drawTeam(); return finish('Al je kaarten zijn uitgeteld. Je team kan vanavond niet meer vechten.'); }
         f.cur = next; pop(`${esc(f.team[next].name)} neemt over!`, innerWidth / 2, innerHeight * .7, 'dodge');
       }
       drawTeam();
@@ -7284,8 +7289,10 @@ async function bossFight(view, start) {
   // Schade doorsturen naar de server (elke 3 seconden en op het einde)
   const flush = async (final = false) => {
     const hits = f.pend; f.pend = {};
-    if (!Object.keys(hits).length && !final) return;
-    const { data, error } = await sb.rpc('boss_hit', { p_fight: f.id, p_hits: hits, p_final: final });
+    if (!Object.keys(hits).length && !final && !f.hpDirty) return;
+    f.hpDirty = false;
+    const hp = Object.fromEntries(f.team.map(c => [c.id, Math.max(0, c.left)]));
+    const { data, error } = await sb.rpc('boss_hit', { p_fight: f.id, p_hits: hits, p_final: final, p_hp: hp });
     if (error || !data) return;
     f.sent += data.damage || 0;
     if (data.total != null) { f.base = data.total - f.sent; }

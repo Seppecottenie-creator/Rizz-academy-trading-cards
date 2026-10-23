@@ -5,6 +5,7 @@
 -- - De HP van de boss gaat mee omlaag: 11.000 per actieve speler (minstens 33.000), nagerekend met een simulatie,
 --   zodat het even moeilijk blijft (ongeveer 2 op 3 spelers moeten hun 3 gevechten spelen).
 --
+-- LET OP: voer je dit bestand later opnieuw uit, voer daarna ook update-33-boss-hp-team.sql opnieuw uit.
 -- Gebruik: Supabase -> SQL Editor -> nieuwe query -> dit VOLLEDIGE bestand plakken -> Run.
 -- Kies bij de waarschuwing "Run without RLS". Veilig om opnieuw uit te voeren.
 -- =====================================================================

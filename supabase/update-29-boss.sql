@@ -15,6 +15,7 @@
 -- - Alle schade wordt op de server berekend uit de kaarten en de tijd (max. 8 tikken per seconde).
 -- - TESTFASE: enkel de admin ziet het (feature_flags 'boss'). Voor iedereen: release-boss.sql.
 --
+-- LET OP: voer je dit bestand later opnieuw uit, voer daarna ook update-33-boss-hp-team.sql opnieuw uit.
 -- Gebruik: Supabase -> SQL Editor -> nieuwe query -> dit VOLLEDIGE bestand plakken -> Run.
 -- Kies bij de waarschuwing "Run without RLS".
 -- Veilig om opnieuw uit te voeren. Voer eerst update-25-foodtruck.sql uit (feature_flags).
