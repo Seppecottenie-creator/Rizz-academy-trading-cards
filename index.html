@@ -2653,6 +2653,15 @@ body.fx-trip .shell{animation:trip-hue 6s linear infinite}
 @keyframes ico-bounce{40%{transform:scale(1.18) rotate(-8deg)}}
 .cz-ctrl .btn{min-width:150px;font-size:16px;padding:12px 24px;box-shadow:0 0 0 2px #F2CC72,0 10px 26px -8px rgba(224,40,74,.9)}
 /* --- Boss Battle --- */
+.campus-boss{position:absolute;left:39%;top:30%;height:38%;z-index:4;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;padding:0;border:0;background:none;cursor:pointer;font:inherit}
+.cb-fig{position:relative;flex:1;min-height:0;display:flex;justify-content:center}
+.campus-boss .cb-fig img{position:static;inset:auto;display:block;height:100%;width:auto;max-width:none;object-fit:contain;transform-origin:50% 100%;animation:boss-idle 3.2s ease-in-out infinite;
+  filter:brightness(0) drop-shadow(0 0 2px rgba(224,40,74,.95)) drop-shadow(0 0 12px rgba(224,40,74,.7))}
+.campus-boss.live .cb-fig img{filter:drop-shadow(0 0 10px rgba(255,40,60,.9)) drop-shadow(0 8px 14px rgba(0,0,0,.6))}
+.cb-fig .boss-shadow{bottom:-4px;height:10px}
+.campus-boss .cb-pin{position:relative;transform:none;margin-top:4px;left:auto;top:auto;flex:none;white-space:nowrap;border-color:rgba(224,40,74,.75);background:linear-gradient(135deg,#2a0812,#5a0d22)}
+.campus-boss .cb-pin b{color:#FF8FA3}.campus-boss .cb-pin small{color:#F6DE9C;font-variant-numeric:tabular-nums}
+.campus-boss.live .cb-pin{animation:bb-pulse 1.2s ease-in-out infinite}
 .boss-banner{position:absolute;left:50%;top:clamp(12px,calc(70px - (100vw - 600px) * 9),62px);transform:translateX(-50%);z-index:6;display:flex;align-items:center;gap:10px;padding:8px 16px 8px 10px;border-radius:999px;border:1px solid rgba(224,40,74,.6);background:linear-gradient(135deg,rgba(40,8,20,.92),rgba(80,10,30,.92));color:#fff;cursor:pointer;box-shadow:0 8px 24px rgba(0,0,0,.45);font:inherit}
 .boss-banner .bb-ic{font-size:24px;filter:drop-shadow(0 0 6px rgba(224,40,74,.8))}
 .boss-banner .bb-t{display:grid;text-align:left;line-height:1.15}.boss-banner b{font:400 15px var(--varsity);letter-spacing:.08em;text-transform:uppercase;color:#FF8FA3}
@@ -7038,22 +7047,25 @@ const fmtN = n => Number(n || 0).toLocaleString('nl-BE');
 const BOSS_FALLBACK = `data:image/svg+xml,${encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 320"><g fill="#3a2440"><circle cx="100" cy="52" r="34"/><path d="M52 100q48-22 96 0l14 92-22 6-6-56-6 168h-26l-2-98-2 98H72l-6-168-6 56-22-6z"/></g></svg>')}`;
 
 // Banner op de campus: aftellen of LIVE
+// Vanaf woensdag staat de boss als zwart silhouet op het plein; tijdens de battle in kleur
 async function bossCampusBanner(view) {
   if (!feat('boss')) return;
   const d = await loadBoss(); const e = d?.event;
-  const host = view.querySelector('.campus'); if (!host || !view.isConnected) return;
-  if (!e) return;
-  host.insertAdjacentHTML('beforeend', `<button type="button" class="boss-banner ph-${e.phase}" id="bossBanner"><span class="bb-ic" aria-hidden="true">👹</span>
-    <span class="bb-t"><b>Boss Battle</b><small id="bossBannerTxt"></small></span></button>`);
-  const b = $('#bossBanner'), t = $('#bossBannerTxt');
+  const map = view.querySelector('.campus-map'); if (!map || !view.isConnected || !e) return;
+  const now = bossNow();
+  const live = e.phase === 'live', teaser = e.phase === 'upcoming' && now >= new Date(e.teaser_from).getTime();
+  if (!live && !teaser) return;
+  const src = (live ? await bossImgUrl(e.image_path) : await bossImgUrl(e.sil_path)) || BOSS_FALLBACK;
+  if (!view.isConnected) return;
+  map.insertAdjacentHTML('beforeend', `<button type="button" class="campus-boss${live ? ' live' : ''}" id="campusBoss" aria-label="Boss Battle">
+    <span class="cb-fig"><img src="${esc(src)}" alt="" draggable="false"><i class="boss-shadow"></i></span>
+    <span class="cpin cb-pin"><b>Boss Battle</b><small id="campusBossTxt"></small></span></button>`);
+  const b = $('#campusBoss'), t = $('#campusBossTxt');
   b.onclick = () => { state.tab = 'boss'; renderMain(); scrollTo({ top: 0 }); };
   const tick = () => {
     if (!b.isConnected) return clearInterval(iv);
-    const now = bossNow(), st = new Date(e.starts_at).getTime(), en = new Date(e.ends_at).getTime();
-    if (e.phase === 'defeated') t.textContent = 'Verslagen! 🎉';
-    else if (now < st) t.textContent = `${bossWhen(e.starts_at)} · ${bossCountdown(st - now)}`;
-    else if (now < en) { b.classList.add('ph-live'); t.textContent = `LIVE · nog ${bossCountdown(en - now)}`; }
-    else t.textContent = 'Ontsnapt… volgende week beter';
+    const n = bossNow(), st = new Date(e.starts_at).getTime(), en = new Date(e.ends_at).getTime();
+    t.textContent = n < st ? `${bossWhen(e.starts_at)} · ${bossCountdown(st - n)}` : n < en ? `LIVE · nog ${bossCountdown(en - n)}` : 'Voorbij';
   };
   const iv = setInterval(tick, 1000); tick();
 }
@@ -7077,7 +7089,7 @@ async function renderBoss(view) {
 
 async function drawBoss(view) {
   const d = bossState.data, e = d.event, box = view.querySelector('#bossBox'); if (!box) return;
-  const img = (e && await bossImgUrl(e.image_path)) || BOSS_FALLBACK;
+  const img = (e && await bossImgUrl(e.phase === 'upcoming' ? e.sil_path : e.image_path)) || BOSS_FALLBACK;
   if (!e) {
     box.innerHTML = `<div class="boss-stage empty"><img class="boss-fig sil" src="${BOSS_FALLBACK}" alt=""><div class="boss-cd"><small>Nog geen boss gepland</small></div></div>
       <p class="hint" style="text-align:center">Elke zondag om 20u valt er een boss de campus aan. Hou deze pagina in de gaten.</p>${d.is_admin ? bossAdminHtml() : ''}`;
@@ -7088,8 +7100,8 @@ async function drawBoss(view) {
   box.innerHTML = `
     <div class="boss-stage ph-${e.phase}" id="bossStage">
       <div class="boss-lights" aria-hidden="true"></div>
-      <div class="boss-figwrap"><img class="boss-fig${up && !d.is_admin ? ' sil' : up ? ' sil-admin' : ''}" id="bossFig" src="${esc(img)}" alt="${esc(e.name || 'Geheime boss')}"><i class="boss-shadow"></i></div>
-      <div class="boss-plate"><b>${up && !d.is_admin ? '???' : esc(e.name)}</b>${e.title && (!up || d.is_admin) ? `<small>“${esc(e.title)}”</small>` : ''}</div>
+      <div class="boss-figwrap"><img class="boss-fig${up ? ' sil' : ''}" id="bossFig" src="${esc(img)}" alt="${esc(e.name || 'Geheime boss')}"><i class="boss-shadow"></i></div>
+      <div class="boss-plate"><b>${e.name ? esc(e.name) : '???'}</b>${e.title ? `<small>“${esc(e.title)}”</small>` : ''}</div>
       ${up ? `<div class="boss-cd"><small>${bossWhen(e.starts_at)}</small><b id="bossClock"></b><span>Wie is het deze week? 👀</span></div>` : `
       <div class="boss-hp${left / (e.hp_max || 1) < .5 ? ' rage' : ''}" id="bossHp"><div class="bh-bar"><i style="width:${(left / (e.hp_max || 1) * 100).toFixed(2)}%"></i></div>
         <div class="bh-txt"><b id="bossHpTxt">${fmtN(left)} / ${fmtN(e.hp_max)} HP</b><span id="bossPlayers">${e.players} speler${e.players === 1 ? '' : 's'}</span></div></div>`}
@@ -7355,6 +7367,25 @@ async function bossCutout(file) {
   cx.putImageData(im, 0, 0);
   return cv;
 }
+// Volledig zwart silhouet (zelfde vorm, doorzichtige achtergrond) -> kleine WebP/PNG
+async function bossMakeSil(src) {
+  const blob = src instanceof Blob ? src : await (await fetch(src)).blob();
+  const bmp = await createImageBitmap(blob);
+  const sc = Math.min(1, 700 / Math.max(bmp.width, bmp.height));
+  const cv = document.createElement('canvas'); cv.width = Math.round(bmp.width * sc); cv.height = Math.round(bmp.height * sc);
+  const cx = cv.getContext('2d'); cx.drawImage(bmp, 0, 0, cv.width, cv.height);
+  cx.globalCompositeOperation = 'source-in'; cx.fillStyle = '#000'; cx.fillRect(0, 0, cv.width, cv.height);
+  let out = await new Promise(r => cv.toBlob(r, 'image/webp', .8));
+  if (!out || out.type !== 'image/webp') out = await new Promise(r => cv.toBlob(r, 'image/png'));
+  return out;
+}
+async function bossUploadSil(id, src) {
+  const sil = await bossMakeSil(src), path = `sil-${id}-${Date.now()}.${sil.type === 'image/webp' ? 'webp' : 'png'}`;
+  const { error } = await sb.storage.from(BOSS_BUCKET).upload(path, sil, { contentType: sil.type, cacheControl: '31536000' });
+  if (error) throw error;
+  const r = await sb.rpc('boss_admin_set_sil', { p_id: id, p_path: path });
+  if (r.error) throw r.error;
+}
 function bindBossAdmin(view) {
   const $v = s => view.querySelector(s), msg = $v('#baMsg');
   let blob = null, list = [];
@@ -7373,6 +7404,12 @@ function bindBossAdmin(view) {
     $v('#baList').innerHTML = list.length ? list.map(b => `<div class="ba-row" data-id="${b.id}"><span class="ba-thumb">${b.image_path ? `<img data-thumb="${esc(b.image_path)}" alt="">` : '?'}</span><span><b>${esc(b.name)}</b><small>“${esc(b.title || '')}” · zwak tegen ${esc(bossWeak(b))}</small><small>${fmt(b.starts_at)}${b.image_path ? '' : ' · ⚠️ nog geen foto'}${b.defeated_at ? ' · verslagen' : new Date(b.ends_at).getTime() < bossNow() ? ' · voorbij' : ''}${b.damage ? ` · ${fmtN(b.damage)} schade` : ''}</small></span>
       <span class="ba-btns"><button type="button" class="link" data-ba="edit">Aanpassen</button><button type="button" class="link" data-ba="test">Test nu</button><button type="button" class="link danger" data-ba="del">Verwijder</button></span></div>`).join('') : '<p class="hint">Nog geen bosses.</p>';
     $v('#baList').querySelectorAll('[data-thumb]').forEach(im => bossImgUrl(im.dataset.thumb).then(u => { if (u) im.src = u; }));
+    const missing = list.filter(b => b.image_path && !b.sil_path && new Date(b.ends_at).getTime() > bossNow());
+    if (missing.length) {
+      say(`Silhouet maken voor ${missing.length} boss${missing.length > 1 ? 'es' : ''}…`);
+      for (const b of missing) { try { await bossUploadSil(b.id, await bossImgUrl(b.image_path)); } catch (e) { say('Silhouet maken mislukt: ' + (e.message || e), 'err'); return; } }
+      say('Silhouetten klaar.', 'ok'); await loadBoss(); return drawBoss(view);
+    }
     $v('#baList').querySelectorAll('[data-ba]').forEach(btn => btn.onclick = async () => {
       const id = Number(btn.closest('[data-id]').dataset.id), b = list.find(x => x.id === id);
       if (btn.dataset.ba === 'edit') { fill(b); $v('#baForm').scrollIntoView({ behavior: 'smooth', block: 'start' }); return; }
@@ -7406,10 +7443,11 @@ function bindBossAdmin(view) {
       }
       const [wk, ...wv] = ($v('#baWeak').value || '').split(':');
       const start = $v('#baStart').value;
-      const { error } = await sb.rpc('boss_admin_save', { p_id: Number($v('#baId').value) || null, p_starts_at: start ? new Date(start).toISOString() : null,
+      const { data: savedId, error } = await sb.rpc('boss_admin_save', { p_id: Number($v('#baId').value) || null, p_starts_at: start ? new Date(start).toISOString() : null,
         p_name: $v('#baName').value, p_title: $v('#baTitle').value, p_image_path: path, p_weakness_kind: wk || null, p_weakness_value: wv.join(':') || null,
         p_hp_override: Number($v('#baHp').value) || null });
       if (error) throw error;
+      if (blob && savedId) await bossUploadSil(savedId, blob);
       fill(null); await loadBoss(); await drawBoss(view);
       view.querySelector('#baMsg')?.replaceChildren('Opgeslagen. Kijk hieronder welke naam en zwakte de boss kreeg.');
     } catch (e) { say(e.message || 'Opslaan mislukt.', 'err'); }

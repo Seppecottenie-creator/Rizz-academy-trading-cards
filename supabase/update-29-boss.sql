@@ -18,6 +18,7 @@
 -- Gebruik: Supabase -> SQL Editor -> nieuwe query -> dit VOLLEDIGE bestand plakken -> Run.
 -- Kies bij de waarschuwing "Run without RLS".
 -- Veilig om opnieuw uit te voeren. Voer eerst update-25-foodtruck.sql uit (feature_flags).
+-- LET OP: voer je dit bestand later opnieuw uit, voer daarna ook update-31-boss-silhouet.sql opnieuw uit.
 -- =====================================================================
 
 insert into public.feature_flags (key, note) values ('boss', 'Boss Battle op zondag') on conflict (key) do nothing;

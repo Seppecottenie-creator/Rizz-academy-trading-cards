@@ -79,6 +79,9 @@ union all
 select 'update-30-fotos-kleiner.sql',
        exists (select 1 from pg_policies where schemaname = 'storage' and policyname = 'kaartfoto''s vervangen (admin)')
 union all
+select 'update-31-boss-silhouet.sql',
+       to_regprocedure('public.boss_admin_set_sil(bigint,text)') is not null
+union all
 select 'Testfase: enkel de admin ziet het nieuwe (false = nog niet voor iedereen, dat is normaal tot de release)',
        case when to_regclass('public.feature_flags') is null then false
             else (xpath('/row/c/text()', query_to_xml('select count(*) as c from public.feature_flags where released', false, true, '')))[1]::text <> '0' end
