@@ -2803,6 +2803,12 @@ body.bf-open{overflow:hidden}
 @media (orientation:landscape) and (max-height:500px){.boss-figwrap{height:52vh}.bf-figwrap{height:52vh;bottom:30%}.bf{grid-template-rows:auto 1fr auto}.bft-ph{width:32px;height:38px}.bf-dodge{width:66px;height:66px}.bf-super{width:78px;height:78px}}
 @media (min-width:900px){.bf-hud{max-width:760px;width:100%;justify-self:center}.bf-top{max-width:900px;width:100%;justify-self:center}}
 @media (prefers-reduced-motion:reduce){.boss-fig,.boss-shadow{animation:none!important}}
+/* --- Cadeaupakjes in The Vault --- */
+.gift-box{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin:0 0 16px;padding:14px 16px;border-radius:16px;
+  background:linear-gradient(135deg,rgba(242,204,114,.18),rgba(224,40,74,.14));border:1px solid rgba(242,204,114,.55);box-shadow:0 0 24px rgba(242,204,114,.15)}
+.gift-box .gift-pack{flex:none;animation:gift-wiggle 2.4s ease-in-out infinite}
+@keyframes gift-wiggle{0%,80%,100%{transform:rotate(0)}85%{transform:rotate(-6deg)}90%{transform:rotate(6deg)}95%{transform:rotate(-3deg)}}
+.gift-txt{flex:1 1 200px;display:grid;gap:2px}.gift-txt b{font:400 20px var(--varsity);color:#F6DE9C}.gift-txt small{color:var(--ink-soft)}
 /* --- Casino: mijn statistieken --- */
 .cz-tile[data-open="cstats"]{grid-column:1/-1}
 .cs{display:grid;gap:14px}
@@ -3404,7 +3410,7 @@ async function route() {
 
 async function loadData() {
   const uid = state.session.user.id;
-  const [cards, mine, prof, wallet, requests, admin, battlesIn, welcome, played, tradesIn, features] = await Promise.all([
+  const [cards, mine, prof, wallet, requests, admin, battlesIn, welcome, played, tradesIn, features, gifts] = await Promise.all([
     sb.from('cards').select('*').order('id'),
     sb.from('user_cards').select('card_id').eq('user_id', uid),
     sb.from('profiles').select('display_name, avatar_url, friend_code').eq('id', uid).maybeSingle(),
@@ -3415,7 +3421,8 @@ async function loadData() {
     sb.from('welcome_packs').select('user_id').eq('user_id', uid).maybeSingle(),
     sb.from('exam_results').select('exam_date').eq('user_id', uid).eq('status', 'done'),
     sb.from('trade_requests').select('id', { count: 'exact', head: true }).eq('status', 'pending').eq('turn', uid),
-    sb.rpc('feature_list')
+    sb.rpc('feature_list'),
+    sb.from('gift_packs').select('id, kind, note').is('opened_at', null).order('id')
   ]);
   for (const r of [cards, mine, prof, wallet]) if (r.error) throw new Error(r.error.message);
   // Niet fataal: enkel voor het bolletje op de Vrienden-tab
@@ -3424,6 +3431,7 @@ async function loadData() {
   // Admin ziet alle kaarten ontgrendeld (enkel weergave; echte bezittingen blijven ongewijzigd)
   state.isAdmin = !admin.error && !!admin.data;
   state.features = (!features.error && features.data) || {};
+  state.gifts = (!gifts.error && gifts.data) || [];   // cadeaupakjes (update-37), niet fataal
   if (!feat('sound')) Sound.setPlace(null);
   // Bolletje Battle: uitdagingen aan jou + gevechten tegen vrienden waarin jij aan zet bent
   state.incomingBattles = battlesIn.error ? 0 : (battlesIn.data || []).filter(b =>
@@ -4543,7 +4551,8 @@ async function renderCampus(view) {
   setStatus('today', state.welcomeAvailable ? 'Welcome envelope waiting' : played ? 'Exam passed ✓' : 'Exam open', state.welcomeAvailable || !played ? '!' : '');
   const streak = computeStreak(state.playDates);
   setStatus('stats', `Streak ${streak} · grades & trophies`);
-  setStatus('shop', `${state.wallet} credits`);
+  if (state.gifts?.length) setStatus('shop', `🎁 ${state.gifts.length} gift${state.gifts.length > 1 ? 's' : ''} to open`, state.gifts.length);
+  else setStatus('shop', `${state.wallet} credits`);
   setStatus('battle', state.incomingBattles ? `${state.incomingBattles} waiting on you` : 'Open for matches', state.incomingBattles || '');
   setStatus('trade', state.incomingTrades ? `${state.incomingTrades} offer${state.incomingTrades > 1 ? 's' : ''} waiting` : 'Doors open', state.incomingTrades || '');
   setStatus('ideas', 'Speak up');
@@ -6270,6 +6279,11 @@ function renderShop(view) {
       <span class="coinpill shop-balance">🪙 <span data-coin>${coinText()}</span> credits</span>
     </div>
     <p class="msg tmsg" id="shopMsg" role="alert"></p>
+    ${state.gifts?.length ? `<div class="gift-box">
+      <div class="pack mini gift-pack" aria-hidden="true"><div class="pack-body"><div class="pack-label">${packLabel(1)}</div></div><div class="pack-top"></div><span class="seal">🎁</span></div>
+      <div class="gift-txt"><b>Je hebt ${state.gifts.length} cadeaupakje${state.gifts.length > 1 ? 's' : ''}!</b>
+        <small>${state.gifts[0].note ? `“${esc(state.gifts[0].note)}” · ` : 'Gratis, van Rizz Academy. '}Elk pakje is een Basic of een Epic: verrassing!</small></div>
+      <button class="btn" id="giftOpen" type="button">Open${state.gifts.length > 1 ? ' het volgende' : ''} 🎁</button></div>` : ''}
     <div class="two-col shop-grid">
       <div>
         <h3>Pakjes</h3>
@@ -6318,6 +6332,25 @@ function renderShop(view) {
     $('#packClose').onclick = () => { dlg.close(); renderShop(view); };
   });
 
+
+  // Cadeaupakjes openen, één voor één (update-37-cadeaupakjes.sql)
+  const gb = view.querySelector('#giftOpen');
+  if (gb) gb.onclick = async () => {
+    gb.disabled = true;
+    const g = state.gifts[0];
+    const { data, error } = await sb.rpc('gift_pack_open', { p_id: g.id });
+    if (error) { msg(error.message); gb.disabled = false; return; }
+    state.gifts.shift();
+    for (const c of data.cards) state.owned.set(c.id, (state.owned.get(c.id) || 0) + 1);
+    const dlg = $('#packModal');
+    dlg.innerHTML = `<div class="packbox"><h2>🎁 ${data.kind === 'epic' ? 'Epic' : 'Basic'} pakje</h2><div class="stage" id="packStage"></div><div id="packDone"></div></div>`;
+    dlg.showModal();
+    await openPack($('#packStage'), data.cards);
+    const left = state.gifts.length;
+    $('#packDone').innerHTML = `<p class="result">${left ? `Nog ${left} cadeaupakje${left > 1 ? 's' : ''} te openen!` : 'Dat was je laatste cadeaupakje.'}</p>
+      <button class="btn small" id="packClose" type="button">${left ? 'Volgende openen 🎁' : 'Verder'}</button>`;
+    $('#packClose').onclick = () => { dlg.close(); renderShop(view); if (left) view.querySelector('#giftOpen')?.click(); };
+  };
 
   view.querySelectorAll('[data-sell]').forEach(b => b.onclick = async () => {
     const c = cardById(b.dataset.sell), n = Number(b.dataset.count);
