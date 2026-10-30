@@ -5889,7 +5889,7 @@ begin
   -- gemiddeld aantal spelers per dag (examen of casino) over de afgelopen 7 dagen, zonder admin
   select round(avg(c)) into n from (
     select d, count(distinct u) as c from (
-      select (created_at at time zone 'Europe/Brussels')::date as d, user_id as u from public.exam_results where created_at > now() - interval '7 days'
+      select exam_date as d, user_id as u from public.exam_results where exam_date > current_date - 7
       union all
       select (created_at at time zone 'Europe/Brussels')::date, user_id from public.casino_plays where created_at > now() - interval '7 days') x
     where not public._is_admin_user(u) group by d) y;
